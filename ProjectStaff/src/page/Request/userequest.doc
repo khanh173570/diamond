@@ -1,0 +1,13 @@
+  // // lay service
+
+  // // tu dong cap nhat status duoi database
+  // // const handleOnChangeStatus = (id, value) => {
+  // //   setUserRequest((currentState) => {
+  // //     currentState.id === id ? setCurrentState({ ...currentState, status: value }) : 'requested'
+  // //   })
+  // // }
+  // // const viewDetails = (requestID) => {
+  // //   userRequest.map((currentState)=>{
+  // //     requestID === currentState.id ? setCurrentDetail(currentState) : 
+  // //   })
+  // // }
