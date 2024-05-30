@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 import { PDFViewer } from '@react-pdf/renderer';
 import { ValuationPDF } from './ValuationPDF';
 
-export const GeneratePDF = () => {
+export const GeneratePDF = ({ result }) => {
   return (
     <PDFViewer style={{ width: "100%", height: '800px' }} >
-      <ValuationPDF />
+      <ValuationPDF result={result} />
     </PDFViewer>
   );
 };
