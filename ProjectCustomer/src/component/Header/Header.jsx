@@ -5,8 +5,33 @@ import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 import { NavLink } from 'react-router-dom';
 import '../Header/Header.css';
+import { useEffect, useState } from 'react';
 
 function Header() {
+    const [user, setUser] = useState({});
+    const [isUsername, setIsUsername] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://jsonplaceholder.typicode.com/users/2');
+                const data = await response.json();
+                setIsUsername(true);
+                setUser(data);
+                localStorage.setItem('user', JSON.stringify(data));
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    const handleLogout = () => {
+        setIsUsername(false);
+        setUser({});
+        localStorage.removeItem('user');
+    };
+
     return (
         <Navbar expand="md" className='nav-header'>
             <Container fluid>
@@ -22,7 +47,7 @@ function Header() {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" className="me-5 fw-bold justify-content-end">
                     <Nav variant='underline'>
-                        <NavLink to="/home" className="nav-link" >Home</NavLink>
+                        <NavLink to="/home" className="nav-link">Home</NavLink>
                         <NavDropdown title="Evaluation Service" id="nav-dropdown">
                             <NavDropdown.Item as={NavLink} to="/calculate">Calculate</NavDropdown.Item>
                             <NavDropdown.Divider />
@@ -36,11 +61,22 @@ function Header() {
                                 Type of Valuation
                             </NavDropdown.Item>
                         </NavDropdown>
-                        <NavLink to="/check" className="nav-link" >Check</NavLink>
-                        <NavLink to="/blog" className="nav-link" >Blog</NavLink>
-                        <NavLink to="/contact" className="nav-link" >Contact</NavLink>
-                        <Nav.Link href=''>Languages</Nav.Link>
-                        <Button className='border border-dark button-sign-in text-dark fw-bold' as={NavLink} to='/login'>Sign in</Button>
+                        <NavLink to="/check" className="nav-link">Check</NavLink>
+                        <NavLink to="/blog" className="nav-link">Blog</NavLink>
+                        <NavLink to="/contact" className="nav-link">Contact</NavLink>
+                        <NavLink href=''>Languages</NavLink>
+                        {(isUsername && user) ? (
+                            <NavDropdown title={user.name} id="nav-dropdown">
+                                <NavDropdown.Item as={NavLink} to="/profile">My Profile</NavDropdown.Item>
+                                <NavDropdown.Item as={NavLink} to="/my-request">My Request</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item onClick={handleLogout} as={NavLink} to='/login'>
+                                    Log out
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                        ) : (
+                            <Button className='border border-dark text-dark fw-bold' as={NavLink} to='/login'>Sign in</Button>
+                        )}
                     </Nav>
                 </Navbar.Collapse>
             </Container>
