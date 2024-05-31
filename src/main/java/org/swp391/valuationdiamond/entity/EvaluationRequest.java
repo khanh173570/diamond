@@ -18,7 +18,7 @@ import lombok.experimental.FieldDefaults;
 import java.util.Date;
 
 @Entity
-@Table(name = "tbl_Evaluation_Request",schema = "dbo")
+@Table(name = "tbl_Evaluation_Request")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
