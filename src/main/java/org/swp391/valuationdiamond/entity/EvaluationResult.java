@@ -68,7 +68,7 @@ public class EvaluationResult {
   BigDecimal price;
 
   @ManyToOne
-  @JoinColumn(name = "userId", referencedColumnName = "userId")
+  @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
 
   @ManyToOne

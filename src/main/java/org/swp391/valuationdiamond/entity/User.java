@@ -26,7 +26,7 @@ import java.util.Date;
 public class User {
 
   @Id
-  @Column(name = "userId", nullable = false, length = 255)
+  @Column(name = "user_id", nullable = false, length = 255)
   String userId;
 
   @Column(name = "password", nullable = true, length = 20)

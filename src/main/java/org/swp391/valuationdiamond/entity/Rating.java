@@ -29,7 +29,7 @@ public class Rating {
   int rating;
 
   @ManyToOne
-  @JoinColumn(name = "userId")
+  @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
 
   @ManyToOne

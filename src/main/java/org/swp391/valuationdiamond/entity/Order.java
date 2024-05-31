@@ -55,7 +55,7 @@ public class Order {
   boolean isDiamond;
 
   @ManyToOne
-  @JoinColumn(name = "userId")
+  @JoinColumn(name = "userId", referencedColumnName = "user_id")
   User userId;
 
   @ManyToOne
@@ -63,13 +63,7 @@ public class Order {
   EvaluationRequest requestId;
 
   @OneToMany(mappedBy = "orderId")
-  List<EvaluationRequest> evaluationRequests;
-
-  @OneToMany(mappedBy = "orderId")
   List<OrderDetail> orderDetails;
-
-  @OneToMany(mappedBy = "orderId")
-  List<EvaluationService> evaluationServices;
 
   @OneToMany(mappedBy = "orderId")
   List<CommittedPaper> committedPapers;

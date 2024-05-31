@@ -3,6 +3,8 @@ package org.swp391.valuationdiamond.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -35,4 +37,8 @@ public class EvaluationServicePriceList {
 
   @Column(name = "PriceUnit", nullable = true)
   int priceUnit;
+
+  @ManyToOne
+  @JoinColumn(name = "service_id", referencedColumnName = "service_id")
+  EvaluationService serviceId;
 }

@@ -3,9 +3,11 @@ package org.swp391.valuationdiamond.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +18,7 @@ import lombok.experimental.FieldDefaults;
 import java.util.Date;
 
 @Entity
-@Table(name = "tbl_Evaluation_Request")
+@Table(name = "tbl_Evaluation_Request",schema = "dbo")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -50,10 +52,11 @@ public class EvaluationRequest {
   String phoneNumber;
 
   @ManyToOne
-  @JoinColumn(name = "userId", referencedColumnName = "userId")
+  @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
 
-  @ManyToOne
-  @JoinColumn(name = "Order_id", referencedColumnName = "order_id")
-  Order orderId;
+  @OneToMany(mappedBy = "requestId")
+  List<EvaluationRequest> evaluationRequests;
+
+
 }

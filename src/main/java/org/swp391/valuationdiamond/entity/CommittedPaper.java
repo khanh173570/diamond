@@ -38,7 +38,7 @@ public class CommittedPaper {
   String civilId;
 
   @ManyToOne
-  @JoinColumn(name = "userId", referencedColumnName = "userId")
+  @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
 
   @ManyToOne

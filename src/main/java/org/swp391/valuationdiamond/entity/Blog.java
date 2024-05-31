@@ -37,4 +37,5 @@ public class Blog {
 
   @OneToMany(mappedBy = "blogId")
   List<Rating> ratings;
+
 }
