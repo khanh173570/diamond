@@ -58,8 +58,8 @@ public class DiamondPrice {
   @Column(name = "cut", nullable = true, length = 50)
   String cut;
 
-  @Column(name = "flourescence", nullable = true, length = 50)
-  String flourescence;
+  @Column(name = "fluorescence", nullable = true, length = 50)
+  String fluorescence;
 
   @Column(name = "clarity", nullable = true, length = 50)
   String clarity;

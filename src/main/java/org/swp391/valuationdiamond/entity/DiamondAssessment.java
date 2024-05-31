@@ -50,8 +50,8 @@ public class DiamondAssessment {
   @Column(name = "symmetry", nullable = true, length = 20)
   String symmetry;
 
-  @Column(name = "flourescence", nullable = true, length = 10)
-  String flourescence;
+  @Column(name = "fluorescence", nullable = true, length = 10)
+  String fluorescence;
 
   @OneToMany(mappedBy = "assessId")
   List<EvaluationResult> evaluationResults;
