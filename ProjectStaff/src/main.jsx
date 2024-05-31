@@ -29,7 +29,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           {/* <Route path='setting' element={<ViewReciptList />} /> */}
           <Route path='personal-info' element={<PersonalInformation />} />
           <Route path='valuation' element={<ValuationApplication />} />
-          <Route path='/valuation-result-list' element={<ValuationList />} />
+          <Route path='valuation-result-list' element={<ValuationList />} />  
+          {/* <Route path="valuation/print" element={<GeneratePDF />} /> */}
         </Route>
      
       </Routes>

@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
-export const ValuationList = () => {  
+import { GeneratePDF } from './GeneratePDF';
+
+export const ValuationList = ({result}) => {
   const [valuationResult, setValuationRequest] = useState([]);
   const [isPrint, setIsPrint] = useState(false);
   //------------------------------------------------------------------------------------------
-    // List data
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch('https://jsonplaceholder.typicode.com/users');
-          const data = await response.json();
-          setValuationRequest(data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-  
-      fetchData();
-    }, []);
-  
 
-//---------------------------------------------------------------------------------
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+        const data = await response.json();
+        setValuationRequest(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+  //---------------------------------------------------------------------------------
+  const handleOnPrint = () => {
+    setIsPrint(true)
+  }
   return (
     <div>
       {!isPrint ? (
@@ -36,7 +41,7 @@ export const ValuationList = () => {
                 <th>Valuation Staff</th>
                 <th>Delete</th>
                 <th>Print</th>
-              
+
               </tr>
             </thead>
             <tbody>
@@ -47,13 +52,13 @@ export const ValuationList = () => {
                   <td>{result.username}</td>
                   <td>13/07/2023</td>
                   <td>
-                  {result.name}
+                    {result.name}
                   </td>
                   <td>
                     <img src="src/assets/trash.svg" alt="Delete" />
                   </td>
                   <td>
-                  <img src="src/assets/print.svg" alt="Print" />
+                    <img src="src/assets/print.svg" alt="Print" onClick={handleOnPrint} />
                   </td>
                 </tr>
               ))}
@@ -61,23 +66,19 @@ export const ValuationList = () => {
           </Table>
         </>
       ) : (
-          <div>
-            <img
-              src="/src/assets/back.svg"
-              alt="go back"
-              className='mt-3'
-              height="40"
-              width="40"
-              onClick={() => setIsViewDetail(false)}
-            />
-            <UserRequestDetails1
-              key={currentDetail.id}
-              userRequestDetail={currentDetail}
-            />
-          </div>
+        <div>
+          <img
+            src="/src/assets/back.svg"
+            alt="go back"
+            className='mt-3'
+            height="40"
+            width="40"
+            onClick={() => setIsViewDetail(false)}
+          />
+          <GeneratePDF result={result} />
+        </div>
       )}
     </div>
   );
 };
 
- 

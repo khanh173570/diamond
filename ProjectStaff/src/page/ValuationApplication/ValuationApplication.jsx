@@ -7,8 +7,6 @@ export const ValuationApplication = () => {
     const [image1, setImage1] = useState(null);
     const [result, setResult] = useState({});
     const [isPrint, setIsPrint] = useState(false);
-
-    console.log(result)
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -316,7 +314,6 @@ export const ValuationApplication = () => {
                     />
                     <GeneratePDF result={result} />
                 </div>
-
             )}
         </Container>
     );

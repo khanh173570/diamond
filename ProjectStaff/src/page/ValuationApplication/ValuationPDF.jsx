@@ -1,6 +1,5 @@
 import React from 'react';
 import { Page, Text, Document, View, StyleSheet, Image } from '@react-pdf/renderer';
-
 export const ValuationPDF = ({ result }) => {
   const styles = StyleSheet.create({
     page: {
@@ -81,7 +80,6 @@ export const ValuationPDF = ({ result }) => {
               <Text style={styles.text}>Estimate Price: {result.estimatePrice}</Text>
             </View>
           </View>
-
           <View style={styles.wrapRight}>
             <View style={styles.section}>
               <Text style={styles.header}>Proportions</Text>
