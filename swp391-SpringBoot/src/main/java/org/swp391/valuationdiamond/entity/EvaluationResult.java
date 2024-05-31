@@ -76,6 +76,6 @@ public class EvaluationResult {
   DiamondAssessment assessId;
 
   @ManyToOne
-  @JoinColumn(name = "orderDe_id", referencedColumnName = "orderDe_id")
+  @JoinColumn(name = "order_detail_id", referencedColumnName = "order_detail_id")
   OrderDetail orderDetailId;
 }

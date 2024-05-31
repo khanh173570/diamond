@@ -36,4 +36,6 @@ public class EvaluationService {
 
   @OneToMany(mappedBy = "serviceId")
   List<EvaluationServicePriceList> servicePriceList;
+  @OneToMany(mappedBy = "serviceId")
+  List<OrderDetail> orderDetails;
 }
