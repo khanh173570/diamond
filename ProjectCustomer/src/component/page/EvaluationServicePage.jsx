@@ -16,11 +16,8 @@ function EvaluationServicePage() {
     if (user) {
       setFormRequest((currentState) => ({
         ...currentState,
-<<<<<<< HEAD
         userId: user.username,       // Lấy userId từ localStorage
-=======
         userId: user.userId,       // Lấy userId từ localStorage
->>>>>>> fb6af8d0f1f02b9f32d10387a4befaceb918a672
         guestName: user.name       // Set guestName với tên người dùng
       }));
     }
@@ -40,70 +37,66 @@ function EvaluationServicePage() {
     const requestData = { ...formRequest, requestDate };
 
     try {
-<<<<<<< HEAD
-      const response = await fetch('https://jsonplaceholder.typicode.com/users', {
-=======
-      const response = await fetch('', {
->>>>>>> fb6af8d0f1f02b9f32d10387a4befaceb918a672
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData)
-      });
+        const response = await fetch('', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData)
+        });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+        if(!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
       const result = await response.json();
-      console.log('Success:', result);
-      // Handle success
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+    console.log('Success:', result);
+    // Handle success
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
 
-  return (
-    <div className="form-container justify-content-center align-items-center">
-      <div className='justify-content-center d-flex my-2 p-4'>
-        <h1>Valuation Request Service</h1>
-      </div>
-      <div
-        className="custom-hr"
-        style={{
-          width: "1000px",
-          height: "2px",
-          backgroundColor: "#A9A9A9",
-          margin: "0 auto",
-          boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px"
-        }}
-      ></div>
-      <div className="d-flex justify-content-center align-items-center">
-        <form
-          className="form-row my-5 p-5"
-          style={{ width: "1000px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px" }}
-          onSubmit={handleOnSubmit}
-        >
-          <div className="form-group mt-1">
-            <label htmlFor="service" className='px-1'> Type Service: </label>
-            <select
-              id="service"
-              name="service"
-              className="custom-select"
-              value={formRequest.service}
-              onChange={handleOnChange}
-            >
-              <option value="service">Evaluation Diamond</option>
-            </select>
-          </div>
+return (
+  <div className="form-container justify-content-center align-items-center">
+    <div className='justify-content-center d-flex my-2 p-4'>
+      <h1>Valuation Request Service</h1>
+    </div>
+    <div
+      className="custom-hr"
+      style={{
+        width: "1000px",
+        height: "2px",
+        backgroundColor: "#A9A9A9",
+        margin: "0 auto",
+        boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px"
+      }}
+    ></div>
+    <div className="d-flex justify-content-center align-items-center">
+      <form
+        className="form-row my-5 p-5"
+        style={{ width: "1000px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px" }}
+        onSubmit={handleOnSubmit}
+      >
+        <div className="form-group mt-1">
+          <label htmlFor="service" className='px-1'> Type Service: </label>
+          <select
+            id="service"
+            name="service"
+            className="custom-select"
+            value={formRequest.service}
+            onChange={handleOnChange}
+          >
+            <option value="service">Evaluation Diamond</option>
+          </select>
+        </div>
 
-          <div className="form-row d-flex justify-content-between">
-<<<<<<< HEAD
+        <div className="form-row d-flex justify-content-between">
+
+          
+
             <div className="form-group mt-4 col-md-6">
-=======
-<div className="form-group mt-4 col-md-6">
->>>>>>> fb6af8d0f1f02b9f32d10387a4befaceb918a672
+
               <img
                 src='/src/assets/user.svg'
                 alt='User icon'
@@ -177,10 +170,10 @@ function EvaluationServicePage() {
           <div className="form-button text-center">
             <button type="submit" className="btn fw-bold py-3 px-3 my-3" style={{ backgroundColor: "#CCFBF0", borderColor: "black", marginLeft: "70%" }}>SEND</button>
           </div>
-        </form>
-      </div>
+      </form>
     </div>
-  );
+  </div>
+);
 }
 
 export default EvaluationServicePage;
