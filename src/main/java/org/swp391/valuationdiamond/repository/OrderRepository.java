@@ -6,5 +6,6 @@ import org.swp391.valuationdiamond.entity.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, String> {
+  List<Order> findOrderByStatus(String status);
 
 }
