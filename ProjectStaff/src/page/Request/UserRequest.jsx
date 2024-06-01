@@ -80,7 +80,7 @@ export const UserRequest = () => {
             </thead>
             <tbody>
               {userRequest.map((user) => (
-                <tr key={user.username}>
+                <tr key={user.requestId}>
                   <td>{user.requestId}</td>
                   <td>{user.userId}</td>
                   <td>{user.requestDate}</td>

@@ -13,7 +13,7 @@ export const UserRequestDetails1 = ({userRequestDetail}) => {
                         <Col md={7} className='text-start'>{userRequestDetail.guestName}</Col>
                     </Row>
                     <Row className="mb-2">
-                        <Col md={5} className='text-end'><strong>Username</strong></Col>
+                        <Col md={5} className='text-end'><strong>Full Name</strong></Col>
                         <Col md={7} className='text-start'>{userRequestDetail.username}</Col>
                     </Row>
                     <Row className="mb-2">
@@ -23,6 +23,14 @@ export const UserRequestDetails1 = ({userRequestDetail}) => {
                     <Row className="mb-2">
                         <Col md={5} className='text-end'><strong>Phone</strong></Col>
                         <Col md={7} className='text-start'>{userRequestDetail.phoneNumber}</Col>
+                    </Row>
+                    <Row className="mb-2">
+                        <Col md={5} className='text-end'><strong>Service</strong></Col>
+                        <Col md={7} className='text-start'>{userRequestDetail.service}</Col>
+                    </Row>
+                    <Row className="mb-2">
+                        <Col md={5} className='text-end'><strong>Description</strong></Col>
+                        <Col md={7} className='text-start'>{userRequestDetail.requestDescription}</Col>
                     </Row>
                     </div>
                 </div>
