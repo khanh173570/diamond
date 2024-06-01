@@ -102,7 +102,7 @@ export const CreateReceipt = () => {
     };
 
     console.log("Data to send:", dataToSend);
-    setReviewMode(true); // Switch to "Review" mode
+   // setReviewMode(true); // Switch to "Review" mode
   };
 
   const handlePrint = useReactToPrint({
