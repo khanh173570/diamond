@@ -17,7 +17,7 @@ function EvaluationServicePage() {
       setFormRequest((currentState) => ({
         ...currentState,
         userId: user.username,       // Lấy userId từ localStorage
-        userId: user.userId,       // Lấy userId từ localStorage
+     // Lấy userId từ localStorage
         guestName: user.name       // Set guestName với tên người dùng
       }));
     }
