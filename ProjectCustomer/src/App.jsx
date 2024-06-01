@@ -2,7 +2,6 @@ import { Outlet } from 'react-router-dom';
 import Footer from './component/Footer/Footer.jsx'
 import Header from './component/Header/Header.jsx'
 
-
 function App() {
   return (
     <>
@@ -16,8 +15,6 @@ function App() {
         <Footer />
       </div>
     </>
-
-    
   )
 }
 

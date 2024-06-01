@@ -47,7 +47,7 @@ export const ValuationPDF = ({ result }) => {
           <Text style={styles.title}>Valuation Result</Text>
         </View>
         <View style={styles.section}>
-          <Text style={styles.text}>Valuation ID: {result.valuation}</Text>
+          <Text style={styles.text}>Valuation ID: {result.username}</Text>
           <Text style={styles.text}>Order ID: {result.orderID}</Text>
           <Text style={styles.text}>Customer Name: {result.customerName}</Text>
         </View>
