@@ -83,7 +83,7 @@ export const CreateReceipt = () => {
 
     console.log('Data to send:', dataToSend);
 
-    // setReviewMode(true);
+    // setReviewMode(true);  // Ensure this is called to trigger review mode
   };
 
   const handlePrint = useReactToPrint({
@@ -95,42 +95,41 @@ export const CreateReceipt = () => {
       <div >
         <h2 className='d-flex justify-content-center' style={{width: '90%'}}> Review</h2>
         <div ref={componentRef} className='' style={{width: '90%'}}>
-        <div className='d-flex justify-content-center'>
-          <div className='flex-column' style={{width:'50%'}}> 
-            <p>Customer Name: {custName}</p>
-            <p>Phone: {phone}</p>
-            <p>Quantity: {quantity}</p>
-          </div>
+          <div className='d-flex justify-content-center'>
+            <div className='flex-column' style={{width:'50%'}}> 
+              <p>Customer Name: {custName}</p>
+              <p>Phone: {phone}</p>
+              <p>Quantity: {quantity}</p>
+            </div>
           </div>
           <div >
-          <Table striped bordered className='fs-5'>
-            <thead className='text-center'>
-              <tr>
-                <th style={{ backgroundColor: "#7CF4DE" }}>Assessment ID</th>
-                <th style={{ backgroundColor: "#7CF4DE" }}>Service</th>
-                <th style={{ backgroundColor: "#7CF4DE" }}>Received Date</th>
-                <th style={{ backgroundColor: "#7CF4DE" }}>Expired Date</th>
-                <th style={{ backgroundColor: "#7CF4DE" }}>Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, index) => (
-                <tr key={index}>
-                  <td>{row.assessmentId}</td>
-                  <td>{row.service}</td>
-                  <td>{row.receivedDate}</td>
-                  <td>{row.expiredDate}</td>
-                  <td>{row.price}</td>
+            <Table striped bordered className='fs-5'>
+              <thead className='text-center'>
+                <tr>
+                  <th style={{ backgroundColor: "#7CF4DE" }}>Assessment ID</th>
+                  <th style={{ backgroundColor: "#7CF4DE" }}>Service</th>
+                  <th style={{ backgroundColor: "#7CF4DE" }}>Received Date</th>
+                  <th style={{ backgroundColor: "#7CF4DE" }}>Expired Date</th>
+                  <th style={{ backgroundColor: "#7CF4DE" }}>Price</th>
                 </tr>
-              ))}
-              <tr>
-                <td colSpan="4" className="text-end"><strong>Total Price</strong></td>
-                <td>{totalPrice}</td>
-              </tr>
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {rows.map((row, index) => (
+                  <tr key={index}>
+                    <td>{row.assessmentId}</td>
+                    <td>{row.service}</td>
+                    <td>{row.receivedDate}</td>
+                    <td>{row.expiredDate}</td>
+                    <td>{row.price}</td>
+                  </tr>
+                ))}
+                <tr>
+                  <td colSpan="4" className="text-end"><strong>Total Price</strong></td>
+                  <td>{totalPrice}</td>
+                </tr>
+              </tbody>
+            </Table>
           </div>
-          
         </div>
         <Button onClick={handlePrint}>Print</Button>
       </div>
@@ -205,7 +204,7 @@ export const CreateReceipt = () => {
                   />
                 </td>
                 <td>
-                <select
+                  <select
                     className="form-control"
                     value={row.service}
                     onChange={(e) => handleServiceChange(index, e.target.value)}
@@ -255,10 +254,7 @@ export const CreateReceipt = () => {
 
       <div className="d-flex justify-content-end" style={{width: '90%'}}>
         <Button className='btn btn-success me-4' type='submit'>Accept</Button>       
-        <Button onClick={() => setReviewMode(true)}>Review</Button>
-      </div>
-      <div>
-        <p>Update 01.06.2024</p>
+        <Button className='btn btn-primary' onClick={() => setReviewMode(true)}>Review</Button> {/* Ensure button has proper class and event handler */}
       </div>
     </form>
   );
