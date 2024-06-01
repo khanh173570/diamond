@@ -16,7 +16,11 @@ function EvaluationServicePage() {
     if (user) {
       setFormRequest((currentState) => ({
         ...currentState,
+<<<<<<< HEAD
         userId: user.username,       // Lấy userId từ localStorage
+=======
+        userId: user.userId,       // Lấy userId từ localStorage
+>>>>>>> fb6af8d0f1f02b9f32d10387a4befaceb918a672
         guestName: user.name       // Set guestName với tên người dùng
       }));
     }
@@ -36,7 +40,11 @@ function EvaluationServicePage() {
     const requestData = { ...formRequest, requestDate };
 
     try {
+<<<<<<< HEAD
       const response = await fetch('https://jsonplaceholder.typicode.com/users', {
+=======
+      const response = await fetch('', {
+>>>>>>> fb6af8d0f1f02b9f32d10387a4befaceb918a672
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +99,11 @@ function EvaluationServicePage() {
           </div>
 
           <div className="form-row d-flex justify-content-between">
+<<<<<<< HEAD
             <div className="form-group mt-4 col-md-6">
+=======
+<div className="form-group mt-4 col-md-6">
+>>>>>>> fb6af8d0f1f02b9f32d10387a4befaceb918a672
               <img
                 src='/src/assets/user.svg'
                 alt='User icon'
