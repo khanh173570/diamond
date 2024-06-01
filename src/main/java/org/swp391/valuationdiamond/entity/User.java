@@ -60,7 +60,7 @@ public class User {
   List<EvaluationRequest> evaluationRequests;
 
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
-  List<Order> orders;
+  List<Order> orderId;
 
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<EvaluationResult> evaluationResults;
@@ -69,5 +69,5 @@ public class User {
   List<CommittedPaper> committedPapers;
 
   @OneToMany(mappedBy = "evaluationStaffId", cascade = CascadeType.ALL)
-  List<OrderDetail> orderDetails;
+  List<OrderDetail> orderDetailId;
 }
