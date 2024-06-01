@@ -9,11 +9,8 @@ import { Home } from './page/Home.jsx'
 import { ValuationList } from './page/ValuationApplication/ValuationList.jsx'
 import { PersonalInformation } from './page/PersonalInformation.jsx'
 import { ValuationApplication } from './page/ValuationApplication/ValuationApplication.jsx'
-<<<<<<< HEAD
-import { ViewReciptList } from './page/ViewReciptListApplication/ViewReciptList.jsx'
-=======
 import { ReciptDetails } from './page/ReciptApplication/ReciptDetails.jsx'
->>>>>>> d40f4cd22072376f5e14dd43eb5acf8684d6178f
+import { ViewReciptList } from './page/ViewReciptListApplication/ViewReciptList.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -26,13 +23,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route index element={<Home />} />
           <Route path='home' element={<Home />} />
           <Route path='user-request' element={<UserRequest />} />
-          {/* <Route path="user-request/:id" element={<UserRequestDetails1 />} /> */}
-          {/* <Route path='view-receipt' element={<ViewReciptList />} /> */}
+         {/*<Route path="user-request/:id" element={<UserRequestDetails1 />} /> */}
+           <Route path='view-receipt' element={<ViewReciptList />} />
           <Route path='view-receipt' element={<ReciptDetails />} />
 
           <Route path='create-recipt' element={<CreateReceipt />} />
           <Route path='commitment' element={<CreateCommitment />} />
-          {/* <Route path='setting' element={<ViewReciptList />} /> */}
+           <Route path='setting' element={<ViewReciptList />} /> 
           
           <Route path='personal-info' element={<PersonalInformation />} />
           <Route path='valuation' element={<ValuationApplication />} />
