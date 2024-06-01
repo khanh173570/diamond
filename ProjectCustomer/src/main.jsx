@@ -10,6 +10,7 @@ import Contact from './component/page/Contact';
 import EvaluationServicePage from './component/page/EvaluationServicePage';
 import Login from './component/page/Login';
 import Signup from './component/page/Signup';
+import { PersonalRequest } from './component/page/PersonalRequest.jsx';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path='evaluationservice' element={<EvaluationServicePage />} />
           <Route path='calculate' element={<Calculate />} />
           <Route path='check' element={<Check />} />
+          <Route path='my-request' element={<PersonalRequest />} />
           {/* <Route path='policy' element={<Policy/>} />
           <Route path='type-of-valuation' element={<Check />} /> */}
         </Route>

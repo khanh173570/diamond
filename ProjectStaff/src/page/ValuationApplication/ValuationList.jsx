@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import { GeneratePDF } from './GeneratePDF';
 
-export const ValuationList = ({result}) => {
+export const ValuationList = () => {
   const [valuationResult, setValuationRequest] = useState([]);
   const [isPrint, setIsPrint] = useState(false);
   //------------------------------------------------------------------------------------------
@@ -23,8 +23,9 @@ export const ValuationList = ({result}) => {
 
 
   //---------------------------------------------------------------------------------
-  const handleOnPrint = () => {
+  const handleOnPrint = (e) => {
     setIsPrint(true)
+    console.log(e.target.value)
   }
   return (
     <div>
@@ -58,7 +59,7 @@ export const ValuationList = ({result}) => {
                     <img src="src/assets/trash.svg" alt="Delete" />
                   </td>
                   <td>
-                    <img src="src/assets/print.svg" alt="Print" onClick={handleOnPrint} />
+                    <img src="src/assets/print.svg" alt="Print" onClick={(e)=>console.log(e.target.value)} />
                   </td>
                 </tr>
               ))}
@@ -73,9 +74,9 @@ export const ValuationList = ({result}) => {
             className='mt-3'
             height="40"
             width="40"
-            onClick={() => setIsViewDetail(false)}
+            onClick={() => isPrint(false)}
           />
-          <GeneratePDF result={result} />
+          <GeneratePDF result={valuationResult} />
         </div>
       )}
     </div>

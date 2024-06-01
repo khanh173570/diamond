@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { useReactToPrint } from 'react-to-print';
-import './print.css'; // Import CSS cho in
+import '../ReciptApplication/print.css'; // Import CSS cho in
 
 export const CreateReceipt = () => {
   const [selection, setSelection] = useState([]);

@@ -22,8 +22,12 @@ function Header() {
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
+            
         };
         fetchData();
+        // unmounted data
+        const interval = setInterval(fetchData, 5000);
+        return () => clearInterval(interval);
     }, []);
 
     const handleLogout = () => {
@@ -64,7 +68,10 @@ function Header() {
                         <NavLink to="/check" className="nav-link">Check</NavLink>
                         <NavLink to="/blog" className="nav-link">Blog</NavLink>
                         <NavLink to="/contact" className="nav-link">Contact</NavLink>
-                        <NavLink href=''>Languages</NavLink>
+                        <NavDropdown title="Language" id="nav-dropdown">
+                                <NavDropdown.Item >Vietnamese</NavDropdown.Item>
+                                <NavDropdown.Item >English</NavDropdown.Item>        
+                        </NavDropdown>
                         {(isUsername && user) ? (
                             <NavDropdown title={user.name} id="nav-dropdown">
                                 <NavDropdown.Item as={NavLink} to="/profile">My Profile</NavDropdown.Item>
