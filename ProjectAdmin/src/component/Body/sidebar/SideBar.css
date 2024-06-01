@@ -1,0 +1,14 @@
+.nav-link {
+    color: white;
+}
+
+.nav-link:hover {
+    color: #ccc;
+}
+
+.mr-2{
+    margin: "10px"
+}
+.menu .nav-link.active {
+    background-color: #f0f0f0;
+  }
