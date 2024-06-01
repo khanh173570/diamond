@@ -2,19 +2,26 @@ import { useState } from "react";
 import axios from 'axios';
 import { NavLink } from "react-router-dom";
 
-
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isLogin, setIsLogin] = useState(false);
+    // test case
+
+
     const handleGoogleLogin = async () => {
         try {
-            const response = await axios.get('/auth/google')
-        } catch {
-
+            const response = await axios.get('/auth/google');
+           
+            console.log(response.data);
+        } catch (error) {
+            console.error('Google login failed', error);
         }
     }
-    async function handleOnSubmit(e) {
-        e.preventDefault(); // Ngăn chặn hành vi mặc định của form
+    
+
+    const handleOnSubmit = async (e) => {
+        e.preventDefault(); 
         try {
             const response = await fetch('', {
                 method: "POST",
@@ -24,15 +31,17 @@ function Login() {
                 },
                 body: JSON.stringify({ username, password })
             });
-
             const data = await response.json();
-            console.log(data); // Xử lý dữ liệu phản hồi ở đây nếu cần
+            // setIsLogin(true);
+            // localStorage.setItem('user', JSON.stringify(data));
         } catch (error) {
-            console.error('Error:', error); // Xử lý lỗi ở đây nếu cần
+            console.error('Invalid username or password', error);
         }
     }
 
     return (
+        <div>
+       
         <div className="form-container d-flex justify-content-center align-items-center">
             <form
                 className="form-row my-5 p-5"
@@ -70,7 +79,7 @@ function Login() {
                         value={password}
                         className="form-control mt-1 py-2"
                         onChange={(e) => setPassword(e.target.value)}
-                        required
+                        
                     />
                 </div>
                 <div className="form-button d-grid mt-4 text-center">
@@ -85,10 +94,7 @@ function Login() {
                     <div style={{ flex: 1, backgroundColor: "#DDE1DF", height: "2px" }} />
                 </div>
 
-                <div className="form-img text-center mt-4"
-                    onClick={(e) => {
-                        
-                    }}>
+                <div className="form-img text-center mt-4" onClick={handleGoogleLogin}>
                     <img
                         src="/src/assets/Google.png"
                         alt="google"
@@ -104,9 +110,11 @@ function Login() {
                         marginTop: "1.5em"
                     }}
                 />
-                <p className="text-center mt-4">You don't have an account? <NavLink to="/signup" className ="link-secondary">Sign up</NavLink></p>
+                <p className="text-center mt-4">You don't have an account? <NavLink to="/signup" className="link-secondary">Sign up</NavLink></p>
             </form>
         </div>
+        </div>
+       
     );
 }
 

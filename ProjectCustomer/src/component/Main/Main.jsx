@@ -4,7 +4,7 @@ import Login from '../page/Login.jsx'
 function Main(){
     return (
         <div className='main'>
-            {/* <Home /> */}
+       
            
         </div>
 

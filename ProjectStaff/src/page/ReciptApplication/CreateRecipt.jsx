@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import { useReactToPrint } from 'react-to-print';
 
-export const CreateRecipt = () => {
+export const CreateReceipt = () => {
   const [selection, setSelection] = useState([]);
   const [custName, setCustName] = useState('');
   const [phone, setPhone] = useState('');
   const [quantity, setQuantity] = useState('');
   const [result, setResult] = useState('');
+  const [reviewMode, setReviewMode] = useState(false);
+  const componentRef = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,9 +81,60 @@ export const CreateRecipt = () => {
       items: rows
     };
 
-    // Gửi dữ liệu đi thông qua API endpoint
     console.log('Data to send:', dataToSend);
+
+    // setReviewMode(true);  // Ensure this is called to trigger review mode
   };
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  if (reviewMode) {
+    return (
+      <div >
+        <h2 className='d-flex justify-content-center' style={{width: '90%'}}> Review</h2>
+        <div ref={componentRef} className='' style={{width: '90%'}}>
+          <div className='d-flex justify-content-center'>
+            <div className='flex-column' style={{width:'50%'}}> 
+              <p>Customer Name: {custName}</p>
+              <p>Phone: {phone}</p>
+              <p>Quantity: {quantity}</p>
+            </div>
+          </div>
+          <div >
+            <Table striped bordered className='fs-5'>
+              <thead className='text-center'>
+                <tr>
+                  <th style={{ backgroundColor: "#7CF4DE" }}>Assessment ID</th>
+                  <th style={{ backgroundColor: "#7CF4DE" }}>Service</th>
+                  <th style={{ backgroundColor: "#7CF4DE" }}>Received Date</th>
+                  <th style={{ backgroundColor: "#7CF4DE" }}>Expired Date</th>
+                  <th style={{ backgroundColor: "#7CF4DE" }}>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, index) => (
+                  <tr key={index}>
+                    <td>{row.assessmentId}</td>
+                    <td>{row.service}</td>
+                    <td>{row.receivedDate}</td>
+                    <td>{row.expiredDate}</td>
+                    <td>{row.price}</td>
+                  </tr>
+                ))}
+                <tr>
+                  <td colSpan="4" className="text-end"><strong>Total Price</strong></td>
+                  <td>{totalPrice}</td>
+                </tr>
+              </tbody>
+            </Table>
+          </div>
+        </div>
+        <Button onClick={handlePrint}>Print</Button>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleOnSubmit}>
@@ -198,8 +252,9 @@ export const CreateRecipt = () => {
         </Table>
       </div>
 
-      <div className="d-flex justify-content-center">
-        <Button className='btn btn-success me-4' type='submit'>Accept</Button>
+      <div className="d-flex justify-content-end" style={{width: '90%'}}>
+        <Button className='btn btn-success me-4' type='submit'>Accept</Button>       
+        <Button className='btn btn-primary' onClick={() => setReviewMode(true)}>Review</Button> {/* Ensure button has proper class and event handler */}
       </div>
     </form>
   );

@@ -7,8 +7,6 @@ export const ValuationApplication = () => {
     const [image1, setImage1] = useState(null);
     const [result, setResult] = useState({});
     const [isPrint, setIsPrint] = useState(false);
-
-    console.log(result)
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -46,7 +44,7 @@ export const ValuationApplication = () => {
         if (e.target.files && e.target.files[0]) {
             let img = e.target.files[0];
             setImage1(URL.createObjectURL(img));
-            setResult((currentState) => ({ ...currentState, image1: URL.createObjectURL(img)}));
+            setResult((currentState) => ({ ...currentState, image1: URL.createObjectURL(img) }));
         }
     };
 
@@ -58,7 +56,7 @@ export const ValuationApplication = () => {
         <Container>
             {!isPrint ? (
                 <Form onSubmit={handleOnSubmit}>
-                    <h1 className="text-center my-3">Valuation Result</h1>
+                    <h1 className="text-center my-3">New Valuation Result</h1>
                     <Row className="mb-2 align-items-center">
                         <Col md={2}>
                             <Form.Label htmlFor="valuationid" className="mb-0">ValuationID:</Form.Label>
@@ -300,12 +298,22 @@ export const ValuationApplication = () => {
                     </div>
                     <div className='d-flex justify-content-end my-4'>
                         <Button className='btn btn-success me-4' type='submit'>Confirm</Button>
-                        <Button className='btn btn-primary me-4' type='button'>Cancel</Button>
+
                         <Button className='btn btn-danger me-4' type='button' onClick={handlePrint}>Print</Button>
                     </div>
                 </Form>
             ) : (
-                <GeneratePDF result={result} />
+                <div>
+                    <img
+                        src="/src/assets/back.svg"
+                        alt="go back"
+                        className='mt-3'
+                        height="20"
+                        width="20"
+                        onClick={() => setIsViewDetail(false)}
+                    />
+                    <GeneratePDF result={result} />
+                </div>
             )}
         </Container>
     );

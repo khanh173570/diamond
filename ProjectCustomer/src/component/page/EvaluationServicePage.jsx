@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 function EvaluationServicePage(){
+  
     const [formRequest, setFormRequest] = useState({
       typeSrevice: 'service',
       phone: '',
@@ -9,6 +10,13 @@ function EvaluationServicePage(){
       username: '',
       submissionDate: '' // Thêm trường submissionDate
   });
+  
+  useEffect(()=>{
+    const user = JSON.parse(localStorage.getItem('user'))
+    if(user){
+        setFormRequest((currentState)=> ({...currentState,username:user.name}))
+    }
+  },[])
 
   const handleOnChang = (e) => {
       const { name, value } = e.target;
@@ -35,8 +43,8 @@ function EvaluationServicePage(){
               ...prevState,
               submissionDate: submissionDate
           }));
-
-          const response = await fetch('', {
+        //   lay API gia thoi
+          const response = await fetch('https://jsonplaceholder.typicode.com/users', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
