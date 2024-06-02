@@ -16,7 +16,7 @@ export const ViewReciptList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/users'); // Update this URL to the actual API
+        const response = await fetch('https://jsonplaceholder.typicode.com/users');
         const data = await response.json();
         setSelection(data);
         setFilteredSelection(data); // Initialize filtered data
@@ -35,8 +35,8 @@ export const ViewReciptList = () => {
     setFilteredSelection(filteredData);
   };
 
-  const viewDetail = (id) => {
-    navigate(`/details/${id}`);
+  const viewDetail = (item) => {
+    navigate(`/view-receipt/${item.id}`);
   };
 
   return (
@@ -44,7 +44,7 @@ export const ViewReciptList = () => {
       <div className='d-flex justify-content-center' style={{marginBottom:'50px', marginTop:'50px'}}>
         <h1>View Order List</h1>
       </div>
- 
+
       <div className='justify-content-center' style={{ width: '80%', margin: '0 auto' }}>
         <Form className="mb-3">
           <Row>
@@ -65,36 +65,34 @@ export const ViewReciptList = () => {
         </Form>
       </div>
 
-      <div>  
-      <Table striped bordered hover> 
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Date</th>
-            <th>Quantity</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        
-        <tbody>
-          {filteredSelection.map(item => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.company.name}</td> {/* Adjust this to the correct field */}
-              <td>{item.website}</td> {/* Adjust this to the correct field */}
-              <td>{item.phone}</td> {/* Adjust this to the correct field */}
-              <td>
-                <Button variant="info" onClick={() => viewDetail(item.id)}>
-                  View Detail
-                </Button>
-              </td>
+      <div>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Company Name</th>
+              <th>Website</th>
+              <th>Phone</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-        
-      </Table>
+          </thead>
+          <tbody>
+            {filteredSelection.map(item => (
+              <tr key={item.id}>
+                <td>{item.id}</td>
+                <td>{item.company.name}</td>
+                <td>{item.website}</td>
+                <td>{item.phone}</td>
+                <td>
+                  <Button variant="info" onClick={() => viewDetail(item)}>
+                    View Detail
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </div>
     </div>
   );
 };
-

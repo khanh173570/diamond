@@ -10,10 +10,6 @@ export const UserRequestDetails1 = ({userRequestDetail}) => {
                     <div className='w-50' style={{  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' , margin:'20px 0', padding:'20px 0'}}>
                     <Row className="mb-2">
                         <Col md={5} className='text-end'><strong>Full Name</strong></Col>
-                        <Col md={7} className='text-start'>{userRequestDetail.guestName}</Col>
-                    </Row>
-                    <Row className="mb-2">
-                        <Col md={5} className='text-end'><strong>Full Name</strong></Col>
                         <Col md={7} className='text-start'>{userRequestDetail.username}</Col>
                     </Row>
                     <Row className="mb-2">

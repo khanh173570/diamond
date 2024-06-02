@@ -6,7 +6,7 @@ import { DashBoard} from './page/dashBoard.jsx'
 import {ManageBlog} from './page/ManageBlog.jsx'
 import {ManageCustomer} from './page/ManageCustomer.jsx'
 import {ManageStaff} from './page/ManageStaff.jsx'
-import {ManageSchedule} from './page/ManageScheldule.jsx'
+import {ManageSchedule} from './page/ManageSchedule/ManageScheldule.jsx'
 import {ManageOrder} from './page/ManageOrder.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
