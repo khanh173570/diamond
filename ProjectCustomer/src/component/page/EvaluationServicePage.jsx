@@ -11,17 +11,17 @@ function EvaluationServicePage() {
     requestDate: ''               // submissionDate -> requestDate
   });
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-      setFormRequest((currentState) => ({
-        ...currentState,
-        userId: user.username,       // Lấy userId từ localStorage
-     // Lấy userId từ localStorage
-        guestName: user.name       // Set guestName với tên người dùng
-      }));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const user = JSON.parse(localStorage.getItem('user'));
+  //   if (user) {
+  //     setFormRequest((currentState) => ({
+  //       ...currentState,
+  //       userId: user.username,       // Lấy userId từ localStorage
+  //    // Lấy userId từ localStorage
+  //       guestName: user.name       // Set guestName với tên người dùng
+  //     }));
+  //   }
+  // }, []);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
