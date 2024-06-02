@@ -11,6 +11,9 @@ export const CreateReceipt = () => {
   const [quantity, setQuantity] = useState('');
   const [result, setResult] = useState('');
   const [reviewMode, setReviewMode] = useState(false);
+  //
+
+  
   const componentRef = useRef();
 
   useEffect(() => {

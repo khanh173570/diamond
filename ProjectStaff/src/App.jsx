@@ -10,10 +10,10 @@ function App() {
         <Header />
       </div>
       <div className='d-flex' style={{backgroundColor:'#EDEDED'}} >
-        <div className='w-25'>
+        <div  style={{width:'20%'}}>
           <SideBar /> 
         </div>
-        <div className='w-75 mt-4 ps-4 fw-dark' style={{backgroundColor:'white'}}>
+        <div style={{backgroundColor:'white',width:'80%'}}>
           <Outlet />
         </div>
       </div>

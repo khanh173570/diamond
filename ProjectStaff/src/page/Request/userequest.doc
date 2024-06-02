@@ -11,3 +11,22 @@
   // //     requestID === currentState.id ? setCurrentDetail(currentState) : 
   // //   })
   // // }
+
+   valuationid: '',
+        orderid: '',
+        customerName: '',
+        certificateDate: '',
+        measurements: '',
+        assessmentID: '',
+        shape: '',
+        caratWeight: '',
+        colorGrade: '',
+        clarityGrade: '',
+        cutGrade: '',
+        polish: '',
+        symmetry: '',
+        fluorescence: '',
+        clarityCharacteristics: '',
+        inscription: '',
+        comments: '',
+        estimatePrice: '',

@@ -8,6 +8,7 @@ export const UserRequest = () => {
   const [userRequest, setUserRequest] = useState([]);
   const [currentDetail, setCurrentDetail] = useState({});
   const [isViewDetails, setIsViewDetail] = useState(false);
+
   
   //------------------------------------------------------------------------------------------
   // List data
@@ -60,6 +61,7 @@ export const UserRequest = () => {
   const viewDetails = (userRequestDetail) => {
     setCurrentDetail(userRequestDetail);
     setIsViewDetail(true);
+
   };
   //---------------------------------------------------------------------------------
   return (
@@ -80,7 +82,7 @@ export const UserRequest = () => {
             </thead>
             <tbody>
               {userRequest.map((user) => (
-                <tr key={user.requestId}>
+                <tr key={user.id}>
                   <td>{user.requestId}</td>
                   <td>{user.userId}</td>
                   <td>{user.requestDate}</td>
@@ -98,7 +100,7 @@ export const UserRequest = () => {
                   <td>
                     <img src="src/assets/trash.svg" 
                     alt="Delete"
-                    onClick={handleDeleteItem(userRequest.id)}
+                    onClick={()=>handleDeleteItem(userRequest.id)}
                     />
                   </td>
                   <td>
