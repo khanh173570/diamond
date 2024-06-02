@@ -23,7 +23,7 @@ public class EvaluationRequestController {
 
 
   @PostMapping("/create")
-  public EvaluationRequest createEvaluationRequest(@RequestBody EvaluationRequest evaluationRequest) {
+  public EvaluationRequest createEvaluationRequest(@RequestBody EvaluationRequestDTO evaluationRequest) {
     return evaluationRequestService.createEvaluationRequest(evaluationRequest);
   }
 
@@ -31,5 +31,12 @@ public class EvaluationRequestController {
   public EvaluationRequest getEvaluationRequest(@PathVariable String requestId) {
     return evaluationRequestService.getEvaluationRequest(requestId);
   }
-
+  @GetMapping("/list/{status}")
+  public List<EvaluationRequest> getEvaluationRequestByStatus(@PathVariable("status") String status) {
+    return evaluationRequestService.getEvaluationRequestByStatus(status);
+  }
+//  @GetMapping("/gets")
+//  public  List<EvaluationRequest> getEvaluationRequestByStatus(){
+//    return evaluationRequestService.getEvaluationRequestByStatus();
+//  }
 }

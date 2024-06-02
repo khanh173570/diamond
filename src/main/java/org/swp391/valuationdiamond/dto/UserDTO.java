@@ -9,10 +9,9 @@ import java.util.Date;
 @Getter
 @Setter
 public class UserDTO {
-    String user_id;
     String password;
     String first_name;
-    String lastname;
+    String last_name;
     Date birthday;
     String phone_number;
     String email;

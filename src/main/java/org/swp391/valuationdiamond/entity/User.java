@@ -1,11 +1,9 @@
 package org.swp391.valuationdiamond.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,6 +24,7 @@ import java.util.Date;
 public class User {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "user_id", nullable = false, length = 255)
   String userId;
 
@@ -56,6 +55,7 @@ public class User {
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<Rating> ratings;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<EvaluationRequest> evaluationRequests;
 
@@ -68,6 +68,7 @@ public class User {
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<CommittedPaper> committedPapers;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "evaluationStaffId", cascade = CascadeType.ALL)
   List<OrderDetail> orderDetailId;
 }

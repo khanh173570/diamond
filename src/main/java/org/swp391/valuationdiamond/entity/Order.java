@@ -71,6 +71,8 @@
 //}
 package org.swp391.valuationdiamond.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -115,11 +117,11 @@ public class Order {
   @Column(name = "total_price", nullable = false, precision = 18, scale = 2)
   BigDecimal totalPrice;
 
-  @Column(name = "size", nullable = false)
-  float size;
-
-  @Column(name = "is_diamond", nullable = false)
-  boolean isDiamond;
+//  @Column(name = "size", nullable = false)
+//  float size;
+//
+//  @Column(name = "is_diamond", nullable = false)
+//  boolean isDiamond;
 
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")
@@ -130,6 +132,7 @@ public class Order {
   EvaluationRequest requestId;
 
   @OneToMany(mappedBy = "orderId")
+  @JsonIgnore
   List<OrderDetail> orderDetailId;
 
   @OneToMany(mappedBy = "orderId")

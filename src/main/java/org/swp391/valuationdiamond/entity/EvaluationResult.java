@@ -71,11 +71,11 @@ public class EvaluationResult {
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
 
-  @ManyToOne
-  @JoinColumn(name = "accessment_id", referencedColumnName = "assess_id")
-  DiamondAssessment assessId;
+//  @ManyToOne
+//  @JoinColumn(name = "assess_id", referencedColumnName = "assess_id")
+//  DiamondAssessment assessId;
 
   @ManyToOne
-  @JoinColumn(name = "orderDe_id", referencedColumnName = "orderDe_id")
+  @JoinColumn(name = "order_de_id", referencedColumnName = "order_de_id")
   OrderDetail orderDetailId;
 }

@@ -1,8 +1,15 @@
 package org.swp391.valuationdiamond.dto;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 import java.util.Date;
+import org.swp391.valuationdiamond.entity.EvaluationService;
+import org.swp391.valuationdiamond.entity.Order;
+import org.swp391.valuationdiamond.entity.User;
 
 @Data
 @NoArgsConstructor
@@ -10,10 +17,15 @@ import java.util.Date;
 @Getter
 @Setter
 public class OrderDetailDTO {
-    String order_detailId;
-    Date received_date;
-    Date expired_received_date;
-    Float unit_price;
-    String Img;
+
+    Date receivedDate;
+    Date expiredReceivedDate;
+    float unitPrice;
+    float size;
+    boolean isDiamond;
+    String img;
     String status;
+    String orderId;
+    String evaluationStaffId;
+    String serviceId;
 }

@@ -53,12 +53,10 @@
 //}
 package org.swp391.valuationdiamond.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
 import java.util.Date;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -77,29 +75,40 @@ import lombok.experimental.FieldDefaults;
 public class OrderDetail {
 
   @Id
-  @Column(name = "order_detail_id", nullable = false, length = 255)
+  @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(name = "order_de_id", nullable = false, length = 255)
   String orderDetailId;
 
-  @Column(name = "received_date", nullable = true)
+  @Column(name = "received_date", nullable = false)
   Date receivedDate;
 
-  @Column(name = "expired_received_date", nullable = true)
+  @Column(name = "expired_received_date", nullable = false)
   Date expiredReceivedDate;
 
-  @Column(name = "unit_price", nullable = true)
+  @Column(name = "unit_price", nullable = false)
   float unitPrice;
+  @Column(name = "size", nullable = false)
+  float size;
+
+  @Column(name = "is_diamond", nullable = false)
+  boolean isDiamond;
 
   @Column(name = "img", nullable = true, length = 255)
   String img;
+  @Column(name = "status", nullable = true, length = 255)
+  String status;
 
+  @JsonIgnore
   @ManyToOne
-  @JoinColumn(name = "order_id", nullable = false)
+  @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "evaluation_staff_id", nullable = true)
   User evaluationStaffId;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "service_id", nullable = true)
   EvaluationService serviceId;
