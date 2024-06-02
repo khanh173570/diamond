@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.swp391.valuationdiamond.dto.EvaluationResultDTO;
 import org.swp391.valuationdiamond.entity.EvaluationResult;
+import org.swp391.valuationdiamond.entity.EvaluationService;
 import org.swp391.valuationdiamond.entity.Order;
 import org.swp391.valuationdiamond.repository.EvaluationResultRepository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class EvaluationResultServiceImp {
@@ -38,5 +40,7 @@ public class EvaluationResultServiceImp {
                 .orElseThrow(() -> new RuntimeException("Not Found"));
     }
 
-
+    public List<EvaluationResult> getEvaluationResult() {
+        return evaluationResultRepository.findAll();
+    }
 }
