@@ -16,7 +16,7 @@ export const PersonalRequest = () => {
                 
                 // API for find by name
                 // ${API}/${userId.username}
-                const response = await fetch(`${API}/${userId.username}`);
+                const response = await fetch(`${API}`);
                 const data = await response.json();
                 setMyRequest(data);
             } catch (error) {
@@ -51,7 +51,7 @@ export const PersonalRequest = () => {
             <h2 className='text-center' style={{ margin: "30px 0" }}>My Request</h2>
                     <Stack gap={4} >
                         {myRequest.map((request) => (
-                            <Row key={request.requestId} className="justify-content-center w-50 mx-auto p-3" style={{boxShadow:'rgb(0 0 0 / 16%) 1px 1px 10px'}}>
+                            <Row key={request.id} className="justify-content-center w-50 mx-auto p-3" style={{boxShadow:'rgb(0 0 0 / 16%) 1px 1px 10px'}}>
                                 <Col xs="2" className="d-flex justify-content-center align-items-center">
                                     <div className="form-check">
                                         <input
