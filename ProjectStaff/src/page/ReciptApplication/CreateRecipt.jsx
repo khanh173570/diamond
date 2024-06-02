@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { useReactToPrint } from 'react-to-print';
-import '../ReciptApplication/print.css'; // Import CSS cho in
+import '../ReciptApplication/print.css'; // Import CSS for printing
 
 export const CreateReceipt = () => {
   const [selection, setSelection] = useState([]);
@@ -11,9 +10,7 @@ export const CreateReceipt = () => {
   const [phone, setPhone] = useState("");
   const [quantity, setQuantity] = useState("");
   const [reviewMode, setReviewMode] = useState(false);
-  //
 
-  
   const componentRef = useRef();
 
   useEffect(() => {
@@ -96,7 +93,7 @@ export const CreateReceipt = () => {
     0
   );
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     const dataToSend = {
       customerName: custName,
@@ -106,7 +103,26 @@ export const CreateReceipt = () => {
     };
 
     console.log("Data to send:", dataToSend);
-   // setReviewMode(true); // Switch to "Review" mode
+
+    try {
+      const response = await fetch('/api/save-receipt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log('Data successfully saved:', result);
+      // Optionally, you can add more logic here, such as showing a success message or clearing the form
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
   };
 
   const handlePrint = useReactToPrint({
@@ -117,9 +133,7 @@ export const CreateReceipt = () => {
     <div>
       {reviewMode ? (
         <div>
-          <h2 className="d-flex justify-content-center" style={{}}>
-            Review
-          </h2>
+          <h2 className="d-flex justify-content-center">Review</h2>
           <div ref={componentRef} className="print-container">
             <div className="d-flex justify-content-center">
               <div className="flex-column" style={{ width: "50%" }}>
@@ -309,7 +323,6 @@ export const CreateReceipt = () => {
               className="btn btn-primary"
               onClick={() => setReviewMode(true)}
             >
-              {" "}
               Review
             </Button>
           </div>
