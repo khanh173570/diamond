@@ -77,7 +77,7 @@ import lombok.experimental.FieldDefaults;
 public class OrderDetail {
 
   @Id
-  @Column(name = "order_detail_id", nullable = false, length = 255)
+  @Column(name = "order_de_id", nullable = false, length = 255)
   String orderDetailId;
 
   @Column(name = "received_date", nullable = true)
