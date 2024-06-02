@@ -7,12 +7,14 @@ export const ValuationApplication = () => {
     const [image1, setImage1] = useState(null);
     const [result, setResult] = useState({});
     const [isPrint, setIsPrint] = useState(false);
+
+    // add valuation result
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
                 method: 'POST',
-                body: JSON.stringify({ result }),
+                body: JSON.stringify(result),
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
@@ -65,7 +67,7 @@ export const ValuationApplication = () => {
                             <Form.Control
                                 type="text"
                                 id="valuationid"
-                                onChange={handleOnChange('valuation')}
+                                onChange={handleOnChange}
                             />
                         </Col>
                     </Row>
@@ -77,7 +79,7 @@ export const ValuationApplication = () => {
                             <Form.Control
                                 type="text"
                                 id="orderid"
-                                onChange={handleOnChange('orderID')}
+                                onChange={handleOnChange}
                             />
                         </Col>
                     </Row>
@@ -89,7 +91,7 @@ export const ValuationApplication = () => {
                             <Form.Control
                                 type="text"
                                 id="customer-name"
-                                onChange={handleOnChange('customerName')}
+                                onChange={handleOnChange}
                             />
                         </Col>
                     </Row>

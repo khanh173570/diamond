@@ -1,6 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg fill="#000000" width="800px" height="800px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-<title>diamond</title>
-<path d="M2.103 12.052l13.398 16.629-5.373-16.629h-8.025zM11.584 12.052l4.745 16.663 4.083-16.663h-8.828zM17.051 28.681l12.898-16.629h-7.963l-4.935 16.629zM29.979 10.964l-3.867-6.612-3.869 6.612h7.736zM24.896 3.973h-7.736l3.867 6.839 3.869-6.839zM19.838 10.964l-3.867-6.612-3.868 6.612h7.735zM14.839 3.973h-7.735l3.868 6.839 3.867-6.839zM5.889 4.352l-3.867 6.612h7.735l-3.868-6.612z"></path>
+<svg height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 viewBox="0 0 512 512" xml:space="preserve">
+<polygon style="fill:#C3F6F9;" points="256,499.47 512,146.167 414.217,12.53 97.784,12.53 0.001,146.167 "/>
+<g>
+	<polygon style="fill:#D1F9F7;" points="97.786,12.53 170.663,146.172 0,146.172 	"/>
+	<polygon style="fill:#D1F9F7;" points="414.217,12.53 341.327,146.172 255.995,12.53 	"/>
+	<polygon style="fill:#D1F9F7;" points="341.327,146.172 255.995,499.467 170.663,146.172 	"/>
+</g>
+<g>
+	<polygon style="fill:#9EE7E7;" points="414.217,12.53 511.99,146.172 341.327,146.172 	"/>
+	<polygon style="fill:#9EE7E7;" points="255.995,12.53 341.327,146.172 170.663,146.172 	"/>
+	<polygon style="fill:#9EE7E7;" points="170.663,146.172 255.995,499.467 0,146.172 	"/>
+</g>
 </svg>

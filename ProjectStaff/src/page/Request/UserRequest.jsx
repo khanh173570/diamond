@@ -6,61 +6,64 @@ import { UserRequestDetails1 } from './UserRequestDetails';
 
 export const UserRequest = () => {
   const [userRequest, setUserRequest] = useState([]);
-  const [currentStatus, setCurrentStatus] = useState({});
   const [currentDetail, setCurrentDetail] = useState({});
   const [isViewDetails, setIsViewDetail] = useState(false);
-//------------------------------------------------------------------------------------------
+
+  
+  //------------------------------------------------------------------------------------------
   // List data
+  const API = 'https://jsonplaceholder.typicode.com/users'
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+        const response = await fetch(`${API}`);
         const data = await response.json();
         setUserRequest(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
     fetchData();
   }, []);
-
-//------------------------------------------------------------------------------------
-  // Handle status change
-  const handleOnChangeStatus = (id, value) => {
-    setCurrentStatus({ id, value });
-  };
-
-  // Submit status change to the server
-  useEffect(() => {
-    if (currentStatus) {
-      const updateStatus = async () => {
+  //update data
+  const handleOnChangeStatus = (id,value) => {
+      const fetchUpdateStatus = async () => {
         try {
-          const response = await fetch('https://jsonplaceholder.typicode.com/users', {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body:JSON.stringify({currentStatus})
+          const response = await fetch(`${API}/${id}}`,{
+            method:'PUT',
+            body:JSON.stringify({status:value})
           });
           const data = await response.json();
-          console.log(data);
+          userRequest.map((currentState)=>{
+            currentState.id === data.id ? ({...currentState, status:data.status} ): currentState
+          })
         } catch (error) {
-          console.error('Error updating status:', error);
+          console.error('Error fetching data:', error);
         }
+        fetchUpdateStatus();
       };
-
-      updateStatus();
+  }
+  //delete data
+  const handleDeleteItem = async (id) =>{
+    try{
+      await fetch(`${API}/${id}`,{
+        method:'DELETE'
+      });
+     
+      userRequest.filter((currentState)=>(currentState.id !== id))
+    }catch(error){
+      console.log(error);
     }
-  }, [currentStatus]);
-//---------------------------------------------------------------------------------
+  }
+
+  //---------------------------------------------------------------------------------
   // View details of a specific user request
   const viewDetails = (userRequestDetail) => {
     setCurrentDetail(userRequestDetail);
     setIsViewDetail(true);
+
   };
-//---------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------
   return (
     <div>
       {!isViewDetails ? (
@@ -70,7 +73,7 @@ export const UserRequest = () => {
             <thead style={{ backgroundColor: '#E2FBF5' }}>
               <tr>
                 <th>Request ID</th>
-                <th>Username</th>
+                <th>UserId</th>
                 <th>Date</th>
                 <th>Status</th>
                 <th>Delete</th>
@@ -80,21 +83,25 @@ export const UserRequest = () => {
             <tbody>
               {userRequest.map((user) => (
                 <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td>{user.username}</td>
-                  <td>13/07/2023</td>
+                  <td>{user.requestId}</td>
+                  <td>{user.userId}</td>
+                  <td>{user.requestDate}</td>
                   <td>
                     <Form.Select
                       aria-label="Requested"
-                      onChange={(e) => handleOnChangeStatus(user.id, e.target.value)}
+                      value={user.status}
+                      onChange={(e) => handleOnChangeStatus(user.requestId, e.target.value)}
                     >
-                      <option value={user.id}>{user.id}</option>
+                      <option value="request">Requested</option>
                       <option value="accepted">Accepted</option>
                       <option value="canceled">Canceled</option>
                     </Form.Select>
                   </td>
                   <td>
-                    <img src="src/assets/trash.svg" alt="Delete" />
+                    <img src="src/assets/trash.svg" 
+                    alt="Delete"
+                    onClick={()=>handleDeleteItem(userRequest.id)}
+                    />
                   </td>
                   <td>
                     <Button

@@ -6,13 +6,13 @@ function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLogin, setIsLogin] = useState(false);
+    const [error,setError]  =useState('')
     // test case
 
 
     const handleGoogleLogin = async () => {
         try {
             const response = await axios.get('/auth/google');
-           
             console.log(response.data);
         } catch (error) {
             console.error('Google login failed', error);
@@ -34,6 +34,9 @@ function Login() {
             const data = await response.json();
             // setIsLogin(true);
             // localStorage.setItem('user', JSON.stringify(data));
+            if(!data){
+
+            }
         } catch (error) {
             console.error('Invalid username or password', error);
         }
