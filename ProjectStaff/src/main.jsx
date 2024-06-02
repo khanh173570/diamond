@@ -1,3 +1,4 @@
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
@@ -12,33 +13,25 @@ import { PersonalInformation } from './page/PersonalInformation.jsx'
 import { ValuationApplication } from './page/ValuationApplication/ValuationApplication.jsx'
 import { ReciptDetails } from './page/ReciptApplication/ReciptDetails.jsx'
 
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<App />}>
-          {/* Đổi thành home sau */}
-          {/* <Route index element={<TestSelectService />} /> */}
           <Route index element={<Home />} />
           <Route path='home' element={<Home />} />
           <Route path='user-request' element={<UserRequest />} />
           {/* <Route path="user-request/:id" element={<UserRequestDetails1 />} /> */}
-          {/* <Route path='view-receipt' element={<ViewReciptList />} /> */}
-          <Route path='view-receipt' element={<ReciptDetails />} />
-
+          <Route path="view-receipt" element={<ViewReciptList />} />
+          <Route path="view-receipt/:id" element={<ReciptDetails />} />
           <Route path='create-recipt' element={<CreateReceipt />} />
           <Route path='commitment' element={<CreateCommitment />} />
-          {/* <Route path='setting' element={<ViewReciptList />} /> */}
-          
           <Route path='personal-info' element={<PersonalInformation />} />
           <Route path='valuation' element={<ValuationApplication />} />
-          <Route path='valuation-result-list' element={<ValuationList />} />  
+          <Route path='valuation-result-list' element={<ValuationList />} />
           {/* <Route path="valuation/print" element={<GeneratePDF />} /> */}
         </Route>
-     
       </Routes>
     </BrowserRouter>
-
   </React.StrictMode>,
-)
+);
