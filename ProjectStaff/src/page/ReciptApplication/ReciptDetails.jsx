@@ -1,32 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Container, Row, Col, Table } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export const ReceiptDetails = () => {
-  const { id } = useParams();
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://jsonplaceholder.typicode.com/users/${id}`
-        );
-        const data = await response.json();
-        setResult(data);
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-      }
-    };
+  const { state } = useLocation();
+  const result = state.item;
 
-    fetchData();
-  }, [id]);
-
-  if (loading) {
-    return <div></div>;
+  if (!result) {
+    return <div>No data available</div>;
   }
 
   return (

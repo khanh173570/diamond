@@ -36,7 +36,7 @@ export const ViewReciptList = () => {
   };
 
   const viewDetail = (item) => {
-    navigate(`/view-receipt/${item.id}`);
+    navigate(`/view-receipt/${item.id}`,{ state: { item }});
   };
 
   return (

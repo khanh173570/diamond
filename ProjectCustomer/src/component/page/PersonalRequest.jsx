@@ -74,9 +74,9 @@ export const PersonalRequest = () => {
                         </Col>
                         <Col>
                             <Stack>
-                                <div>{request.requestId}</div>
-                                <div>{request.requestDescription}</div>
-                                <div>{request.requestDate}</div>
+                                <div>{request.email}</div>
+                                <div>{request.email}</div>
+                                <div>{request.email}</div>
                             </Stack>
                         </Col>
                         <Col>
