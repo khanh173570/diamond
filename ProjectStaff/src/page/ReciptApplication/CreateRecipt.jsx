@@ -29,11 +29,13 @@ export const CreateReceipt = () => {
     fetchData();
   }, []);
 
+
   const initialRows = Array.from({ length: parseInt(quantity) || 0 }, () => ({
-    checkdiamond: "",
+    assementId: "",
     service: "",
     receivedDate: "",
     expiredDate: "",
+    size: "",
     price: "",
   }));
 
@@ -45,6 +47,7 @@ export const CreateReceipt = () => {
     );
     setRows(updatedRows);
   };
+//////////////////////////////////////////////////////////////////////////////////////////////
 
   const handleServiceChange = (index, value) => {
     const selectedService = selection.find(
@@ -52,24 +55,41 @@ export const CreateReceipt = () => {
     );
     const updatedRows = rows.map((row, rowIndex) =>
       rowIndex === index
-        ? { ...row, service: value, price: selectedService?.phone }
+    /////////////////////////////////////// gia trị của Price
+        ? { ...row, service: value}
         : row
     );
     setRows(updatedRows);
   };
 
-  const handleCheckDiamondChange = (index, value) => {
+  const handleSizeChange = (index, value) => {
+    const sizeChange = selection.find(
+      (service) => service.phone === value
+    );
     const updatedRows = rows.map((row, rowIndex) =>
       rowIndex === index
-        ? {
-            ...row,
-            checkdiamond: value === "true" ? "True" : "False",
-            price: value === "true" ? selection[index].phone : 0,
-          }
+    /////////////////////////////////////// gia trị của Price
+        ? { ...row, size: value}
         : row
     );
     setRows(updatedRows);
   };
+
+
+
+  // const handleCheckDiamondChange = (index, value) => {
+  //   const updatedRows = rows.map((row, rowIndex) =>
+  //     rowIndex === index
+  //       ? {
+  //           ...row,
+  //           checkdiamond: value === "true" ? "True" : "False",
+  //           /////////////////////////////////////////////////////////
+  //           price: value === "true" ? selection[index].phone : 0,
+  //         }
+  //       : row
+  //   );
+  //   setRows(updatedRows);
+  // };
 
   const handleQuantityChange = (e) => {
     const qty = parseInt(e.target.value) || 0;
@@ -78,10 +98,11 @@ export const CreateReceipt = () => {
       { length: qty },
       (v, i) =>
         rows[i] || {
-          checkdiamond: "",
+          assementId: "",
           service: "",
           receivedDate: "",
           expiredDate: "",
+          size: "",
           price: "",
         }
     );
@@ -146,20 +167,22 @@ export const CreateReceipt = () => {
               <Table striped bordered className="fs-5 print-table">
                 <thead className="text-center">
                   <tr>
-                    <th>Check Dimond</th>
-                    <th>Service</th>
+                    <th>Assement ID</th>
+                    <th>Type Service</th>
                     <th>Received Date</th>
                     <th>Expired Date</th>
-                    <th>Price</th>
+                    <th>Sample Size</th>
+                    <th>Service Price</th>
                   </tr>
                 </thead>
                 <tbody>
                   {rows.map((row, index) => (
                     <tr key={index}>
-                      <td>{row.checkdiamond}</td>
+                      <td>{row.assementId}</td>
                       <td>{row.service}</td>
                       <td>{row.receivedDate}</td>
                       <td>{row.expiredDate}</td>
+                      <td>{row.size}</td>
                       <td>{row.price}</td>
                     </tr>
                   ))}
@@ -226,29 +249,30 @@ export const CreateReceipt = () => {
             <Table striped bordered className="fs-5" style={{ width: "80%" }}>
               <thead className="text-center">
                 <tr>
-                  <th>Check Diamond</th>
-                  <th>Service</th>
+                  <th>Assement ID</th>
+                  <th>Type Service</th>
                   <th>Received Date</th>
                   <th>Expired Date</th>
-                  <th>Price</th>
+                  <th>Sample Size</th>
+                  <th>Service Price</th>
                 </tr>
               </thead>
+
+
               <tbody>
                 {rows.map((row, index) => (
                   <tr key={index}>
                     <td>
-                      <select
+                      <input
+                        type="text"
                         className="form-control"
-                        value={row.checkdiamond}
+                        value={row.assementId}
                         onChange={(e) =>
-                          handleCheckDiamondChange(index, e.target.value)
+                          handleRowChange(index, "assementId", e.target.value)
                         }
-                      >
-                        <option value="">Select Option</option>
-                        <option value="true">True</option>
-                        <option value="false">False</option>
-                      </select>
+                      />
                     </td>
+
                     <td>
                       <select
                         className="form-control"
@@ -265,6 +289,7 @@ export const CreateReceipt = () => {
                         ))}
                       </select>
                     </td>
+
                     <td>
                       <input
                         type="text"
@@ -275,6 +300,7 @@ export const CreateReceipt = () => {
                         }
                       />
                     </td>
+
                     <td>
                       <input
                         type="text"
@@ -285,6 +311,24 @@ export const CreateReceipt = () => {
                         }
                       />
                     </td>
+
+                    <td>
+                      <select
+                        className="form-control"
+                        value={row.size}
+                        onChange={(e) =>
+                          handleSizeChange(index, e.target.value)
+                        }
+                      >
+                        <option value="">Select Size</option>
+                        {selection.map((size) => (
+                          <option key={size.id} value={size.phone}>
+                            {size.phone}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+
                     <td>
                       <input
                         type="text"
@@ -293,13 +337,13 @@ export const CreateReceipt = () => {
                         onChange={(e) =>
                           handleRowChange(index, "price", e.target.value)
                         }
-                        readOnly
                       />
                     </td>
                   </tr>
                 ))}
+
                 <tr>
-                  <td colSpan="4" className="text-end">
+                  <td colSpan="5" className="text-end">
                     <strong>Total Price</strong>
                   </td>
                   <td>
