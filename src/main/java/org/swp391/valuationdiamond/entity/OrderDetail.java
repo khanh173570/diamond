@@ -103,6 +103,10 @@ public class OrderDetail {
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
 
+  @JsonIgnore
+  @ManyToOne
+  @JoinColumn(name = "evaluation_staff_id", nullable = true)
+  User evaluationStaffId;
 
   @JsonIgnore
   @ManyToOne
