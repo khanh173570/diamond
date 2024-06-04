@@ -6,7 +6,7 @@ import org.swp391.valuationdiamond.dto.EvaluationResultDTO;
 import org.swp391.valuationdiamond.entity.EvaluationResult;
 import org.swp391.valuationdiamond.entity.Order;
 import org.swp391.valuationdiamond.repository.EvaluationResultRepository;
-
+import java.util.List;
 import java.math.BigDecimal;
 
 @Service
@@ -37,7 +37,9 @@ public class EvaluationResultServiceImp {
         return evaluationResultRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
     }
-
+    public List<EvaluationResult> getEvaluationResult() {
+        return evaluationResultRepository.findAll();
+    }
 
 }
 
