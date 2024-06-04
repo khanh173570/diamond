@@ -55,6 +55,7 @@ package org.swp391.valuationdiamond.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -75,7 +76,6 @@ import lombok.experimental.FieldDefaults;
 public class OrderDetail {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "order_de_id", nullable = false, length = 255)
   String orderDetailId;
 
@@ -87,6 +87,7 @@ public class OrderDetail {
 
   @Column(name = "unit_price", nullable = false)
   float unitPrice;
+
   @Column(name = "size", nullable = false)
   float size;
 
@@ -95,16 +96,19 @@ public class OrderDetail {
 
   @Column(name = "img", nullable = true, length = 255)
   String img;
+
   @Column(name = "status", nullable = true, length = 255)
   String status;
 
-  @JsonIgnore
+  @Column(name = "evaluation_staff_id", nullable = true, length = 255)
+  String evaluationStaffId;
+
+  @JsonManagedReference
   @ManyToOne
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
 
-
-  @JsonIgnore
+  @JsonManagedReference
   @ManyToOne
   @JoinColumn(name = "service_id", nullable = true)
   EvaluationService serviceId;

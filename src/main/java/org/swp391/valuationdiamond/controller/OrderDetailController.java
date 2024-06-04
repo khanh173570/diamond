@@ -19,11 +19,11 @@ public class OrderDetailController {
 //    OrderDetail createOrderDetail(@RequestBody OrderDetailDTO orderDetailDTO){
 //        return orderDetailServiceImp.createOrderDetail(orderDetailDTO);
 //    }
-    @PostMapping("/create")
-    public ResponseEntity<List<OrderDetail>> saveAllOrderDetails(@RequestBody List<OrderDetailDTO> orderDetailsDTO) {
-    List<OrderDetail> savedOrderDetails = orderDetailServiceImp.saveAllOrderDetails(orderDetailsDTO);
-    return ResponseEntity.ok(savedOrderDetails);
-    }
+//    @PostMapping("/create")
+//    public ResponseEntity<List<OrderDetail>> saveAllOrderDetails(@RequestBody List<OrderDetailDTO> orderDetailsDTO) {
+//    List<OrderDetail> savedOrderDetails = orderDetailServiceImp.saveAllOrderDetails(orderDetailsDTO);
+//    return ResponseEntity.ok(savedOrderDetails);
+//    }
     @GetMapping("/getOrderDe/{orderDetailId}")
     OrderDetail getOrderDetailId(@PathVariable("orderDetailId") String orderDetailId){
         return orderDetailServiceImp.getOrderDetailId(orderDetailId);

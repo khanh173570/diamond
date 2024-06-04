@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +19,8 @@ public class OrderDTO {
     Date orderDate;
     String status;
     BigDecimal totalPrice;
-    Float size;
-    Boolean isDiamond;
+    String userId;
+    String requestId;
+    List<OrderDetailDTO> orderDetails;
 }
 

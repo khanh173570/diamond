@@ -17,7 +17,6 @@ import org.swp391.valuationdiamond.entity.User;
 @Getter
 @Setter
 public class OrderDetailDTO {
-
     Date receivedDate;
     Date expiredReceivedDate;
     float unitPrice;

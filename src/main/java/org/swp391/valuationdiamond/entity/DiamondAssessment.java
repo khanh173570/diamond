@@ -75,7 +75,6 @@ import lombok.experimental.FieldDefaults;
   public class DiamondAssessment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "assess_id", nullable = false, length = 255)
     String assessId;
 

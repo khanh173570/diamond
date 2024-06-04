@@ -24,7 +24,6 @@ import java.util.Date;
 public class User {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "user_id", nullable = false, length = 255)
   String userId;
 
@@ -59,6 +58,7 @@ public class User {
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<EvaluationRequest> evaluationRequests;
 
+  @JsonBackReference
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<Order> orderId;
 

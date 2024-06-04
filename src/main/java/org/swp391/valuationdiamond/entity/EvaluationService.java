@@ -1,5 +1,6 @@
 package org.swp391.valuationdiamond.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -38,7 +39,7 @@ public class EvaluationService {
   @OneToMany(mappedBy = "serviceId")
   List<EvaluationServicePriceList> servicePriceList;
 
-  @JsonIgnore
+  @JsonBackReference
   @OneToMany(mappedBy = "serviceId")
   List<OrderDetail> orderDetails;
 }

@@ -23,19 +23,19 @@ import lombok.experimental.FieldDefaults;
 public class EvaluationServicePriceList {
 
   @Id
-  @Column(name = "Price_List", nullable = false, length = 255)
+  @Column(name = "price_list", nullable = false, length = 255)
   String priceList;
 
-  @Column(name = "Sizefrom", nullable = true)
+  @Column(name = "size_from", nullable = true)
   int sizeFrom;
 
   @Column(name = "sizeTo", nullable = true)
   int sizeTo;
 
-  @Column(name = "InitPrice", nullable = true)
+  @Column(name = "init_price", nullable = true)
   double initPrice;
 
-  @Column(name = "PriceUnit", nullable = true)
+  @Column(name = "price_unit", nullable = true)
   int priceUnit;
 
   @ManyToOne
