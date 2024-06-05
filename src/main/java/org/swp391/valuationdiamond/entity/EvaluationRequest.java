@@ -57,6 +57,7 @@ public class EvaluationRequest {
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "requestId")
   List<Order> orders;
 

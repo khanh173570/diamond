@@ -51,12 +51,13 @@ public class Order {
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "request_id")
   EvaluationRequest requestId;
 
-  @OneToMany(mappedBy = "orderId")
   @JsonBackReference
+  @OneToMany(mappedBy = "orderId")
   List<OrderDetail> orderDetailId;
 
   @OneToMany(mappedBy = "orderId")

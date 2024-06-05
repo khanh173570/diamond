@@ -17,14 +17,17 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserServiceImp userServiceImp;
+
     @PostMapping("/create")
     User createUser(@RequestBody UserDTO userDTO){
         return userServiceImp.createUser(userDTO);
     }
+
     @GetMapping("/getUser/{userId}")
     User getStaff(@PathVariable("userId") String userId){
         return userServiceImp.getStaff(userId);
     }
+
     @GetMapping("/getStaff")
     List<User> getStaffs(){
         return userServiceImp.getStaffs();

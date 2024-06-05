@@ -55,11 +55,6 @@ public class OrderDetail {
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
 
-//  @JsonManagedReference
-//  @ManyToOne
-//  @JoinColumn(name = "evaluation_staff_id", nullable = true)
-//  User evaluationStaffId;
-
   @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "service_id", nullable = true)
