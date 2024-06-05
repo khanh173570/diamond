@@ -6,10 +6,12 @@ import '../ReciptApplication/print.css'; // Import CSS for printing
 
 export const CreateReceipt = () => {
   const [selection, setSelection] = useState([]);
+  const [servicePriceList, setServicePriceList] = useState([]);
   const [custName, setCustName] = useState("");
   const [phone, setPhone] = useState("");
   const [request, setRequest] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [selectedServiceId, setSelectedServiceId] = useState("");
   const [reviewMode, setReviewMode] = useState(false);
   const componentRef = useRef();
 
@@ -19,9 +21,7 @@ export const CreateReceipt = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "https://jsonplaceholder.typicode.com/users"
-        );
+        const response = await fetch("Get UserName of Table Service");
         const data = await response.json();
         setSelection(data);
       } catch (error) {
@@ -31,6 +31,22 @@ export const CreateReceipt = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchServicePriceList = async () => {
+      if (selectedServiceId) {
+        try {
+          const response = await fetch("Get data ServicePriceList by serviceID");
+          const data = await response.json();
+          setServicePriceList(data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+    };
+
+    fetchServicePriceList();
+  }, [selectedServiceId]);
 
   const initialRows = Array.from({ length: parseInt(quantity) || 0 }, () => ({
     service: "",
@@ -59,15 +75,16 @@ export const CreateReceipt = () => {
         : row
     );
     setRows(updatedRows);
+    setSelectedServiceId(selectedService.id);
   };
 
   const handleSizeChange = (index, value) => {
-    const sizeChange = selection.find(
-      (service) => service.phone === value
+    const selectedPrice = servicePriceList.find(
+      (priceItem) => priceItem.size === value
     );
     const updatedRows = rows.map((row, rowIndex) =>
       rowIndex === index
-        ? { ...row, size: value }
+        ? { ...row, size: value, price: selectedPrice ? selectedPrice.price : "" }
         : row
     );
     setRows(updatedRows);
@@ -110,7 +127,7 @@ export const CreateReceipt = () => {
     console.log("Data to send:", dataToSend);
 
     try {
-      const response = await fetch("https://jsonplaceholder.typicode.com/users", {
+      const response = await fetch("SAVE", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -259,10 +276,9 @@ export const CreateReceipt = () => {
                 {rows.map((row, index) => (
                   <tr key={index}>
                     <td>
-
-
                       <select
-                        className="form-control" value={row.service}
+                        className="form-control"
+                        value={row.service}
                         onChange={(e) => handleServiceChange(index, e.target.value)}>
                         <option value="">Select Service</option>
                         {selection.map((service) => (
@@ -271,8 +287,6 @@ export const CreateReceipt = () => {
                           </option>
                         ))}
                       </select>
-
-
                     </td>
                     <td>
                       <input
@@ -296,17 +310,13 @@ export const CreateReceipt = () => {
                     </td>
                     <td>
                       <select
-                        className="form-control"
-                        value={row.size}
-                        onChange={(e) =>
-                          handleSizeChange(index, e.target.value)
-                        }
-                      >
+                        className="form-control"value={row.size}onChange={(e) =>
+                          handleSizeChange(index, e.target.value)}>
                         <option value="">Select Size</option>
-                        {selection.map((size) => (
-                          <option key={size.id} value={size.phone}>
-                            {size.phone}
-                          </option>
+                        {servicePriceList.map((priceItem) => (
+                          <option key={priceItem.id} value={priceItem.size}>
+                            {priceItem.size}
+                        </option>
                         ))}
                       </select>
                     </td>
@@ -357,3 +367,4 @@ export const CreateReceipt = () => {
 };
 
 export default CreateReceipt;
+

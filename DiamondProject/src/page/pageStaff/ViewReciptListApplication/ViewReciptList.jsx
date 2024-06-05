@@ -66,13 +66,22 @@ export const ViewReciptList = () => {
       </div>
 
       <div>
-        <Table striped bordered hover>
+      <style>
+        {`
+          .centered-table th,
+          .centered-table td {
+            text-align: center;
+            vertical-align: middle;
+          }
+        `}
+      </style>
+        <Table striped bordered hover className="centered-table">
           <thead>
             <tr>
               <th>Order ID</th>
-              <th>Company Name</th>
-              <th>Website</th>
-              <th>Phone</th>
+              <th>Date</th>
+              <th>Quantity</th>
+              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -96,3 +105,5 @@ export const ViewReciptList = () => {
     </div>
   );
 };
+
+export default ViewReciptList;
