@@ -13,7 +13,7 @@ export const CreateReceipt = () => {
   const [reviewMode, setReviewMode] = useState(false);
   const componentRef = useRef();
 
-  // Get current date
+  // Get current date main
   const currentDate = new Date().toLocaleDateString();
 
   useEffect(() => {
