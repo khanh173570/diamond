@@ -9,6 +9,5 @@ import java.util.List;
 @Repository
 public interface EvaluationResultRepository extends JpaRepository<EvaluationResult, String> {
 
-    List<EvaluationResult> getEvaluationResult();
     }
 
