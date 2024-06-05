@@ -1,5 +1,6 @@
 package org.swp391.valuationdiamond.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -52,7 +53,7 @@ public class EvaluationRequest {
   @Column(name = "phone_number", nullable = false, length = 255)
   String phoneNumber;
 
-  @JsonIgnore
+  @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
@@ -60,6 +61,7 @@ public class EvaluationRequest {
   @JsonIgnore
   @OneToMany(mappedBy = "requestId")
   List<Order> orders;
+
 
 
 }

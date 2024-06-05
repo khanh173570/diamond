@@ -17,9 +17,6 @@ public class OrderServiceImp {
     private OrderRepository orderRepository;
 
     @Autowired
-    private EvaluationServiceRepository evaluationServiceRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -27,6 +24,9 @@ public class OrderServiceImp {
 
     @Autowired
     private OrderDetailRepository orderDetailRepository;
+
+    @Autowired
+    private EvaluationServiceRepository evaluationServiceRepository;
 
 
     public Order saveOrder(OrderDTO orderDTO) {
@@ -76,7 +76,6 @@ public class OrderServiceImp {
                             .isDiamond(od.isDiamond())
                             .img(od.getImg())
                             .status("In-Progress")
-                            .orderId(order)
                             .serviceId(service)
                             .evaluationStaffId(od.getEvaluationStaffId())
                             .build();
@@ -85,13 +84,41 @@ public class OrderServiceImp {
 
         Order savedOrder = orderRepository.save(order);
 
-        String newOrderId = savedOrder.getOrderId();
+        for(OrderDetail orderDetail : orderDetails) {
 
-        orderDetails.forEach(od -> od.setOrderId(savedOrder));
+            orderDetail.setOrderId(savedOrder);
 
-        orderDetailRepository.saveAll(orderDetails);
+            orderDetailRepository.save(orderDetail);
+
+        }
+
 
         return savedOrder;
+    }
+
+    public Order createOrder(OrderDTO orderDTO) {
+        Order order = new Order();
+
+        long count = orderRepository.count();
+        String formattedCount = String.valueOf(count + 1);
+        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
+        String requestId = "Or" + formattedCount + date;
+
+        order.setOrderId(requestId);
+        order.setCustomerName(orderDTO.getCustomerName());
+        order.setPhone(orderDTO.getPhone());
+        order.setDiamondQuantity(orderDTO.getDiamondQuantity());
+        order.setOrderDate(orderDTO.getOrderDate());
+        order.setStatus(orderDTO.getStatus());
+        order.setTotalPrice(orderDTO.getTotalPrice());
+
+        User userId = userRepository.findById(orderDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        order.setUserId(userId);
+
+        EvaluationRequest evaluationRequest = evaluationRequestRepository.findById(orderDTO.getRequestId()).orElseThrow(() -> new RuntimeException("Request not found"));
+
+        order.setRequestId(evaluationRequest);
+        return orderRepository.save(order);
     }
 //
 //
@@ -99,10 +126,12 @@ public class OrderServiceImp {
 //        return  orderRepository.findOrderByStatus("In-Progress");
 //    }
 
+    public List<Order> getOrders() {
+        return  orderRepository.findOrderByStatus("In Process");
+    }
 
-    public  Order getOrder(String id){
+    public Order getOrder(String id){
         return orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
     }
-
 }

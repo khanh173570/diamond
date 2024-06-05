@@ -41,14 +41,15 @@ public class OrderDetailServiceImp {
 //            String orderDetailId = "OD" + formattedCount + date;
 //
 //            orderDetails.setOrderDetailId(orderDetailId);
+//            orderDetails.setEvaluationStaffId(orderDetailDTO.getEvaluationStaffId());
 //            orderDetails.setReceivedDate(orderDetailDTO.getReceivedDate());
 //            orderDetails.setExpiredReceivedDate(orderDetailDTO.getExpiredReceivedDate());
 //            orderDetails.setUnitPrice(orderDetailDTO.getUnitPrice());
+//            orderDetails.setImg(orderDetailDTO.getImg());
 //            orderDetails.setSize(orderDetailDTO.getSize());
 //            orderDetails.setDiamond(orderDetailDTO.isDiamond());
-//            orderDetails.setImg(orderDetailDTO.getImg());
 //            orderDetails.setStatus("In-Progress");
-//            orderDetails.setEvaluationStaffId(orderDetailDTO.getEvaluationStaffId());
+//
 //
 //            Order orderId = orderRepository.findById(orderDetailDTO.getOrderId()).orElseThrow(() -> new RuntimeException("OrderId not found"));
 //            orderDetails.setOrderId(orderId);
@@ -81,6 +82,7 @@ public class OrderDetailServiceImp {
     public OrderDetail updateOrderDe(String orderDetailId, OrderDetailDTO orderDetailDTO){
         OrderDetail orderDetail = getOrderDetailId(orderDetailId);
 
+        orderDetail.setEvaluationStaffId(orderDetailDTO.getEvaluationStaffId());
         orderDetail.setReceivedDate(orderDetailDTO.getReceivedDate());
         orderDetail.setExpiredReceivedDate(orderDetailDTO.getExpiredReceivedDate());
         orderDetail.setUnitPrice(orderDetailDTO.getUnitPrice());
@@ -88,7 +90,6 @@ public class OrderDetailServiceImp {
         orderDetail.setDiamond(orderDetailDTO.isDiamond());
         orderDetail.setImg(orderDetailDTO.getImg());
         orderDetail.setStatus(orderDetailDTO.getStatus());
-        orderDetail.setEvaluationStaffId(orderDetailDTO.getEvaluationStaffId());
 
         // Set Order
         if (orderDetailDTO.getOrderId() != null) {
@@ -103,4 +104,9 @@ public class OrderDetailServiceImp {
         }
         return orderDetailRepository.save(orderDetail);
     }
+    public List<OrderDetail> getOrderDetailsByOrderId(String orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+        return orderDetailRepository.findByOrderId(order);
+    }
 }
+

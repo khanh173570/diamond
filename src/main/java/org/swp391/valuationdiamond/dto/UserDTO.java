@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class UserDTO {
-//    String userId;
+    String userId;
     String password;
     String firstName;
     String lastName;

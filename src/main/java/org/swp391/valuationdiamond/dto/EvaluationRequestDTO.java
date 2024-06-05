@@ -17,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EvaluationRequestDTO {
+  String requestId;
   String requestDescription;
   Date requestDate;
   String requestEmail;

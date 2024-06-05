@@ -2,7 +2,6 @@ package org.swp391.valuationdiamond.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -28,25 +27,24 @@ public class Order {
   @Column(name = "order_id", nullable = false, length = 255)
   String orderId;
 
-  @Column(name = "customer_name", nullable = false, length = 50)
+  @Column(name = "customer_name", nullable = true, length = 50)
   String customerName;
 
-  @Column(name = "phone", nullable = false, length = 20)
+  @Column(name = "phone", nullable = true, length = 20)
   String phone;
 
-  @Column(name = "diamond_quantity", nullable = false)
+  @Column(name = "diamond_quantity", nullable = true)
   int diamondQuantity;
 
-  @Column(name = "order_date", nullable = false)
+  @Column(name = "order_date", nullable = true)
   Date orderDate;
 
-  @Column(name = "status", nullable = false, length = 255)
+  @Column(name = "status", nullable = true, length = 10)
   String status;
 
-  @Column(name = "total_price", nullable = false, precision = 18, scale = 2)
+  @Column(name = "total_price", nullable = true, precision = 18, scale = 2)
   BigDecimal totalPrice;
 
-  @JsonManagedReference
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
@@ -61,6 +59,7 @@ public class Order {
   List<OrderDetail> orderDetailId;
 
   @OneToMany(mappedBy = "orderId")
-  List<CommittedPaper> committedPapersId;
+  List<CommittedPaper> committedPapers;
+
 }
 

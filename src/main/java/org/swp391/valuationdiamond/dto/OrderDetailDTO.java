@@ -17,14 +17,15 @@ import org.swp391.valuationdiamond.entity.User;
 @Getter
 @Setter
 public class OrderDetailDTO {
+    String orderDetailId;
+    String evaluationStaffId;
     Date receivedDate;
     Date expiredReceivedDate;
     float unitPrice;
+    String img;
     float size;
     boolean isDiamond;
-    String img;
     String status;
     String orderId;
-    String evaluationStaffId;
     String serviceId;
 }

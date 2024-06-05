@@ -41,6 +41,7 @@ public class UserServiceImp {
     public List<User> getStaffs(){
         return userRepository.getUsersByRole("Staff Evaluation");
     }
+
     public User getStaff(String id){
         return userRepository.findById(id).orElseThrow(()-> new RuntimeException("Not found"));
     }

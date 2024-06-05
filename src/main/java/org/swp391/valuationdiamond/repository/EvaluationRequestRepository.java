@@ -9,4 +9,5 @@ import org.swp391.valuationdiamond.entity.EvaluationRequest;
 public interface EvaluationRequestRepository extends JpaRepository<EvaluationRequest, String> {
     EvaluationRequest findByRequestId(String requestId);
     List<EvaluationRequest> findByStatus(String status);
+
 }
