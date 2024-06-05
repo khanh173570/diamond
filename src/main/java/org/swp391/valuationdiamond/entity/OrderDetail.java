@@ -58,6 +58,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -107,5 +109,9 @@ public class OrderDetail {
   @ManyToOne
   @JoinColumn(name = "service_id", nullable = true)
   EvaluationService serviceId;
+
+//  @JsonBackReference
+//  @OneToMany(mappedBy = "orderDetailId")
+//  List<EvaluationResult> evaluationResultsId;
 }
 
