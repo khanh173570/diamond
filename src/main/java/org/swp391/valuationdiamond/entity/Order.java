@@ -1,8 +1,78 @@
+//package org.swp391.valuationdiamond.entity;
+//
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.Column;
+//import jakarta.persistence.JoinColumn;
+//import jakarta.persistence.ManyToOne;
+//import jakarta.persistence.OneToMany;
+//import jakarta.persistence.Table;
+//import java.math.BigDecimal;
+//import java.util.Date;
+//import java.util.List;
+//import lombok.AccessLevel;
+//import lombok.AllArgsConstructor;
+//import lombok.Builder;
+//import lombok.Data;
+//import lombok.NoArgsConstructor;
+//import lombok.experimental.FieldDefaults;
+//
+//@Entity
+//@Table(name = "tbl_Order")
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Builder
+//@FieldDefaults(level = AccessLevel.PRIVATE)
+//public class Order {
+//
+//  @Id
+//  @Column(name = "order_id", nullable = false, length = 255)
+//  String orderId;
+//
+//  @Column(name = "customer_name", nullable = false, length = 50)
+//  String customerName;
+//
+//  @Column(name = "phone", nullable = false, length = 20)
+//  String phone;
+//
+//  @Column(name = "diamond_quantity", nullable = false)
+//  int diamondQuantity;
+//
+//  @Column(name = "order_date", nullable = false)
+//  Date orderDate;
+//
+//  @Column(name = "status", nullable = false, length = 10)
+//  String status;
+//
+//  @Column(name = "total_price", nullable = false, precision = 18, scale = 2)
+//  BigDecimal totalPrice;
+//
+//  @Column(name = "size", nullable = false)
+//  float size;
+//
+//  @Column(name = "is_diamond", nullable = false)
+//  boolean isDiamond;
+//
+//  @ManyToOne
+//  @JoinColumn(name = "userId", referencedColumnName = "user_id")
+//  User userId;
+//
+//  @ManyToOne
+//  @JoinColumn(name = "request_id")
+//  EvaluationRequest requestId;
+//
+//  @OneToMany(mappedBy = "orderId")
+//  List<OrderDetail> orderDetailId;
+//
+//  @OneToMany(mappedBy = "orderId")
+//  List<CommittedPaper> committedPapers;
+//
+//}
 package org.swp391.valuationdiamond.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -28,38 +98,44 @@ public class Order {
   @Column(name = "order_id", nullable = false, length = 255)
   String orderId;
 
-  @Column(name = "customer_name", nullable = false, length = 50)
+  @Column(name = "customer_name", nullable = true, length = 50)
   String customerName;
 
-  @Column(name = "phone", nullable = false, length = 20)
+  @Column(name = "phone", nullable = true, length = 20)
   String phone;
 
-  @Column(name = "diamond_quantity", nullable = false)
+  @Column(name = "diamond_quantity", nullable = true)
   int diamondQuantity;
 
-  @Column(name = "order_date", nullable = false)
+  @Column(name = "order_date", nullable = true)
   Date orderDate;
 
-  @Column(name = "status", nullable = false, length = 255)
+  @Column(name = "status", nullable = true, length = 10)
   String status;
 
-  @Column(name = "total_price", nullable = false, precision = 18, scale = 2)
+  @Column(name = "total_price", nullable = true, precision = 18, scale = 2)
   BigDecimal totalPrice;
 
-  @JsonManagedReference
+//  @Column(name = "size", nullable = false)
+//  float size;
+//
+//  @Column(name = "is_diamond", nullable = false)
+//  boolean isDiamond;
+
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
+
 
   @ManyToOne
   @JoinColumn(name = "request_id")
   EvaluationRequest requestId;
 
   @OneToMany(mappedBy = "orderId")
-  @JsonBackReference
   List<OrderDetail> orderDetailId;
 
   @OneToMany(mappedBy = "orderId")
-  List<CommittedPaper> committedPapersId;
+  List<CommittedPaper> committedPapers;
+
 }
 

@@ -25,9 +25,10 @@ public class UserServiceImp {
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
         String requestId = "U" + formattedCount + date;
 
+        user.setUserId(requestId);
         user.setPassword(userDTO.getPassword());
         user.setFirstName(userDTO.getFirst_name());
-        user.setLastName(userDTO.getLast_name());
+        user.setLastName(userDTO.getLastname());
         user.setBirthday(userDTO.getBirthday());
         user.setPhoneNumber(userDTO.getPhone_number());
         user.setEmail(userDTO.getEmail());

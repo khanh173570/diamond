@@ -54,7 +54,7 @@ public class User {
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<Rating> ratings;
 
-  @JsonIgnore
+
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<EvaluationRequest> evaluationRequests;
 
@@ -68,7 +68,7 @@ public class User {
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<CommittedPaper> committedPapers;
 
-  @JsonIgnore
+
   @OneToMany(mappedBy = "evaluationStaffId", cascade = CascadeType.ALL)
   List<OrderDetail> orderDetailId;
 }

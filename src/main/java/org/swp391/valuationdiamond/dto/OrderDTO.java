@@ -4,7 +4,6 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,6 +20,5 @@ public class OrderDTO {
     BigDecimal totalPrice;
     String userId;
     String requestId;
-    List<OrderDetailDTO> orderDetails;
 }
 

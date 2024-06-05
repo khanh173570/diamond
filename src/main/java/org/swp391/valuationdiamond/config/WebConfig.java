@@ -11,8 +11,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Áp dụng CORS cho tất cả các URL
-//                .allowedOrigins("http://localhost:5173")
-                .allowedOrigins("http://localhost:5174")// Chỉ định nguồn được phép
+                .allowedOrigins("http://localhost:5173")
+//                .allowedOrigins("http://localhost:5174")// Chỉ định nguồn được phép
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);

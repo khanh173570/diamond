@@ -19,8 +19,8 @@ public class OrderController {
 //    }
 
     @PostMapping("/create")
-    Order createOrder(OrderDTO orderDTO){
-        return orderServiceImp.saveOrder(orderDTO);
+    Order createOrder(@RequestBody OrderDTO orderDTO){
+        return orderServiceImp.createOrder(orderDTO);
     }
 
     @GetMapping("/getOrders")
