@@ -10,6 +10,7 @@ export const UserRequest = () => {
   const [currentDetail, setCurrentDetail] = useState({});
   const [isViewDetails, setIsViewDetail] = useState(false);
 
+
   //------------------------------------------------------------------------------------------
   // List data
   const API = 'https://jsonplaceholder.typicode.com/posts';
@@ -26,13 +27,16 @@ export const UserRequest = () => {
     fetchData();
   }, []);
 
+
   // Update data
   const handleOnChangeStatus = (id, value) => {
+    console.log(id)
+    console.log(value);
     const fetchUpdateStatus = async () => {
       try {
         const response = await fetch(`${API}/${id}`, {
           method: 'PUT',
-          body: JSON.stringify({ title: value }),
+          body: JSON.stringify({status:value}),
         });
         const data = await response.json();
         console.log(data)
