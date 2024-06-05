@@ -82,6 +82,7 @@ public class OrderDetailServiceImp {
     public OrderDetail updateOrderDe(String orderDetailId, OrderDetailDTO orderDetailDTO){
         OrderDetail orderDetail = getOrderDetailId(orderDetailId);
 
+        orderDetail.setEvaluationStaffId(orderDetailDTO.getEvaluationStaffId());
         orderDetail.setReceivedDate(orderDetailDTO.getReceivedDate());
         orderDetail.setExpiredReceivedDate(orderDetailDTO.getExpiredReceivedDate());
         orderDetail.setUnitPrice(orderDetailDTO.getUnitPrice());
@@ -89,7 +90,6 @@ public class OrderDetailServiceImp {
         orderDetail.setDiamond(orderDetailDTO.isDiamond());
         orderDetail.setImg(orderDetailDTO.getImg());
         orderDetail.setStatus(orderDetailDTO.getStatus());
-        orderDetail.setEvaluationStaffId(orderDetailDTO.getEvaluationStaffId());
 
         // Set Order
         if (orderDetailDTO.getOrderId() != null) {

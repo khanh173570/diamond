@@ -98,7 +98,7 @@ public class OrderDetail {
   @Column(name = "status", nullable = true, length = 255)
   String status;
 
-  @JsonBackReference
+
   @ManyToOne
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
