@@ -30,37 +30,37 @@ public class OrderDetailServiceImp {
 
     @Autowired
     private EvaluationServiceRepository evaluationServiceRepository;
-    public List<OrderDetail> saveAllOrderDetails(List<OrderDetailDTO> orderDetailsDTO) {
-        List<OrderDetail> orderDetailList = new ArrayList<>();
-        for (OrderDetailDTO orderDetailDTO : orderDetailsDTO) {
-            OrderDetail orderDetails = new OrderDetail();
-
-            long count = orderDetailRepository.count();
-            String formattedCount = String.valueOf(count + 1);
-            String date = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
-            String orderDetailId = "OD" + formattedCount + date;
-
-            orderDetails.setOrderDetailId(orderDetailId);
-            orderDetails.setEvaluationStaffId(orderDetailDTO.getEvaluationStaffId());
-            orderDetails.setReceivedDate(orderDetailDTO.getReceivedDate());
-            orderDetails.setExpiredReceivedDate(orderDetailDTO.getExpiredReceivedDate());
-            orderDetails.setUnitPrice(orderDetailDTO.getUnitPrice());
-            orderDetails.setImg(orderDetailDTO.getImg());
-            orderDetails.setSize(orderDetailDTO.getSize());
-            orderDetails.setDiamond(orderDetailDTO.isDiamond());
-            orderDetails.setStatus("In-Progress");
-
-
-            Order orderId = orderRepository.findById(orderDetailDTO.getOrderId()).orElseThrow(() -> new RuntimeException("OrderId not found"));
-            orderDetails.setOrderId(orderId);
-
-            EvaluationService serviceId = evaluationServiceRepository.findById(orderDetailDTO.getServiceId()).orElseThrow(() -> new RuntimeException("Service not found"));
-            orderDetails.setServiceId(serviceId);
-
-            orderDetailList.add(orderDetails);
-        }
-        return orderDetailRepository.saveAll(orderDetailList);
-    }
+//    public List<OrderDetail> saveAllOrderDetails(List<OrderDetailDTO> orderDetailsDTO) {
+//        List<OrderDetail> orderDetailList = new ArrayList<>();
+//        for (OrderDetailDTO orderDetailDTO : orderDetailsDTO) {
+//            OrderDetail orderDetails = new OrderDetail();
+//
+//            long count = orderDetailRepository.count();
+//            String formattedCount = String.valueOf(count + 1);
+//            String date = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
+//            String orderDetailId = "OD" + formattedCount + date;
+//
+//            orderDetails.setOrderDetailId(orderDetailId);
+//            orderDetails.setEvaluationStaffId(orderDetailDTO.getEvaluationStaffId());
+//            orderDetails.setReceivedDate(orderDetailDTO.getReceivedDate());
+//            orderDetails.setExpiredReceivedDate(orderDetailDTO.getExpiredReceivedDate());
+//            orderDetails.setUnitPrice(orderDetailDTO.getUnitPrice());
+//            orderDetails.setImg(orderDetailDTO.getImg());
+//            orderDetails.setSize(orderDetailDTO.getSize());
+//            orderDetails.setDiamond(orderDetailDTO.isDiamond());
+//            orderDetails.setStatus("In-Progress");
+//
+//
+//            Order orderId = orderRepository.findById(orderDetailDTO.getOrderId()).orElseThrow(() -> new RuntimeException("OrderId not found"));
+//            orderDetails.setOrderId(orderId);
+//
+//            EvaluationService serviceId = evaluationServiceRepository.findById(orderDetailDTO.getServiceId()).orElseThrow(() -> new RuntimeException("Service not found"));
+//            orderDetails.setServiceId(serviceId);
+//
+//            orderDetailList.add(orderDetails);
+//        }
+//        return orderDetailRepository.saveAll(orderDetailList);
+//    }
     //    public OrderDetail createOrderDetail(OrderDetailDTO orderDetailDTO){
 //        OrderDetail orderDetail  = new OrderDetail();
 //

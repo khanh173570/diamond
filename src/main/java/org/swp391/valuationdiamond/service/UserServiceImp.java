@@ -23,24 +23,25 @@ public class UserServiceImp {
         long count = userRepository.count();
         String formattedCount = String.valueOf(count + 1);
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
-        String requestId = "U" + formattedCount + date;
+        String id = "U" + formattedCount + date;
 
-        user.setUserId(requestId);
+        user.setUserId(id);
         user.setPassword(userDTO.getPassword());
-        user.setFirstName(userDTO.getFirst_name());
-        user.setLastName(userDTO.getLastname());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
         user.setBirthday(userDTO.getBirthday());
-        user.setPhoneNumber(userDTO.getPhone_number());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setEmail(userDTO.getEmail());
         user.setAddress(userDTO.getAddress());
         user.setRole(userDTO.getRole());
 
         return userRepository.save(user);
     }
-    public List<User> getStaffs(){
 
+    public List<User> getStaffs(){
         return userRepository.getUsersByRole("Staff Evaluation");
     }
+
     public User getStaff(String id){
         return userRepository.findById(id).orElseThrow(()-> new RuntimeException("Not found"));
     }

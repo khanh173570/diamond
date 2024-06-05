@@ -4,12 +4,12 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Builder
 public class OrderDTO {
     String orderId;
     String customerName;
@@ -20,5 +20,7 @@ public class OrderDTO {
     BigDecimal totalPrice;
     String userId;
     String requestId;
+    List<OrderDetailDTO> orderDetails;
 }
+
 

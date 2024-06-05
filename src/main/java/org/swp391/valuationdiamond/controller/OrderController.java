@@ -20,16 +20,15 @@ public class OrderController {
 
     @PostMapping("/create")
     Order createOrder(@RequestBody OrderDTO orderDTO){
-        return orderServiceImp.createOrder(orderDTO);
+        return orderServiceImp.saveOrder(orderDTO);
     }
 
-    @GetMapping("/getOrders")
-    List<Order> getOrders(){
-        return orderServiceImp.getOrders();
-    }
+//    @GetMapping("/getOrders")
+//    List<Order> getOrders(){
+//        return orderServiceImp.getOrders();
+//    }
     @GetMapping("/getOrder/{orderId}")
     Order getOrder(@PathVariable("orderId") String orderId){
-
         return orderServiceImp.getOrder(orderId);
     }
 

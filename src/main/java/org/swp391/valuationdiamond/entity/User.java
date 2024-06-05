@@ -68,7 +68,6 @@ public class User {
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<CommittedPaper> committedPapers;
 
-
   @OneToMany(mappedBy = "evaluationStaffId", cascade = CascadeType.ALL)
   List<OrderDetail> orderDetailId;
 }

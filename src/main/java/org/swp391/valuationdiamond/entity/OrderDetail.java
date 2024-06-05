@@ -100,12 +100,11 @@ public class OrderDetail {
   @Column(name = "status", nullable = true, length = 255)
   String status;
 
-
   @ManyToOne
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
 
-
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "service_id", nullable = true)
   EvaluationService serviceId;
