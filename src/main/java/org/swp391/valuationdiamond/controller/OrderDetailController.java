@@ -24,6 +24,11 @@ public class OrderDetailController {
 //    List<OrderDetail> savedOrderDetails = orderDetailServiceImp.saveAllOrderDetails(orderDetailsDTO);
 //    return ResponseEntity.ok(savedOrderDetails);
 //    }
+    @PostMapping("/create")
+    public ResponseEntity<List<OrderDetail>> saveAllOrderDetails(@RequestBody List<OrderDetailDTO> orderDetailsDTO) {
+    List<OrderDetail> savedOrderDetails = orderDetailServiceImp.saveAllOrderDetails(orderDetailsDTO);
+    return ResponseEntity.ok(savedOrderDetails);
+    }
     @GetMapping("/getOrderDe/{orderDetailId}")
     OrderDetail getOrderDetailId(@PathVariable("orderDetailId") String orderDetailId){
         return orderDetailServiceImp.getOrderDetailId(orderDetailId);
@@ -32,4 +37,15 @@ public class OrderDetailController {
     OrderDetail updateOrderDe(@PathVariable("orderDetailId") String orderDetailId, @RequestBody OrderDetailDTO orderDetailDTO){
         return orderDetailServiceImp.updateOrderDe(orderDetailId, orderDetailDTO);
     }
+//    @GetMapping("/getOrderDetail/{orderId}")
+//    public OrderDetail findOrderDetailList(@PathVariable("orderId") String orderId) {
+//        return orderDetailServiceImp.findOrderDetailList(orderId);
+//    }
+    @GetMapping("/orderDetail/{orderId}")
+    public List<OrderDetail> getOrderDetailsByOrderId(@PathVariable String orderId) {
+    return orderDetailServiceImp.getOrderDetailsByOrderId(orderId);
+}
+
+
+
 }

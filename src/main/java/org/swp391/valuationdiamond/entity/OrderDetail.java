@@ -81,7 +81,6 @@ public class OrderDetail {
   @Column(name = "evaluation_staff_id", nullable = true)
   String evaluationStaffId;
 
-
   @Column(name = "received_date", nullable = false)
   Date receivedDate;
 
@@ -90,18 +89,16 @@ public class OrderDetail {
 
   @Column(name = "unit_price", nullable = false)
   float unitPrice;
-  @Column(name = "size", nullable = false)
-  float size;
-
-  @Column(name = "is_diamond", nullable = false)
-  boolean isDiamond;
-
   @Column(name = "img", nullable = true, length = 255)
   String img;
+  @Column(name = "size", nullable = false)
+  float size;
+  @Column(name = "is_diamond", nullable = false)
+  boolean isDiamond;
   @Column(name = "status", nullable = true, length = 255)
   String status;
 
-
+  @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
