@@ -28,18 +28,22 @@ export const UserRequest = () => {
 
   // Update data
   const handleOnChangeStatus = (id, value) => {
-    console.log(id)
-    console.log(value);
     const fetchUpdateStatus = async () => {
       try {
         const response = await fetch(`${API}/${id}`, {
           method: 'PUT',
-          body: JSON.stringify({status:value}),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ status: value }),
         });
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
         const data = await response.json();
-        console.log(data)
-        setUserRequest((prevState) =>
-          prevState.map((user) =>
+        console.log('Update response:', data);
+        setUserRequest((currentState) =>
+          currentState.map((user) =>
             user.id === data.id ? { ...user, status: data.status } : user
           )
         );
@@ -49,6 +53,9 @@ export const UserRequest = () => {
     };
     fetchUpdateStatus();
   };
+
+  
+
 
   // Delete data
   const handleDeleteItem = async (id) => {
@@ -95,7 +102,7 @@ export const UserRequest = () => {
                   <td>
                     <Form.Select
                       aria-label="Requested"
-                      value={user.title}
+                      value={user.status}
                       onChange={(e) => handleOnChangeStatus(user.id, e.target.value)}
                     >
                       <option value="request">Requested</option>
@@ -103,13 +110,12 @@ export const UserRequest = () => {
                       <option value="canceled">Canceled</option>
                     </Form.Select>
                   </td>
-                  <td>
+                  <td className=''>
                     <img
-                      src="src/assets/assetsStaff/delete.svg"
-                      alt="Delete"
-                      height="40"
-                      width="40"
-                      onClick={() => handleDeleteItem(user.id)}
+                      src='/src/assets/assetsStaff/delete.svg'
+                      height="20"
+                      width="20"
+                      onClick={()=>handleDeleteItem(user.id)}
                     />
                   </td>
                   <td>
@@ -132,7 +138,7 @@ export const UserRequest = () => {
             <img
               src="/src/assets/assetsStaff/back.svg"
               alt="go back"
-              className="mt-3"
+              className="mt-3 "
               height="40"
               width="40"
               onClick={() => setIsViewDetail(false)}
