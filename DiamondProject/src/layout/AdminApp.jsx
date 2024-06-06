@@ -12,7 +12,7 @@ function AdminApp() {
       <div className='w-25'>
         <AdminSideBar /> 
       </div>
-      <div className='w-75  ps-4 fw-dark' style={{backgroundColor:'#abf0e3'}}>
+      <div className='w-75 p-3 ps-4 fw-dark' style={{backgroundColor:'#abf0e3'}}>
         <Outlet />
       </div>
     </div>

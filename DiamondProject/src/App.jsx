@@ -30,10 +30,11 @@ import { PersonalRequest } from './page/pageCustomer/PersonalRequest';
 // Admin Pages
 import { DashBoard } from './page/pageAdmin/dashBoard.jsx';
 import { ManageBlog } from './page/pageAdmin/ManageBlog';
-import { ManageCustomer } from './page/pageAdmin/ManageCustomer';
+import { ManageCustomer } from './page/pageAdmin/ManageCustomer/ManageCustomer.jsx';
 import { ManageStaff } from './page/pageAdmin/ManageStaff';
 import { ManageSchedule } from './page/pageAdmin/ManageSchedule/ManageScheldule.jsx';
 import { ManageOrder } from './page/pageAdmin/ManageOrder';
+import {CreateNewCust} from './page/pageAdmin/CreateNewCust.jsx'
 
 function App() {
   return (
@@ -70,6 +71,8 @@ function App() {
           <Route path="managestaff" element={<ManageStaff />} />
           <Route path="manageschedule" element={<ManageSchedule />} />
           <Route path="manageorder" element={<ManageOrder />} />
+          <Route path="createnewcust" element={<CreateNewCust />} />
+          
         </Route>
       </Routes>
     </BrowserRouter>

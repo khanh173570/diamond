@@ -87,12 +87,12 @@ export const CreateReceipt = () => {
     e.preventDefault();
     const dataToSend = {
       customerName: custName,
-      request: request,
+      requestId: request,
       phone: phone,
       quantity: parseInt(quantity),
       date: new Date(), // Không cần chuyển đổi sang chuỗi, sử dụng ngày hiện tại
-      totalprice: parseFloat(totalPrice),
-      items: rows,
+      totalPrice: parseFloat(totalPrice),
+      orderDetailid: rows,
     };
 
     console.log("Data to send:", dataToSend);
