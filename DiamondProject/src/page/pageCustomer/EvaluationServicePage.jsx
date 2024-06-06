@@ -156,7 +156,7 @@ return (
           </div>
           <div className="form-group mt-4">
             <label htmlFor="requestDescription" className='px-3'>Description:</label>
-            <input
+            <textarea
               id="requestDescription"
               type="text"
               name="requestDescription"
@@ -169,7 +169,7 @@ return (
           </div>
           <div className="form-button text-center">
             <button type="submit" className="btn fw-bold py-3 px-3 my-3" style={{ backgroundColor: "#CCFBF0", borderColor: "black", marginLeft: "70%" }}>SEND</button>
-          </div>
+          </div> 
       </form>
     </div>
   </div>
