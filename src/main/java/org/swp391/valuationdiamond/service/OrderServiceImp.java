@@ -57,6 +57,7 @@ public class OrderServiceImp {
                 .userId(user)
                 .requestId(request)
                 .build();
+        Order savedOrder = orderRepository.save(order);
 
         List<OrderDetail> orderDetails = orderDTO.getOrderDetails().stream()
                 .map(od -> {
@@ -67,7 +68,7 @@ public class OrderServiceImp {
                     String formattedCountDetail = String.valueOf(countDetail + 1);
                     String orderDetailId = "OD" + formattedCountDetail + date;
 
-                    return OrderDetail.builder()
+                    OrderDetail orderDetail =  OrderDetail.builder()
                             .orderDetailId(orderDetailId)
                             .receivedDate(od.getReceivedDate())
                             .expiredReceivedDate(od.getExpiredReceivedDate())
@@ -79,18 +80,14 @@ public class OrderServiceImp {
                             .serviceId(service)
                             .evaluationStaffId(od.getEvaluationStaffId())
                             .build();
+                    orderDetail.setOrderId(savedOrder);
+                    return orderDetailRepository.save(orderDetail);
                 })
                 .collect(Collectors.toList());
 
-        Order savedOrder = orderRepository.save(order);
 
-        for(OrderDetail orderDetail : orderDetails) {
+        savedOrder.setOrderDetailId(orderDetails);
 
-            orderDetail.setOrderId(savedOrder);
-
-            orderDetailRepository.save(orderDetail);
-
-        }
 
 
         return savedOrder;
