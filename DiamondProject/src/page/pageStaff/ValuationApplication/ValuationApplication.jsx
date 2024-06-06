@@ -37,7 +37,7 @@ export const ValuationApplication = () => {
         if (e.target.files && e.target.files[0]) {
             let img = e.target.files[0];
             setImage(URL.createObjectURL(img));
-            setResult((currentState) => ({ ...currentState, image: URL.createObjectURL(img) }));
+        
         }
     };
 
@@ -45,7 +45,7 @@ export const ValuationApplication = () => {
         if (e.target.files && e.target.files[0]) {
             let img = e.target.files[0];
             setImage1(URL.createObjectURL(img));
-            setResult((currentState) => ({ ...currentState, image1: URL.createObjectURL(img) }));
+           
         }
     };
 
@@ -98,7 +98,7 @@ export const ValuationApplication = () => {
                     <div className='d-flex'>
                         <div className='w-50'>
                             <div className='my-4' style={{ width: '500px' }}>
-                                <h4 className='text-center py-1' style={{ backgroundColor: '#7CF4DE' }}>GIA Report Details</h4>
+                                <h4 className='text-center py-1' style={{ backgroundColor: '#7CF4DE' }}>Report Details</h4>
                                 <Row className="mb-2 align-items-end justify-content-between">
                                     <Col md={4}>
                                         <label htmlFor="certificate-date">Certificate Date</label>
@@ -252,7 +252,7 @@ export const ValuationApplication = () => {
                                         <label htmlFor="estimate-price">Estimate Price</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="text" id='estimate-price' style={{ border: 'none', borderBottom: 'solid' }}
+                                        <input type="number" id='estimate-price' style={{ border: 'none', borderBottom: 'solid' }}
                                             onChange={handleOnChange('estimatePrice')}
                                         />
                                     </Col>
@@ -275,7 +275,7 @@ export const ValuationApplication = () => {
                                         </div>}
                                 </div>
                                 <div className='d-flex justify-content-center'>
-                                    <input type="file" id="image_upload" onChange={handleUploadImage} accept=".jpg, .jpeg, .png" />
+                                    <input type="file" id="image_upload" onChange={handleUploadImage}  accept=".jpg, .jpeg, .png" />
                                 </div>
                             </div>
                             <div className='my-4' style={{ width: '500px' }}>
@@ -292,7 +292,7 @@ export const ValuationApplication = () => {
                                         </div>}
                                 </div>
                                 <div className='d-flex justify-content-center'>
-                                    <input type="file" id="image_upload" onChange={handleUploadImage1} accept=".jpg, .jpeg, .png" />
+                                    <input type="file" id="image_upload" onChange={handleUploadImage1}  accept=".jpg, .jpeg, .png" />
                                 </div>
                             </div>
                         </div>
