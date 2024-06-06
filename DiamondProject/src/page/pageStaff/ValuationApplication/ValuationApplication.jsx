@@ -8,7 +8,6 @@ export const ValuationApplication = () => {
     const [result, setResult] = useState({});
     const [isPrint, setIsPrint] = useState(false);
 
-    // add valuation result
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         try {
