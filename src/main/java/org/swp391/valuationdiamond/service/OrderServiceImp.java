@@ -28,12 +28,8 @@ public class OrderServiceImp {
     @Autowired
     private EvaluationServiceRepository evaluationServiceRepository;
 
-
     public Order saveOrder(OrderDTO orderDTO) {
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
-
-        System.out.println("User ID: " + orderDTO.getUserId());
-        System.out.println("Request ID: " + orderDTO.getRequestId());
 
         User user = userRepository.findById(orderDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
         EvaluationRequest request = evaluationRequestRepository.findById(orderDTO.getRequestId()).orElseThrow(() -> new RuntimeException("Request not found"));
@@ -116,6 +112,7 @@ public class OrderServiceImp {
 
         order.setRequestId(evaluationRequest);
         return orderRepository.save(order);
+
     }
 //
 //
