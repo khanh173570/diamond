@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.swp391.valuationdiamond.dto.OrderDTO;
 import org.swp391.valuationdiamond.dto.UserDTO;
 import org.swp391.valuationdiamond.entity.Order;
+import org.swp391.valuationdiamond.entity.Role;
 import org.swp391.valuationdiamond.entity.User;
 import org.swp391.valuationdiamond.repository.UserRepository;
 
@@ -33,7 +34,7 @@ public class UserServiceImp {
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setEmail(userDTO.getEmail());
         user.setAddress(userDTO.getAddress());
-        user.setRole(userDTO.getRole());
+        user.setRole(Role.USER);
 
         return userRepository.save(user);
     }

@@ -49,7 +49,8 @@ public class User {
   String address;
 
   @Column(name = "role", nullable = true, length = 50)
-  String role;
+  @Enumerated(EnumType.STRING)
+  Role role;
 
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<Rating> ratings;
@@ -58,7 +59,7 @@ public class User {
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<EvaluationRequest> evaluationRequests;
 
-  @JsonBackReference
+  @JsonIgnore
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<Order> orderId;
 

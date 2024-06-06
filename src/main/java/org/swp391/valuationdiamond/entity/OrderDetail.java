@@ -55,6 +55,7 @@ package org.swp391.valuationdiamond.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -98,6 +99,7 @@ public class OrderDetail {
   @Column(name = "status", nullable = true, length = 255)
   String status;
 
+  @JsonManagedReference
   @ManyToOne
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;

@@ -45,6 +45,7 @@ public class Order {
   @Column(name = "total_price", nullable = true, precision = 18, scale = 2)
   BigDecimal totalPrice;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
@@ -53,6 +54,7 @@ public class Order {
   @ManyToOne
   @JoinColumn(name = "request_id")
   EvaluationRequest requestId;
+
 
   @JsonBackReference
   @OneToMany(mappedBy = "orderId")
