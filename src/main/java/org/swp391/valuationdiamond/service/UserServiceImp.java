@@ -12,21 +12,19 @@ import org.swp391.valuationdiamond.repository.UserRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImp {
     @Autowired
 
     private UserRepository userRepository;
+
+    //Hàm này sẽ tạo user theo cách thông thường
     public User createUser(UserDTO userDTO){
         User user = new User();
 
-        long count = userRepository.count();
-        String formattedCount = String.valueOf(count + 1);
-        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
-        String id = "U" + formattedCount + date;
-
-        user.setUserId(id);
+        user.setUserId(userDTO.getUserId());
         user.setPassword(userDTO.getPassword());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
@@ -37,6 +35,22 @@ public class UserServiceImp {
         user.setRole(Role.USER);
 
         return userRepository.save(user);
+    }
+
+    //Hàm này sử dụng để lấy dữ liệu từ gg và save lại trong database
+    public User signupWithGoogle(Map<String, Object> map){
+        if (map == null){
+            return null;
+        }
+        else {
+            User user = new User();
+            user.setUserId((String) map.get("email"));
+            user.setFirstName((String) map.get("given_name"));
+            user.setLastName((String) map.get("family_name"));
+            user.setEmail((String) map.get("email"));
+            user.setRole(Role.USER);
+            return userRepository.save(user);
+        }
     }
 
     public List<User> getStaffs(){

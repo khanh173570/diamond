@@ -2,13 +2,13 @@ spring:
   application:
     name: valuationdiamond
 
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 862578541921-8kkjcjog81k8ohtm41ukq3td3rmanhv9.apps.googleusercontent.com
-            client-secret: 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
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id: 862578541921-8kkjcjog81k8ohtm41ukq3td3rmanhv9.apps.googleusercontent.com
+#            client-secret: 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
 
   datasource:
     url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=diamond_valuation_db
