@@ -23,7 +23,9 @@ public class EvaluationResultDTO {
     String polish;
     String fluorescence;
     String description;
-
+    BigDecimal price;
+    String userId;
+    String orderDetailId;
 
 
 

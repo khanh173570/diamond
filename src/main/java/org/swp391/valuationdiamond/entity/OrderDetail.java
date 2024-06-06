@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,7 +52,7 @@ public class OrderDetail {
   @Column(name = "evaluation_staff_id", nullable = true, length = 255)
   String evaluationStaffId;
 
-  @JsonManagedReference
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
@@ -59,6 +61,9 @@ public class OrderDetail {
 //  @ManyToOne
 //  @JoinColumn(name = "evaluation_staff_id", nullable = true)
 //  User evaluationStaffId;
+@JsonIgnore
+@OneToMany(mappedBy = "orderDetailId", cascade = CascadeType.ALL)
+List<EvaluationResult> evaluationResults;
 
   @JsonIgnore
   @ManyToOne
