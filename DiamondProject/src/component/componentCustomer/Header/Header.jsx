@@ -42,8 +42,8 @@ function Header() {
                 <Navbar.Brand href='#home' className='p-3 fw-bold fst-italic'>
                     <img
                         src='/src/assets/assetsCustomer/logo.png'
-                        width='30%'
-                        height='30%'
+                        width='20%'
+                        height='20%'
                         alt='Logo'
                     />
                     Valuation Diamond

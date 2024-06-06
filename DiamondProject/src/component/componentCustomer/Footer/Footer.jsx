@@ -12,8 +12,8 @@ function Footer() {
                         <Image
                             src='/src/assets/assetsCustomer/logo.png'
                             alt=''
-                            width='40%'
-                            height='90%'
+                            width='30%'
+                            height='80%'
                         />
                     </Col>
                     <Col className='my-4'>
