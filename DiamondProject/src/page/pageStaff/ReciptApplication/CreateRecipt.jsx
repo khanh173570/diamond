@@ -14,7 +14,7 @@ export const CreateReceipt = () => {
   const [selectedServiceId, setSelectedServiceId] = useState("");
   const [reviewMode, setReviewMode] = useState(false);
   const componentRef = useRef();
-
+  
   // Get current date
   const currentDate = new Date().toLocaleDateString();
 

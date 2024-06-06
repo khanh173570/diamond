@@ -9,8 +9,6 @@ export const UserRequest = () => {
   const [userRequest, setUserRequest] = useState([]);
   const [currentDetail, setCurrentDetail] = useState({});
   const [isViewDetails, setIsViewDetail] = useState(false);
-
-
   //------------------------------------------------------------------------------------------
   // List data
   const API = 'https://jsonplaceholder.typicode.com/posts';
