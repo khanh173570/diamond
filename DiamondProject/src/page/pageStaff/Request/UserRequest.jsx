@@ -8,10 +8,11 @@ import { UserRequestDetails1 } from './UserRequestDetails';
 export const UserRequest = () => {
   const [userRequest, setUserRequest] = useState([]);
   const [currentDetail, setCurrentDetail] = useState({});
-  const [isViewDetails, setIsViewDetail] = useState(false);
+  const [isViewDetail, setIsViewDetail] = useState(false);
+  const [editRowId, setEditRowId] = useState(null);
+  const [editStatus, setEditStatus] = useState('');
+  const [isEdit, setIsEdit] = useState(false)
 
-
-  //------------------------------------------------------------------------------------------
   // List data
   const API = 'https://jsonplaceholder.typicode.com/posts';
   useEffect(() => {
@@ -25,26 +26,29 @@ export const UserRequest = () => {
       }
     };
     fetchData();
-  }, []);
-
+  }, [isEdit]);
 
   // Update data
-  const handleOnChangeStatus = (id, value) => {
-    console.log(id)
-    console.log(value);
+  const handleOnChangeStatus = (id) => {
     const fetchUpdateStatus = async () => {
       try {
         const response = await fetch(`${API}/${id}`, {
           method: 'PUT',
-          body: JSON.stringify({status:value}),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ status: editStatus }),
         });
+
         const data = await response.json();
-        console.log(data)
-        setUserRequest((prevState) =>
-          prevState.map((user) =>
-            user.id === data.id ? { ...user, status: data.status } : user
-          )
-        );
+        console.log('Update response:', data);
+        // setUserRequest((currentState) =>
+        //   currentState.map((user) =>
+        //     user.id === data.id ? { ...user, status: data.status } : user
+        //   )
+        // );
+        setIsEdit(true)
+        setEditRowId(null);  // Reset edit mode
       } catch (error) {
         console.error('Error updating status:', error);
       }
@@ -58,15 +62,14 @@ export const UserRequest = () => {
       await fetch(`${API}/${id}`, {
         method: 'DELETE',
       });
-
-      setUserRequest((prevState) => prevState.filter((user) => user.id !== id));
+      setIsEdit(true)
+      // setUserRequest((prevState) => prevState.filter((user) => user.id !== id));
     } catch (error) {
       console.error('Error deleting item:', error);
     }
   };
 
-  //---------------------------------------------------------------------------------
-  // View details of a specific user request
+
   const viewDetails = (userRequestDetail) => {
     setCurrentDetail(userRequestDetail);
     setIsViewDetail(true);
@@ -74,7 +77,7 @@ export const UserRequest = () => {
 
   return (
     <Container>
-      {!isViewDetails ? (
+      {!isViewDetail ? (
         <>
           <h2 className="text-center my-4">User Request</h2>
           <Table striped bordered className="fs-5">
@@ -84,8 +87,8 @@ export const UserRequest = () => {
                 <th>UserId</th>
                 <th>Date</th>
                 <th>Status</th>
-                <th>Delete</th>
                 <th>View Details</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -94,26 +97,37 @@ export const UserRequest = () => {
                   <td>{user.id}</td>
                   <td>{user.userId}</td>
                   <td>{user.requestDate}</td>
-                  <td>
-                    <Form.Select
-                      aria-label="Requested"
-                      value={user.title}
-                      onChange={(e) => handleOnChangeStatus(user.id, e.target.value)}
-                    >
-                      <option value="request">Requested</option>
-                      <option value="accepted">Accepted</option>
-                      <option value="canceled">Canceled</option>
-                    </Form.Select>
+                  <td className='d-flex'>
+                    {editRowId === user.id ? (
+                      <>
+                        <Form.Select
+                          aria-label="Requested"
+                          value={editStatus}
+                          onChange={(e) => setEditStatus(e.target.value)}
+                        >
+                          <option value="request">Requested</option>
+                          <option value="accepted">Accepted</option>
+                          <option value="canceled">Canceled</option>
+                        </Form.Select>
+                        <Button onClick={() => handleOnChangeStatus(user.id)}>Save</Button>
+                      </>
+                    ) : (
+                      <div className='d-flex justify-content-between'>
+                        <div>{user.status}</div>
+                        <img
+                          src="/src/assets/assetsStaff/editStatus.svg"
+                          alt="Edit"
+                          height="20"
+                          width="20"
+                          onClick={() => {
+                            setEditRowId(user.id);
+                            setEditStatus(user.status);
+                          }}
+                        />
+                      </div>
+                    )}
                   </td>
-                  <td>
-                    <img
-                      src="src/assets/assetsStaff/delete.svg"
-                      alt="Delete"
-                      height="40"
-                      width="40"
-                      onClick={() => handleDeleteItem(user.id)}
-                    />
-                  </td>
+
                   <td>
                     <Button
                       onClick={() => viewDetails(user)}
@@ -122,6 +136,15 @@ export const UserRequest = () => {
                     >
                       View Details
                     </Button>
+                  </td>
+                  <td className=''>
+                    <img
+                      src='/src/assets/assetsStaff/delete.svg'
+                      alt="Delete"
+                      height="20"
+                      width="20"
+                      onClick={() => handleDeleteItem(user.id)}
+                    />
                   </td>
                 </tr>
               ))}

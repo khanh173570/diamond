@@ -36,12 +36,12 @@ export const ViewReciptList = () => {
   };
 
   const viewDetail = (item) => {
-    navigate(`/staff/view-receipt/${item.id}`,{ state: { item }});
+    navigate(`/staff/view-receipt/${item.id}`, { state: { item } });
   };
 
   return (
     <div className="container">
-      <div className='d-flex justify-content-center' style={{marginBottom:'50px', marginTop:'50px'}}>
+      <div className='d-flex justify-content-center' style={{ marginBottom: '50px', marginTop: '50px' }}>
         <h1>View Order List</h1>
       </div>
 
@@ -64,7 +64,15 @@ export const ViewReciptList = () => {
           </Row>
         </Form>
       </div>
-
+      <style>
+        {`
+          .centered-table th,
+          .centered-table td {
+            text-align: center;
+            vertical-align: middle;
+          }
+        `}
+      </style>
       <div>
       <style>
         {`
@@ -75,6 +83,7 @@ export const ViewReciptList = () => {
           }
         `}
       </style>
+
         <Table striped bordered hover className="centered-table">
           <thead>
             <tr>

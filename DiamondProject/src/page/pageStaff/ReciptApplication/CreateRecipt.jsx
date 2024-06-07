@@ -1,27 +1,27 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
-import { useReactToPrint } from 'react-to-print';
-import '../ReciptApplication/print.css'; // Import CSS for printing
+import React, { useState, useEffect, useRef } from "react";
+import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
+import { useReactToPrint } from "react-to-print";
+import "../ReciptApplication/print.css"; // Import CSS for printing
 
 export const CreateReceipt = () => {
   const [selection, setSelection] = useState([]);
-  const [servicePriceList, setServicePriceList] = useState([]);
   const [custName, setCustName] = useState("");
   const [phone, setPhone] = useState("");
   const [request, setRequest] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [selectedServiceId, setSelectedServiceId] = useState("");
   const [reviewMode, setReviewMode] = useState(false);
+  const [orderDate, setOrderDate] = useState("");
   const componentRef = useRef();
 
-  // Get current date
   const currentDate = new Date().toLocaleDateString();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("Get UserName of Table Service");
+        const response = await fetch(
+          "http://localhost:8080/api/evaluation_services"
+        );
         const data = await response.json();
         setSelection(data);
       } catch (error) {
@@ -32,60 +32,30 @@ export const CreateReceipt = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const fetchServicePriceList = async () => {
-      if (selectedServiceId) {
-        try {
-          const response = await fetch("Get data ServicePriceList by serviceID");
-          const data = await response.json();
-          setServicePriceList(data);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      }
-    };
-
-    fetchServicePriceList();
-  }, [selectedServiceId]);
-
   const initialRows = Array.from({ length: parseInt(quantity) || 0 }, () => ({
-    service: "",
-    receivedDate: "",
-    expiredDate: "",
-    size: "",
-    price: "",
+    serviceId: "",
+    receivedDate: new Date().toISOString().split('T')[0],
+    expiredReceivedDate: new Date().toISOString().split('T')[0],
+    size: 0,
+    unitPrice: .0,
   }));
 
   const [rows, setRows] = useState(initialRows);
 
   const handleRowChange = (index, field, value) => {
     const updatedRows = rows.map((row, rowIndex) =>
-      rowIndex === index ? { ...row, [field]: value } : row 
-    ); 
-    setRows(updatedRows); 
+      rowIndex === index ? { ...row, [field]: value } : row
+    );
+    setRows(updatedRows);
   };
 
   const handleServiceChange = (index, value) => {
     const selectedService = selection.find(
-      (service) => service.username === value
+      (service) => service.service_type === value
     );
+    const selectedServiceId = selectedService ? selectedService.service_id : "";
     const updatedRows = rows.map((row, rowIndex) =>
-      rowIndex === index
-        ? { ...row, service: value }
-        : row
-    );
-    setRows(updatedRows);
-    setSelectedServiceId(selectedService.id);
-  };
-
-  const handleSizeChange = (index, value) => {
-    const selectedPrice = servicePriceList.find(
-      (priceItem) => priceItem.size === value
-    );
-    const updatedRows = rows.map((row, rowIndex) =>
-      rowIndex === index
-        ? { ...row, size: value, price: selectedPrice ? selectedPrice.price : "" }
-        : row
+      rowIndex === index ? { ...row, serviceId: selectedServiceId } : row
     );
     setRows(updatedRows);
   };
@@ -95,55 +65,60 @@ export const CreateReceipt = () => {
     setQuantity(e.target.value);
     const newRows = Array.from(
       { length: qty },
-      (v, i) =>
-        rows[i] || {
-          service: "",
-          receivedDate: "",
-          expiredDate: "",
-          size: "",
-          price: "",
-        }
+      (_, i) => ({
+        serviceId: selection[i]?.service_id || "",
+        receivedDate: new Date().toISOString().split('T')[0],
+        expiredReceivedDate: new Date().toISOString().split('T')[0],
+        size: 0,
+        unitPrice: 0.0,
+      })
     );
     setRows(newRows);
   };
 
   const totalPrice = rows.reduce(
-    (total, row) => total + parseFloat(row.price || 0),
+    (total, row) => total + parseFloat(row.unitPrice || 0),
     0
   );
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+
+    const formattedOrderDate = new Date(orderDate).toISOString();
+
     const dataToSend = {
+      userId: "khanhtran",
       customerName: custName,
-      request: request,
+      requestId: request,
       phone: phone,
-      quantity: quantity,
-      date: currentDate, 
-      totalprice: totalPrice,
-      items: rows,
+      diamondQuantity: parseInt(quantity),
+      orderDate: formattedOrderDate,
+      totalPrice: parseFloat(totalPrice),
+      orderDetails: rows,
     };
 
     console.log("Data to send:", dataToSend);
 
     try {
-      const response = await fetch("SAVE", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend),
-      });
+      const response = await fetch(
+        "http://localhost:8080/order_request/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
 
       const result = await response.json();
-      console.log('Data successfully saved:', result);
-      // Optionally, you can add more logic here, such as showing a success message or clearing the form
+      console.log("Data successfully saved:", result);
     } catch (error) {
-      console.error('Error saving data:', error);
+      console.error("Error saving data:", error);
     }
   };
 
@@ -163,7 +138,8 @@ export const CreateReceipt = () => {
                 <p>Phone: {phone}</p>
                 <p>Quantity: {quantity}</p>
                 <p>Date: {currentDate}</p>
-              </div>
+             
+                </div>
             </div>
             <div className="print-content">
               <Table striped bordered className="fs-5 print-table">
@@ -179,11 +155,11 @@ export const CreateReceipt = () => {
                 <tbody>
                   {rows.map((row, index) => (
                     <tr key={index}>
-                      <td>{row.service}</td>
+                      <td>{row.serviceId}</td>
                       <td>{row.receivedDate}</td>
-                      <td>{row.expiredDate}</td>
+                      <td>{row.expiredReceivedDate}</td>
                       <td>{row.size}</td>
-                      <td>{row.price}</td>
+                      <td>{row.unitPrice}</td>
                     </tr>
                   ))}
                   <tr>
@@ -243,7 +219,6 @@ export const CreateReceipt = () => {
                 />
               </div>
             </div>
-            
             <div className="row mb-3 d-flex justify-content-center">
               <div className="col-3" style={{ width: "15%" }}>
                 <label className="form-label fw-bold">Request ID</label>
@@ -257,9 +232,20 @@ export const CreateReceipt = () => {
                 />
               </div>
             </div>
-            
+            <div className="row mb-3 d-flex justify-content-center">
+              <div className="col-3" style={{ width: "15%" }}>
+                <label className="form-label fw-bold">Order Date</label>
+              </div>
+              <div className="col-7">
+                <input
+                  type="datetime-local"
+                  className="form-control"
+                  value={orderDate}
+                  onChange={(e) => setOrderDate(e.target.value)}
+                />
+              </div>
+            </div>
           </div>
-
           <div className="d-flex justify-content-center">
             <Table striped bordered className="fs-5" style={{ width: "80%" }}>
               <thead className="text-center">
@@ -271,26 +257,31 @@ export const CreateReceipt = () => {
                   <th>Service Price</th>
                 </tr>
               </thead>
-
               <tbody>
                 {rows.map((row, index) => (
                   <tr key={index}>
                     <td>
                       <select
                         className="form-control"
-                        value={row.service}
-                        onChange={(e) => handleServiceChange(index, e.target.value)}>
+                        value={row.serviceId}
+                        onChange={(e) =>
+                          handleServiceChange(index, e.target.value)
+                        }
+                      >
                         <option value="">Select Service</option>
                         {selection.map((service) => (
-                          <option key={service.id} value={service.username}>
-                            {service.username}
+                          <option
+                            key={service.service_id}
+                            value={service.service_id}
+                          >
+                            {service.service_type}
                           </option>
                         ))}
                       </select>
                     </td>
                     <td>
                       <input
-                        type="text"
+                        type="date"
                         className="form-control"
                         value={row.receivedDate}
                         onChange={(e) =>
@@ -300,33 +291,31 @@ export const CreateReceipt = () => {
                     </td>
                     <td>
                       <input
-                        type="text"
+                        type="date"
                         className="form-control"
-                        value={row.expiredDate}
+                        value={row.expiredReceivedDate}
                         onChange={(e) =>
-                          handleRowChange(index, "expiredDate", e.target.value)
+                          handleRowChange(index, "expiredReceivedDate", e.target.value)
                         }
                       />
-                    </td>
-                    <td>
-                      <select
-                        className="form-control"value={row.size}onChange={(e) =>
-                          handleSizeChange(index, e.target.value)}>
-                        <option value="">Select Size</option>
-                        {servicePriceList.map((priceItem) => (
-                          <option key={priceItem.id} value={priceItem.size}>
-                            {priceItem.size}
-                        </option>
-                        ))}
-                      </select>
                     </td>
                     <td>
                       <input
                         type="text"
                         className="form-control"
-                        value={row.price}
+                        value={row.size}
                         onChange={(e) =>
-                          handleRowChange(index, "price", e.target.value)
+                          handleRowChange(index, "size", e.target.value)
+                        }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={row.unitPrice}
+                        onChange={(e) =>
+                          handleRowChange(index, "unitPrice", e.target.value)
                         }
                       />
                     </td>
@@ -348,7 +337,6 @@ export const CreateReceipt = () => {
               </tbody>
             </Table>
           </div>
-
           <div className="d-flex justify-content-end" style={{ width: "90%" }}>
             <Button className="btn btn-success me-4" type="submit">
               Accept
@@ -367,4 +355,3 @@ export const CreateReceipt = () => {
 };
 
 export default CreateReceipt;
-
