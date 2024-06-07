@@ -49,16 +49,17 @@ public class User {
   String address;
 
   @Column(name = "role", nullable = true, length = 50)
-  String role;
+  @Enumerated(EnumType.STRING)
+  Role role;
 
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<Rating> ratings;
 
-  @JsonIgnore
+
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<EvaluationRequest> evaluationRequests;
 
-  @JsonBackReference
+  @JsonIgnore
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<Order> orderId;
   @JsonIgnore
@@ -68,7 +69,6 @@ public class User {
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<CommittedPaper> committedPapers;
 
-  @JsonIgnore
   @OneToMany(mappedBy = "evaluationStaffId", cascade = CascadeType.ALL)
   List<OrderDetail> orderDetailId;
 }
