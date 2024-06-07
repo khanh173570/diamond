@@ -36,12 +36,12 @@ export const ViewReciptList = () => {
   };
 
   const viewDetail = (item) => {
-    navigate(`/staff/view-receipt/${item.id}`,{ state: { item }});
+    navigate(`/staff/view-receipt/${item.id}`, { state: { item } });
   };
 
   return (
     <div className="container">
-      <div className='d-flex justify-content-center' style={{marginBottom:'50px', marginTop:'50px'}}>
+      <div className='d-flex justify-content-center' style={{ marginBottom: '50px', marginTop: '50px' }}>
         <h1>View Order List</h1>
       </div>
 
