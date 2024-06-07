@@ -34,15 +34,16 @@ import { ManageCustomer } from './page/pageAdmin/ManageCustomer/ManageCustomer.j
 import { ManageStaff } from './page/pageAdmin/ManageStaff';
 import { ManageSchedule } from './page/pageAdmin/ManageSchedule/ManageScheldule.jsx';
 import { ManageOrder } from './page/pageAdmin/ManageOrder';
-import {CreateNewCust} from './page/pageAdmin/CreateNewCust.jsx'
+import { CreateNewCust } from './page/pageAdmin/CreateNewCust.jsx'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+       
         <Route path="/" element={<CustomerApp />}>
           <Route index element={<HomeCustomer />} />
-          <Route path="login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="home" element={<HomeCustomer />} />
           <Route path="blog" element={<Blog />} />
@@ -72,7 +73,6 @@ function App() {
           <Route path="manageschedule" element={<ManageSchedule />} />
           <Route path="manageorder" element={<ManageOrder />} />
           <Route path="createnewcust" element={<CreateNewCust />} />
-          
         </Route>
       </Routes>
     </BrowserRouter>

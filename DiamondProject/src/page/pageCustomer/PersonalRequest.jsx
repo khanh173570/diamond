@@ -4,6 +4,7 @@ import { Row, Col, Stack } from 'react-bootstrap';
 export const PersonalRequest = () => {
     const [myRequest, setMyRequest] = useState([]);
     const [loading, setLoading] = useState(false)
+    const [isEdit, setIsEdit] = useState(false)
     const API = 'https://jsonplaceholder.typicode.com/users';
     const userId = JSON.parse(localStorage.getItem('user'));
 
@@ -24,7 +25,8 @@ export const PersonalRequest = () => {
         return ()=>{
             setLoading(false)
         }
-    }, [userId.username]);
+    }, [userId.username,isEdit ]);
+
 
     const handleOnCancel = async (id, value) => {
         try {
@@ -36,13 +38,8 @@ export const PersonalRequest = () => {
                 body: JSON.stringify({ status: value }),
             });
             const data = await response.json();
+            setIsEdit(true)
             console.log(data)
-            setMyRequest((currentState) =>
-                currentState.map((request) =>
-                    request.id === id ? { ...request, status: value } : request
-                )
-            );
-            console.log(data);
         } catch (error) {
             console.error('Error updating status:', error);
         }
@@ -81,7 +78,7 @@ export const PersonalRequest = () => {
                             </Col>
                             <Col md={2} className="d-flex">
                                 <div className="me-2 ">
-                                    {request.status || 'Requested'}
+                                    {request.status}
                                 </div>
                                 <img
                                     src="/src/assets/assetsCustomer/cancel.svg"
