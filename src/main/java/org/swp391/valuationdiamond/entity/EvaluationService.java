@@ -35,7 +35,7 @@ public class EvaluationService {
 
   @Column(name = "service_description", nullable = true, columnDefinition = "NVARCHAR(MAX)")
   String serviceDescription;
-
+  @JsonIgnore
   @OneToMany(mappedBy = "serviceId")
   List<EvaluationServicePriceList> servicePriceList;
 
