@@ -54,7 +54,7 @@ public class UserServiceImp {
     }
 
     public List<User> getStaffs(){
-        return userRepository.getUsersByRole("Staff Evaluation");
+        return userRepository.getUsersByRole(Role.valuationstaff);
     }
 
     public User getStaff(String id){
