@@ -32,4 +32,8 @@ public class OrderController {
         return orderServiceImp.getOrder(orderId);
     }
 
+    @GetMapping("/getOrders")
+    List<Order> getOrders(){
+        return orderServiceImp.getAllOrders();
+    }
 }

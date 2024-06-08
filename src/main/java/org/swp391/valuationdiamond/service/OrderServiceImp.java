@@ -121,7 +121,12 @@ public class OrderServiceImp {
 //    }
 
     public List<Order> getOrders() {
+
         return  orderRepository.findOrderByStatus("In Process");
+    }
+
+    public List<Order> getAllOrders() {
+        return  orderRepository.findAll();
     }
 
     public Order getOrder(String id){

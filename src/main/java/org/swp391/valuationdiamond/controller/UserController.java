@@ -1,7 +1,7 @@
 package org.swp391.valuationdiamond.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+//import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.swp391.valuationdiamond.dto.OrderDTO;
 import org.swp391.valuationdiamond.dto.UserDTO;
@@ -36,9 +36,9 @@ public class UserController {
         return userServiceImp.getStaffs();
     }
 
-    @GetMapping("/signup-google")
-    Map<String, Object> currentUser(OAuth2AuthenticationToken token){
-        return token.getPrincipal().getAttributes();
-    }
+//    @GetMapping("/signup-google")
+//    Map<String, Object> currentUser(OAuth2AuthenticationToken token){
+//        return token.getPrincipal().getAttributes();
+//    }
 
 }

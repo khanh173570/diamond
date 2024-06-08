@@ -42,7 +42,7 @@ public class OrderDetailController {
 //        return orderDetailServiceImp.findOrderDetailList(orderId);
 //    }
     @GetMapping("/orderDetail/{orderId}")
-    public List<OrderDetail> getOrderDetailsByOrderId(@PathVariable String orderId) {
+    public List<OrderDetail> getOrderDetailsByOrderId(@PathVariable("orderId") String orderId) {
     return orderDetailServiceImp.getOrderDetailsByOrderId(orderId);
 }
 
