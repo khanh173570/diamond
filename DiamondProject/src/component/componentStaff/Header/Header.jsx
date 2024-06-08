@@ -1,10 +1,31 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import { NavLink } from 'react-router-dom';
-
+import { NavDropdown } from 'react-bootstrap';
+import { NavLink, } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
+    const [user, setUser] = useState({})
+    const navigate = useNavigate();
+    //get data user
+   
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        if (storedUser) {
+            setUser(storedUser);
+        }
+    }, []);
+
+    //logout
+    function handleLogout (){
+        setUser(null)
+        localStorage.removeItem('user')
+        navigate('/login')
+    }
+
+
     return (
         <>
             <Navbar expand="md" style={{ backgroundColor: '#E2FBF5 ' }}>
@@ -23,14 +44,20 @@ function Header() {
                             <NavLink to="/home" className="nav-link" >Home</NavLink>
                             <NavLink to="/evaluation-service" className="nav-link" >Evaluation Service</NavLink>
                             <NavLink to="/setting" className="nav-link" >Setting</NavLink>
-                            <NavLink to="/personal-info" className="nav-link" >
+                            {/* <NavLink to="/personal-info" className="nav-link" >
                                 <img
                                     src="/src/assets/assetsStaff/personal-info.svg"
                                     alt="bell"
                                     width='30'
                                     height='30'
                                 />
-                            </NavLink>
+                            </NavLink> */}
+                            <NavDropdown title={user.name} id="nav-dropdown">
+                                <NavDropdown.Item as={NavLink} to="/personal-info">My Profile</NavDropdown.Item>
+                                <NavDropdown.Item onClick={handleLogout}>
+                                    Log out
+                                </NavDropdown.Item>
+                            </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
