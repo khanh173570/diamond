@@ -61,8 +61,8 @@ public class EvaluationRequestServiceImp implements IEvaluationRequestService {
   }
 
   @Override
-  public Optional<EvaluationRequest> getAllEvaluationRequest() {
-    return Optional.ofNullable((EvaluationRequest) evaluationRequestRepository.findAll());
+  public List<EvaluationRequest> getAllEvaluationRequest() {
+    return evaluationRequestRepository.findAll();
   }
   @Override
   public List<EvaluationRequest> getEvaluationRequestByStatus(String status) {

@@ -79,16 +79,10 @@ public class OrderDetailServiceImp {
         return orderDetailRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
     }
-    public OrderDetail updateOrderDe(String orderDetailId, OrderDetailDTO orderDetailDTO){
+
+    public OrderDetail updateOrderDeStatus(String orderDetailId, OrderDetailDTO orderDetailDTO){
         OrderDetail orderDetail = getOrderDetailId(orderDetailId);
 
-        orderDetail.setEvaluationStaffId(orderDetailDTO.getEvaluationStaffId());
-        orderDetail.setReceivedDate(orderDetailDTO.getReceivedDate());
-        orderDetail.setExpiredReceivedDate(orderDetailDTO.getExpiredReceivedDate());
-        orderDetail.setUnitPrice(orderDetailDTO.getUnitPrice());
-        orderDetail.setSize(orderDetailDTO.getSize());
-        orderDetail.setDiamond(orderDetailDTO.isDiamond());
-        orderDetail.setImg(orderDetailDTO.getImg());
         orderDetail.setStatus(orderDetailDTO.getStatus());
 
         // Set Order
@@ -104,9 +98,46 @@ public class OrderDetailServiceImp {
         }
         return orderDetailRepository.save(orderDetail);
     }
+
+
+    //update thằng staff
+    public OrderDetail updateOrderDeEvaluationStaff(String orderDetailId, OrderDetailDTO orderDetailDTO){
+        OrderDetail orderDetail = getOrderDetailId(orderDetailId);
+
+        orderDetail.setEvaluationStaffId(orderDetailDTO.getEvaluationStaffId());
+
+        // Set Order
+        if (orderDetailDTO.getOrderId() != null) {
+            Order order = orderRepository.findById(orderDetailDTO.getOrderId()).orElse(null);
+            orderDetail.setOrderId(order);
+        }
+
+        // Set Service
+        if (orderDetailDTO.getServiceId() != null) {
+            EvaluationService service = evaluationServiceRepository.findById(orderDetailDTO.getServiceId()).orElse(null);
+            orderDetail.setServiceId(service);
+        }
+        return orderDetailRepository.save(orderDetail);
+    }
+
     public List<OrderDetail> getOrderDetailsByOrderId(String orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
         return orderDetailRepository.findByOrderId(order);
+    }
+
+    public List<OrderDetail> getOrderDetailsByOrderStatusInProgress() {
+        return orderDetailRepository.findByStatus("In-Progress");
+    }
+
+    //ham getall
+
+    public List<OrderDetail> getAllOrderDetail() {
+        return orderDetailRepository.findAll();
+    }
+
+    //hàm get staff == null
+    public List<OrderDetail> getOrderDetailByEvaluationStaffIsNull(){
+        return orderDetailRepository.findByEvaluationStaffIdIsNull();
     }
 }
 
