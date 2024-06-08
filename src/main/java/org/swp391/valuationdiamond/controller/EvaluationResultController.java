@@ -11,7 +11,7 @@ import java.util.List;
 public class EvaluationResultController {
     @Autowired
     private EvaluationResultServiceImp evaluationResultServiceImp;
-    @PostMapping
+    @PostMapping ("/create")
     EvaluationResult createEvaluationResult(@RequestBody EvaluationResultDTO evaluationResultDTO) {
         return evaluationResultServiceImp.createEvaluationResult(evaluationResultDTO);
 

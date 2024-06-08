@@ -55,7 +55,6 @@ public class Order {
   @JoinColumn(name = "request_id")
   EvaluationRequest requestId;
 
-
   @JsonBackReference
   @OneToMany(mappedBy = "orderId")
   List<OrderDetail> orderDetailId;

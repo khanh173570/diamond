@@ -101,10 +101,20 @@ public class OrderDetail {
   @Column(name = "status", nullable = true, length = 255)
   String status;
 
+
   @JsonManagedReference
+
   @ManyToOne
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
+
+//  @JsonManagedReference
+//  @ManyToOne
+//  @JoinColumn(name = "evaluation_staff_id", nullable = true)
+//  User evaluationStaffId;
+@JsonIgnore
+@OneToMany(mappedBy = "orderDetailId", cascade = CascadeType.ALL)
+List<EvaluationResult> evaluationResults;
 
   @JsonIgnore
   @ManyToOne
