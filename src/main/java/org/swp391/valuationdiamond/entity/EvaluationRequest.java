@@ -53,12 +53,13 @@ public class EvaluationRequest {
   @Column(name = "phone_number", nullable = false, length = 255)
   String phoneNumber;
 
+  //hình như gán sai
   @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
 
-  @JsonIgnore
+  @JsonBackReference
   @OneToMany(mappedBy = "requestId")
   List<Order> orders;
 

@@ -84,19 +84,19 @@ public class OrderDetail {
   @Column(name = "evaluation_staff_id", nullable = true)
   String evaluationStaffId;
 
-  @Column(name = "received_date", nullable = false)
+  @Column(name = "received_date", nullable = true)
   Date receivedDate;
 
-  @Column(name = "expired_received_date", nullable = false)
+  @Column(name = "expired_received_date", nullable = true)
   Date expiredReceivedDate;
 
-  @Column(name = "unit_price", nullable = false)
+  @Column(name = "unit_price", nullable = true)
   float unitPrice;
-  @Column(name = "img", nullable = true, length = 255)
+  @Column(name = "img", nullable = true, columnDefinition = "NVARCHAR(MAX)")
   String img;
-  @Column(name = "size", nullable = false)
+  @Column(name = "size", nullable = true)
   float size;
-  @Column(name = "is_diamond", nullable = false)
+  @Column(name = "is_diamond", nullable = true)
   boolean isDiamond;
   @Column(name = "status", nullable = true, length = 255)
   String status;
@@ -116,7 +116,8 @@ public class OrderDetail {
 @OneToMany(mappedBy = "orderDetailId", cascade = CascadeType.ALL)
 List<EvaluationResult> evaluationResults;
 
-  @JsonIgnore
+//  @JsonIgnore
+  @JsonManagedReference
   @ManyToOne
   @JoinColumn(name = "service_id", nullable = true)
   EvaluationService serviceId;

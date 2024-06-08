@@ -31,12 +31,15 @@ public class EvaluationRequestController {
   public EvaluationRequest getEvaluationRequest(@PathVariable String requestId) {
     return evaluationRequestService.getEvaluationRequest(requestId);
   }
+
   @GetMapping("/list/{status}")
   public List<EvaluationRequest> getEvaluationRequestByStatus(@PathVariable("status") String status) {
     return evaluationRequestService.getEvaluationRequestByStatus(status);
   }
-//  @GetMapping("/gets")
-//  public  List<EvaluationRequest> getEvaluationRequestByStatus(){
-//    return evaluationRequestService.getEvaluationRequestByStatus();
-//  }
+
+  @GetMapping("/gett_all")
+  public List<EvaluationRequest> getAllEvaluationRequest() {
+    return evaluationRequestService.getAllEvaluationRequest();
+  }
+
 }

@@ -2,6 +2,7 @@ package org.swp391.valuationdiamond.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -50,7 +51,7 @@ public class Order {
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
 
-  @JsonIgnore
+  @JsonManagedReference
   @ManyToOne
   @JoinColumn(name = "request_id")
   EvaluationRequest requestId;

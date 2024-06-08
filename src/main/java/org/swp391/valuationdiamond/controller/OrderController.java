@@ -23,12 +23,14 @@ public class OrderController {
         return orderServiceImp.saveOrder(orderDTO);
     }
 
-//    @GetMapping("/getOrders")
-//    List<Order> getOrders(){
-//        return orderServiceImp.getOrders();
-//    }
+    @GetMapping("/getOrderByStatusInProgress")
+    List<Order> getOrderByStatusInProgress(){
+        return orderServiceImp.getOrders();
+    }
+
     @GetMapping("/getOrder/{orderId}")
     Order getOrder(@PathVariable("orderId") String orderId){
+
         return orderServiceImp.getOrder(orderId);
     }
 

@@ -29,22 +29,46 @@ public class OrderDetailController {
 //    List<OrderDetail> savedOrderDetails = orderDetailServiceImp.saveAllOrderDetails(orderDetailsDTO);
 //    return ResponseEntity.ok(savedOrderDetails);
 //    }
+    //tìm by order detail Id
     @GetMapping("/getOrderDe/{orderDetailId}")
     OrderDetail getOrderDetailId(@PathVariable("orderDetailId") String orderDetailId){
         return orderDetailServiceImp.getOrderDetailId(orderDetailId);
     }
     @PutMapping ("/getOrderDe/{orderDetailId}")
     OrderDetail updateOrderDe(@PathVariable("orderDetailId") String orderDetailId, @RequestBody OrderDetailDTO orderDetailDTO){
-        return orderDetailServiceImp.updateOrderDe(orderDetailId, orderDetailDTO);
+        return orderDetailServiceImp.updateOrderDeStatus(orderDetailId, orderDetailDTO);
     }
 //    @GetMapping("/getOrderDetail/{orderId}")
 //    public OrderDetail findOrderDetailList(@PathVariable("orderId") String orderId) {
 //        return orderDetailServiceImp.findOrderDetailList(orderId);
 //    }
+    //tìm by order Id
     @GetMapping("/orderDetail/{orderId}")
     public List<OrderDetail> getOrderDetailsByOrderId(@PathVariable("orderId") String orderId) {
-    return orderDetailServiceImp.getOrderDetailsByOrderId(orderId);
-}
+        return orderDetailServiceImp.getOrderDetailsByOrderId(orderId);
+    }
+
+    @GetMapping("/orderDetailByOrderStatus")
+    public List<OrderDetail> getOrderDetailsByStatus() {
+        return orderDetailServiceImp.getOrderDetailsByOrderStatusInProgress();
+    }
+
+    //hàm get all
+    @GetMapping("/getOrderDetails")
+    public List<OrderDetail> getOrderDetails(){
+        return orderDetailServiceImp.getAllOrderDetail();
+    }
+
+    @PutMapping ("/getOrderDeEvaluationStaff/{orderDetailId}")
+    OrderDetail updateOrderDeEvaluationStaff(@PathVariable("orderDetailId") String orderDetailId, @RequestBody OrderDetailDTO orderDetailDTO){
+        return orderDetailServiceImp.updateOrderDeEvaluationStaff(orderDetailId, orderDetailDTO);
+    }
+
+    //hafm get staff == null
+    @GetMapping("/getOrderDetailByEvaluationStaffIsNull")
+    public List<OrderDetail> getOrderDetailByEvaluationStaffIsNull(){
+        return orderDetailServiceImp.getOrderDetailByEvaluationStaffIsNull();
+    }
 
 
 

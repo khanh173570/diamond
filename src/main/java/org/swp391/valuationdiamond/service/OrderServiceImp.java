@@ -122,7 +122,7 @@ public class OrderServiceImp {
 
     public List<Order> getOrders() {
 
-        return  orderRepository.findOrderByStatus("In Process");
+        return  orderRepository.findOrderByStatus("In-Progress");
     }
 
     public List<Order> getAllOrders() {

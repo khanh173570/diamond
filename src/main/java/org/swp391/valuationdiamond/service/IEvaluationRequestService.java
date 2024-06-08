@@ -8,6 +8,6 @@ import org.swp391.valuationdiamond.entity.EvaluationRequest;
 public interface IEvaluationRequestService {
   EvaluationRequest createEvaluationRequest(EvaluationRequestDTO evaluationRequest);
   EvaluationRequest getEvaluationRequest(String requestId);
-  Optional<EvaluationRequest> getAllEvaluationRequest();
+  List<EvaluationRequest> getAllEvaluationRequest();
   List<EvaluationRequest> getEvaluationRequestByStatus(String status);
 }

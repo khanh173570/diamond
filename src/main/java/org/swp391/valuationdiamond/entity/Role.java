@@ -8,6 +8,7 @@ public enum Role {
     //CUSTOMER,
     customer ,// ben table cua tui role no viet thuong :))
     consultant,
-    valuationstaff
+    valuation_staff
+
 
 }
