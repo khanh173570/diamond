@@ -74,6 +74,7 @@ export const CreateReceipt = () => {
           size: 3, // Int
           price: 1.0, // Float
         }
+        
     );
     setRows(newRows);
   };
