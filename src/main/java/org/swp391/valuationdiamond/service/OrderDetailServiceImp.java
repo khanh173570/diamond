@@ -2,20 +2,15 @@ package org.swp391.valuationdiamond.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.swp391.valuationdiamond.dto.OrderDTO;
 import org.swp391.valuationdiamond.dto.OrderDetailDTO;
 import org.swp391.valuationdiamond.entity.EvaluationService;
 import org.swp391.valuationdiamond.entity.Order;
 import org.swp391.valuationdiamond.entity.OrderDetail;
-import org.swp391.valuationdiamond.entity.User;
 import org.swp391.valuationdiamond.repository.EvaluationServiceRepository;
 import org.swp391.valuationdiamond.repository.OrderDetailRepository;
 import org.swp391.valuationdiamond.repository.OrderRepository;
 import org.swp391.valuationdiamond.repository.UserRepository;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -139,5 +134,58 @@ public class OrderDetailServiceImp {
     public List<OrderDetail> getOrderDetailByEvaluationStaffIsNull(){
         return orderDetailRepository.findByEvaluationStaffIdIsNull();
     }
+    public OrderDetail updateOrderDeIsDiamond(String orderDetailId, OrderDetailDTO orderDetailDTO){
+        OrderDetail orderDetail = getOrderDetailId(orderDetailId);
+        orderDetail.setIsDiamond(orderDetailDTO.isDiamond());
+        // Set Order
+        if (orderDetailDTO.getOrderId() != null) {
+            Order order = orderRepository.findById(orderDetailDTO.getOrderId()).orElse(null);
+            orderDetail.setOrderId(order);
+        }
+
+        // Set Service
+        if (orderDetailDTO.getServiceId() != null) {
+            EvaluationService service = evaluationServiceRepository.findById(orderDetailDTO.getServiceId()).orElse(null);
+            orderDetail.setServiceId(service);
+        }
+        return orderDetailRepository.save(orderDetail);
+    }
+    public OrderDetail updateOrderDetail(String orderDetailId, OrderDetailDTO orderDetailDTO) {
+        OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId).orElseThrow(() -> new RuntimeException("Order detail not found"));
+
+        // Update properties from DTO only if they are not null
+        if (orderDetailDTO.getOrderDetailId() != null) {
+            orderDetail.setOrderDetailId(orderDetailDTO.getOrderDetailId());
+        }
+        if (orderDetailDTO.getEvaluationStaffId() != null) {
+            orderDetail.setEvaluationStaffId(orderDetailDTO.getEvaluationStaffId());
+        }
+        if (orderDetailDTO.getStatus() != null) {
+            orderDetail.setStatus(orderDetailDTO.getStatus());
+        }
+        if (orderDetailDTO.getUnitPrice() != -1) {
+            orderDetail.setUnitPrice(orderDetailDTO.getUnitPrice());
+        }
+        if (orderDetailDTO.getReceivedDate() != null) {
+            orderDetail.setReceivedDate(orderDetailDTO.getReceivedDate());
+        }
+        if (orderDetailDTO.getExpiredReceivedDate() != null) {
+            orderDetail.setExpiredReceivedDate(orderDetailDTO.getExpiredReceivedDate());
+        }
+        if (orderDetailDTO.getImg() != null) {
+            orderDetail.setImg(orderDetailDTO.getImg());
+        }
+        if (orderDetailDTO.getSize() != -1) {
+            orderDetail.setSize(orderDetailDTO.getSize());
+        }
+        Boolean isDiamond = orderDetailDTO.isDiamond();
+        if (isDiamond != null) {
+            orderDetail.setIsDiamond(isDiamond);
+        }
+        // Add more properties as needed
+
+        return orderDetailRepository.save(orderDetail);
+    }
+
 }
 

@@ -1,6 +1,7 @@
 package org.swp391.valuationdiamond.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.swp391.valuationdiamond.dto.OrderDetailDTO;
@@ -69,7 +70,15 @@ public class OrderDetailController {
     public List<OrderDetail> getOrderDetailByEvaluationStaffIsNull(){
         return orderDetailServiceImp.getOrderDetailByEvaluationStaffIsNull();
     }
-
-
+    @PutMapping("/update_isdiamond/{orderDetailId}")
+    public OrderDetail updateOrderDeIsDiamond(@PathVariable("orderDetailId") String orderDetailId, @RequestBody OrderDetailDTO orderDetailDTO) {
+        return orderDetailServiceImp.updateOrderDeIsDiamond(orderDetailId, orderDetailDTO);
+    }
+    @PutMapping("updateAllOD/{orderDetailId}")
+    public OrderDetail updateOrderDetail(@PathVariable("orderDetailId") String orderDetailId, @RequestBody OrderDetailDTO orderDetailDTO) {
+        return orderDetailServiceImp.updateOrderDetail(orderDetailId, orderDetailDTO);
+    }
 
 }
+
+

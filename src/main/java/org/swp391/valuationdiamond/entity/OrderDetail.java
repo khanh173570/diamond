@@ -61,11 +61,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
@@ -125,5 +121,10 @@ List<EvaluationResult> evaluationResults;
 //  @JsonBackReference
 //  @OneToMany(mappedBy = "orderDetailId")
 //  List<EvaluationResult> evaluationResultsId;
+  public void setIsDiamond(boolean isDiamond) {
+  this.isDiamond = isDiamond;
+}
+
+
 }
 
