@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.swp391.valuationdiamond.dto.EvaluationRequestDTO;
 import org.swp391.valuationdiamond.entity.EvaluationRequest;
+import org.swp391.valuationdiamond.entity.User;
 import org.swp391.valuationdiamond.service.IEvaluationRequestService;
 
 @RestController
@@ -41,5 +42,11 @@ public class EvaluationRequestController {
   public List<EvaluationRequest> getAllEvaluationRequest() {
     return evaluationRequestService.getAllEvaluationRequest();
   }
+
+  //API get request by user
+//    @GetMapping("/get_by_user/{userId}")
+//    public List<EvaluationRequest> getRequestByUser(@PathVariable("userId")String userId) {
+//        return evaluationRequestService.getRequestByUser(userId);
+//    }
 
 }
