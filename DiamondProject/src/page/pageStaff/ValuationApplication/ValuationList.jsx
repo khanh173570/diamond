@@ -5,7 +5,7 @@ import { GeneratePDF } from './GeneratePDF';
 export const ValuationList = () => {
   const [valuationResult, setValuationRequest] = useState([]);
   const [isPrint, setIsPrint] = useState(false);
-  //------------------------------------------------------------------------------------------
+  const [selectedResult, setSelectedResult] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,17 +21,21 @@ export const ValuationList = () => {
     fetchData();
   }, []);
 
+  const handleOnPrint = (result) => {
+    setSelectedResult(result);
+    setIsPrint(true);
+  };
 
-  //---------------------------------------------------------------------------------
-  const handleOnPrint = (e) => {
-    setIsPrint(true)
-    console.log(e.target.value)
-  }
+  const handleGoBack = () => {
+    setIsPrint(false);
+    setSelectedResult(null);
+  };
+
   return (
     <div>
       {!isPrint ? (
         <>
-          <h2 className='text-center my-4'>Valuation Request</h2>
+          <h2 className='text-center my-4'>Valuation Report List</h2>
           <Table striped bordered className='fs-5'>
             <thead style={{ backgroundColor: '#E2FBF5' }}>
               <tr>
@@ -42,7 +46,6 @@ export const ValuationList = () => {
                 <th>Valuation Staff</th>
                 <th>Delete</th>
                 <th>Print</th>
-
               </tr>
             </thead>
             <tbody>
@@ -52,14 +55,18 @@ export const ValuationList = () => {
                   <td>{result.username}</td>
                   <td>{result.username}</td>
                   <td>13/07/2023</td>
+                  <td>{result.name}</td>
                   <td>
-                    {result.name}
+                    <img src="/src/assets/assetsStaff/delete.svg" alt="Delete" width='20' height='20' />
                   </td>
                   <td>
-                    <img src="src/assets/assetsStaff/delete.svg" alt="Delete" />
-                  </td>
-                  <td>
-                    <img src="src/assets/assetsStaff/print.svg" alt="Print" onClick={(e)=>console.log(e.target.value)} />
+                    <img 
+                      src="/src/assets/assetsStaff/print.svg" 
+                      alt="Print" 
+                      width='20' 
+                      height='20' 
+                      onClick={() => handleOnPrint(result)} 
+                    />
                   </td>
                 </tr>
               ))}
@@ -74,12 +81,11 @@ export const ValuationList = () => {
             className='mt-3'
             height="40"
             width="40"
-            onClick={() => isPrint(false)}
+            onClick={handleGoBack}
           />
-          <GeneratePDF result={valuationResult} />
+          <GeneratePDF result={selectedResult} />
         </div>
       )}
     </div>
   );
 };
-

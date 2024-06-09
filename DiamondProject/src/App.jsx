@@ -16,6 +16,7 @@ import CreateCommitment from './page/pageStaff/CreateCommitment';
 import { PersonalInformation } from './page/pageStaff/PersonalInformation';
 import { ValuationApplication } from './page/pageStaff/ValuationApplication/ValuationApplication.jsx';
 import { ReceiptDetails } from './page/pageStaff/ReciptApplication/ReciptDetails.jsx';
+import { ValuationList } from './page/pageStaff/ValuationApplication/ValuationList.jsx';
 
 // Customer Pages
 import HomeCustomer from './page/pageCustomer/HomeCustomer.jsx';
@@ -64,7 +65,7 @@ function App() {
           <Route path="commitment" element={<CreateCommitment />} />
           <Route path="personal-info" element={<PersonalInformation />} />
           <Route path="valuation" element={<ValuationApplication />} />
-          {/* <Route path="valuation-result-list" element={<ValuationList />} /> */}
+          <Route path="valuation-result-list" element={<ValuationList />} />
         </Route>
         <Route path="/admin" element={<AdminApp />}>
           <Route path="dashboard" element={<DashBoard />} />

@@ -12,6 +12,7 @@ function Header() {
     const [isUsername, setIsUsername] = useState(false);
     const navigate = useNavigate()
 
+    // https://api.slingacademy.com/v1/sample-data/photos
 
     // useEffect(() => {
     //     const fetchData = async () => {
@@ -28,6 +29,8 @@ function Header() {
     //     };
     //     fetchData();
     // }, []);
+
+
     //get data user
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem('user'));

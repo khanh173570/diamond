@@ -6,7 +6,10 @@ export const ReceiptDetails = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editRowId, setEditRowId] = useState(null);
+  const [editColIsDiamond, setEditColIsDiamond] = useState(false);
+  const [editColStatus, setEditColStatus] = useState(false);
   const [editStatus, setEditStatus] = useState('');
+  const [editIsDiamond, setEditIsDiamond] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -26,9 +29,9 @@ export const ReceiptDetails = () => {
     };
 
     fetchData();
-  }, [id]);
+  }, [id,editIsDiamond, editStatus]);
 
-  const handleOnChangeStatus = (productId) => {
+  const handleOnChangeStatus = (productId, field, value) => {
     const fetchUpdateStatus = async () => {
       try {
         const response = await fetch(`${API}/${productId}`, {
@@ -36,13 +39,20 @@ export const ReceiptDetails = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ status: editStatus }),
+          body: JSON.stringify({ [field]: value }),
         });
-
         const data = await response.json();
         console.log('Update response:', data);
+        setEditRowId(null); 
+        setEditColIsDiamond(false);
+        setEditColStatus(false);
 
-        setEditRowId(null); // Reset edit mode
+        // Update the local state with the new value
+        // setOrderDetails((prevDetails) =>
+        //   prevDetails.map((product) =>
+        //     product.id === productId ? { ...product, [field]: value } : product
+        //   )
+        // );
       } catch (error) {
         console.error('Error updating status:', error);
       }
@@ -78,7 +88,7 @@ export const ReceiptDetails = () => {
         </Row>
         <Table>
           <thead>
-            <tr>
+            <tr className="text-center">
               <th>Image</th>
               <th>Service</th>
               <th>Time</th>
@@ -93,29 +103,77 @@ export const ReceiptDetails = () => {
           <tbody>
             {orderDetails.map((product) => (
               <tr key={product.id}>
-                <td>{product.name}</td>
-                <td>{product.name}</td>
-                <td>{product.name}-{product.name}</td>
-                <td>{product.name}</td>
-                <td>{product.name}</td>
-                <td>{product.isDiamond ? "Yes" : "No"}</td>
+                {/* img */}
                 <td>
-                  {editRowId === product.id ? (
+                  <img
+                    src={`https://api.slingacademy.com/public/sample-photos/${product.id}.jpeg/`}
+                    alt=""
+                    height="80"
+                    width="80"
+                  />
+                </td>
+
+                {/* Service */}
+                <td>{product.name}</td>
+                {/* receive - expired */}
+                <td>{product.name}-{product.name}</td>
+                {/* valuation staff */}
+                <td>{product.name}</td>
+                {/* size */}
+                <td>{product.name}</td>
+                {/* isDiamond */}
+                <td>
+                  {editRowId === product.id && editColIsDiamond ? (
+                    <>
+                      <Form.Select
+                        aria-label="Is Diamond"
+                        name="isDiamond"
+                        value={editIsDiamond}
+                        onChange={(e) => setEditIsDiamond(e.target.value === 'true')}
+                      >
+                        <option value=""></option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                      </Form.Select>
+                      <Button onClick={() => handleOnChangeStatus(product.id, 'isDiamond', editIsDiamond)}>Save</Button>
+                    </>
+                  ) : (
+                    <div className="d-flex justify-content-between">
+                      <div>{product.isDiamond ? "Yes" : "No"}</div>
+                      <img
+                        src="/src/assets/assetsStaff/editStatus.svg"
+                        alt="Edit"
+                        height="20"
+                        width="20"
+                        onClick={() => {
+                          setEditRowId(product.id);
+                          setEditIsDiamond(product.isDiamond);
+                          setEditColIsDiamond(true);
+                          setEditColStatus(false);
+                        }}
+                      />
+                    </div>
+                  )}
+                </td>
+                {/* status */}
+                <td>
+                  {editRowId === product.id && editColStatus ? (
                     <>
                       <Form.Select
                         aria-label="Status"
                         value={editStatus}
+                        name="status"
                         onChange={(e) => setEditStatus(e.target.value)}
                       >
                         <option value="Received">Received</option>
                         <option value="Assigned">Assigned</option>
                         <option value="Finished">Finished</option>
                       </Form.Select>
-                      <Button onClick={() => handleOnChangeStatus(product.id)}>Save</Button>
+                      <Button onClick={() => handleOnChangeStatus(product.id, 'status', editStatus)}>Save</Button>
                     </>
                   ) : (
                     <div className="d-flex justify-content-between">
-                      <div>{product.username}</div>
+                      <div>{product.status}</div>
                       <img
                         src="/src/assets/assetsStaff/editStatus.svg"
                         alt="Edit"
@@ -124,24 +182,20 @@ export const ReceiptDetails = () => {
                         onClick={() => {
                           setEditRowId(product.id);
                           setEditStatus(product.status);
+                          setEditColStatus(true);
+                          setEditColIsDiamond(false);
                         }}
                       />
                     </div>
                   )}
                 </td>
+                {/* unit price */}
                 <td>{product.name}</td>
                 <td>
-                  {/* disabled={!product.isDiamond} */}
-                  <Button onClick={() => handleCreateForm(product)} >Create Form</Button>
+                  <Button onClick={() => handleCreateForm(product)} disabled={!product.isDiamond}>Create Form</Button>
                 </td>
               </tr>
-              
             ))}
-            <tr>
-              <td colSpan={7} className="fw-bold">Total Price</td>
-              <td colSpan={3}>{orderDetails[0].phone}</td>
-            </tr>
-            
           </tbody>
         </Table>
       </Container>
