@@ -1,72 +1,73 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from 'axios';
 import { NavLink, useNavigate } from "react-router-dom";
+import {toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [isLogin, setIsLogin] = useState(false);
-    const [error, setError] = useState('')
+    const [error, setError] = useState('');
     const navigate = useNavigate();
-    // test case
-
-    //validate username and password
+    // test thu
+    // localStorage.setItem('user', JSON.stringify({ name: 'John Doe', role: 'customer' }));
 
     const validate = () => {
         let result = true;
         if (username === '' || username === null) {
             result = false;
-            console('usename error')
+            toast.error("Error username !", {
+                position: toast.POSITION.TOP_CENTER,
+            });
+
         }
         if (password === '' || password === null) {
-            result = false
-            console.log('password error')
+            result = false;
+            toast.error("Error password !", {
+                position: toast.POSITION.TOP_CENTER,
+            });
         }
-        return result
-    }
+        return result;
+    };
 
-    const handleGoogleLogin = async () => {
-        try {
-            const response = await axios.get('/auth/google');
-            console.log(response.data);
-        } catch (error) {
-            console.error('Google login failed', error);
-        }
-    }
-
-    // update validation later
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-        try {
-            if(validate()){
-                const response = await fetch('', {
-                    method: "POST",
+        const loginRequest = {username, password}
+        if (validate()) {
+            try {
+                const response = await axios.post('https://jsonplaceholder.typicode.com/posts', loginRequest, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password })
+                    }
                 });
+                const data = response.json();
+                if (data) {
+                    setIsLogin(true);
+                    localStorage.setItem('user', JSON.stringify(data)); 
+                    if (data.role === 'customer') {
+                        navigate("/");
+                    } else if (data.role === 'staff') {
+                        navigate("/staff");
+                    } else if (data.role === 'admin') {
+                        navigate("/admin");
+                    } else {
+                        setIsLogin(false);
+                        setError('Invalid role');
+                    }
+                } else {
+                    setIsLogin(false);
+                    setError('Login failed');
+                }
+            } catch (error) {
+                console.error('Invalid username or password', error);
+              
             }
-            const data = await response.json();
-            if (!data) {
-                setIsLogin(false)
-                console.log('Login failed')
-            } else {
-                setIsLogin(true);
-                localStorage.setItem('user', JSON.stringify(data));
-                localStorage.setItem('role',JSON.stringify())
-                useNavigate("/")
-            }
-        } catch (error) {
-            console.error('Invalid username or password', error);
         }
-    }
+    };
 
     return (
         <div>
-
             <div className="form-container d-flex justify-content-center align-items-center">
                 <form
                     className="form-row my-5 p-5"
@@ -104,29 +105,32 @@ function Login() {
                             value={password}
                             className="form-control mt-1 py-2"
                             onChange={(e) => setPassword(e.target.value)}
-
+                            required
                         />
                     </div>
+                    {error && <div className="alert alert-danger mt-3">{error}</div>}
                     <div className="form-button d-grid mt-4 text-center">
                         <button type="submit" className="btn fw-bold py-2" style={{ backgroundColor: "#CCFBF0" }}>
-                            Submit
+                            Login
                         </button>
                     </div>
-
                     <div className="d-flex align-items-center mt-4">
                         <div style={{ flex: 1, backgroundColor: "#DDE1DF", height: "2px" }} />
                         <p style={{ margin: "0 10px" }}>Or sign in with</p>
                         <div style={{ flex: 1, backgroundColor: "#DDE1DF", height: "2px" }} />
                     </div>
-
-                    <div className="form-img text-center mt-4" onClick={handleGoogleLogin}>
-                        <img
-                            src="/src/assets/Google.png"
+                    <div className="form-img text-center mt-4">
+                        {/* nhập đường dẫn  */}
+                    <a href="">
+                    <img
+                            src="/src/assets/assetsCustomer/Google.png"
                             alt="google"
                             className="img rounded-circle border border-dark"
                             height="40"
                             width="40"
                         />
+                    </a>
+
                     </div>
                     <hr
                         style={{
@@ -139,7 +143,6 @@ function Login() {
                 </form>
             </div>
         </div>
-
     );
 }
 

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+import { Container, Row, Col, Button, Form, } from 'react-bootstrap';
 import { GeneratePDF } from './GeneratePDF';
 import { useLocation } from 'react-router-dom';
 
 export const ValuationApplication = () => {
     const [isPrint, setIsPrint] = useState(false);
-    const location = useLocation();
+    // const location = useLocation();
     // const product = location.state.product;
     const [image, setImage] = useState(null);
     const [image1, setImage1] = useState(null);
@@ -24,7 +24,7 @@ export const ValuationApplication = () => {
         description: '',
         price: 0,
         //  orderDetailId: product.id,
-        orderDetailId:'',
+        orderDetailId: '',
         //userId: product.address.suite
         userId: ''
 
@@ -47,6 +47,9 @@ export const ValuationApplication = () => {
                 },
             });
             const data = await response.json();
+            if(data){
+
+            }
             console.log('Submitted data', data);
         } catch (error) {
             console.log(error);
@@ -86,7 +89,7 @@ export const ValuationApplication = () => {
                     <h1 className="text-center my-3">Diamond Valuation Report</h1>
                     <Row className="mb-2 align-items-center">
                         <Col md={2}>
-                            <Form.Label htmlFor="userId" className="mb-0">ID:</Form.Label>
+                            <Form.Label htmlFor="userId" className="mb-0">Staff ID:</Form.Label>
                         </Col>
                         <Col md={4}>
                             <Form.Control
@@ -100,7 +103,7 @@ export const ValuationApplication = () => {
                     </Row>
                     <Row className="mb-2 align-items-center">
                         <Col md={2}>
-                            <Form.Label htmlFor="orderDetailId" className="mb-0">ID:</Form.Label>
+                            <Form.Label htmlFor="orderDetailId" className="mb-0">Order Detail ID:</Form.Label>
                         </Col>
                         <Col md={4}>
                             <Form.Control
@@ -112,18 +115,31 @@ export const ValuationApplication = () => {
                             />
                         </Col>
                     </Row>
+
                     <div className='d-flex'>
                         <div className='w-50'>
-                            <div className='my-4' style={{ width: '500px' }}>
+                            <div className='my-4 ms-4' style={{ width: '500px' }}>
                                 <h4 className='text-center py-1' style={{ backgroundColor: '#7CF4DE' }}>Diamond Valuation Report</h4>
                                 <Row className="mb-2 align-items-end justify-content-between">
                                     <Col md={4}>
                                         <label htmlFor="diamondOrigin">Diamond Origin</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="text" id='diamondOrigin' name='diamondOrigin' value={result.diamondOrigin} style={{ border: 'none', borderBottom: 'solid' }}
+                                        {/* <input type="text" id='diamondOrigin' name='diamondOrigin' value={result.diamondOrigin} style={{ border: 'none', borderBottom: 'solid' }}
                                             onChange={handleOnChange}
-                                        />
+                                        /> */}
+                                        <select
+                                            id='diamondOrigin'
+                                            name='diamondOrigin'
+                                            value={result.diamondOrigin}
+                                            style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
+                                            onChange={handleOnChange}
+                                        >
+                                            <option value=""></option>
+                                            <option value="Natutal">Natural</option>
+                                            <option value="Lab Grown">Lab Grown</option>
+
+                                        </select>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2 align-items-end justify-content-between">
@@ -131,7 +147,7 @@ export const ValuationApplication = () => {
                                         <label htmlFor="measurements">Measurements</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="text" id='measurements' name="measurements" style={{ border: 'none', borderBottom: 'solid' }}
+                                        <input type="text" id='measurements' name="measurements" style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
                                             value={result.measurements || ''}
                                             onChange={handleOnChange}
                                         />
@@ -139,13 +155,24 @@ export const ValuationApplication = () => {
                                 </Row>
                                 <Row className="mb-2 align-items-end justify-content-between">
                                     <Col md={4}>
-                                        <label htmlFor="shape">Shape</label>
+                                        <label htmlFor="shapeCut">ShapeCut</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="text" id='shape' name="shape" style={{ border: 'none', borderBottom: 'solid' }}
-                                            value={result.shape || ''}
+                                        <select
+                                            id='shapeCut'
+                                            name='shapeCut'
+                                            value={result.shapeCut || ''}
+                                            style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
                                             onChange={handleOnChange}
-                                        />
+                                        >
+                                            <option value=""></option>
+                                            <option value="Round">Round</option>
+                                            <option value="Cushion">Cushion</option>
+                                            <option value="Emerlad">Emerlad</option>
+                                            <option value="Oval">Oval</option>
+                                            <option value="Heart">Heart</option>
+                                            <option value="Princess">Princess</option>
+                                        </select>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2 align-items-end justify-content-between">
@@ -153,21 +180,21 @@ export const ValuationApplication = () => {
                                         <label htmlFor="description">Description</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="text" id='description' name='description' value={result.description} style={{ border: 'none', borderBottom: 'solid' }}
+                                        <input type="text" id='description' name='description' value={result.description} style={{ border: 'none', borderBottom: 'solid', width: '100%' }}
                                             onChange={handleOnChange}
                                         />
                                     </Col>
                                 </Row>
                             </div>
 
-                            <div className='my-4' style={{ width: '500px' }}>
+                            <div className='my-4 ms-4' style={{ width: '500px' }}>
                                 <h4 className='text-center py-1' style={{ backgroundColor: '#7CF4DE' }}>Grading Results</h4>
                                 <Row className="mb-2 align-items-end justify-content-between">
                                     <Col md={4}>
                                         <label htmlFor="carat-weight">Carat Weight</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="number" id='carat-weight' name="caratWeight" style={{ border: 'none', borderBottom: 'solid' }}
+                                        <input type="number" id='carat-weight' name="caratWeight" style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
                                             value={result.caratWeight || ''}
                                             onChange={handleOnChange}
                                         />
@@ -175,61 +202,92 @@ export const ValuationApplication = () => {
                                 </Row>
                                 <Row className="mb-2 align-items-end justify-content-between">
                                     <Col md={4}>
-                                        <label htmlFor="color-grade">Color Grade</label>
+                                        <label htmlFor="color">Color Grade</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="text" id='color-grade' name="color" style={{ border: 'none', borderBottom: 'solid' }}
+                                        <select
+                                            id='color'
+                                            name='color'
                                             value={result.color || ''}
+                                            style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
                                             onChange={handleOnChange}
-                                        />
+                                        >
+                                            <option value=""></option>
+                                            <option value="K">K</option>
+                                            <option value="J">J</option>
+                                            <option value="I">I</option>
+                                            <option value="H">H</option>
+                                            <option value="G">G</option>
+                                            <option value="F">F</option>
+                                        </select>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2 align-items-end justify-content-between">
                                     <Col md={4}>
-                                        <label htmlFor="clarity-grade">Clarity Grade</label>
+                                        <label htmlFor="clarity">Clarity Grade</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="text" id='clarity-grade' name="clarity" style={{ border: 'none', borderBottom: 'solid' }}
+                                        <select
+                                            id='clarity'
+                                            name='clarity'
                                             value={result.clarity || ''}
+                                            style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
                                             onChange={handleOnChange}
-                                        />
+                                        >
+                                            <option value=""></option>
+                                            <option value="SI2">SI2</option>
+                                            <option value="SI1">SI1</option>
+                                            <option value="VS2">VS2</option>
+                                            <option value="VS1">VS1</option>
+                                            <option value="VVS2">VVS2</option>
+                                            <option value="VVS1">VVS1</option>
+                                            <option value="IF">IF</option>
+                                            <option value="FL">FL</option>
+                                        </select>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2 align-items-end justify-content-between">
                                     <Col md={4}>
-                                        <label htmlFor="cut-grade">Cut Grade</label>
+                                        <label htmlFor="cut">Cut Grade</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="text" id='cut-grade' name="cut" style={{ border: 'none', borderBottom: 'solid' }}
+                                        <select
+                                            id='cut'
+                                            name='cut'
                                             value={result.cut || ''}
+                                            style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
                                             onChange={handleOnChange}
-                                        />
+                                        >
+                                            <option value=""></option>
+                                            <option value="FAIR">FAIR</option>
+                                            <option value="GOOD">GOOD</option>
+                                            <option value="V.GOOD">V.GOOD</option>
+                                            <option value="EX.">EX.</option>
+                                        </select>
                                     </Col>
                                 </Row>
-                                <Row className="mb-2 align-items-end justify-content-between">
-                                    <Col md={4}>
-                                        <label htmlFor="shape">Shape Cut</label>
-                                    </Col>
-                                    <Col md={5}>
-                                        <input type="text" id='shape' name="shapeCut" style={{ border: 'none', borderBottom: 'solid' }}
-                                            value={result.shapeCut || ''}
-                                            onChange={handleOnChange}
-                                        />
-                                    </Col>
-                                </Row>
-
                             </div>
 
-                            <div className='my-4' style={{ width: '500px' }}>
+                            <div className='my-4 ms-4' style={{ width: '500px' }}>
                                 <h4 className='text-center py-1' style={{ backgroundColor: '#7CF4DE' }}>Additional Grading Information</h4>
                                 <Row className="mb-2 align-items-end justify-content-between">
                                     <Col md={4}>
                                         <label htmlFor="polish">Polish</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="text" id='polish' name='polish' value={result.polish} style={{ border: 'none', borderBottom: 'solid' }}
+                                        <select
+                                            id='polish'
+                                            name='polish'
+                                            value={result.polish || ''}
+                                            style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
                                             onChange={handleOnChange}
-                                        />
+                                        >
+                                            <option value=""></option>
+                                            <option value="FAIR">FAIR</option>
+                                            <option value="GOOD">GOOD</option>
+                                            <option value="V.GOOD">V.GOOD</option>
+                                            <option value="EX.">EX.</option>
+                                        </select>
                                     </Col>
                                 </Row>
 
@@ -238,9 +296,19 @@ export const ValuationApplication = () => {
                                         <label htmlFor="symmetry">Symmetry</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="text" id='symmetry' name='symmetry' value={result.symmetry} style={{ border: 'none', borderBottom: 'solid' }}
+                                        <select
+                                            id='symmetry'
+                                            name='symmetry'
+                                            value={result.symmetry || ''}
+                                            style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
                                             onChange={handleOnChange}
-                                        />
+                                        >
+                                            <option value=""></option>
+                                            <option value="FAIR">FAIR</option>
+                                            <option value="GOOD">GOOD</option>
+                                            <option value="V.GOOD">V.GOOD</option>
+                                            <option value="EX.">EX.</option>
+                                        </select>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2 align-items-end justify-content-between">
@@ -248,9 +316,20 @@ export const ValuationApplication = () => {
                                         <label htmlFor="fluorescence">Fluorescence</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="text" id='fluorescence' name='fluorescence' value={result.fluorescence} style={{ border: 'none', borderBottom: 'solid' }}
+                                    <select
+                                            id='fluorescence'
+                                            name='fluorescence'
+                                            value={result.fluorescence || ''}
+                                            style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
                                             onChange={handleOnChange}
-                                        />
+                                        >
+                                            <option value=""></option>
+                                            <option value="VSTG">VSTG</option>
+                                            <option value="STG">STG</option>
+                                            <option value="MED">MED</option>
+                                            <option value="FNT">FNT</option>
+                                            <option value="NON">NON</option>
+                                        </select>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2 align-items-end justify-content-between">
@@ -258,7 +337,7 @@ export const ValuationApplication = () => {
                                         <label htmlFor="proportions">Proportion</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="text" id='proportions' name='proportions'  value={result.proportions} style={{ border: 'none', borderBottom: 'solid' }}
+                                        <input type="text" id='proportions' name='proportions' value={result.proportions} style={{ border: 'none', borderBottom: 'solid',width: "100%" }}
                                             onChange={handleOnChange}
                                         />
                                     </Col>
@@ -268,7 +347,7 @@ export const ValuationApplication = () => {
                                         <label htmlFor="estimate-price">Estimate Price</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="number" id='estimate-price' name='price' value={result.price || ''} style={{ border: 'none', borderBottom: 'solid' }}
+                                        <input type="number" id='estimate-price' name='price' value={result.price || ''} style={{ border: 'none', borderBottom: 'solid',width: "100%" }}
                                             onChange={handleOnChange}
                                         />
                                     </Col>
@@ -277,7 +356,7 @@ export const ValuationApplication = () => {
                         </div>
 
                         <div className='w-50'>
-                            <div className='my-4' style={{ width: '500px' }}>
+                            <div className='my-4 ms-4' style={{ width: '500px' }}>
                                 <h4 className='text-center py-1' style={{ backgroundColor: '#7CF4DE' }}>Proportions</h4>
                                 <div className='my-3 d-flex justify-content-center'>
                                     {image ? <img src={image} alt="proportions-upload" height='250px' className='border border-dark' />
@@ -294,8 +373,8 @@ export const ValuationApplication = () => {
                                     <input type="file" id="image_upload" onChange={handleUploadImage} accept=".jpg, .jpeg, .png" />
                                 </div>
                             </div>
-                            <div className='my-4' style={{ width: '500px' }}>
-                                <h4 className='text-center py-1' style={{ backgroundColor: '#7CF4DE' }}>Clarity Characteristics</h4>
+                            <div className='my-4 ms-4' style={{ width: '500px' }}>
+                                <h4 className='text-center py-1' style={{ backgroundColor: '#7CF4DE' }}>Diamond Image</h4>
                                 <div className='my-3 d-flex justify-content-center'>
                                     {image1 ? <img src={image1} alt="clarity-characteristics-upload" height='250px' className='border border-dark' />
                                         : <div className='w-75 d-flex justify-content-center align-items-center border border-dark' style={{ height: '250px' }}>
@@ -328,7 +407,7 @@ export const ValuationApplication = () => {
                         width="20"
                         onClick={() => setIsViewDetail(false)}
                     />
-                    <GeneratePDF result={result} />
+                    <GeneratePDF result={result} image={image} image1={image1}/>
                 </div>
             )}
         </Container>
