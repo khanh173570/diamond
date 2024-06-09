@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Table, Form, Button } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
+import formattedDate from "../../../utils/formattedDate/formattedDate";
 
 export const ReceiptDetails = () => {
   const [orderDetails, setOrderDetails] = useState([]);
@@ -10,15 +11,15 @@ export const ReceiptDetails = () => {
   const [editColStatus, setEditColStatus] = useState(false);
   const [editStatus, setEditStatus] = useState('');
   const [editIsDiamond, setEditIsDiamond] = useState(true);
-  const { id } = useParams();
+  const { orderId } = useParams();
   const navigate = useNavigate();
 
-  const API = 'https://jsonplaceholder.typicode.com/users'; // Replace with your actual API
+  const API = 'http://localhost:8080/order_detail_request/orderDetail'; // Replace with your actual API
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${API}`);
+        const response = await fetch(`${API}/${orderId}`);
         const data = await response.json();
         setOrderDetails(data);
       } catch (error) {
@@ -29,12 +30,14 @@ export const ReceiptDetails = () => {
     };
 
     fetchData();
-  }, [id,editIsDiamond, editStatus]);
+  }, [orderId,editIsDiamond, editStatus]);
+
+   const APIUpdate = 'http://localhost:8080/order_detail_request/getOrderDe'
 
   const handleOnChangeStatus = (productId, field, value) => {
     const fetchUpdateStatus = async () => {
       try {
-        const response = await fetch(`${API}/${productId}`, {
+        const response = await fetch(`${APIUpdate}/${productId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -46,13 +49,6 @@ export const ReceiptDetails = () => {
         setEditRowId(null); 
         setEditColIsDiamond(false);
         setEditColStatus(false);
-
-        // Update the local state with the new value
-        // setOrderDetails((prevDetails) =>
-        //   prevDetails.map((product) =>
-        //     product.id === productId ? { ...product, [field]: value } : product
-        //   )
-        // );
       } catch (error) {
         console.error('Error updating status:', error);
       }
@@ -76,11 +72,11 @@ export const ReceiptDetails = () => {
         </div>
         <Row className="mb-4">
           <Col md={2}>RequestID:</Col>
-          <Col md={3}>{id}</Col>
+          <Col md={3}>{orderDetails[0].orderId.requestId.requestId}</Col>
         </Row>
         <Row className="mb-4">
           <Col md={2}>Customer Name:</Col>
-          <Col md={3}>{orderDetails[0].name}</Col>
+          <Col md={3}>{orderDetails[0].orderId.customerName}</Col>
         </Row>
         <Row className="mb-4">
           <Col md={2}>Phone:</Col>
@@ -102,25 +98,25 @@ export const ReceiptDetails = () => {
           </thead>
           <tbody>
             {orderDetails.map((product) => (
-              <tr key={product.id}>
+              <tr key={product.orderDetailId}>
                 {/* img */}
                 <td>
-                  <img
-                    src={`https://api.slingacademy.com/public/sample-photos/${product.id}.jpeg/`}
-                    alt=""
-                    height="80"
-                    width="80"
+                <img 
+                  src={product.img}
+                  alt="" 
+                  height='80'
+                  width='80'
                   />
-                </td>
+                  </td>
 
                 {/* Service */}
-                <td>{product.name}</td>
+                <td>{product.serviceId.serviceType}</td>
                 {/* receive - expired */}
-                <td>{product.name}-{product.name}</td>
+                <td>{formattedDate(product.receivedDate)}-{formattedDate(product.expiredReceivedDate)}</td>
                 {/* valuation staff */}
-                <td>{product.name}</td>
+                <td>{product.evaluationStaffId}</td>
                 {/* size */}
-                <td>{product.name}</td>
+                <td>{product.size}</td>
                 {/* isDiamond */}
                 <td>
                   {editRowId === product.id && editColIsDiamond ? (
@@ -135,7 +131,7 @@ export const ReceiptDetails = () => {
                         <option value="true">Yes</option>
                         <option value="false">No</option>
                       </Form.Select>
-                      <Button onClick={() => handleOnChangeStatus(product.id, 'isDiamond', editIsDiamond)}>Save</Button>
+                      <Button onClick={() => handleOnChangeStatus(product.orderDetailId, 'isDiamond', editIsDiamond)}>Save</Button>
                     </>
                   ) : (
                     <div className="d-flex justify-content-between">
@@ -146,7 +142,7 @@ export const ReceiptDetails = () => {
                         height="20"
                         width="20"
                         onClick={() => {
-                          setEditRowId(product.id);
+                          setEditRowId(product.orderDetailId);
                           setEditIsDiamond(product.isDiamond);
                           setEditColIsDiamond(true);
                           setEditColStatus(false);
@@ -157,7 +153,7 @@ export const ReceiptDetails = () => {
                 </td>
                 {/* status */}
                 <td>
-                  {editRowId === product.id && editColStatus ? (
+                  {editRowId === product.orderDetailId && editColStatus ? (
                     <>
                       <Form.Select
                         aria-label="Status"
@@ -165,11 +161,12 @@ export const ReceiptDetails = () => {
                         name="status"
                         onChange={(e) => setEditStatus(e.target.value)}
                       >
+                        <option value=""></option>
                         <option value="Received">Received</option>
                         <option value="Assigned">Assigned</option>
                         <option value="Finished">Finished</option>
                       </Form.Select>
-                      <Button onClick={() => handleOnChangeStatus(product.id, 'status', editStatus)}>Save</Button>
+                      <Button onClick={() => handleOnChangeStatus(product.orderDetailId, 'status', editStatus)}>Save</Button>
                     </>
                   ) : (
                     <div className="d-flex justify-content-between">
@@ -180,7 +177,7 @@ export const ReceiptDetails = () => {
                         height="20"
                         width="20"
                         onClick={() => {
-                          setEditRowId(product.id);
+                          setEditRowId(product.orderDetailId);
                           setEditStatus(product.status);
                           setEditColStatus(true);
                           setEditColIsDiamond(false);

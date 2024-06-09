@@ -1,52 +1,54 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import { NavLink, useNavigate } from "react-router-dom";
+import {toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [isLogin, setIsLogin] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
     // test thu
-    localStorage.setItem('user', JSON.stringify({ name: 'John Doe', role: 'customer' }));
+    // localStorage.setItem('user', JSON.stringify({ name: 'John Doe', role: 'customer' }));
+
     const validate = () => {
         let result = true;
         if (username === '' || username === null) {
             result = false;
-            console.log('username error');
+            toast.error("Error username !", {
+                position: toast.POSITION.TOP_CENTER,
+            });
+
         }
         if (password === '' || password === null) {
             result = false;
-            console.log('password error');
+            toast.error("Error password !", {
+                position: toast.POSITION.TOP_CENTER,
+            });
         }
         return result;
     };
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
+        const loginRequest = {username, password}
         if (validate()) {
             try {
-                const response = await axios.post('https://jsonplaceholder.typicode.com/posts', { username, password }, {
+                const response = await axios.post('https://jsonplaceholder.typicode.com/posts', loginRequest, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     }
                 });
-
-                const data = response.data;
-
-                if (data && data.role) {
+                const data = response.json();
+                if (data) {
                     setIsLogin(true);
-                    localStorage.setItem('user', JSON.stringify(data));
-                    // localStorage.setItem('user', JSON.stringify({ name: 'John Doe', role: 'customer' }));
-                    // localStorage.setItem('role', JSON.stringify(data.role));
+                    localStorage.setItem('user', JSON.stringify(data)); 
                     if (data.role === 'customer') {
                         navigate("/");
-                        
                     } else if (data.role === 'staff') {
                         navigate("/staff");
-                       
                     } else if (data.role === 'admin') {
                         navigate("/admin");
                     } else {
@@ -59,17 +61,8 @@ function Login() {
                 }
             } catch (error) {
                 console.error('Invalid username or password', error);
-                setError('Invalid username or password');
+              
             }
-        }
-    };
-
-    const handleGoogleLogin = async () => {
-        try {
-            const response = await axios.get('/auth/google');
-            console.log(response.data);
-        } catch (error) {
-            console.error('Google login failed', error);
         }
     };
 
@@ -126,14 +119,18 @@ function Login() {
                         <p style={{ margin: "0 10px" }}>Or sign in with</p>
                         <div style={{ flex: 1, backgroundColor: "#DDE1DF", height: "2px" }} />
                     </div>
-                    <div className="form-img text-center mt-4" onClick={handleGoogleLogin}>
-                        <img
+                    <div className="form-img text-center mt-4">
+                        {/* nhập đường dẫn  */}
+                    <a href="">
+                    <img
                             src="/src/assets/assetsCustomer/Google.png"
                             alt="google"
                             className="img rounded-circle border border-dark"
                             height="40"
                             width="40"
                         />
+                    </a>
+
                     </div>
                     <hr
                         style={{
