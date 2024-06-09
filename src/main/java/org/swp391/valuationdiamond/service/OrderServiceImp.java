@@ -133,12 +133,4 @@ public class OrderServiceImp {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
     }
-    public Order updateOrderStatus(String orderId, OrderDTO orderDTO){
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
-
-        if (orderDTO.getStatus() != null) {
-            order.setStatus(orderDTO.getStatus());
-        }
-        return orderRepository.save(order);
-    }
 }
