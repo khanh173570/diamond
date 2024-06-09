@@ -70,7 +70,7 @@ public class OrderServiceImp {
                             .expiredReceivedDate(od.getExpiredReceivedDate())
                             .unitPrice(od.getUnitPrice())
                             .size(od.getSize())
-                            .isDiamond(od.isDiamond())
+                            .isDiamond(od.getIsDiamond())
                             .img(od.getImg())
                             .status("In-Progress")
                             .serviceId(service)

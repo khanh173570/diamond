@@ -136,7 +136,7 @@ public class OrderDetailServiceImp {
     }
     public OrderDetail updateOrderDeIsDiamond(String orderDetailId, OrderDetailDTO orderDetailDTO){
         OrderDetail orderDetail = getOrderDetailId(orderDetailId);
-        orderDetail.setIsDiamond(orderDetailDTO.isDiamond());
+        orderDetail.setIsDiamond(orderDetailDTO.getIsDiamond());
         // Set Order
         if (orderDetailDTO.getOrderId() != null) {
             Order order = orderRepository.findById(orderDetailDTO.getOrderId()).orElse(null);
@@ -163,7 +163,7 @@ public class OrderDetailServiceImp {
         if (orderDetailDTO.getStatus() != null) {
             orderDetail.setStatus(orderDetailDTO.getStatus());
         }
-        if (orderDetailDTO.getUnitPrice() != -1) {
+        if (orderDetailDTO.getUnitPrice() != null) {
             orderDetail.setUnitPrice(orderDetailDTO.getUnitPrice());
         }
         if (orderDetailDTO.getReceivedDate() != null) {
@@ -175,12 +175,11 @@ public class OrderDetailServiceImp {
         if (orderDetailDTO.getImg() != null) {
             orderDetail.setImg(orderDetailDTO.getImg());
         }
-        if (orderDetailDTO.getSize() != -1) {
+        if (orderDetailDTO.getSize() != null) {
             orderDetail.setSize(orderDetailDTO.getSize());
         }
-        Boolean isDiamond = orderDetailDTO.isDiamond();
-        if (isDiamond != null) {
-            orderDetail.setIsDiamond(isDiamond);
+        if (orderDetailDTO.getIsDiamond() != null) {
+            orderDetail.setIsDiamond(orderDetailDTO.getIsDiamond());
         }
         // Add more properties as needed
 

@@ -87,13 +87,13 @@ public class OrderDetail {
   Date expiredReceivedDate;
 
   @Column(name = "unit_price", nullable = true)
-  float unitPrice;
+  Float unitPrice;
   @Column(name = "img", nullable = true, columnDefinition = "NVARCHAR(MAX)")
   String img;
   @Column(name = "size", nullable = true)
-  float size;
+  Float size;
   @Column(name = "is_diamond", nullable = true)
-  boolean isDiamond;
+  Boolean isDiamond;
   @Column(name = "status", nullable = true, length = 255)
   String status;
 

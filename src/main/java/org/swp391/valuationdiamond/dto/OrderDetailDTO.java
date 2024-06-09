@@ -21,10 +21,10 @@ public class OrderDetailDTO {
     String evaluationStaffId;
     Date receivedDate;
     Date expiredReceivedDate;
-    float unitPrice;
+    Float unitPrice;
     String img;
-    float size;
-    boolean isDiamond;
+    Float size;
+    Boolean isDiamond;
     String status;
     String orderId;
     String serviceId;
