@@ -26,4 +26,8 @@ public class EvaluationServicePriceListServiceImp implements IEvaluationServiceP
         EvaluationService evaluationService = evaluationServiceRepository.findById(serviceId).orElseThrow(() -> new RuntimeException("ServiceId not found"));
         return evaluationServicePriceListRepository.findByServiceId(evaluationService);
     }
+    @Override
+    public List<EvaluationServicePriceList> getAllServicePriceList(){
+        return evaluationServicePriceListRepository.findAll();
+    }
 }

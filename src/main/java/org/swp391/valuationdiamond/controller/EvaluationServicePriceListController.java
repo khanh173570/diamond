@@ -20,4 +20,8 @@ public class EvaluationServicePriceListController {
     public List<EvaluationServicePriceList> getEvaluationPriceListByServiceID(@PathVariable String serviceId) {
         return evaluationServicePriceListServiceImp.getPriceListByServiceId(serviceId);
     }
+    @GetMapping("/getServicePriceLists")
+    public List<EvaluationServicePriceList> getAllEvaluationPriceList(){
+        return evaluationServicePriceListServiceImp.getAllServicePriceList();
+    }
 }
