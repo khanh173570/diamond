@@ -118,5 +118,13 @@ public class EvaluationRequestServiceImp implements IEvaluationRequestService {
 //  public List<EvaluationRequest> getEvaluationRequestByStatus() {
 //    return evaluationRequestRepository.findByStatus("In-Progress");
 //  }
+public EvaluationRequest updateRequestStatus(String requestId, EvaluationRequestDTO evaluationRequestDTO){
+   EvaluationRequest request= evaluationRequestRepository.findById(requestId).orElseThrow(() -> new RuntimeException("Request not found"));
+
+  if (evaluationRequestDTO.getStatus() != null) {
+    request.setStatus(evaluationRequestDTO.getStatus());
+  }
+  return evaluationRequestRepository.save(request);
+}
 
 }

@@ -4,15 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import javax.swing.text.html.Option;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.swp391.valuationdiamond.dto.EvaluationRequestDTO;
 import org.swp391.valuationdiamond.entity.EvaluationRequest;
-import org.swp391.valuationdiamond.entity.User;
+import org.swp391.valuationdiamond.service.EvaluationRequestServiceImp;
 import org.swp391.valuationdiamond.service.IEvaluationRequestService;
 
 @RestController
@@ -21,7 +16,8 @@ public class EvaluationRequestController {
 
   @Autowired
   private IEvaluationRequestService evaluationRequestService;
-
+  @Autowired
+  private EvaluationRequestServiceImp evaluationRequestServiceImp;
 
   @PostMapping("/create")
   public EvaluationRequest createEvaluationRequest(@RequestBody EvaluationRequestDTO evaluationRequest) {
@@ -49,4 +45,9 @@ public class EvaluationRequestController {
 //        return evaluationRequestService.getRequestByUser(userId);
 //    }
 
+  @PutMapping("/updateStatus/{requestId}")
+  public EvaluationRequest updateRequestStatus(@PathVariable("requestId") String requestId, @RequestBody EvaluationRequestDTO evaluationRequestDTO) {
+    return evaluationRequestServiceImp.updateRequestStatus(requestId, evaluationRequestDTO);
+  }
 }
+

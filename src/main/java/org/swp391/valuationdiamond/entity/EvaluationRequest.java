@@ -2,6 +2,7 @@ package org.swp391.valuationdiamond.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
@@ -54,7 +55,7 @@ public class EvaluationRequest {
   String phoneNumber;
 
   //hình như gán sai
-  @JsonBackReference
+  @JsonManagedReference
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
