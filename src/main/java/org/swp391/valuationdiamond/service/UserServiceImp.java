@@ -62,5 +62,8 @@ public class UserServiceImp {
     public User getStaff(String id){
         return userRepository.findById(id).orElseThrow(()-> new RuntimeException("Not found"));
     }
+    public User getAUser(String id){
+        return userRepository.findById(id).orElseThrow(()-> new RuntimeException("UserId Not Found"));
+    }
 
 }

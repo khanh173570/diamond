@@ -42,5 +42,10 @@ public class EvaluationRequestController {
   public EvaluationRequest updateRequestStatus(@PathVariable("requestId") String requestId, @RequestBody EvaluationRequestDTO evaluationRequestDTO) {
     return evaluationRequestServiceImp.updateRequestStatus(requestId, evaluationRequestDTO);
   }
+  //API get request by user
+  @GetMapping("/get_by_user/{userId}")
+  public List<EvaluationRequest> getRequestByUser(@PathVariable("userId") String userId) {
+    return evaluationRequestService.getRequestByUser(userId);
+  }
 }
 

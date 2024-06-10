@@ -35,10 +35,15 @@ public class UserController {
     List<User> getStaffs(){
         return userServiceImp.getStaffs();
     }
+    @GetMapping("/getAUser/{userId}")
+        User getAUser(@PathVariable("userId") String userId ){
+           return userServiceImp.getAUser(userId);
+        }
+    }
 
 //    @GetMapping("/signup-google")
 //    Map<String, Object> currentUser(OAuth2AuthenticationToken token){
 //        return token.getPrincipal().getAttributes();
 //    }
 
-}
+//}

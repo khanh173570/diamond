@@ -10,4 +10,5 @@ public interface IEvaluationRequestService {
   EvaluationRequest getEvaluationRequest(String requestId);
   List<EvaluationRequest> getAllEvaluationRequest();
   List<EvaluationRequest> getEvaluationRequestByStatus(String status);
+  List<EvaluationRequest> getRequestByUser(String userId);
 }

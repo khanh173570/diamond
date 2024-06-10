@@ -45,8 +45,8 @@ public class EvaluationRequestServiceImp implements IEvaluationRequestService {
     evaluationRequest.setPhoneNumber(evaluationRequestDTO.getPhoneNumber());
 
 
-//    User userId = userRepository.findById(evaluationRequestDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
-//    evaluationRequest.setUserId(userId);
+    User userId = userRepository.findById(evaluationRequestDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+    evaluationRequest.setUserId(userId);
 
     return evaluationRequestRepository.save(evaluationRequest);
   }
@@ -82,5 +82,10 @@ public EvaluationRequest updateRequestStatus(String requestId, EvaluationRequest
   }
   return evaluationRequestRepository.save(request);
 }
+  @Override
+  public List<EvaluationRequest> getRequestByUser(String userId) {
+    User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
+    return evaluationRequestRepository.findByUserId(user);
+  }
 }
