@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import formattedDate from '../../../utils/formattedDate/formattedDate';
 
 export const ViewReciptList = () => {
   const [selection, setSelection] = useState([]);
@@ -16,7 +17,7 @@ export const ViewReciptList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+        const response = await fetch('http://localhost:8080/order_request/getOrders');
         const data = await response.json();
         setSelection(data);
         setFilteredSelection(data); // Initialize filtered data
@@ -36,7 +37,7 @@ export const ViewReciptList = () => {
   };
 
   const viewDetail = (item) => {
-    navigate(`/staff/view-receipt/${item.id}`, { state: { item } });
+    navigate(`/staff/view-receipt/${item.orderId}`, { state: { item } });
   };
 
   return (
@@ -86,15 +87,15 @@ export const ViewReciptList = () => {
           </thead>
           <tbody>
             {filteredSelection.map(item => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.company.name}</td>
-                <td>{item.website}</td>
-                <td>{item.phone}</td>
+              <tr key={item.orderId}>
+                <td>{item.orderId}</td>
+                <td>{formattedDate(item.orderDate)}</td>
+                <td>{item.diamondQuantity}</td>
+                <td>{item.status}</td>
                 <td>
                   <Button variant="info" onClick={() => viewDetail(item)}>
                     View Detail
-                  </Button>
+</Button>
                 </td>
               </tr>
             ))}
