@@ -9,6 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/evaluation_results")
 public class EvaluationResultController {
+
     @Autowired
     private EvaluationResultServiceImp evaluationResultServiceImp;
     @PostMapping ("/create")
@@ -22,6 +23,7 @@ public class EvaluationResultController {
             return evaluationResultServiceImp.getEvaluationResult();
         }
     }
+
     @GetMapping("/getEvaluationResults/{evaluationResultId}")
     EvaluationResult getEvaluationResult(@PathVariable String evaluationResultId) {
         return evaluationResultServiceImp.getEvaluationResult(evaluationResultId);

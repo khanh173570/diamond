@@ -11,5 +11,10 @@ public interface EvaluationRequestRepository extends JpaRepository<EvaluationReq
     EvaluationRequest findByRequestId(String requestId);
     List<EvaluationRequest> findByStatus(String status);
 
+
     List<EvaluationRequest> findByUserId(User userId);
+
+    boolean deleteByRequestId(String requestId);
+
+
 }

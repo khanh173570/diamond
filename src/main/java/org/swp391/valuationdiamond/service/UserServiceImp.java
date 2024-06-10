@@ -1,6 +1,7 @@
 package org.swp391.valuationdiamond.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.swp391.valuationdiamond.dto.UserDTO;
 import org.swp391.valuationdiamond.entity.Role;
@@ -33,20 +34,21 @@ public class UserServiceImp {
         return userRepository.save(user);
     }
 
-    //Hàm này sử dụng để lấy dữ liệu từ gg và save lại trong database
-    public User signupWithGoogle(Map<String, Object> map){
-        if (map == null){
-            return null;
-        }
-        else {
-            User user = new User();
-            user.setUserId((String) map.get("email"));
-            user.setFirstName((String) map.get("given_name"));
-            user.setLastName((String) map.get("family_name"));
-            user.setEmail((String) map.get("email"));
-            user.setRole(Role.USER);
-            return userRepository.save(user);
-        }
+    //đăng ký tài khoản với google
+//    public User signupWithGoogle(OAuth2AuthenticationToken token){
+//        Map<String, Object> map = token.getPrincipal().getAttributes();
+//        User user = new User();
+//        user.setUserId((String) map.get("email"));
+//        user.setFirstName((String) map.get("given_name"));
+//        user.setLastName((String) map.get("family_name"));
+//        user.setEmail((String) map.get("email"));
+//        user.setRole(Role.USER);
+//        return userRepository.save(user);
+//    }
+
+    //hàm đăng nhập
+    public User login(String email, String password){
+        return userRepository.findByEmailAndPassword(email, password);
     }
 
     public List<User> getStaffs(){

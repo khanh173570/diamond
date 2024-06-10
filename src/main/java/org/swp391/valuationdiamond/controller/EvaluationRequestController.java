@@ -38,6 +38,8 @@ public class EvaluationRequestController {
   public List<EvaluationRequest> getAllEvaluationRequest() {
     return evaluationRequestService.getAllEvaluationRequest();
   }
+
+
   @PutMapping("/updateStatus/{requestId}")
   public EvaluationRequest updateRequestStatus(@PathVariable("requestId") String requestId, @RequestBody EvaluationRequestDTO evaluationRequestDTO) {
     return evaluationRequestServiceImp.updateRequestStatus(requestId, evaluationRequestDTO);

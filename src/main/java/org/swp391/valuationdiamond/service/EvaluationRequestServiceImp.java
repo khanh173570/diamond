@@ -25,6 +25,8 @@ public class EvaluationRequestServiceImp implements IEvaluationRequestService {
   @Autowired
   private UserRepository userRepository;
 
+
+  //Hàm create request 'C'
   @Override
   @Transactional
   public EvaluationRequest createEvaluationRequest(EvaluationRequestDTO evaluationRequestDTO) {
@@ -51,6 +53,7 @@ public class EvaluationRequestServiceImp implements IEvaluationRequestService {
     return evaluationRequestRepository.save(evaluationRequest);
   }
 
+  //Hàm read 1 evaluation request 'R'
   @Override
   public EvaluationRequest getEvaluationRequest(String requestId) {
     if (evaluationRequestRepository.findByRequestId(requestId) == null) {
@@ -60,16 +63,57 @@ public class EvaluationRequestServiceImp implements IEvaluationRequestService {
     return evaluationRequestRepository.findByRequestId(requestId);
   }
 
+  //show evaluation request 'R'
   @Override
   public List<EvaluationRequest> getAllEvaluationRequest() {
     return evaluationRequestRepository.findAll();
   }
+
+  //show by status 'R'
   @Override
   public List<EvaluationRequest> getEvaluationRequestByStatus(String status) {
-//    User user = userRepository.findById(evaluationRequestDTO.getUser().getId()).orElseThrow(() -> new RuntimeException("User not found"));
-//    evaluationRequest.setUserId(user);
     return evaluationRequestRepository.findByStatus(status);
   }
+
+    //hàm delete 'D'
+  @Override
+  public boolean deleteEvaluationRequest(String requestId) {
+    if(evaluationRequestRepository.findByRequestId(requestId) == null){
+      return false;
+    }
+    else {
+        evaluationRequestRepository.deleteByRequestId(requestId);
+        return true;
+    }
+  }
+
+  //hàm update 'U'
+  @Override
+  public EvaluationRequest updateEvaluationRequest(String requestId, EvaluationRequestDTO evaluationRequestDTO) {
+    EvaluationRequest evaluationRequest = new EvaluationRequest();
+    if (evaluationRequestRepository.findByRequestId(requestId) == null) {
+      throw new RuntimeException("Evaluation Request not found");
+    } else if (evaluationRequestDTO.getRequestDescription() != null) {
+        evaluationRequest.setRequestDescription(evaluationRequestDTO.getRequestDescription());
+    } else if (evaluationRequestDTO.getRequestEmail() != null) {
+        evaluationRequest.setRequestEmail(evaluationRequestDTO.getRequestEmail());
+    } else if (evaluationRequestDTO.getGuestName() != null) {
+        evaluationRequest.setGuestName(evaluationRequestDTO.getGuestName());
+    } else if (evaluationRequestDTO.getPhoneNumber() != null) {
+        evaluationRequest.setPhoneNumber(evaluationRequestDTO.getPhoneNumber());
+    } else if (evaluationRequestDTO.getService() != null) {
+        evaluationRequest.setService(evaluationRequestDTO.getService());
+    } else if (evaluationRequestDTO.getStatus() != null) {
+        evaluationRequest.setStatus(evaluationRequestDTO.getStatus());
+    }
+    return evaluationRequestRepository.save(evaluationRequest);
+  }
+
+  //hàm get request by user 'R'
+
+
+
+
 
 //  public List<EvaluationRequest> getEvaluationRequestByStatus() {
 //    return evaluationRequestRepository.findByStatus("In-Progress");
