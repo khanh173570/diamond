@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Stack } from 'react-bootstrap';
+import { Row, Col, Stack, Button } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const PersonalRequest = () => {
     const [myRequest, setMyRequest] = useState([]);
     const [loading, setLoading] = useState(false)
-    const [isEdit, setIsEdit] = useState(false)
+    const [isEdit, setIsEdit] = useState(false);
+    const navigate = useNavigate()
+    const {state} = useLocation()
+    // get request by userid
     const API = 'https://jsonplaceholder.typicode.com/users';
-    const userId = JSON.parse(localStorage.getItem('user'));
-
+    const userId = JSON.parse(localStorage.getItem('cusId'));
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -22,32 +25,18 @@ export const PersonalRequest = () => {
             }
         };
         fetchData();
-        return ()=>{
+        return () => {
             setLoading(false)
         }
-    }, [userId.username,isEdit ]);
+    }, [userId.username]);
 
-
-    const handleOnCancel = async (id, value) => {
-        try {
-            const response = await fetch(`${API}/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ status: value }),
-            });
-            const data = await response.json();
-            setIsEdit(true)
-            console.log(data)
-        } catch (error) {
-            console.error('Error updating status:', error);
-        }
-    };
-    if(!loading){
-        return <div  style={{ minHeight: '500px' }}>Loading...</div>
+    if (!loading) {
+        return <div style={{ minHeight: '500px' }}>Loading...</div>
     }
 
+    const viewMyRequest = (request)=>{
+        navigate(`/my-request/${request.id}`, {state:{request}})
+    }
     return (
         <div className='my-5' style={{ minHeight: '500px' }}>
             <h2 className='text-center' style={{ margin: "30px 0" }}>My Request</h2>
@@ -56,6 +45,7 @@ export const PersonalRequest = () => {
                     {myRequest.map((request) => (
                         <Row key={request.id} className="justify-content-center w-50 mx-auto p-3" style={{ boxShadow: 'rgb(0 0 0 / 16%) 1px 1px 10px' }}>
                             <Col md={1} className="d-flex justify-content-center align-items-center">
+                            {/* naỳ là số thứ tự ko phải request id , request id để ỏ reqest */}
                                 {request.id}
                             </Col>
                             <Col xs="auto" className="d-flex align-items-center">
@@ -69,24 +59,26 @@ export const PersonalRequest = () => {
                             <Col>
                                 <Stack>
                                     {/* Service name */}
-                                    <div className='mb-1 fw-bold'>Valuation Diamond</div>
-                                    {/* Description */}
-                                    <div className='mb-1'>Please contact me at 3:00 pm, I need to discuss something about your service, and don't be late again! Thanks</div>
-                                    {/* Quantity */}
-                                    <div className='mb-1'>Quantity: 4</div>
+                                    <div className='mb-1 fw-bold'>Valuation Service</div>
+                                    {/* Created Date */}
+                                    <div className='mb-1'>Created Request Date: 13/07/2023</div>
+                                     {/* Stauts */}
+                                     <div className='mb-1'>Status: Requesting</div>
                                 </Stack>
                             </Col>
                             <Col md={2} className="d-flex">
-                                <div className="me-2 ">
-                                    {request.status}
-                                </div>
-                                <img
-                                    src="/src/assets/assetsCustomer/cancel.svg"
-                                    alt="update status"
-                                    width="20"
-                                    height="20"
-                                    onClick={() => handleOnCancel(request.id, 'Canceled')}
-                                />
+                                <Stack>
+                                    <Button style={{backgroundColor:'#CCFBF0'}} onClick={()=>viewMyRequest(request)}>
+                                            <span className='text-dark me-1'>View</span>
+                                            <img
+                                            src="/src/assets/assetsCustomer/seemore.svg"
+                                            alt=""
+                                            width="20"
+                                            height="20"
+                                        />
+                                    </Button>
+                                </Stack>
+
                             </Col>
                         </Row>
                     ))}

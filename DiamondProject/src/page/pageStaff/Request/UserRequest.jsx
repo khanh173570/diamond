@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // import useNavigate from react-router-dom
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
@@ -11,7 +12,8 @@ export const UserRequest = () => {
   const [isViewDetail, setIsViewDetail] = useState(false);
   const [editRowId, setEditRowId] = useState(null);
   const [editStatus, setEditStatus] = useState('');
-  const [isEdit, setIsEdit] = useState(false)
+  const [isEdit, setIsEdit] = useState(false);
+  const navigate = useNavigate(); // add useNavigate hook
 
   // List data
   const API = 'https://jsonplaceholder.typicode.com/posts';
@@ -42,13 +44,8 @@ export const UserRequest = () => {
 
         const data = await response.json();
         console.log('Update response:', data);
-        // setUserRequest((currentState) =>
-        //   currentState.map((user) =>
-        //     user.id === data.id ? { ...user, status: data.status } : user
-        //   )
-        // );
-        setIsEdit(true)
-        setEditRowId(null);  // Reset edit mode
+        setIsEdit(true);
+        setEditRowId(null); // Reset edit mode
       } catch (error) {
         console.error('Error updating status:', error);
       }
@@ -62,13 +59,11 @@ export const UserRequest = () => {
       await fetch(`${API}/${id}`, {
         method: 'DELETE',
       });
-      setIsEdit(true)
-      // setUserRequest((prevState) => prevState.filter((user) => user.id !== id));
+      setIsEdit(true);
     } catch (error) {
       console.error('Error deleting item:', error);
     }
   };
-
 
   const viewDetails = (userRequestDetail) => {
     setCurrentDetail(userRequestDetail);
@@ -165,6 +160,7 @@ export const UserRequest = () => {
             <UserRequestDetails1
               key={currentDetail.id}
               userRequestDetail={currentDetail}
+              navigate={navigate} // pass navigate to UserRequestDetails1
             />
           </div>
         )
