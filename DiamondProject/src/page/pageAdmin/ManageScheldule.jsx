@@ -6,6 +6,8 @@ export const ManageSchedule = () => {
   const [dataManage, setDataManage] = useState([]);
   const [evaluationStaffIds, setEvaluationStaffIds] = useState([]);
   const [selectedEvaluationStaff, setSelectedEvaluationStaff] = useState({});
+  const  [showFormDetails,setShowformDetails];
+
 
   // Fetch order data
   useEffect(() => {
@@ -37,15 +39,15 @@ export const ManageSchedule = () => {
     fetchStaffIds();
   }, []);
 
-  const handleOnChangeValuationStaff = (orderId, value) => {
+  const handleOnChangeValuationStaff = (orderDetailId, value) => {
     setSelectedEvaluationStaff((prevState) => ({
       ...prevState,
-      [orderId]: value,
+      [orderDetailId]: value,
     }));
   };
 
-  const handleSendClick = async (orderId) => {
-    const evaluationStaffId = selectedEvaluationStaff[orderId];
+  const handleSendClick = async (orderDetailId) => {
+    const evaluationStaffId = selectedEvaluationStaff[orderDetailId];
     if (!evaluationStaffId) return;
 
     try {
