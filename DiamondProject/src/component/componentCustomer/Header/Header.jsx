@@ -1,39 +1,47 @@
+import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
-import { NavLink } from 'react-router-dom';
-import '../Header/Header.css'
-import { useEffect, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import '../Header/Header.css';
 
 function Header() {
-    const [user, setUser] = useState({});
-    const [isUsername, setIsUsername] = useState(false);
+    const [user, setUser] = useState(null);
+    const [isLogin, setIsLogin] = useState(false)
+    const navigate = useNavigate();
 
+    // Fetch user data on component mount
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://jsonplaceholder.typicode.com/users/2');
+                const response = await fetch("https://jsonplaceholder.typicode.com/users/2");
                 const data = await response.json();
-                setIsUsername(true);
+                localStorage.setItem('cusId', JSON.stringify(data));
                 setUser(data);
-                localStorage.setItem('user', JSON.stringify(data));
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error("Error fetching data:", error);
             }
-            
         };
+    
         fetchData();
-        // unmounted data
-        const interval = setInterval(fetchData, 5000);
-        return () => clearInterval(interval);
+    }, []);
+
+    // Retrieve user from localStorage on component mount
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('cusId'));
+        if (storedUser) {
+            setUser(storedUser);
+            setIsLogin(true)
+        }
     }, []);
 
     const handleLogout = () => {
-        setIsUsername(false);
-        setUser({});
-        localStorage.removeItem('user');
+        setUser(null);
+        localStorage.removeItem('cusId'); 
+        setIsLogin(false)
+        navigate('/login');
     };
 
     return (
@@ -69,15 +77,17 @@ function Header() {
                         <NavLink to="/blog" className="nav-link">Blog</NavLink>
                         <NavLink to="/contact" className="nav-link">Contact</NavLink>
                         <NavDropdown title="Language" id="nav-dropdown">
-                                <NavDropdown.Item >Vietnamese</NavDropdown.Item>
-                                <NavDropdown.Item >English</NavDropdown.Item>        
+                            <NavDropdown.Item>Vietnamese</NavDropdown.Item>
+                            <NavDropdown.Item>English</NavDropdown.Item>
                         </NavDropdown>
-                        {(isUsername && user) ? (
+                    
+                        { user && isLogin ? (
                             <NavDropdown title={user.name} id="nav-dropdown">
                                 <NavDropdown.Item as={NavLink} to="/profile">My Profile</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/my-request">My Request</NavDropdown.Item>
+                                <NavDropdown.Item as={NavLink} to="/my-order">My Order</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item onClick={handleLogout} as={NavLink} to='/login'>
+                                <NavDropdown.Item onClick={handleLogout}>
                                     Log out
                                 </NavDropdown.Item>
                             </NavDropdown>

@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import formattedDate from '../../../utils/formattedDate/formattedDate';
 
 export const ViewReciptList = () => {
   const [selection, setSelection] = useState([]);
@@ -16,7 +17,7 @@ export const ViewReciptList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+        const response = await fetch('http://localhost:8080/order_request/getOrders');
         const data = await response.json();
         setSelection(data);
         setFilteredSelection(data); // Initialize filtered data
@@ -36,12 +37,12 @@ export const ViewReciptList = () => {
   };
 
   const viewDetail = (item) => {
-    navigate(`/staff/view-receipt/${item.id}`,{ state: { item }});
+    navigate(`/staff/view-receipt/${item.orderId}`, { state: { item } });
   };
 
   return (
     <div className="container">
-      <div className='d-flex justify-content-center' style={{marginBottom:'50px', marginTop:'50px'}}>
+      <div className='d-flex justify-content-center' style={{ marginBottom: '50px', marginTop: '50px' }}>
         <h1>View Order List</h1>
       </div>
 
@@ -64,29 +65,37 @@ export const ViewReciptList = () => {
           </Row>
         </Form>
       </div>
-
+      <style>
+        {`
+          .centered-table th,
+          .centered-table td {
+            text-align: center;
+            vertical-align: middle;
+          }
+        `}
+      </style>
       <div>
-        <Table striped bordered hover>
+        <Table striped bordered hover className="centered-table">
           <thead>
             <tr>
               <th>Order ID</th>
-              <th>Company Name</th>
-              <th>Website</th>
-              <th>Phone</th>
+              <th>Date</th>
+              <th>Quantity</th>
+              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {filteredSelection.map(item => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.company.name}</td>
-                <td>{item.website}</td>
-                <td>{item.phone}</td>
+              <tr key={item.orderId}>
+                <td>{item.orderId}</td>
+                <td>{formattedDate(item.orderDate)}</td>
+                <td>{item.diamondQuantity}</td>
+                <td>{item.status}</td>
                 <td>
                   <Button variant="info" onClick={() => viewDetail(item)}>
                     View Detail
-                  </Button>
+</Button>
                 </td>
               </tr>
             ))}
@@ -96,4 +105,5 @@ export const ViewReciptList = () => {
     </div>
   );
 };
-  
+
+export default ViewReciptList;

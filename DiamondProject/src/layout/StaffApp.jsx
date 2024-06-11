@@ -10,10 +10,10 @@ function StaffApp() {
         <Header />
       </div>
       <div className='d-flex' style={{backgroundColor:'#EDEDED'}} >
-        <div  style={{width:'20%'}}>
+        <div  style={{width:'17%'}}>
           <SideBar /> 
         </div>
-        <div style={{backgroundColor:'white',width:'80%'}}>
+        <div style={{backgroundColor:'white',width:'93%'}}>
           <Outlet />
         </div>
       </div>

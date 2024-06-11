@@ -10,18 +10,17 @@ export const CreateReceipt = () => {
   const [phone, setPhone] = useState("");
   const [request, setRequest] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [selectedServiceId, setSelectedServiceId] = useState("");
   const [reviewMode, setReviewMode] = useState(false);
+  const [orderDate, setOrderDate] = useState("");
   const componentRef = useRef();
 
-  // Get current date
   const currentDate = new Date().toLocaleDateString();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://jsonplaceholder.typicode.com/users"
+          "http://localhost:8080/service/getServices"
         );
         const data = await response.json();
         setSelection(data);
@@ -34,11 +33,11 @@ export const CreateReceipt = () => {
   }, []);
 
   const initialRows = Array.from({ length: parseInt(quantity) || 0 }, () => ({
-    service: "khanhtran", // String
-    receivedDate: new Date(), // Date
-    expiredDate: new Date(), // Date
-    size: 10, // Int
-    price: 7.0, // Float
+    serviceId: "",
+    receivedDate: new Date().toISOString().split("T")[0],
+    expiredReceivedDate: new Date().toISOString().split("T")[0],
+    size: 0,
+    unitPrice: 0.0,
   }));
 
   const [rows, setRows] = useState(initialRows);
@@ -50,15 +49,21 @@ export const CreateReceipt = () => {
     setRows(updatedRows);
   };
 
-  const handleServiceChange = (index, value) => {
-    const selectedService = selection.find(
-      (service) => service.username === value
-    );
+  // const handleServiceChange = (index, value) => {
+  //   const selectedService = selection.find(
+  //     (service) => service.serviceType === value
+  //   );
+  //   const selectedServiceId = selectedService ? selectedService.serviceId : "";
+  //   const updatedRows = rows.map((row, rowIndex) =>
+  //     rowIndex === index ? { ...row, serviceId: selectedServiceId } : row
+  //   );
+  //   setRows(updatedRows);
+  // };
+  const handleServiceChange = (index, serviceId) => {
     const updatedRows = rows.map((row, rowIndex) =>
-      rowIndex === index ? { ...row, service: value } : row
+      rowIndex === index ? { ...row, serviceId } : row
     );
     setRows(updatedRows);
-    setSelectedServiceId(selectedService.id);
   };
 
   const handleQuantityChange = (e) => {
@@ -74,38 +79,44 @@ export const CreateReceipt = () => {
           size: 3, // Int
           price: 1.0, // Float
         }
-        
     );
     setRows(newRows);
   };
 
   const totalPrice = rows.reduce(
-    (total, row) => total + parseFloat(row.price || 0),
+    (total, row) => total + parseFloat(row.unitPrice || 0),
     0
   );
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+
+    const formattedOrderDate = new Date(orderDate).toISOString();
+
     const dataToSend = {
+      userId: "customer10",
       customerName: custName,
       requestId: request,
       phone: phone,
-      quantity: parseInt(quantity),
-      date: new Date(), // Không cần chuyển đổi sang chuỗi, sử dụng ngày hiện tại
+      diamondQuantity: parseInt(quantity),
+      orderDate: formattedOrderDate,
       totalPrice: parseFloat(totalPrice),
-      orderDetailid: rows,
+      orderDetails: rows,
     };
 
     console.log("Data to send:", dataToSend);
 
     try {
-      const response = await fetch("SAVE", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSend),
-      });
+      const response = await fetch(
+        "http://localhost:8080/order_request/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -113,7 +124,6 @@ export const CreateReceipt = () => {
 
       const result = await response.json();
       console.log("Data successfully saved:", result);
-      // Optionally, you can add more logic here, such as showing a success message or clearing the form
     } catch (error) {
       console.error("Error saving data:", error);
     }
@@ -151,11 +161,11 @@ export const CreateReceipt = () => {
                 <tbody>
                   {rows.map((row, index) => (
                     <tr key={index}>
-                      <td>{row.service}</td>
-                      <td>{row.receivedDate.toLocaleDateString()}</td> {/* Chỉnh sửa ở đây */}
-                      <td>{row.expiredDate.toLocaleDateString()}</td> {/* Chỉnh sửa ở đây */}
+                      <td>{row.serviceId}</td>
+                      <td>{row.receivedDate}</td>
+                      <td>{row.expiredReceivedDate}</td>
                       <td>{row.size}</td>
-                      <td>{row.price}</td>
+                      <td>{row.unitPrice}</td>
                     </tr>
                   ))}
                   <tr>
@@ -215,7 +225,6 @@ export const CreateReceipt = () => {
                 />
               </div>
             </div>
-
             <div className="row mb-3 d-flex justify-content-center">
               <div className="col-3" style={{ width: "15%" }}>
                 <label className="form-label fw-bold">Request ID</label>
@@ -229,8 +238,20 @@ export const CreateReceipt = () => {
                 />
               </div>
             </div>
+            <div className="row mb-3 d-flex justify-content-center">
+              <div className="col-3" style={{ width: "15%" }}>
+                <label className="form-label fw-bold">Order Date</label>
+              </div>
+              <div className="col-7">
+                <input
+                  type="datetime-local"
+                  className="form-control"
+                  value={orderDate}
+                  onChange={(e) => setOrderDate(e.target.value)}
+                />
+              </div>
+            </div>
           </div>
-
           <div className="d-flex justify-content-center">
             <Table striped bordered className="fs-5" style={{ width: "80%" }}>
               <thead className="text-center">
@@ -242,29 +263,32 @@ export const CreateReceipt = () => {
                   <th>Service Price</th>
                 </tr>
               </thead>
-
               <tbody>
                 {rows.map((row, index) => (
                   <tr key={index}>
                     <td>
                       <select
                         className="form-control"
-                        value={row.service}
+                        value={row.serviceId}
                         onChange={(e) =>
                           handleServiceChange(index, e.target.value)
                         }
                       >
                         <option value="">Select Service</option>
                         {selection.map((service) => (
-                          <option key={service.id} value={service.username}>
-                            {service.username}
+                          <option
+                            key={service.serviceId}
+                            value={service.serviceId}
+                          >
+                            {service.serviceType}
                           </option>
                         ))}
                       </select>
                     </td>
+
                     <td>
                       <input
-                        type="date" //{/* Chỉnh sửa ở đây */}
+                        type="date"
                         className="form-control"
                         value={row.receivedDate}
                         onChange={(e) =>
@@ -274,11 +298,15 @@ export const CreateReceipt = () => {
                     </td>
                     <td>
                       <input
-                        type="date" //{/* Chỉnh sửa ở đây */}
+                        type="date"
                         className="form-control"
-                        value={row.expiredDate}
+                        value={row.expiredReceivedDate}
                         onChange={(e) =>
-                          handleRowChange(index, "expiredDate", e.target.value)
+                          handleRowChange(
+                            index,
+                            "expiredReceivedDate",
+                            e.target.value
+                          )
                         }
                       />
                     </td>
@@ -296,9 +324,9 @@ export const CreateReceipt = () => {
                       <input
                         type="text"
                         className="form-control"
-                        value={row.price}
+                        value={row.unitPrice}
                         onChange={(e) =>
-                          handleRowChange(index, "price", e.target.value)
+                          handleRowChange(index, "unitPrice", e.target.value)
                         }
                       />
                     </td>
@@ -320,7 +348,6 @@ export const CreateReceipt = () => {
               </tbody>
             </Table>
           </div>
-
           <div className="d-flex justify-content-end" style={{ width: "90%" }}>
             <Button className="btn btn-success me-4" type="submit">
               Accept

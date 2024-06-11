@@ -1,13 +1,13 @@
 import React from 'react';
 import { Page, Text, Document, View, StyleSheet, Image } from '@react-pdf/renderer';
-export const ValuationPDF = ({ result }) => {
+export const ValuationPDF = ({ result, image, image1 }) => {
   const styles = StyleSheet.create({
     page: {
       padding: 30,
     },
     title: {
       textAlign: 'center',
-      fontSize: 40,
+      fontSize: 20,
       marginBottom: 20,
     },
     section: {
@@ -44,50 +44,54 @@ export const ValuationPDF = ({ result }) => {
     <Document>
       <Page size="A4" style={styles.page}>
         <View>
-          <Text style={styles.title}>Valuation Result</Text>
+          <View>
+            <Image style={styles.image} src="" />
+          </View>
+          <View>
+            <Text style={styles.title}>Valuation Report</Text>
+          </View>
+
         </View>
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <Text style={styles.text}>Valuation ID: {result.username}</Text>
           <Text style={styles.text}>Order ID: {result.orderID}</Text>
           <Text style={styles.text}>Customer Name: {result.customerName}</Text>
-        </View>
+        </View> */}
 
         <View style={styles.wrap}>
           <View style={styles.wrapLeft}>
             <View style={styles.section}>
-              <Text style={styles.header}>GIA Report Details</Text>
-              <Text style={styles.text}>Certificate Date: {result.certificateDate}</Text>
+              <Text style={styles.header}>Diamond Valuation Report</Text>
+              <Text style={styles.text}>Certificate Date: {result.diamondOrigin}</Text>
               <Text style={styles.text}>Measurements: {result.measurements}</Text>
-              <Text style={styles.text}>Assessment ID: {result.assessmentID}</Text>
-              <Text style={styles.text}>Shape: {result.shape}</Text>
+              <Text style={styles.text}>Assessment ID: {result.shapeCut}</Text>
+              <Text style={styles.text}>Shape: {result.description}</Text>
             </View>
 
             <View style={styles.section}>
               <Text style={styles.header}>Grading Results</Text>
               <Text style={styles.text}>Carat Weight: {result.caratWeight}</Text>
-              <Text style={styles.text}>Color Grade: {result.colorGrade}</Text>
-              <Text style={styles.text}>Clarity Grade: {result.clarityGrade}</Text>
-              <Text style={styles.text}>Cut Grade: {result.cutGrade}</Text>
+              <Text style={styles.text}>Color Grade: {result.color}</Text>
+              <Text style={styles.text}>Clarity Grade: {result.clarity}</Text>
+              <Text style={styles.text}>Cut Grade: {result.cut}</Text>
             </View>
             <View style={styles.section}>
               <Text style={styles.header}>Additional Grading Information</Text>
               <Text style={styles.text}>Polish: {result.polish}</Text>
               <Text style={styles.text}>Symmetry: {result.symmetry}</Text>
               <Text style={styles.text}>Fluorescence: {result.fluorescence}</Text>
-              <Text style={styles.text}>Clarity Characteristics: {result.clarityCharacteristics}</Text>
-              <Text style={styles.text}>Inscription: {result.inscription}</Text>
-              <Text style={styles.text}>Comments: {result.comments}</Text>
+              <Text style={styles.text}>Comments: {result.proportions}</Text>
               <Text style={styles.text}>Estimate Price: {result.estimatePrice}</Text>
             </View>
           </View>
           <View style={styles.wrapRight}>
             <View style={styles.section}>
               <Text style={styles.header}>Proportions</Text>
-              {result.image && <Image style={styles.image} src={result.image} />}
+              {image && <Image style={styles.image} src={image} />}
             </View>
             <View style={styles.section}>
               <Text style={styles.header}>Clarity Characteristics</Text>
-              {result.image1 && <Image style={styles.image} src={result.image1} />}
+              {image1 && <Image style={styles.image} src={image1} />}
             </View>
           </View>
         </View>

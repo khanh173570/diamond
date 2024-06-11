@@ -16,6 +16,7 @@ import CreateCommitment from './page/pageStaff/CreateCommitment';
 import { PersonalInformation } from './page/pageStaff/PersonalInformation';
 import { ValuationApplication } from './page/pageStaff/ValuationApplication/ValuationApplication.jsx';
 import { ReceiptDetails } from './page/pageStaff/ReciptApplication/ReciptDetails.jsx';
+import { ValuationList } from './page/pageStaff/ValuationApplication/ValuationList.jsx';
 
 // Customer Pages
 import HomeCustomer from './page/pageCustomer/HomeCustomer.jsx';
@@ -34,15 +35,19 @@ import { ManageCustomer } from './page/pageAdmin/ManageCustomer/ManageCustomer.j
 import { ManageStaff } from './page/pageAdmin/ManageStaff';
 import { ManageSchedule } from './page/pageAdmin/ManageSchedule/ManageScheldule.jsx';
 import { ManageOrder } from './page/pageAdmin/ManageOrder';
-import {CreateNewCust} from './page/pageAdmin/CreateNewCust.jsx'
+import { CreateNewCust } from './page/pageAdmin/CreateNewCust.jsx'
+import { PersonalRequestDetail } from './page/pageCustomer/PersonalRequestDetail.jsx';
 
+//
+import 'react-toastify/dist/ReactToastify.css';
+// import { ViewMyOrder } from './page/pageCustomer/ViewMyOrder.jsx';
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<CustomerApp />}>
           <Route index element={<HomeCustomer />} />
-          <Route path="login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="home" element={<HomeCustomer />} />
           <Route path="blog" element={<Blog />} />
@@ -51,6 +56,8 @@ function App() {
           <Route path="calculate" element={<Calculate />} />
           <Route path="check" element={<Check />} />
           <Route path="my-request" element={<PersonalRequest />} />
+          <Route path="my-request/:id" element={<PersonalRequestDetail />} />
+          {/* <Route path="my-order" element={<ViewMyOrder />} />          */}
         </Route>
         <Route path="/staff" element={<StaffApp />}>
           <Route index element={<HomeStaff />} />
@@ -62,7 +69,7 @@ function App() {
           <Route path="commitment" element={<CreateCommitment />} />
           <Route path="personal-info" element={<PersonalInformation />} />
           <Route path="valuation" element={<ValuationApplication />} />
-          {/* <Route path="valuation-result-list" element={<ValuationList />} /> */}
+          <Route path="valuation-result-list" element={<ValuationList />} />
         </Route>
         <Route path="/admin" element={<AdminApp />}>
           <Route path="dashboard" element={<DashBoard />} />
@@ -72,7 +79,6 @@ function App() {
           <Route path="manageschedule" element={<ManageSchedule />} />
           <Route path="manageorder" element={<ManageOrder />} />
           <Route path="createnewcust" element={<CreateNewCust />} />
-          
         </Route>
       </Routes>
     </BrowserRouter>
