@@ -4,20 +4,56 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 function Header() {
     const [user, setUser] = useState(null);
+    const [isLogin, setIsLogin] = useState(false)
     const navigate = useNavigate();
 
-    // Get user data
+    // test consult
     useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem('user'));
+        const fetchData = async () => {
+            try {
+                const response = await fetch("https://jsonplaceholder.typicode.com/users/2");
+                const data = await response.json();
+                localStorage.setItem('consult_staff', JSON.stringify(data));
+               
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    // test valuation
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await fetch("https://jsonplaceholder.typicode.com/users/3");
+    //             const data = await response.json();
+    //             localStorage.setItem('valuation_staff', JSON.stringify(data));
+               
+    //         } catch (error) {
+    //             console.error("Error fetching data:", error);
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, []);
+    // 
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('consult_staff'));
+        // const storedUser = JSON.parse(localStorage.getItem('valuation_staff'));
         if (storedUser) {
             setUser(storedUser);
+            setIsLogin(true)
         }
     }, []);
 
     // Logout function
     const handleLogout = () => {
         setUser(null);
-        localStorage.removeItem('user');
+        setIsLogin(false)
+        localStorage.removeItem('consult_staff');
+        // localStorage.removeItem('valuation_staff');
         navigate('/login');
     };
 
@@ -38,13 +74,11 @@ function Header() {
                         <NavLink to="/home" className="nav-link">Home</NavLink>
                         <NavLink to="/evaluation-service" className="nav-link">Evaluation Service</NavLink>
                         <NavLink to="/setting" className="nav-link">Setting</NavLink>
-                        {user ? (
+                        {user &&  (
                             <NavDropdown title={user.name} id="nav-dropdown">
                                 <NavDropdown.Item as={NavLink} to="/personal-info">My Profile</NavDropdown.Item>
                                 <NavDropdown.Item onClick={handleLogout}>Log out</NavDropdown.Item>
                             </NavDropdown>
-                        ) : (
-                            <NavLink to="/login" className="nav-link">Sign in</NavLink>
                         )}
                     </Nav>
                 </Navbar.Collapse>

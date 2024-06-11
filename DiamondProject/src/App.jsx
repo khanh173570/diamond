@@ -36,12 +36,15 @@ import { ManageStaff } from './page/pageAdmin/ManageStaff';
 import { ManageSchedule } from './page/pageAdmin/ManageSchedule/ManageScheldule.jsx';
 import { ManageOrder } from './page/pageAdmin/ManageOrder';
 import { CreateNewCust } from './page/pageAdmin/CreateNewCust.jsx'
+import { PersonalRequestDetail } from './page/pageCustomer/PersonalRequestDetail.jsx';
 
+//
+import 'react-toastify/dist/ReactToastify.css';
+// import { ViewMyOrder } from './page/pageCustomer/ViewMyOrder.jsx';
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-       
         <Route path="/" element={<CustomerApp />}>
           <Route index element={<HomeCustomer />} />
           <Route path="/login" element={<Login />} />
@@ -49,11 +52,12 @@ function App() {
           <Route path="home" element={<HomeCustomer />} />
           <Route path="blog" element={<Blog />} />
           <Route path="contact" element={<Contact />} />
-          
           <Route path="evaluationservice" element={<EvaluationServicePage />} />
           <Route path="calculate" element={<Calculate />} />
           <Route path="check" element={<Check />} />
           <Route path="my-request" element={<PersonalRequest />} />
+          <Route path="my-request/:id" element={<PersonalRequestDetail />} />
+          {/* <Route path="my-order" element={<ViewMyOrder />} />          */}
         </Route>
         <Route path="/staff" element={<StaffApp />}>
           <Route index element={<HomeStaff />} />

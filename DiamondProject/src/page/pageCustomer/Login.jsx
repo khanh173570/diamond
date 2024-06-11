@@ -10,7 +10,6 @@ function Login() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     // test thu
-    // localStorage.setItem('user', JSON.stringify({ name: 'John Doe', role: 'customer' }));
 
     const validate = () => {
         let result = true;
@@ -43,8 +42,7 @@ function Login() {
                 });
                 const data = response.json();
                 if (data) {
-                    setIsLogin(true);
-                    localStorage.setItem('user', JSON.stringify(data)); 
+                    // localStorage.setItem('user', JSON.stringify(data)); 
                     if (data.role === 'customer') {
                         navigate("/");
                     } else if (data.role === 'staff') {

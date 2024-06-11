@@ -9,21 +9,38 @@ import '../Header/Header.css';
 
 function Header() {
     const [user, setUser] = useState(null);
-    const [isUsername, setIsUsername] = useState(false);
+    const [isLogin, setIsLogin] = useState(false)
     const navigate = useNavigate();
 
+    // Fetch user data on component mount
     useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem('user'));
+        const fetchData = async () => {
+            try {
+                const response = await fetch("https://jsonplaceholder.typicode.com/users/2");
+                const data = await response.json();
+                localStorage.setItem('cusId', JSON.stringify(data));
+                setUser(data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+    
+        fetchData();
+    }, []);
+
+    // Retrieve user from localStorage on component mount
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('cusId'));
         if (storedUser) {
             setUser(storedUser);
-            setIsUsername(true);
+            setIsLogin(true)
         }
     }, []);
-    
+
     const handleLogout = () => {
-        setIsUsername(false);
         setUser(null);
-        localStorage.removeItem('user'); 
+        localStorage.removeItem('cusId'); 
+        setIsLogin(false)
         navigate('/login');
     };
 
@@ -63,10 +80,12 @@ function Header() {
                             <NavDropdown.Item>Vietnamese</NavDropdown.Item>
                             <NavDropdown.Item>English</NavDropdown.Item>
                         </NavDropdown>
-                        {isUsername && user ? (
+                    
+                        { user && isLogin ? (
                             <NavDropdown title={user.name} id="nav-dropdown">
                                 <NavDropdown.Item as={NavLink} to="/profile">My Profile</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/my-request">My Request</NavDropdown.Item>
+                                <NavDropdown.Item as={NavLink} to="/my-order">My Order</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item onClick={handleLogout}>
                                     Log out
