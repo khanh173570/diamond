@@ -20,7 +20,7 @@ export const CreateReceipt = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/evaluation_services"
+          "http://localhost:8080/service/getServices"
         );
         const data = await response.json();
         setSelection(data);
@@ -34,10 +34,10 @@ export const CreateReceipt = () => {
 
   const initialRows = Array.from({ length: parseInt(quantity) || 0 }, () => ({
     serviceId: "",
-    receivedDate: new Date().toISOString().split('T')[0],
-    expiredReceivedDate: new Date().toISOString().split('T')[0],
+    receivedDate: new Date().toISOString().split("T")[0],
+    expiredReceivedDate: new Date().toISOString().split("T")[0],
     size: 0,
-    unitPrice: .0,
+    unitPrice: 0.0,
   }));
 
   const [rows, setRows] = useState(initialRows);
@@ -49,13 +49,19 @@ export const CreateReceipt = () => {
     setRows(updatedRows);
   };
 
-  const handleServiceChange = (index, value) => {
-    const selectedService = selection.find(
-      (service) => service.service_type === value
-    );
-    const selectedServiceId = selectedService ? selectedService.service_id : "";
+  // const handleServiceChange = (index, value) => {
+  //   const selectedService = selection.find(
+  //     (service) => service.serviceType === value
+  //   );
+  //   const selectedServiceId = selectedService ? selectedService.serviceId : "";
+  //   const updatedRows = rows.map((row, rowIndex) =>
+  //     rowIndex === index ? { ...row, serviceId: selectedServiceId } : row
+  //   );
+  //   setRows(updatedRows);
+  // };
+  const handleServiceChange = (index, serviceId) => {
     const updatedRows = rows.map((row, rowIndex) =>
-      rowIndex === index ? { ...row, serviceId: selectedServiceId } : row
+      rowIndex === index ? { ...row, serviceId } : row
     );
     setRows(updatedRows);
   };
@@ -63,16 +69,13 @@ export const CreateReceipt = () => {
   const handleQuantityChange = (e) => {
     const qty = parseInt(e.target.value) || 0;
     setQuantity(e.target.value);
-    const newRows = Array.from(
-      { length: qty },
-      (_, i) => ({
-        serviceId: selection[i]?.service_id || "",
-        receivedDate: new Date().toISOString().split('T')[0],
-        expiredReceivedDate: new Date().toISOString().split('T')[0],
-        size: 0,
-        unitPrice: 0.0,
-      })
-    );
+    const newRows = Array.from({ length: qty }, (_, i) => ({
+      serviceId: selection[i]?.serviceId || "",
+      receivedDate: new Date().toISOString().split("T")[0],
+      expiredReceivedDate: new Date().toISOString().split("T")[0],
+      size: 0,
+      unitPrice: 0.0,
+    }));
     setRows(newRows);
   };
 
@@ -87,7 +90,7 @@ export const CreateReceipt = () => {
     const formattedOrderDate = new Date(orderDate).toISOString();
 
     const dataToSend = {
-      userId: "khanhtran",
+      userId: "customer10",
       customerName: custName,
       requestId: request,
       phone: phone,
@@ -138,8 +141,7 @@ export const CreateReceipt = () => {
                 <p>Phone: {phone}</p>
                 <p>Quantity: {quantity}</p>
                 <p>Date: {currentDate}</p>
-             
-                </div>
+              </div>
             </div>
             <div className="print-content">
               <Table striped bordered className="fs-5 print-table">
@@ -271,14 +273,15 @@ export const CreateReceipt = () => {
                         <option value="">Select Service</option>
                         {selection.map((service) => (
                           <option
-                            key={service.service_id}
-                            value={service.service_id}
+                            key={service.serviceId}
+                            value={service.serviceId}
                           >
-                            {service.service_type}
+                            {service.serviceType}
                           </option>
                         ))}
                       </select>
                     </td>
+
                     <td>
                       <input
                         type="date"
@@ -295,7 +298,11 @@ export const CreateReceipt = () => {
                         className="form-control"
                         value={row.expiredReceivedDate}
                         onChange={(e) =>
-                          handleRowChange(index, "expiredReceivedDate", e.target.value)
+                          handleRowChange(
+                            index,
+                            "expiredReceivedDate",
+                            e.target.value
+                          )
                         }
                       />
                     </td>
