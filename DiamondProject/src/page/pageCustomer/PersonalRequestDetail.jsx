@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,13 +8,58 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useNavigate } from 'react-router-dom';
 
 export const PersonalRequestDetail = () => {
+
+  const { id } = useParams();
+  const navigate = useNavigate();
   const { state } = useLocation();
-  const navigate =  useNavigate();
-  //get request by request
-  const API = 'https://jsonplaceholder.typicode.com/users';
   const [isCancel, setIsCancel] = useState(false);
-  // cancel request
-  const handleOnCancel = async (id, value) => {
+  const [requestDetail, setRequestDetail] = useState({});
+  const [orderId, setOrderId] = useState({})
+  const [isOrder, setIsOrder] = useState(true)
+
+  // API  to fetch request  by request id
+  const API = `https://jsonplaceholder.typicode.com/users`;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${API}/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch request details');
+        }
+        const data = await response.json();
+        setRequestDetail(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+    // sua id la requestID
+  }, [id, setIsCancel]);
+
+  //get order by request id
+  const APIOrderById = `https://jsonplaceholder.typicode.com/users`;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${APIOrderById}/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch request details');
+        }
+        const data = await response.json();
+        if (data) {
+          setOrderId(data);
+          setIsOrder(true);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+    // sua id la requestID
+  }, [id]);
+
+  // update request by requestID
+  const handleOnCancel = async (value) => {
     try {
       const response = await fetch(`${API}/${id}`, {
         method: 'PUT',
@@ -23,13 +68,17 @@ export const PersonalRequestDetail = () => {
         },
         body: JSON.stringify({ status: value }),
       });
-      const data = await response.json();
-      console.log(data);
-      if (data) {
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
         setIsCancel(true);
+        toast.success('Request has been canceled successfully.');
+      } else {
+        throw new Error('Failed to update status');
       }
     } catch (error) {
       console.error('Error updating status:', error);
+      toast.error('Error updating status. Please try again.');
       setIsCancel(false);
     }
   };
@@ -40,7 +89,7 @@ export const PersonalRequestDetail = () => {
       buttons: [
         {
           label: 'Yes',
-          onClick: () => handleOnCancel(state.request.id, 'Cancel')
+          onClick: () => handleOnCancel('Canceled')
         },
         {
           label: 'No',
@@ -49,20 +98,15 @@ export const PersonalRequestDetail = () => {
       ]
     });
   };
-  useEffect(() => {
-    if (isCancel) {
-      navigate('/my-request')
-    }
-  }, [isCancel]);
 
-  const closeToMyList = ()=>{
-    navigate('/my-request')
-  }
-  // de o day
-  const viewMyOrder = ()=>{
-    // tutu r bo sung sau
-    navigate('/my-order')
-  }
+  const closeToMyList = () => {
+    navigate('/my-request');
+  };
+
+  const viewMyOrder = () => {
+    navigate('/my-order');
+  };
+
   return (
     <div>
       <ToastContainer />
@@ -79,7 +123,7 @@ export const PersonalRequestDetail = () => {
           </Col>
           <Col md={3}>
             <div className='fw-bold'>Status</div>
-            <div>Requesting</div>
+            <div>{requestDetail.status}</div> {/* Display status */}
           </Col>
           <Col md={3}>
             <div className='fw-bold'>Request ID</div>
@@ -87,7 +131,8 @@ export const PersonalRequestDetail = () => {
           </Col>
           <Col md={3}>
             <div className='fw-bold'>Order ID</div>
-            <div>OR22102001</div>
+            {/* dan orderid */}
+           {orderId && <div>{orderId.id}</div>}
           </Col>
         </Row>
         <Row className='mb-3'>
@@ -109,11 +154,12 @@ export const PersonalRequestDetail = () => {
         <Row className='mt-4'>
           <Col className='d-flex justify-content-end'>
             <Button className='me-3' variant="danger" onClick={showCancelConfirmation} disabled={isCancel}>
-               {/* {isCancel || request.status === 'Canceled'? 'Canceled' : 'Cancel Request'} */}
               {isCancel ? 'Canceled' : 'Cancel Request'}
             </Button>
-            <Button className='me-3' onClick={()=>closeToMyList()}>Close</Button>
-            <Button className='me-3' onClick={()=>viewMyOrder()}>View My Order</Button>
+            <Button className='me-3' onClick={closeToMyList}>Close</Button>
+            {/*disabled={isCancel || isOrder} */}
+            
+            <Button className='me-3' onClick={viewMyOrder} >View My Order</Button>
           </Col>
         </Row>
       </Container>

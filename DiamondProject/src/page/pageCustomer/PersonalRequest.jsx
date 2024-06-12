@@ -4,49 +4,47 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 export const PersonalRequest = () => {
     const [myRequest, setMyRequest] = useState([]);
-    const [loading, setLoading] = useState(false)
-    const [isEdit, setIsEdit] = useState(false);
-    const navigate = useNavigate()
-    const {state} = useLocation()
-    // get request by userid
-    const API = 'https://jsonplaceholder.typicode.com/users';
-    const userId = JSON.parse(localStorage.getItem('cusId'));
+    const [loading, setLoading] = useState(false);
+    const [isEdit, setIsEdit] = useState(false)
+    const navigate = useNavigate();
+
+    //get api get request by user id
+    const API = 'http://localhost:8080/evaluation-request/get_by_user/customer01';
+    const userId = JSON.parse(localStorage.getItem('user'));
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch(`${API}`);
                 const data = await response.json();
-                // Filter requests by username (name)
-                const userRequests = data.filter((item) => item.username === userId.username);
-                setMyRequest(userRequests);
-                setLoading(true)
+                setMyRequest(data);
+                setLoading(true);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
         fetchData();
         return () => {
-            setLoading(false)
-        }
+            setLoading(false);
+        };
     }, [userId.username]);
 
     if (!loading) {
-        return <div style={{ minHeight: '500px' }}>Loading...</div>
+        return <div style={{ minHeight: '500px' }}>Loading...</div>;
     }
 
-    const viewMyRequest = (request)=>{
-        navigate(`/my-request/${request.id}`, {state:{request}})
-    }
+    const viewMyRequest = (request) => {
+        navigate(`/my-request/${request.id}`, { state: { request } });
+    };
+
     return (
         <div className='my-5' style={{ minHeight: '500px' }}>
             <h2 className='text-center' style={{ margin: "30px 0" }}>My Request</h2>
             {myRequest.length > 0 ? (
                 <Stack gap={4}>
                     {myRequest.map((request) => (
-                        <Row key={request.id} className="justify-content-center w-50 mx-auto p-3" style={{ boxShadow: 'rgb(0 0 0 / 16%) 1px 1px 10px' }}>
+                        <Row key={request.requestId} className="justify-content-center w-50 mx-auto p-3" style={{ boxShadow: 'rgb(0 0 0 / 16%) 1px 1px 10px' }}>
                             <Col md={1} className="d-flex justify-content-center align-items-center">
-                            {/* naỳ là số thứ tự ko phải request id , request id để ỏ reqest */}
-                                {request.id}
+                                {request.requestId}
                             </Col>
                             <Col xs="auto" className="d-flex align-items-center">
                                 <img
@@ -58,19 +56,16 @@ export const PersonalRequest = () => {
                             </Col>
                             <Col>
                                 <Stack>
-                                    {/* Service name */}
-                                    <div className='mb-1 fw-bold'>Valuation Service</div>
-                                    {/* Created Date */}
+                                    <div className='mb-1 fw-bold'>{request.service}</div>
                                     <div className='mb-1'>Created Request Date: 13/07/2023</div>
-                                     {/* Stauts */}
-                                     <div className='mb-1'>Status: Requesting</div>
+                                    <div className='mb-1'>Status: {request.status}</div>
                                 </Stack>
                             </Col>
                             <Col md={2} className="d-flex">
                                 <Stack>
-                                    <Button style={{backgroundColor:'#CCFBF0'}} onClick={()=>viewMyRequest(request)}>
-                                            <span className='text-dark me-1'>View</span>
-                                            <img
+                                    <Button style={{ backgroundColor: '#CCFBF0' }} onClick={() => viewMyRequest(request)}>
+                                        <span className='text-dark me-1'>View</span>
+                                        <img
                                             src="/src/assets/assetsCustomer/seemore.svg"
                                             alt=""
                                             width="20"
@@ -78,7 +73,6 @@ export const PersonalRequest = () => {
                                         />
                                     </Button>
                                 </Stack>
-
                             </Col>
                         </Row>
                     ))}

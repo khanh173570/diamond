@@ -1,6 +1,7 @@
 import React from 'react';
 import { Page, Text, Document, View, StyleSheet, Image } from '@react-pdf/renderer';
-export const ValuationPDF = ({ result, image, image1 }) => {
+
+export const ValuationPDF = ({ result} ) => {
   const styles = StyleSheet.create({
     page: {
       padding: 30,
@@ -50,14 +51,7 @@ export const ValuationPDF = ({ result, image, image1 }) => {
           <View>
             <Text style={styles.title}>Valuation Report</Text>
           </View>
-
         </View>
-        {/* <View style={styles.section}>
-          <Text style={styles.text}>Valuation ID: {result.username}</Text>
-          <Text style={styles.text}>Order ID: {result.orderID}</Text>
-          <Text style={styles.text}>Customer Name: {result.customerName}</Text>
-        </View> */}
-
         <View style={styles.wrap}>
           <View style={styles.wrapLeft}>
             <View style={styles.section}>
@@ -67,7 +61,6 @@ export const ValuationPDF = ({ result, image, image1 }) => {
               <Text style={styles.text}>Assessment ID: {result.shapeCut}</Text>
               <Text style={styles.text}>Shape: {result.description}</Text>
             </View>
-
             <View style={styles.section}>
               <Text style={styles.header}>Grading Results</Text>
               <Text style={styles.text}>Carat Weight: {result.caratWeight}</Text>
@@ -87,11 +80,11 @@ export const ValuationPDF = ({ result, image, image1 }) => {
           <View style={styles.wrapRight}>
             <View style={styles.section}>
               <Text style={styles.header}>Proportions</Text>
-              {image && <Image style={styles.image} src={image} />}
+              <Image style={styles.image} src={resultImage} />
             </View>
             <View style={styles.section}>
               <Text style={styles.header}>Clarity Characteristics</Text>
-              {image1 && <Image style={styles.image} src={image1} />}
+              <Image style={styles.image} src={resultImage1} />
             </View>
           </View>
         </View>

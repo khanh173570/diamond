@@ -16,7 +16,7 @@ export const UserRequest = () => {
   const navigate = useNavigate(); // add useNavigate hook
 
   // List data
-  const API = 'https://jsonplaceholder.typicode.com/posts';
+  const API = 'http://localhost:8080/evaluation-request/gett_all';
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,10 +31,10 @@ export const UserRequest = () => {
   }, [isEdit]);
 
   // Update data
-  const handleOnChangeStatus = (id) => {
+  const handleOnChangeStatus = (requestId) => {
     const fetchUpdateStatus = async () => {
       try {
-        const response = await fetch(`${API}/${id}`, {
+        const response = await fetch(`http://localhost:8080/evaluation-request/updateStatus/${requestId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export const UserRequest = () => {
   // Delete data
   const handleDeleteItem = async (id) => {
     try {
-      await fetch(`${API}/${id}`, {
+      await fetch(`http://localhost:8080/evaluation-request/${id}`, {
         method: 'DELETE',
       });
       setIsEdit(true);
@@ -88,12 +88,12 @@ export const UserRequest = () => {
             </thead>
             <tbody>
               {userRequest.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td>{user.userId}</td>
+                <tr key={user.requestId}>
+                  <td>{user.requestId}</td>
+                  <td>{user.userId.userId}</td>
                   <td>{user.requestDate}</td>
                   <td className='d-flex'>
-                    {editRowId === user.id ? (
+                    {editRowId === user.requestId ? (
                       <>
                         <Form.Select
                           aria-label="Requested"
@@ -104,7 +104,7 @@ export const UserRequest = () => {
                           <option value="accepted">Accepted</option>
                           <option value="canceled">Canceled</option>
                         </Form.Select>
-                        <Button onClick={() => handleOnChangeStatus(user.id)}>Save</Button>
+                        <Button onClick={() => handleOnChangeStatus(user.requestId)}>Save</Button>
                       </>
                     ) : (
                       <div className='d-flex justify-content-between'>
@@ -115,7 +115,7 @@ export const UserRequest = () => {
                           height="20"
                           width="20"
                           onClick={() => {
-                            setEditRowId(user.id);
+                            setEditRowId(user.requestId);
                             setEditStatus(user.status);
                           }}
                         />
@@ -138,7 +138,7 @@ export const UserRequest = () => {
                       alt="Delete"
                       height="20"
                       width="20"
-                      onClick={() => handleDeleteItem(user.id)}
+                      onClick={() => handleDeleteItem(user.requestId)}
                     />
                   </td>
                 </tr>
@@ -158,9 +158,9 @@ export const UserRequest = () => {
               onClick={() => setIsViewDetail(false)}
             />
             <UserRequestDetails1
-              key={currentDetail.id}
+              key={currentDetail.requestId}
               userRequestDetail={currentDetail}
-              navigate={navigate} // pass navigate to UserRequestDetails1
+              navigate={navigate} 
             />
           </div>
         )
