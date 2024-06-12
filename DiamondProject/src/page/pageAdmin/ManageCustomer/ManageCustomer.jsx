@@ -140,7 +140,20 @@ export const ManageCustomer = () => {
           <Modal.Body>
             <Form className='form-row my-5 p-5 mx-5 '
                   style={{ width: "650px", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px" }}>
-              <div></div>
+              <div className='form-group'>
+                  <label htmlFor="firstname"> FirstName:  </label>
+                  <input 
+                    type='text'
+                    
+                  
+                  
+                  
+                  />
+
+
+
+
+              </div>
 
             </Form>
           </Modal.Body>
