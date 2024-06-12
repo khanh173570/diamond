@@ -10,7 +10,7 @@ export const Header = () => {
   const navigate = useNavigate ()
   
   useEffect(() => {
-    const adminInfor = JSON.parse(localStorage.getItem('user'));
+    const adminInfor = JSON.parse(localStorage.getItem('admin'));
     if (adminInfor) {
       setAdmin(adminInfor);
       setIsLogin(true);
@@ -20,11 +20,9 @@ export const Header = () => {
   const handleLogout = ()=>{
     setAdmin(null);
     setIsLogin(false);
-    localStorage.removeItem('user')
+    localStorage.removeItem('admin')
     navigate('/login')
   }
-
-
   return (
     <>
       <Navbar expand="md" style={{ backgroundColor: '#white ' }}>

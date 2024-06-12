@@ -5,10 +5,10 @@ import { useLocation } from 'react-router-dom';
 
 export const ValuationApplication = () => {
     const [isPrint, setIsPrint] = useState(false);
-    // const location = useLocation();
-    // const product = location.state.product;
-    const [image, setImage] = useState(null);
-    const [image1, setImage1] = useState(null);
+    const location = useLocation();
+    const product = location.state.product;
+    const [image, setImage] = useState("");
+    const [image1, setImage1] = useState("");
     const [result, setResult] = useState({
         diamondOrigin: '',
         measurements: '',
@@ -23,13 +23,16 @@ export const ValuationApplication = () => {
         fluorescence: '',
         description: '',
         price: 0,
-        //  orderDetailId: product.id,
-        orderDetailId: '',
-        //userId: product.address.suite
-        userId: ''
+         orderDetailId: product.id,
+        // orderDetailId: '',
+        // 
+        userId: product.id
+        // userId: ''
 
     });
 
+    console.log(image);
+    console.log(image1)
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         const formattedResult = {
@@ -97,13 +100,14 @@ export const ValuationApplication = () => {
                                 id="userId"
                                 name='userId'
                                 value={result.userId}
-                                onChange={handleOnChange}
+                                // onChange={handleOnChange}
+                                readOnly
                             />
                         </Col>
                     </Row>
                     <Row className="mb-2 align-items-center">
                         <Col md={2}>
-                            <Form.Label htmlFor="orderDetailId" className="mb-0">Order Detail ID:</Form.Label>
+                            <Form.Label htmlFor="orderDetailId" className="mb-0">Product ID:</Form.Label>
                         </Col>
                         <Col md={4}>
                             <Form.Control
@@ -111,7 +115,8 @@ export const ValuationApplication = () => {
                                 id="orderDetailId"
                                 name='orderDetailId'
                                 value={result.orderDetailId}
-                                onChange={handleOnChange}
+                                // onChange={handleOnChange}
+                                readOnly
                             />
                         </Col>
                     </Row>
@@ -407,7 +412,7 @@ export const ValuationApplication = () => {
                         width="20"
                         onClick={() => setIsViewDetail(false)}
                     />
-                    <GeneratePDF result={result} image={image} image1={image1}/>
+                    <GeneratePDF result={result} resultImage={image} resultImage1={image1}/>
                 </div>
             )}
         </Container>

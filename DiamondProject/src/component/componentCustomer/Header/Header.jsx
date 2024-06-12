@@ -6,31 +6,13 @@ import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 import { NavLink, useNavigate } from 'react-router-dom';
 import '../Header/Header.css';
-
 function Header() {
     const [user, setUser] = useState(null);
     const [isLogin, setIsLogin] = useState(false)
     const navigate = useNavigate();
 
-    // Fetch user data on component mount
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch("https://jsonplaceholder.typicode.com/users/2");
-                const data = await response.json();
-                localStorage.setItem('cusId', JSON.stringify(data));
-                setUser(data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-    
-        fetchData();
-    }, []);
-
-    // Retrieve user from localStorage on component mount
-    useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem('cusId'));
+        const storedUser = JSON.parse(localStorage.getItem('user'));
         if (storedUser) {
             setUser(storedUser);
             setIsLogin(true)
@@ -39,7 +21,7 @@ function Header() {
 
     const handleLogout = () => {
         setUser(null);
-        localStorage.removeItem('cusId'); 
+        localStorage.removeItem('user'); 
         setIsLogin(false)
         navigate('/login');
     };
@@ -62,10 +44,11 @@ function Header() {
                         <NavLink to="/home" className="nav-link">Home</NavLink>
                         <NavDropdown title="Evaluation Service" id="nav-dropdown">
                             <NavDropdown.Item as={NavLink} to="/calculate">Calculate</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item as={NavLink} to="/evaluationservice">
+                           
+                            {user && isLogin && <NavDropdown.Item as={NavLink} to="/evaluationservice">
                                 Diamond Valuation Service
-                            </NavDropdown.Item>
+                            </NavDropdown.Item>  }
+                           
                             <NavDropdown.Divider />
                             <NavDropdown.Item as={NavLink} to="/policy">Diamond Valuation Policy</NavDropdown.Item>
                             <NavDropdown.Divider />

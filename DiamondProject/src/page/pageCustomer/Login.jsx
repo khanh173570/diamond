@@ -42,13 +42,16 @@ function Login() {
                 });
                 const data = response.json();
                 if (data) {
-                    // localStorage.setItem('user', JSON.stringify(data)); 
+                   
                     if (data.role === 'customer') {
                         navigate("/");
-                    } else if (data.role === 'staff') {
+                        localStorage.setItem('user', JSON.stringify(data)); 
+                    } else if (data.role === 'conslation_staff' && data.role === 'valuation_staff') {
                         navigate("/staff");
+                        localStorage.setItem('staff', JSON.stringify(data)); 
                     } else if (data.role === 'admin') {
                         navigate("/admin");
+                        localStorage.setItem('admin', JSON.stringify(data)); 
                     } else {
                         setIsLogin(false);
                         setError('Invalid role');
@@ -118,7 +121,6 @@ function Login() {
                         <div style={{ flex: 1, backgroundColor: "#DDE1DF", height: "2px" }} />
                     </div>
                     <div className="form-img text-center mt-4">
-                        {/* nhập đường dẫn  */}
                     <a href="">
                     <img
                             src="/src/assets/assetsCustomer/Google.png"
