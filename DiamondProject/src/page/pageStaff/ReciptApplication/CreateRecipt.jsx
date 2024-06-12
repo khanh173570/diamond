@@ -14,8 +14,6 @@ export const CreateReceipt = () => {
   const [orderDate, setOrderDate] = useState("");
   const componentRef = useRef();
 
-  const currentDate = new Date().toLocaleDateString();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -49,22 +47,61 @@ export const CreateReceipt = () => {
     setRows(updatedRows);
   };
 
-  // const handleServiceChange = (index, value) => {
-  //   const selectedService = selection.find(
-  //     (service) => service.serviceType === value
-  //   );
-  //   const selectedServiceId = selectedService ? selectedService.serviceId : "";
-  //   const updatedRows = rows.map((row, rowIndex) =>
-  //     rowIndex === index ? { ...row, serviceId: selectedServiceId } : row
-  //   );
-  //   setRows(updatedRows);
-  // };
-  const handleServiceChange = (index, serviceId) => {
-    const updatedRows = rows.map((row, rowIndex) =>
-      rowIndex === index ? { ...row, serviceId } : row
-    );
-    setRows(updatedRows);
+
+  const formatDateTime = (dateTimeString) => {
+    const dateTime = new Date(dateTimeString);
+    const options = { month: "2-digit", day: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", hour12: true };
+    return dateTime.toLocaleString("en-US", options);
   };
+  
+
+  const handleServiceChange = async (index, serviceId) => {
+    const selectedService = selection.find((service) => service.serviceId === serviceId);
+    if (!selectedService) return;
+  
+    try {
+      const unitPrice = await fetchUnitPrice(serviceId, rows[index].size);
+  
+      const orderDateTime = new Date(orderDate); // Ngày đặt hàng
+      const hoursRegex = /(\d+)h/; // Biểu thức chính quy để tìm số giờ từ loại dịch vụ
+      const match = selectedService.serviceType.match(hoursRegex); // Tìm số giờ từ chuỗi loại dịch vụ
+      const hours = match ? parseInt(match[1], 10) : 0; // Số giờ từ loại dịch vụ (nếu có)
+      const receivedDateTime = new Date(orderDateTime.getTime() + hours * 3600000); // Tính "Receive Date" bằng cách cộng số giờ từ loại dịch vụ vào ngày đặt hàng
+      const expiredReceivedDateTime = new Date(receivedDateTime.getTime() + 30 * 24 * 3600000); // Tính "Expire Date" bằng cách cộng 30 ngày vào "Receive Date"
+  
+      const formattedReceivedDate = formatDateTime(receivedDateTime.toISOString()); // Định dạng receivedDate
+      const formattedExpiredReceivedDate = formatDateTime(expiredReceivedDateTime.toISOString()); // Định dạng expiredReceivedDate
+  
+      const newRows = rows.map((row, rowIndex) => {
+        if (rowIndex === index) {
+          return {
+            ...row,
+            unitPrice: unitPrice,
+            receivedDate: formattedReceivedDate, // Sử dụng ngày tháng giờ đã được định dạng
+            expiredReceivedDate: formattedExpiredReceivedDate, // Sử dụng ngày tháng giờ đã được định dạng
+          };
+        }
+        return row;
+      });
+  
+      setRows(newRows);
+    } catch (error) {
+      console.error("Error handling service change:", error);
+    }
+  };
+  
+  
+  const fetchUnitPrice = async (serviceId, size) => {
+    try {
+      const response = await fetch(`YOUR_API_URL?serviceId=${serviceId}&size=${size}`);
+      const data = await response.json();
+      return data.unitPrice;
+    } catch (error) {
+      console.error("Error fetching unitPrice:", error);
+      return null;
+    }
+  };
+  
 
   const handleQuantityChange = (e) => {
     const qty = parseInt(e.target.value) || 0;
@@ -140,7 +177,7 @@ export const CreateReceipt = () => {
                 <p>Customer Name: {custName}</p>
                 <p>Phone: {phone}</p>
                 <p>Quantity: {quantity}</p>
-                <p>Date: {currentDate}</p>
+                <p>Order Date: {new Date(orderDate).toLocaleString()}</p>
               </div>
             </div>
             <div className="print-content">
