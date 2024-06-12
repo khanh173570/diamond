@@ -33,12 +33,17 @@ public class EvaluationServicePriceList {
   int sizeTo;
 
   @Column(name = "init_price", nullable = true)
-  double initPrice;
+  Double initPrice;
 
   @Column(name = "price_unit", nullable = true)
-  int priceUnit;
+  Double priceUnit;
 
   @ManyToOne
   @JoinColumn(name = "service_id", referencedColumnName = "service_id")
   EvaluationService serviceId;
+  public double calculateServicePrice(float sampleSize) {
+    double priceUnit = sampleSize < 12 ? 0 : 1200000;
+    double priceService = initPrice + (sampleSize - sizeFrom) * priceUnit;
+    return priceService;
+  }
 }

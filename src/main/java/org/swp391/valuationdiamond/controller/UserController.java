@@ -29,9 +29,15 @@ public class UserController {
 //        return userServiceImp.signupWithGoogle(token);
 //    }
     //hàm login
-    @GetMapping("/login")
-    User login(@RequestParam String email, @RequestParam String password){
-        return userServiceImp.login(email, password);
+//    @GetMapping("/login")
+//    User login(@RequestParam String email, @RequestParam String password){
+//        return userServiceImp.login(email, password);
+//    }
+    @PostMapping("/login")
+    public User login(@RequestBody Map<String, String> loginRequest) {
+        String userId = loginRequest.get("userId");
+        String password = loginRequest.get("password");
+        return userServiceImp.login(userId, password);
     }
 
     @GetMapping("/getUser/{userId}")

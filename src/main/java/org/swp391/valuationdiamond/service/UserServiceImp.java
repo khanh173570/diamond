@@ -47,8 +47,15 @@ public class UserServiceImp {
 //    }
 
     //hàm đăng nhập
-    public User login(String email, String password){
-        return userRepository.findByEmailAndPassword(email, password);
+//    public User login(String email, String password){
+//        return userRepository.findByEmailAndPassword(email, password);
+//    }
+    public User login(String userId, String password) {
+        User user = userRepository.findByUserId(userId);
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
+        }
+        throw new RuntimeException("Invalid email or password");
     }
 
     public List<User> getStaffs(){
