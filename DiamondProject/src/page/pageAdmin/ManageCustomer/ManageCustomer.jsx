@@ -7,6 +7,8 @@ import Swal from 'sweetalert2';
 export const ManageCustomer = () => {
   const [dataCustomer, setDataCustomer] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [formContainCustById,setFormContainCustById] =useState([]);
+  const [showFormInfor,setShowFormInfor] = useState(false);
   const [formAddCust, setFormAddCust] = useState({
     username: '',
     password: '',
@@ -25,7 +27,7 @@ export const ManageCustomer = () => {
       [name]: value,
     });
   };
-
+  //save add new cust
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     if (formAddCust.password !== formAddCust.confirmPassword) {
@@ -55,6 +57,8 @@ export const ManageCustomer = () => {
           icon: 'success',
           confirmButtonText: 'OK',
         });
+        const { confirmPassword, ...dataToSend } = formAddCust; 
+        console.log('Data to be sent to server:', dataToSend);
         handleClose();
       } else {
         console.log('save failed');
@@ -63,7 +67,7 @@ export const ManageCustomer = () => {
       console.log('Error: ' + error);
     }
   };
-
+  //get customer
   useEffect(() => {
     const fetchDataCustomer = async () => {
       try {
@@ -77,7 +81,22 @@ export const ManageCustomer = () => {
 
     fetchDataCustomer();
   }, []);
+      // get Customer by Id 
+      const handleShowCustomerInfor = async (customerId) => {
+            try{
+                const response = await fetch (`https://jsonplaceholder.typicode.com/users/${customerId}`);
+                const customer = response.json();
+                setFormContainCustById(customer);
+                setShowFormInfor(true)
+            }catch(error){
+              console.log("Error:",error)
+            }
+      };
+      const handCloseCustomerInfor = () => {
 
+        setShowFormInfor(false);
+        setFormContainCustById(null);
+      };
   return (
     <div className='container'>
       <div className='justify-content-first d-flex my-2 p-4'>
@@ -89,12 +108,12 @@ export const ManageCustomer = () => {
           alt='Logo'
         />
         <h4 className='p-4'>Manage Customer</h4>
-        <Button onClick={handleShow} className="nav-link">
+        <Button onClick={handleShow} className="nav-link h-100 my-4" >
           <img
             src='/src/assets/assetsAdmin/plus.svg'
             width='40'
             height='40'
-            className='my-3'
+            className=''
             alt='Add'
           />
         </Button>
@@ -116,16 +135,17 @@ export const ManageCustomer = () => {
               <p className='col-md-3'> {dataCust.email}</p>
               <p className='col-md-2'>{dataCust.phone}</p>
               <div className='col-md-2 d-flex justify-content-around'>
-                <NavLink to={`/admin/viewcustomer/${dataCust.id}`} className="nav-link">
+                <Button onClick={() => handleShowCustomerInfor(dataCust.id)} className='nav-link'>
                   <img
                     src='/src/assets/assetsAdmin/eye.svg'
                     width='20'
                     height='20'
                     className='my-3'
                     alt='View'
+                   
                   />
-                </NavLink>
-                <NavLink to={`/admin/editcustomer/${dataCust.id}`} className="nav-link">
+                </Button>
+                <Button to={`/admin/editcustomer/${dataCust.id}`} className="nav-link">
                   <img
                     src='/src/assets/assetsAdmin/pen.svg'
                     width='20'
@@ -133,7 +153,7 @@ export const ManageCustomer = () => {
                     className='my-3'
                     alt='Edit'
                   />
-                </NavLink>
+                </Button>
                 <NavLink to={`/admin/deletecustomer/${dataCust.id}`} className="nav-link">
                   <img
                     src='/src/assets/assetsAdmin/trash.svg'
@@ -148,6 +168,7 @@ export const ManageCustomer = () => {
           </div>
         ))}
       </div>
+                        {/* Modal Add  New Cust */}
       <Modal show={showForm} onHide={handleClose} className='p-5' size='lg'>
         <Modal.Header closeButton className='mx-4'>
         <img
@@ -241,6 +262,20 @@ export const ManageCustomer = () => {
           </Form>
         </Modal.Body>
       </Modal>
+                 {/* Modal show Infor Customer */}
+
+      {formContainCustById && (
+          <Modal show={showFormInfor} onHide={handCloseCustomerInfor}  className='p-5' size='lg'>
+              <Modal.Header closeButton>
+                  <Modal.Title className='w-100 d-flex justify-content-center'>INFORMATION OF CUSTOMER</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <p></p>
+              </Modal.Body>
+
+          </Modal>
+      )}
+     
     </div>
   );
 };
