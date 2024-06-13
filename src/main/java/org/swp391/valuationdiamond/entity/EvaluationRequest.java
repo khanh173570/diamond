@@ -54,6 +54,9 @@ public class EvaluationRequest {
   @Column(name = "phone_number", nullable = false, length = 255)
   String phoneNumber;
 
+  @Column(name = "meeting_date", nullable = true)
+  Date meetingDate;
+
   //hình như gán sai
   @JsonManagedReference
   @ManyToOne
