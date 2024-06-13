@@ -11,3 +11,6 @@
   padding: 20px;
   transition: box-shadow 0.3s ease;
 }
+.closeButton{
+ margin-right: 100px;
+}
