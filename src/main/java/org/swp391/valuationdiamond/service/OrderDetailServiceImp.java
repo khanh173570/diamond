@@ -6,6 +6,7 @@ import org.swp391.valuationdiamond.dto.OrderDetailDTO;
 import org.swp391.valuationdiamond.entity.EvaluationService;
 import org.swp391.valuationdiamond.entity.Order;
 import org.swp391.valuationdiamond.entity.OrderDetail;
+import org.swp391.valuationdiamond.entity.User;
 import org.swp391.valuationdiamond.repository.EvaluationServiceRepository;
 import org.swp391.valuationdiamond.repository.OrderDetailRepository;
 import org.swp391.valuationdiamond.repository.OrderRepository;
@@ -184,6 +185,13 @@ public class OrderDetailServiceImp {
         // Add more properties as needed
 
         return orderDetailRepository.save(orderDetail);
+    }
+    public List<OrderDetail> getOrderDetailsByUserId(String userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            return orderDetailRepository.findByUserId(user);
+        }
+        return null;
     }
 
 }

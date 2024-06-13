@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.swp391.valuationdiamond.entity.Order;
 import org.swp391.valuationdiamond.entity.OrderDetail;
+import org.swp391.valuationdiamond.entity.User;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
         List<OrderDetail> findByOrderId(Order orderId);
         List<OrderDetail> findByStatus(String status);
         List<OrderDetail> findByEvaluationStaffIdIsNull();
+        List<OrderDetail> findByUserId(User userId);
 }

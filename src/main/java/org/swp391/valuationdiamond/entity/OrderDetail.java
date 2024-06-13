@@ -124,7 +124,9 @@ List<EvaluationResult> evaluationResults;
   public void setIsDiamond(boolean isDiamond) {
   this.isDiamond = isDiamond;
 }
-
-
+  @JsonManagedReference
+  @ManyToOne
+  @JoinColumn(name = "user_id", nullable = true)
+  User userId;
 }
 
