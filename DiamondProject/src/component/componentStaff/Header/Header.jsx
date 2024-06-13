@@ -7,53 +7,19 @@ function Header() {
     const [isLogin, setIsLogin] = useState(false)
     const navigate = useNavigate();
 
-    // test consult
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch("https://jsonplaceholder.typicode.com/users/2");
-                const data = await response.json();
-                localStorage.setItem('consult_staff', JSON.stringify(data));
-               
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    // test valuation
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await fetch("https://jsonplaceholder.typicode.com/users/3");
-    //             const data = await response.json();
-    //             localStorage.setItem('valuation_staff', JSON.stringify(data));
-               
-    //         } catch (error) {
-    //             console.error("Error fetching data:", error);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, []);
-    // 
-    useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem('consult_staff'));
-        // const storedUser = JSON.parse(localStorage.getItem('valuation_staff'));
+        const storedUser = JSON.parse(localStorage.getItem('staff'));
         if (storedUser) {
             setUser(storedUser);
             setIsLogin(true)
         }
     }, []);
 
-    // Logout function
+
     const handleLogout = () => {
         setUser(null);
         setIsLogin(false)
-        localStorage.removeItem('consult_staff');
-        // localStorage.removeItem('valuation_staff');
+        localStorage.removeItem('staff');
         navigate('/login');
     };
 

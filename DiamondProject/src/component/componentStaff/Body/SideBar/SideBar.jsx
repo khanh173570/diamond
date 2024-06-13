@@ -24,6 +24,7 @@ export const SideBar = () => {
                 {/* <NavLink className='nav-link' to="/staff/create-receipt">Create Recipt</NavLink> */}
                 <NavLink className='nav-link' to="/staff/commitment">Create commitment page</NavLink>
                 {/* <NavLink className='nav-link' to="/staff/valuation">Valuation Application</NavLink> */}
+                <NavLink className='nav-link' to="/staff/valuation-order">Valuation's Product</NavLink>
                 <NavLink className='nav-link' to="/staff/valuation-result-list">Remake Valuation Result</NavLink>
             </Nav>
         </Navbar>
