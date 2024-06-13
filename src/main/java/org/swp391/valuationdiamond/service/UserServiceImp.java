@@ -19,6 +19,10 @@ public class UserServiceImp {
 
     //Hàm này sẽ tạo user theo cách thông thường
     public User createUser(UserDTO userDTO){
+        if (userRepository.findByUserId(userDTO.getUserId()) != null) {
+            throw new IllegalArgumentException("User with ID " + userDTO.getUserId() + " already exists");
+        }
+
         User user = new User();
 
         user.setUserId(userDTO.getUserId());
