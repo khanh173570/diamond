@@ -26,7 +26,7 @@ public class EvaluationResultDTO {
     BigDecimal price;
     String userId;
     String orderDetailId;
-
+    String img;
 
 
 

@@ -46,6 +46,7 @@ public class EvaluationResultServiceImp {
         evaluationResult.setFluorescence(EvaluationResultDTO.getFluorescence());
         evaluationResult.setDescription(EvaluationResultDTO.getDescription());
         evaluationResult.setPrice(EvaluationResultDTO.getPrice());
+        evaluationResult.setImg(EvaluationResultDTO.getImg());
         User userId = userRepository.findById(EvaluationResultDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
         evaluationResult.setUserId(userId);
         OrderDetail orderDetail = orderDetailRepository.findById(EvaluationResultDTO.getOrderDetailId()).orElseThrow(() -> new RuntimeException("Order detail not found"));
