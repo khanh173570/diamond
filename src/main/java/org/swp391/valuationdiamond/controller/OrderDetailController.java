@@ -87,6 +87,10 @@ public class OrderDetailController {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/getOrderDetailByEvaluationStaffId/{evaluationStaffId}")
+    public List<OrderDetail> getOrderDetailsByEvaluationStaffId(@PathVariable("evaluationStaffId") String evaluationStaffId){
+        return orderDetailServiceImp.getOrderDetailByEvaluationStaffId(evaluationStaffId);
+    }
 }
 
 

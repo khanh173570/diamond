@@ -193,6 +193,9 @@ public class OrderDetailServiceImp {
         }
         return null;
     }
+    public List<OrderDetail> getOrderDetailByEvaluationStaffId(String evaluationStaffId){
+        return orderDetailRepository.findByEvaluationStaffId(evaluationStaffId);
+    }
 
 }
 
