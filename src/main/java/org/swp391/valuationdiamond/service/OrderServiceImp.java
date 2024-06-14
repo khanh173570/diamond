@@ -133,4 +133,10 @@ public class OrderServiceImp {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
     }
+
+    //API get order by request id
+    public List<Order> getOrderByRequest(String requestId){
+        EvaluationRequest request = evaluationRequestRepository.findById(requestId).orElseThrow(() -> new RuntimeException("Request not found"));
+        return orderRepository.findOrderByRequestId(request);
+    }
 }

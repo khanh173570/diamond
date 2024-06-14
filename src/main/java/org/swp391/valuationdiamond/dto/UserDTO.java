@@ -1,5 +1,6 @@
 package org.swp391.valuationdiamond.dto;
 
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
 @Setter
 public class UserDTO {
     String userId;
+    @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
     String password;
     String firstName;
     String lastName;

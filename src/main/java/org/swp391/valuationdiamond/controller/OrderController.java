@@ -38,4 +38,9 @@ public class OrderController {
     List<Order> getOrders(){
         return orderServiceImp.getAllOrders();
     }
+
+    @GetMapping("/getOrderByRequestId/{requestId}")
+    List<Order> getOrderByRequestId(@PathVariable("requestId") String requestId){
+        return orderServiceImp.getOrderByRequest(requestId);
+    }
 }
