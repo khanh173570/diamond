@@ -115,7 +115,7 @@ export const ManageSchedule = () => {
             <tr key={data.id}>
               <td>{data.id}</td>
               <td>{data.username}</td>
-              <td>{data.date}</td>
+              <td>11/2/2222</td>
               <td>{data.email}</td>
               <td>
                 <Form.Select
