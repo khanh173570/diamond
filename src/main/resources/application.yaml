@@ -2,6 +2,7 @@ spring:
   application:
     name: valuationdiamond
 
+
   datasource:
     url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=diamond_valuation_db
     username: sa
