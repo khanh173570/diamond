@@ -78,7 +78,7 @@ export const CreateReceipt = () => {
       console.log(`Sending request for serviceId ${serviceId} with sampleSize ${sampleSize}`);
 
       // Fetch price service
-      const priceService = await fetchPriceService(serviceId, sampleSize || 0);
+      const unitPrice = await fetchUnitPrice(serviceId, sampleSize || 0);
 
       const orderDateTime = new Date(orderDate);
       const hoursRegex = /(\d+)\s*hour/i;
@@ -105,7 +105,7 @@ export const CreateReceipt = () => {
           return {
             ...row,
             serviceId: selectedService.serviceId,
-            priceService: priceService,
+            unitPrice: unitPrice,
             receivedDate: formattedReceivedDate,
             expiredReceivedDate: formattedExpiredReceivedDate,
           };
@@ -119,7 +119,7 @@ export const CreateReceipt = () => {
     }
   };
 
-  const fetchPriceService = async (serviceId, sampleSize) => {
+  const fetchUnitPrice = async (serviceId, sampleSize) => {
     try {
       const response = await fetch(
         `http://localhost:8080/service_price_list/calculate?serviceId=${serviceId}&sampleSize=${sampleSize}`
@@ -130,7 +130,7 @@ export const CreateReceipt = () => {
       );
       return data;
     } catch (error) {
-      console.error("Error fetching priceService:", error);
+      console.error("Error fetching unitPrice:", error);
       return null;
     }
   };
@@ -143,13 +143,13 @@ export const CreateReceipt = () => {
       receivedDate: "",
       expiredReceivedDate: "",
       sampleSize: 0,
-      priceService: 0.0,
+      unitPrice: 0.0,
     }));
     setRows(newRows);
   };
 
   const totalPrice = rows.reduce(
-    (total, row) => total + parseFloat(row.priceService || 0),
+    (total, row) => total + parseFloat(row.unitPrice || 0),
     0
   );
 
@@ -227,7 +227,7 @@ export const CreateReceipt = () => {
                       <td>{row.receivedDate}</td>
                       <td>{row.expiredReceivedDate}</td>
                       <td>{row.sampleSize}</td>
-                      <td>{row.priceService}</td>
+                      <td>{row.unitPrice}</td>
                     </tr>
                   ))}
                   <tr>
@@ -370,7 +370,7 @@ export const CreateReceipt = () => {
                       <input
                         type="text"
                         className="form-control"
-                        value={row.priceService}
+                        value={row.unitPrice}
                         readOnly
                       />
                     </td>
