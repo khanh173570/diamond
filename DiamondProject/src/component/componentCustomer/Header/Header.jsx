@@ -6,23 +6,21 @@ import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 import { NavLink, useNavigate } from 'react-router-dom';
 import '../Header/Header.css';
+
 function Header() {
     const [user, setUser] = useState(null);
-    const [isLogin, setIsLogin] = useState(false)
     const navigate = useNavigate();
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem('user'));
         if (storedUser) {
             setUser(storedUser);
-            setIsLogin(true)
         }
     }, []);
 
     const handleLogout = () => {
         setUser(null);
-        localStorage.removeItem('user'); 
-        setIsLogin(false)
+        localStorage.removeItem('user');
         navigate('/login');
     };
 
@@ -45,7 +43,7 @@ function Header() {
                         <NavDropdown title="Evaluation Service" id="nav-dropdown">
                             <NavDropdown.Item as={NavLink} to="/calculate">Calculate</NavDropdown.Item>
                            
-                            {user && isLogin && <NavDropdown.Item as={NavLink} to="/evaluationservice">
+                            {user && <NavDropdown.Item as={NavLink} to="/evaluationservice">
                                 Diamond Valuation Service
                             </NavDropdown.Item>  }
                            
@@ -64,8 +62,8 @@ function Header() {
                             <NavDropdown.Item>English</NavDropdown.Item>
                         </NavDropdown>
                     
-                        { user && isLogin ? (
-                            <NavDropdown title={user.name} id="nav-dropdown">
+                        { user ? (
+                            <NavDropdown title={`${user.firstName} ${user.lastName}`} id="nav-dropdown">
                                 <NavDropdown.Item as={NavLink} to="/profile">My Profile</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/my-request">My Request</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/my-order">My Order</NavDropdown.Item>

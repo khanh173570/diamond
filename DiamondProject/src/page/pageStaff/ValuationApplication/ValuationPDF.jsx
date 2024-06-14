@@ -45,9 +45,9 @@ export const ValuationPDF = ({ result} ) => {
     <Document>
       <Page size="A4" style={styles.page}>
         <View>
-          <View>
+          {/* <View>
             <Image style={styles.image} src="" />
-          </View>
+          </View> */}
           <View>
             <Text style={styles.title}>Valuation Report</Text>
           </View>
@@ -56,10 +56,11 @@ export const ValuationPDF = ({ result} ) => {
           <View style={styles.wrapLeft}>
             <View style={styles.section}>
               <Text style={styles.header}>Diamond Valuation Report</Text>
-              <Text style={styles.text}>Certificate Date: {result.diamondOrigin}</Text>
+              <Text style={styles.text}>Diamond Origin:</Text>
+              <Text style={styles.text}>{result.diamondOrigin}</Text>
               <Text style={styles.text}>Measurements: {result.measurements}</Text>
-              <Text style={styles.text}>Assessment ID: {result.shapeCut}</Text>
-              <Text style={styles.text}>Shape: {result.description}</Text>
+              <Text style={styles.text}>Shape Cut: {result.shapeCut}</Text>
+              <Text style={styles.text}>Description: {result.description}</Text>
             </View>
             <View style={styles.section}>
               <Text style={styles.header}>Grading Results</Text>
@@ -79,12 +80,8 @@ export const ValuationPDF = ({ result} ) => {
           </View>
           <View style={styles.wrapRight}>
             <View style={styles.section}>
-              <Text style={styles.header}>Proportions</Text>
-              <Image style={styles.image} src={resultImage} />
-            </View>
-            <View style={styles.section}>
               <Text style={styles.header}>Clarity Characteristics</Text>
-              <Image style={styles.image} src={resultImage1} />
+              <Image style={styles.image} src={result.img} />
             </View>
           </View>
         </View>

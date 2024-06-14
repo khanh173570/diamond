@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Stack, Button } from 'react-bootstrap';
+import { Row, Col, Stack, Button ,Spinner} from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
+import formattedDate from '../../utils/formattedDate/formattedDate';
 
 export const PersonalRequest = () => {
     const [myRequest, setMyRequest] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [isEdit, setIsEdit] = useState(false)
     const navigate = useNavigate();
 
-    //get api get request by user id
-    const API = 'http://localhost:8080/evaluation-request/get_by_user/customer01';
+    const API = 'http://localhost:8080/evaluation-request/get_by_user';
     const userId = JSON.parse(localStorage.getItem('user'));
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${API}`);
+                const response = await fetch(`${API}/${userId.userId}`);
                 const data = await response.json();
                 setMyRequest(data);
                 setLoading(true);
@@ -29,11 +28,11 @@ export const PersonalRequest = () => {
     }, [userId.username]);
 
     if (!loading) {
-        return <div style={{ minHeight: '500px' }}>Loading...</div>;
-    }
+        return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
+      }
 
     const viewMyRequest = (request) => {
-        navigate(`/my-request/${request.id}`, { state: { request } });
+        navigate(`/my-request/${request.requestId}`, { state: { request } });
     };
 
     return (
@@ -57,7 +56,7 @@ export const PersonalRequest = () => {
                             <Col>
                                 <Stack>
                                     <div className='mb-1 fw-bold'>{request.service}</div>
-                                    <div className='mb-1'>Created Request Date: 13/07/2023</div>
+                                    <div className='mb-1'>Request Date: {formattedDate(request.requestDate)}</div>
                                     <div className='mb-1'>Status: {request.status}</div>
                                 </Stack>
                             </Col>

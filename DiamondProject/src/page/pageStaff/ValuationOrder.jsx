@@ -10,21 +10,12 @@ export const ValuationOrder = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    // const userId = JSON.parse(localStorage.getItem('consult_staff'));
 
-    // useEffect(() => {
-    //     const storedUser = JSON.parse(localStorage.getItem('consult_staff'));
-    //     if (storedUser) {
-    //         setUser(storedUser);
-    //         setIsLogin(true)
-    //     }
-    // }, []);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // API get orderDetails by userId
-                // const response = await fetch('http://localhost:8080/order_request/getOrders');
                 const response = await fetch(`https://fakestoreapi.com/carts/user/${userId.id}`);
                 const data = await response.json();
                 setValuationOrder(data);
@@ -44,7 +35,7 @@ export const ValuationOrder = () => {
     };
 
     const handleOnChangeStatus = (id) => {
-        // Update status logic here
+       
         setEditRowId(null);
     };
 

@@ -41,7 +41,7 @@ function Header() {
                         <NavLink to="/evaluation-service" className="nav-link">Evaluation Service</NavLink>
                         <NavLink to="/setting" className="nav-link">Setting</NavLink>
                         {user &&  (
-                            <NavDropdown title={user.name} id="nav-dropdown">
+                            <NavDropdown title={`${user.firstName} ${user.lastName}`} id="nav-dropdown">
                                 <NavDropdown.Item as={NavLink} to="/personal-info">My Profile</NavDropdown.Item>
                                 <NavDropdown.Item onClick={handleLogout}>Log out</NavDropdown.Item>
                             </NavDropdown>
