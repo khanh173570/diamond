@@ -5,12 +5,14 @@ import Button from 'react-bootstrap/Button';
 import Swal from 'sweetalert2';
 
 import './ManageSchedule.css';
+import { Pagination } from 'react-bootstrap';
 
 export const ManageSchedule = () => {
   const [dataManage, setDataManage] = useState([]);
   const [evaluationStaffIds, setEvaluationStaffIds] = useState([]);
   const [selectedEvaluationStaff, setSelectedEvaluationStaff] = useState({});
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   // Fetch orderDetail data
   useEffect(() => {
@@ -75,7 +77,24 @@ export const ManageSchedule = () => {
       console.error('Error updating evaluation ID:', error);
     }
   };
+  const indexOfLastPost = currentPage * itemsPerPage;
+  const indexOfFirstPost = indexOfLastPost - itemsPerPage;
+  const currentPosts =dataManage.slice(indexOfFirstPost, indexOfLastPost);
+      // Change page
+              const paginate = (event, pageNumber) => {
+                event.preventDefault();
+                setCurrentPage(pageNumber);
+              };
 
+              let active = currentPage;
+              let items = [];
+              for (let number = 1; number <= Math.ceil(dataManage.length / itemsPerPage); number++) {
+                items.push(
+                  <Pagination.Item key={number} active={number === active} onClick={(event) => paginate(event, number)}>
+                    {number}
+                  </Pagination.Item>,
+                );
+}
   return (
     <>
       <h2 className="text-center p-4 my-4">Schedule Valuation Diamond</h2>
@@ -92,7 +111,7 @@ export const ManageSchedule = () => {
           </tr>
         </thead>
         <tbody>
-          {dataManage.map((data) => (
+          {currentPosts.map((data) => (
             <tr key={data.id}>
               <td>{data.id}</td>
               <td>{data.username}</td>
@@ -118,8 +137,12 @@ export const ManageSchedule = () => {
               </td>
             </tr>
           ))}
+          
         </tbody>
+       
       </Table>
+      <Pagination className='d-flex justify-content-center'>{items}</Pagination>
+
     </>
   );
 };
