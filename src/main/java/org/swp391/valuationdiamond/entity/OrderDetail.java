@@ -104,10 +104,6 @@ public class OrderDetail {
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
 
-//  @JsonManagedReference
-//  @ManyToOne
-//  @JoinColumn(name = "evaluation_staff_id", nullable = true)
-//  User evaluationStaffId;
 @JsonIgnore
 @OneToMany(mappedBy = "orderDetailId", cascade = CascadeType.ALL)
 List<EvaluationResult> evaluationResults;
@@ -118,15 +114,9 @@ List<EvaluationResult> evaluationResults;
   @JoinColumn(name = "service_id", nullable = true)
   EvaluationService serviceId;
 
-//  @JsonBackReference
-//  @OneToMany(mappedBy = "orderDetailId")
-//  List<EvaluationResult> evaluationResultsId;
-  public void setIsDiamond(boolean isDiamond) {
-    this.isDiamond = isDiamond;
-}
   @JsonManagedReference
   @ManyToOne
-  @JoinColumn(name = "user_id", nullable = true)
+  @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   User userId;
 }
 

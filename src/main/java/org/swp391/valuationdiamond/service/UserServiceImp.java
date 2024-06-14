@@ -1,7 +1,7 @@
 package org.swp391.valuationdiamond.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+//import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.swp391.valuationdiamond.dto.UserDTO;
 import org.swp391.valuationdiamond.entity.Role;
@@ -40,27 +40,27 @@ public class UserServiceImp {
     }
 
 //    đăng ký tài khoản với google
-public User signupOrLoginWithGoogle(OAuth2AuthenticationToken token){
-    Map<String, Object> map = token.getPrincipal().getAttributes();
-    String userId = (String) map.get("email");
-
-    // Kiểm tra xem người dùng đã tồn tại chưa
-    Optional<User> existingUser = userRepository.findById(userId);
-
-    if (((Optional<?>) existingUser).isPresent()) {
-        return existingUser.get();
-    } else {
-        User user = new User();
-        user.setUserId((String) map.get("email"));
-        user.setFirstName((String) map.get("given_name"));
-        user.setLastName((String) map.get("family_name"));
-        user.setEmail((String) map.get("email"));
-        user.setRole(Role.USER);
-
-        userRepository.save(user);
-        return user;
-    }
-}
+//public User signupOrLoginWithGoogle(OAuth2AuthenticationToken token){
+//    Map<String, Object> map = token.getPrincipal().getAttributes();
+//    String userId = (String) map.get("email");
+//
+//    // Kiểm tra xem người dùng đã tồn tại chưa
+//    Optional<User> existingUser = userRepository.findById(userId);
+//
+//    if (((Optional<?>) existingUser).isPresent()) {
+//        return existingUser.get();
+//    } else {
+//        User user = new User();
+//        user.setUserId((String) map.get("email"));
+//        user.setFirstName((String) map.get("given_name"));
+//        user.setLastName((String) map.get("family_name"));
+//        user.setEmail((String) map.get("email"));
+//        user.setRole(Role.USER);
+//
+//        userRepository.save(user);
+//        return user;
+//    }
+//}
 
     //hàm đăng nhập
     public User login(String userId, String password) {

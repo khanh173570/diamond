@@ -2,9 +2,9 @@ package org.swp391.valuationdiamond.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.swp391.valuationdiamond.dto.UserDTO;
 import org.swp391.valuationdiamond.entity.User;
@@ -33,10 +33,10 @@ public class UserController {
 ////        return userServiceImp.signupWithGoogle(token);
 //    }
 
-    @GetMapping("/login-google")
-    public User signupOrLoginWithGoogle(OAuth2AuthenticationToken token) {
-        return userServiceImp.signupOrLoginWithGoogle(token);
-    }
+//    @PostMapping("/login-google")
+//    public User signupOrLoginWithGoogle(OAuth2AuthenticationToken token) {
+//        return userServiceImp.signupOrLoginWithGoogle(token);
+//    }
 
 //    @GetMapping("/signup-google")
 //    Map<String, Object> currentUser(OAuth2AuthenticationToken token){
