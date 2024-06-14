@@ -30,7 +30,7 @@ export const ValuationOrderDetail = () => {
   }, []);
 
   const handleCreateForm = (product) => {
-    navigate('/staff/valuation', { state: { product } });
+    navigate('/valuation-staff/valuation', { state: { product } });
   };
 
   if (isLoading) {
@@ -100,7 +100,7 @@ export const ValuationOrderDetail = () => {
                   height='20'
                   width='20'
                   onClick={()=>{
-                    navigate(`/staff/valuation-order/${product.orderDetailId}`, {state:{product}})
+                    navigate(`/valuation-staff/valuation-order/${product.orderDetailId}`, {state:{product}})
                   }}
                 />
               </td>

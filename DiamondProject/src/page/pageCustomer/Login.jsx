@@ -42,21 +42,19 @@ function Login() {
                 });
                 const data = response.data;
                 if (data) {
-
                     if (data.role === 'customer') {
                         navigate("/");
                         localStorage.setItem('user', JSON.stringify(data));
 
-                    } else if (data.role === 'consultant_staff' || data.role === 'valuation_staff') {
+                    } else if (data.role === 'consultant_staff') {
                         navigate("/staff");
                         localStorage.setItem('staff', JSON.stringify(data));
-
                     } else if (data.role === 'admin') {
                         navigate("/admin");
                         localStorage.setItem('admin', JSON.stringify(data));
-                        // } else if (data.role === 'valuation_staff') {
-                        //     navigate("/staff");
-                        //     localStorage.setItem('staff', JSON.stringify(data));
+                    } else if (data.role === 'valuation_staff') {
+                        navigate("/valuation-staff");
+                        localStorage.setItem('valuation-staff', JSON.stringify(data));
                     } else {
                         setIsLogin(false);
                         setError('Invalid role');
@@ -67,6 +65,7 @@ function Login() {
                 }
             } catch (error) {
                 console.error('Invalid username or password', error);
+                
 
             }
         }
