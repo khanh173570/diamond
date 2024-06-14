@@ -126,10 +126,9 @@ export const CreateReceipt = () => {
       );
       const data = await response.json();
       console.log(
-        `Fetching price for serviceId ${serviceId} with sampleSize ${sampleSize}:`,
-data.priceService
+        `Fetching price for serviceId ${serviceId} with sampleSize ${sampleSize}:`,data
       );
-      return data.priceService;
+      return data;
     } catch (error) {
       console.error("Error fetching priceService:", error);
       return null;
