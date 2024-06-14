@@ -14,7 +14,7 @@ export const ValuationOrderDetailUpdate = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     // State for form fields
-
+    
     const [formEdit, setFormEdit] = useState({
         status: product.status,
         isDiamond: product.isDiamond,
@@ -52,8 +52,6 @@ export const ValuationOrderDetailUpdate = () => {
     const handleFormChange = (field, value) => {
         setFormEdit(currentState => ({ ...currentState, [field]: value }));
     };
-
-
 
     const handleSaveChanges = async () => {
         try {
