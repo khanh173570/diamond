@@ -25,7 +25,7 @@ public class EvaluationRequestController {
   }
 
   @GetMapping("/{requestId}")
-  public EvaluationRequest getEvaluationRequest(@PathVariable String requestId) {
+  public EvaluationRequest getEvaluationRequest(@PathVariable("requestId") String requestId) {
     return evaluationRequestService.getEvaluationRequest(requestId);
   }
 

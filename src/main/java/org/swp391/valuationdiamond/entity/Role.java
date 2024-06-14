@@ -5,8 +5,6 @@ public enum Role {
     admin,
     USER,
     MANAGER,
-//    STAFF,
-    //CUSTOMER,
     customer ,// ben table cua tui role no viet thuong :))
     consultant_staff,
     valuation_staff

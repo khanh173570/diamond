@@ -39,6 +39,12 @@ public class OrderController {
         return orderServiceImp.getAllOrders();
     }
 
+    @GetMapping("/getOrderByRequestId/{requestId}")
+    List<Order> getOrderByRequestId(@PathVariable("requestId") String requestId) {
+        return orderServiceImp.getOrderByRequest(requestId);
+
+    }
+
     @PutMapping("/updateStatus/{orderId}")
     public Order updateOrderStatus(@PathVariable("orderId") String orderId, @RequestBody OrderDTO orderDTO) {
         return orderServiceImp.updateOrderStatus(orderId, orderDTO);
