@@ -99,7 +99,6 @@ public class OrderDetail {
 
 
   @JsonManagedReference
-
   @ManyToOne
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
@@ -121,12 +120,6 @@ List<EvaluationResult> evaluationResults;
 //  @JsonBackReference
 //  @OneToMany(mappedBy = "orderDetailId")
 //  List<EvaluationResult> evaluationResultsId;
-  public void setIsDiamond(boolean isDiamond) {
-  this.isDiamond = isDiamond;
-}
-  @JsonManagedReference
-  @ManyToOne
-  @JoinColumn(name = "user_id", nullable = true)
-  User userId;
+
 }
 

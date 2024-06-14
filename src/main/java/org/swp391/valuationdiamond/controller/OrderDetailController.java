@@ -78,15 +78,6 @@ public class OrderDetailController {
     public OrderDetail updateOrderDetail(@PathVariable("orderDetailId") String orderDetailId, @RequestBody OrderDetailDTO orderDetailDTO) {
         return orderDetailServiceImp.updateOrderDetail(orderDetailId, orderDetailDTO);
     }
-    @GetMapping("/getOrderDetailByUserId/{userId}")
-    public ResponseEntity<List<OrderDetail>> getOrderDetailsByUserId(@PathVariable String userId) {
-        List<OrderDetail> orderDetails = orderDetailServiceImp.getOrderDetailsByUserId(userId);
-        if (orderDetails != null) {
-            return ResponseEntity.ok(orderDetails);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
     @GetMapping("/getOrderDetailByEvaluationStaffId/{evaluationStaffId}")
     public List<OrderDetail> getOrderDetailsByEvaluationStaffId(@PathVariable("evaluationStaffId") String evaluationStaffId){
         return orderDetailServiceImp.getOrderDetailByEvaluationStaffId(evaluationStaffId);

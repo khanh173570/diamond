@@ -68,7 +68,4 @@ public class User {
 
   @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
   List<CommittedPaper> committedPapers;
-  @JsonIgnore
-  @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
-  List<OrderDetail> orderDetailId;
 }
