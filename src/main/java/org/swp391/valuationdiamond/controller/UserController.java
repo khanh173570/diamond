@@ -46,6 +46,11 @@ public class UserController {
 
 
     //hàm login
+
+//    @GetMapping("/login")
+//    User login(@RequestParam String email, @RequestParam String password){
+//        return userServiceImp.login(email, password);
+//    }
     @PostMapping("/login")
     public User login(@RequestBody Map<String, String> loginRequest) {
         String userId = loginRequest.get("userId");

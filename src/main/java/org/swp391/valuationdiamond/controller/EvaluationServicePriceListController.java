@@ -1,10 +1,9 @@
 package org.swp391.valuationdiamond.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.swp391.valuationdiamond.entity.EvaluationServicePriceList;
 import org.swp391.valuationdiamond.entity.OrderDetail;
 import org.swp391.valuationdiamond.service.EvaluationServicePriceListServiceImp;
@@ -24,4 +23,24 @@ public class EvaluationServicePriceListController {
     public List<EvaluationServicePriceList> getAllEvaluationPriceList(){
         return evaluationServicePriceListServiceImp.getAllServicePriceList();
     }
+//    @GetMapping("/calculate")
+//    public double calculatePrice(@RequestParam String serviceId, @RequestParam float sampleSize) {
+//        return evaluationServicePriceListServiceImp.calculateServicePrice(serviceId, sampleSize);
+//    }
+    @GetMapping("/calculate")
+public ResponseEntity<?> calculatePrice(
+        @RequestParam String serviceId,
+        @RequestParam float sampleSize) {
+
+    try {
+        double price = evaluationServicePriceListServiceImp.calculateServicePrice(serviceId, sampleSize);
+        return ResponseEntity.ok(price);
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
+    }
+}
 }

@@ -122,9 +122,11 @@ List<EvaluationResult> evaluationResults;
 //  @OneToMany(mappedBy = "orderDetailId")
 //  List<EvaluationResult> evaluationResultsId;
   public void setIsDiamond(boolean isDiamond) {
-  this.isDiamond = isDiamond;
+    this.isDiamond = isDiamond;
 }
-
-
+  @JsonManagedReference
+  @ManyToOne
+  @JoinColumn(name = "user_id", nullable = true)
+  User userId;
 }
 

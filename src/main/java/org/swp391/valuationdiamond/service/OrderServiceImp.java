@@ -135,8 +135,17 @@ public class OrderServiceImp {
     }
 
     //API get order by request id
-    public List<Order> getOrderByRequest(String requestId){
+    public List<Order> getOrderByRequest(String requestId) {
         EvaluationRequest request = evaluationRequestRepository.findById(requestId).orElseThrow(() -> new RuntimeException("Request not found"));
         return orderRepository.findOrderByRequestId(request);
+    }
+
+    public Order updateOrderStatus(String orderId, OrderDTO orderDTO){
+        Order order= orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+
+        if (orderDTO.getStatus() != null) {
+            order.setStatus(orderDTO.getStatus());
+        }
+        return orderRepository.save(order);
     }
 }

@@ -28,6 +28,6 @@ public class OrderDetailDTO {
     String status;
     String orderId;
     String serviceId;
-
+    String userId;
 
 }

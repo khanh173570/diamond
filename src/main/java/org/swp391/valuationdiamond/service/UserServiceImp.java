@@ -20,6 +20,10 @@ public class UserServiceImp {
 
     //Hàm này sẽ tạo user theo cách thông thường
     public User createUser(UserDTO userDTO){
+        if (userRepository.findByUserId(userDTO.getUserId()) != null) {
+            throw new IllegalArgumentException("User with ID " + userDTO.getUserId() + " already exists");
+        }
+
         User user = new User();
 
         user.setUserId(userDTO.getUserId());
@@ -60,11 +64,11 @@ public User signupOrLoginWithGoogle(OAuth2AuthenticationToken token){
 
     //hàm đăng nhập
     public User login(String userId, String password) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent() && user.get().getPassword().equals(password)) {
-            return user.get();
+        User user = userRepository.findByUserId(userId);
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
         }
-        throw new RuntimeException("Invalid userId or password");
+        throw new RuntimeException("Invalid email or password");
     }
 
     public List<User> getStaffs(){

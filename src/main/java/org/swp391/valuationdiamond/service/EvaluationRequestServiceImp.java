@@ -45,6 +45,7 @@ public class EvaluationRequestServiceImp implements IEvaluationRequestService {
     evaluationRequest.setStatus("In-Progress");
     evaluationRequest.setService(evaluationRequestDTO.getService());
     evaluationRequest.setPhoneNumber(evaluationRequestDTO.getPhoneNumber());
+    evaluationRequest.setMeetingDate(evaluationRequestDTO.getMeetingDate());
 
 
     User userId = userRepository.findById(evaluationRequestDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));

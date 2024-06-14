@@ -26,4 +26,5 @@ public class EvaluationRequestDTO {
   String service;
   String phoneNumber;
   String userId;
+  Date meetingDate;
 }

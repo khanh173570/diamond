@@ -1,6 +1,7 @@
 package org.swp391.valuationdiamond.entity;
 
 public enum Role {
+//    ADMIN,
     admin,
     USER,
     MANAGER,

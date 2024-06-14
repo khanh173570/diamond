@@ -65,6 +65,9 @@ public class EvaluationResult {
   @Column(name = "description", nullable = true, columnDefinition = "NVARCHAR(MAX)")
   String description;
 
+  @Column(name = "img", nullable = true, columnDefinition = "NVARCHAR(MAX)")
+  String img;
+
   @Column(name = "price", nullable = true, precision = 18, scale = 2)
   BigDecimal price;
 
