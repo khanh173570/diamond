@@ -103,24 +103,14 @@ public class OrderDetail {
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
 
-//  @JsonManagedReference
-//  @ManyToOne
-//  @JoinColumn(name = "evaluation_staff_id", nullable = true)
-//  User evaluationStaffId;
 @JsonIgnore
 @OneToMany(mappedBy = "orderDetailId", cascade = CascadeType.ALL)
 List<EvaluationResult> evaluationResults;
 
-//  @JsonIgnore
   @JsonManagedReference
   @ManyToOne
   @JoinColumn(name = "service_id", nullable = true)
   EvaluationService serviceId;
-
-//  @JsonBackReference
-//  @OneToMany(mappedBy = "orderDetailId")
-//  List<EvaluationResult> evaluationResultsId;
-
 
 }
 

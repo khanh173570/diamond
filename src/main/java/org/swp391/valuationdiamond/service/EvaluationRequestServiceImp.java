@@ -106,6 +106,8 @@ public class EvaluationRequestServiceImp implements IEvaluationRequestService {
         evaluationRequest.setService(evaluationRequestDTO.getService());
     } else if (evaluationRequestDTO.getStatus() != null) {
         evaluationRequest.setStatus(evaluationRequestDTO.getStatus());
+    } else if (evaluationRequestDTO.getMeetingDate() != null) {
+        evaluationRequest.setMeetingDate(evaluationRequestDTO.getMeetingDate());
     }
     return evaluationRequestRepository.save(evaluationRequest);
   }
