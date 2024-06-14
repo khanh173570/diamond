@@ -8,7 +8,7 @@ function Header() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem('staff'));
+        const storedUser = JSON.parse(localStorage.getItem('valuation-staff'));
         if (storedUser) {
             setUser(storedUser);
             setIsLogin(true)

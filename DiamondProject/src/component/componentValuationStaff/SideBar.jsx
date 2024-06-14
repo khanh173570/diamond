@@ -4,7 +4,6 @@ import Navbar from 'react-bootstrap/Navbar';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { NavLink } from 'react-router-dom';
-import '../SideBar/SideBar.css';
 
 export const SideBar = () => {
     return (
@@ -19,10 +18,7 @@ export const SideBar = () => {
                 <Button variant="outline-success">Search</Button>
             </Form>
             <Nav className="flex-column w-100 p-2 menu fw-bold">
-                <NavLink className='nav-link' to="/staff/user-request">Receive User Requests</NavLink>
-                <NavLink className='nav-link' to="/staff/view-receipt">View All Recipt</NavLink>
-                <NavLink className='nav-link' to="/staff/commitment">Create commitment page</NavLink>
-                <NavLink className='nav-link' to="/staff/valuation-result-list">Remake Valuation Result</NavLink>
+                <NavLink className='nav-link' to="/valuation-staff/valuation-order">Valuation's Product</NavLink>    
             </Nav>
         </Navbar>
     );

@@ -3,7 +3,8 @@ import Footer from '../component/componentCustomer/Footer/Footer.jsx'
 import Header from '../component/componentCustomer/Header/Header.jsx'
 import React from 'react'
 function CustomerApp() {
-  return (
+
+   return (
     <>
       <div className="header">
         <Header />

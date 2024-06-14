@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom'; // import useNavigate from react
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
+import { Row,Col } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { UserRequestDetails1 } from './UserRequestDetails';
+import formattedDate from '../../../utils/formattedDate/formattedDate';
 
 export const UserRequest = () => {
   const [userRequest, setUserRequest] = useState([]);
@@ -14,7 +16,12 @@ export const UserRequest = () => {
   const [editStatus, setEditStatus] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate(); // add useNavigate hook
+  const [searchTerm,setSearchTerm] = useState('');
 
+
+  const handleSearch = ()=>{
+
+  }
   // List data
   const API = 'http://localhost:8080/evaluation-request/gett_all';
   useEffect(() => {
@@ -28,7 +35,7 @@ export const UserRequest = () => {
       }
     };
     fetchData();
-  }, [isEdit]);
+  }, [isEdit,editStatus]);
 
   // Update data
   const handleOnChangeStatus = (requestId) => {
@@ -43,7 +50,6 @@ export const UserRequest = () => {
         });
 
         const data = await response.json();
-        console.log('Update response:', data);
         setIsEdit(true);
         setEditRowId(null); // Reset edit mode
       } catch (error) {
@@ -54,9 +60,9 @@ export const UserRequest = () => {
   };
 
   // Delete data
-  const handleDeleteItem = async (id) => {
+  const handleDeleteItem = async (requestId) => {
     try {
-      await fetch(`http://localhost:8080/evaluation-request/${id}`, {
+      await fetch(`http://localhost:8080/evaluation-request/${requestId}`, {
         method: 'DELETE',
       });
       setIsEdit(true);
@@ -72,15 +78,36 @@ export const UserRequest = () => {
 
   return (
     <Container>
+           
       {!isViewDetail ? (
         <>
+        
           <h2 className="text-center my-4">User Request</h2>
+          <div className='justify-content-center' style={{ width: '80%', margin: '0 auto' }}>
+        <Form className="mb-3">
+          <Row>
+            <Col>
+              <Form.Control
+                type="text"
+                placeholder="Search by ID"
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+              />
+            </Col>
+            <Col xs="auto">
+              <Button variant="primary" onClick={handleSearch}>
+                Search
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      </div>
           <Table striped bordered className="fs-5">
             <thead style={{ backgroundColor: '#E2FBF5' }}>
               <tr>
                 <th>Request ID</th>
-                <th>UserId</th>
-                <th>Date</th>
+                <th>Guest Name</th>
+                <th>Send Date</th>
                 <th>Status</th>
                 <th>View Details</th>
                 <th></th>
@@ -90,8 +117,8 @@ export const UserRequest = () => {
               {userRequest.map((user) => (
                 <tr key={user.requestId}>
                   <td>{user.requestId}</td>
-                  <td>{user.userId.userId}</td>
-                  <td>{user.requestDate}</td>
+                  <td>{user.guestName}</td>
+                  <td>{formattedDate(user.requestDate)}</td>
                   <td className='d-flex'>
                     {editRowId === user.requestId ? (
                       <>
@@ -100,9 +127,9 @@ export const UserRequest = () => {
                           value={editStatus}
                           onChange={(e) => setEditStatus(e.target.value)}
                         >
-                          <option value="request">Requested</option>
-                          <option value="accepted">Accepted</option>
-                          <option value="canceled">Canceled</option>
+                          <option value="Requested">Requested</option>
+                          <option value="Accepted">Accepted</option>
+                          <option value="Canceled">Canceled</option>
                         </Form.Select>
                         <Button onClick={() => handleOnChangeStatus(user.requestId)}>Save</Button>
                       </>
@@ -133,13 +160,16 @@ export const UserRequest = () => {
                     </Button>
                   </td>
                   <td className=''>
-                    <img
+                  <Button variant="danger" size="sm">
+                  <img
                       src='/src/assets/assetsStaff/delete.svg'
                       alt="Delete"
                       height="20"
                       width="20"
                       onClick={() => handleDeleteItem(user.requestId)}
                     />
+                  </Button>
+                  
                   </td>
                 </tr>
               ))}

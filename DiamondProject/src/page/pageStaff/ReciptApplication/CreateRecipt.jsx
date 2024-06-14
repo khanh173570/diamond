@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import { useReactToPrint } from "react-to-print";
-import "../ReciptApplication/print.css"; // Import CSS for printing
 
 export const CreateReceipt = () => {
   const [selection, setSelection] = useState([]);
@@ -11,15 +10,16 @@ export const CreateReceipt = () => {
   const [request, setRequest] = useState("");
   const [quantity, setQuantity] = useState("");
   const [reviewMode, setReviewMode] = useState(false);
-  const [orderDate, setOrderDate] = useState("");
+  const [orderDate, setOrderDate] = useState(""); // Initialize with empty string
+  const [sampleSizeInput, setSampleSizeInput] = useState(""); // State to hold sampleSize input value
+  const [rows, setRows] = useState([]);
+
   const componentRef = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8080/service/getServices"
-        );
+        const response = await fetch("http://localhost:8080/service/getServices");
         const data = await response.json();
         setSelection(data);
       } catch (error) {
@@ -30,98 +30,127 @@ export const CreateReceipt = () => {
     fetchData();
   }, []);
 
-  const initialRows = Array.from({ length: parseInt(quantity) || 0 }, () => ({
-    serviceId: "",
-    receivedDate: new Date().toISOString().split("T")[0],
-    expiredReceivedDate: new Date().toISOString().split("T")[0],
-    size: 0,
-    unitPrice: 0.0,
-  }));
+  useEffect(() => {
+    // Function to initialize orderDate with current date and time
+    const initializeOrderDate = () => {
+      const now = new Date();
+      const formattedDate = formatDate(now);
+      setOrderDate(formattedDate);
+    };
 
-  const [rows, setRows] = useState(initialRows);
+    initializeOrderDate(); // Call the initialization function
+  }, []);
+
+  const formatDate = (dateTime) => {
+    const options = {
+      month: "2-digit",
+      day: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    };
+    return dateTime.toLocaleString("en-US", options);
+  };
 
   const handleRowChange = (index, field, value) => {
     const updatedRows = rows.map((row, rowIndex) =>
       rowIndex === index ? { ...row, [field]: value } : row
     );
     setRows(updatedRows);
-  };
 
-
-  const formatDateTime = (dateTimeString) => {
-    const dateTime = new Date(dateTimeString);
-    const options = { month: "2-digit", day: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", hour12: true };
-    return dateTime.toLocaleString("en-US", options);
+    // Log sampleSize change
+    console.log(`Sample size updated at index ${index}: ${value}`);
   };
-  
 
   const handleServiceChange = async (index, serviceId) => {
-    const selectedService = selection.find((service) => service.serviceId === serviceId);
+    const selectedService = selection.find(
+      (service) => service.serviceId === serviceId
+    );
     if (!selectedService) return;
-  
+
     try {
-      const unitPrice = await fetchUnitPrice(serviceId, rows[index].size);
-  
-      const orderDateTime = new Date(orderDate); // Ngày đặt hàng
-      const hoursRegex = /(\d+)h/; // Biểu thức chính quy để tìm số giờ từ loại dịch vụ
-      const match = selectedService.serviceType.match(hoursRegex); // Tìm số giờ từ chuỗi loại dịch vụ
-      const hours = match ? parseInt(match[1], 10) : 0; // Số giờ từ loại dịch vụ (nếu có)
-      const receivedDateTime = new Date(orderDateTime.getTime() + hours * 3600000); // Tính "Receive Date" bằng cách cộng số giờ từ loại dịch vụ vào ngày đặt hàng
-      const expiredReceivedDateTime = new Date(receivedDateTime.getTime() + 30 * 24 * 3600000); // Tính "Expire Date" bằng cách cộng 30 ngày vào "Receive Date"
-  
-      const formattedReceivedDate = formatDateTime(receivedDateTime.toISOString()); // Định dạng receivedDate
-      const formattedExpiredReceivedDate = formatDateTime(expiredReceivedDateTime.toISOString()); // Định dạng expiredReceivedDate
-  
+      let sampleSize = rows[index].sampleSize;
+      if (!sampleSize) {
+        sampleSize = sampleSizeInput;
+      }
+
+      console.log(`Sending request for serviceId ${serviceId} with sampleSize ${sampleSize}`);
+
+      // Fetch price service
+      const priceService = await fetchPriceService(serviceId, sampleSize || 0);
+
+      const orderDateTime = new Date(orderDate);
+      const hoursRegex = /(\d+)\s*hour/i;
+      const match = selectedService.serviceType.match(hoursRegex);
+      let hoursToAdd = 0;
+      if (match) {
+        hoursToAdd = parseInt(match[1], 10);
+      }
+
+      // Calculate received and expired received dates
+      const receivedDateTime = new Date(
+        orderDateTime.getTime() + hoursToAdd * 3600000
+      );
+      const expiredReceivedDateTime = new Date(
+        receivedDateTime.getTime() + 30 * 24 * 3600000
+      );
+
+      const formattedReceivedDate = formatDate(receivedDateTime);
+      const formattedExpiredReceivedDate = formatDate(expiredReceivedDateTime);
+
+      // Update rows state with new data
       const newRows = rows.map((row, rowIndex) => {
         if (rowIndex === index) {
           return {
             ...row,
-            unitPrice: unitPrice,
-            receivedDate: formattedReceivedDate, // Sử dụng ngày tháng giờ đã được định dạng
-            expiredReceivedDate: formattedExpiredReceivedDate, // Sử dụng ngày tháng giờ đã được định dạng
+            serviceId: selectedService.serviceId,
+            priceService: priceService,
+            receivedDate: formattedReceivedDate,
+            expiredReceivedDate: formattedExpiredReceivedDate,
           };
         }
         return row;
       });
-  
+
       setRows(newRows);
     } catch (error) {
       console.error("Error handling service change:", error);
     }
   };
-  
-  
-  const fetchUnitPrice = async (serviceId, size) => {
+
+  const fetchPriceService = async (serviceId, sampleSize) => {
     try {
-      const response = await fetch(`YOUR_API_URL?serviceId=${serviceId}&size=${size}`);
+      const response = await fetch(
+        `http://localhost:8080/service_price_list/calculate?serviceId=${serviceId}&sampleSize=${sampleSize}`
+      );
       const data = await response.json();
-      return data.unitPrice;
+      console.log(
+        `Fetching price for serviceId ${serviceId} with sampleSize ${sampleSize}:`,
+data.priceService
+      );
+      return data.priceService;
     } catch (error) {
-      console.error("Error fetching unitPrice:", error);
+      console.error("Error fetching priceService:", error);
       return null;
     }
   };
-  
 
   const handleQuantityChange = (e) => {
     const qty = parseInt(e.target.value) || 0;
     setQuantity(e.target.value);
-    const newRows = Array.from(
-      { length: qty },
-      (v, i) =>
-        rows[i] || {
-          service: "", // String
-          receivedDate: new Date(), // Date
-          expiredDate: new Date(), // Date
-          size: 3, // Int
-          price: 1.0, // Float
-        }
-    );
+    const newRows = Array.from({ length: qty }, () => ({
+      serviceId: "",
+      receivedDate: "",
+      expiredReceivedDate: "",
+      sampleSize: 0,
+      priceService: 0.0,
+    }));
     setRows(newRows);
   };
 
   const totalPrice = rows.reduce(
-    (total, row) => total + parseFloat(row.unitPrice || 0),
+    (total, row) => total + parseFloat(row.priceService || 0),
     0
   );
 
@@ -144,16 +173,13 @@ export const CreateReceipt = () => {
     console.log("Data to send:", dataToSend);
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/order_request/create",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataToSend),
-        }
-      );
+      const response = await fetch("http://localhost:8080/order_request/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -181,7 +207,7 @@ export const CreateReceipt = () => {
                 <p>Customer Name: {custName}</p>
                 <p>Phone: {phone}</p>
                 <p>Quantity: {quantity}</p>
-                <p>Order Date: {new Date(orderDate).toLocaleString()}</p>
+                <p>Order Date: {orderDate}</p>
               </div>
             </div>
             <div className="print-content">
@@ -201,8 +227,8 @@ export const CreateReceipt = () => {
                       <td>{row.serviceId}</td>
                       <td>{row.receivedDate}</td>
                       <td>{row.expiredReceivedDate}</td>
-                      <td>{row.size}</td>
-                      <td>{row.unitPrice}</td>
+                      <td>{row.sampleSize}</td>
+                      <td>{row.priceService}</td>
                     </tr>
                   ))}
                   <tr>
@@ -281,10 +307,10 @@ export const CreateReceipt = () => {
               </div>
               <div className="col-7">
                 <input
-                  type="datetime-local"
+                  type="text"
                   className="form-control"
                   value={orderDate}
-                  onChange={(e) => setOrderDate(e.target.value)}
+                  readOnly // Make the orderDate field readOnly in the form
                 />
               </div>
             </div>
@@ -307,64 +333,46 @@ export const CreateReceipt = () => {
                       <select
                         className="form-control"
                         value={row.serviceId}
-                        onChange={(e) =>
-                          handleServiceChange(index, e.target.value)
-                        }
+                        onChange={(e) => handleServiceChange(index, e.target.value)}
                       >
                         <option value="">Select Service</option>
                         {selection.map((service) => (
-                          <option
-                            key={service.serviceId}
-                            value={service.serviceId}
-                          >
+                          <option key={service.serviceId} value={service.serviceId}>
                             {service.serviceType}
                           </option>
                         ))}
                       </select>
                     </td>
-
                     <td>
                       <input
-                        type="date"
+                        type="text"
                         className="form-control"
                         value={row.receivedDate}
-                        onChange={(e) =>
-                          handleRowChange(index, "receivedDate", e.target.value)
-                        }
+                        readOnly
                       />
                     </td>
                     <td>
                       <input
-                        type="date"
+                        type="text"
                         className="form-control"
                         value={row.expiredReceivedDate}
-                        onChange={(e) =>
-                          handleRowChange(
-                            index,
-                            "expiredReceivedDate",
-                            e.target.value
-                          )
-                        }
+                        readOnly
                       />
                     </td>
                     <td>
                       <input
                         type="text"
                         className="form-control"
-                        value={row.size}
-                        onChange={(e) =>
-                          handleRowChange(index, "size", e.target.value)
-                        }
+                        value={row.sampleSize}
+                        onChange={(e) => handleRowChange(index, "sampleSize", e.target.value)}
                       />
                     </td>
                     <td>
                       <input
                         type="text"
                         className="form-control"
-                        value={row.unitPrice}
-                        onChange={(e) =>
-                          handleRowChange(index, "unitPrice", e.target.value)
-                        }
+                        value={row.priceService}
+                        readOnly
                       />
                     </td>
                   </tr>
@@ -389,10 +397,7 @@ export const CreateReceipt = () => {
             <Button className="btn btn-success me-4" type="submit">
               Accept
             </Button>
-            <Button
-              className="btn btn-primary"
-              onClick={() => setReviewMode(true)}
-            >
+            <Button className="btn btn-primary" onClick={() => setReviewMode(true)}>
               Review
             </Button>
           </div>
@@ -403,3 +408,4 @@ export const CreateReceipt = () => {
 };
 
 export default CreateReceipt;
+

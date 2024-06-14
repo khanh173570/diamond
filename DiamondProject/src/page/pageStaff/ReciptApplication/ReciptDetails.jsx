@@ -6,16 +6,14 @@ import formattedDate from "../../../utils/formattedDate/formattedDate";
 export const ReceiptDetails = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { id } = useParams();
+  const { orderId } = useParams();
   const navigate = useNavigate();
 
-  // const API = 'http://localhost:8080/order_detail_request/orderDetail'; 
-  const API = 'https://fakestoreapi.com/carts/user';
-
+  const API = 'http://localhost:8080/order_detail_request/orderDetail'; 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${API}/${id}`);
+        const response = await fetch(`${API}/${orderId}`);
         const data = await response.json();
         setOrderDetails(data);
       } catch (error) {
@@ -26,17 +24,14 @@ export const ReceiptDetails = () => {
     };
 
     fetchData();
-    //  [orderId]
-  }, [id]);
-
-
-  // const handleCreateForm = (product) => {
-  //   navigate('/staff/valuation', { state: { product } });
-  // };
-
+   
+  }, [orderId]);
   if (isLoading) {
     return <div>Loading...</div>;
   }
+  // làm 1 hàm update chung nha
+  // thêm hàm update status by order id neu nhu status order detail
+  
   return (
     <div>
       <Container>
@@ -44,6 +39,9 @@ export const ReceiptDetails = () => {
           <img 
             src="/src/assets/assetsStaff/back.svg"
             alt=""
+            onClick={()=>{
+              navigate('/staff/view-receipt')
+            }}
 
           />
         </div>
@@ -52,26 +50,27 @@ export const ReceiptDetails = () => {
         </div>
         <Row className="mb-4">
           <Col md={2}>RequestID:</Col>
-          {/* <Col md={3}>{orderDetails[0].orderId.requestId.requestId}</Col> */}
+          <Col md={3}>{orderDetails[0].orderId.requestId.requestId}</Col>
         </Row>
         <Row className="mb-4">
           <Col md={2}>Customer Name:</Col>
-          {/* <Col md={3}>{orderDetails[0].orderId.customerName}</Col> */}
+          <Col md={3}>{orderDetails[0].orderId.customerName}</Col>
         </Row>
         <Row className="mb-4">
           <Col md={2}>Phone:</Col>
-          {/* <Col md={3}>{orderDetails[0].phone}</Col> */}
+          <Col md={3}>{orderDetails[0].orderId.phone}</Col>
         </Row>
         <Row className="mb-4">
           <Col md={2}>Status:</Col>
-          {/* <Col md={3}>{orderDetails[0].status}</Col> */}
+          <Col md={3}>{orderDetails[0].orderId.status}</Col>
         </Row>
         <Table>
           <thead>
             <tr className="text-center">
+              <th>Product Id</th>
               <th>Image</th>
               <th>Service</th>
-              <th>Experied Date</th>
+              <th>Deadline</th>
               <th>Valuation Staff</th>
               <th>Size</th>
               <th>Diamond</th>
@@ -81,8 +80,8 @@ export const ReceiptDetails = () => {
           </thead>
           <tbody>
             {orderDetails.map((product) => (
-              <tr key={product.id} className="text-center">
-                {/* img */}
+              <tr key={product.orderDetailId} className="text-center">
+               <td>{product.orderDetailId}</td>
                 <td>
                   <img
                     src={product.img}
@@ -92,24 +91,21 @@ export const ReceiptDetails = () => {
                   />
                 </td>
                 {/* Service */}
-                <td>{product.id}</td>
+                <td>{product.serviceId.serviceType}</td>
                 {/* receive - expired */}
-                <td>{formattedDate(product.date)}</td>
+                <td>{formattedDate(product.receivedDate)}</td>
                 {/* valuation staff */}
-                <td>{product.id}</td>
+                <td>{product.evaluationStaffId}</td>
                 {/* size */}
-                <td>{product.id}</td>
+                <td>{product.size}</td>
                 {/* isDiamond */}
-                <td>{product.userId}</td>
+                <td>{product.isDiamond ? 'Yes' : 'No'}</td>
                 {/* status */}
                 <td>
-                  {product.userId}
+                  {product.status}
                 </td>
                 {/* unit price */}
-                <td>{product.id}</td>
-                {/* <td>
-                  <Button onClick={() => handleCreateForm(product)} disabled={!product.isDiamond}>Create Certificate</Button>
-                </td> */}
+                <td>{product.unitPrice}</td>
               </tr>
             ))}
           </tbody>

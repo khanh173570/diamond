@@ -6,23 +6,23 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useNavigate } from 'react-router-dom';
+import formattedDate from '../../utils/formattedDate/formattedDate';
 
 export const PersonalRequestDetail = () => {
-
-  const { id } = useParams();
+  const { requestId } = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
   const [isCancel, setIsCancel] = useState(false);
   const [requestDetail, setRequestDetail] = useState({});
-  const [orderId, setOrderId] = useState({})
-  const [isOrder, setIsOrder] = useState(true)
+  const [orderId, setOrderId] = useState({});
+  const [isOrder, setIsOrder] = useState(true);
 
-  // API  to fetch request  by request id
-  const API = `https://jsonplaceholder.typicode.com/users`;
+  // API to fetch request by request id
+  const API = `http://localhost:8080/evaluation-request`;
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${API}/${id}`);
+        const response = await fetch(`${API}/${requestId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch request details');
         }
@@ -33,17 +33,17 @@ export const PersonalRequestDetail = () => {
       }
     };
     fetchData();
-    // sua id la requestID
-  }, [id, setIsCancel]);
+  }, [requestId, isCancel]); 
 
-  //get order by request id
+  // Get order by request id
   const APIOrderById = `https://jsonplaceholder.typicode.com/users`;
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${APIOrderById}/${id}`);
+        // const response = await fetch(`${APIOrderById}/${requestId}`);
+        const response = await fetch(`${APIOrderById}/${1}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch request details');
+          throw new Error('Failed to fetch order details');
         }
         const data = await response.json();
         if (data) {
@@ -55,13 +55,13 @@ export const PersonalRequestDetail = () => {
       }
     };
     fetchData();
-    // sua id la requestID
-  }, [id]);
+  }, []);
 
-  // update request by requestID
+  // Update request by requestID
+  const APIUpdate = 'http://localhost:8080/evaluation-request/updateStatus';
   const handleOnCancel = async (value) => {
     try {
-      const response = await fetch(`${API}/${id}`, {
+      const response = await fetch(`${APIUpdate}/${requestId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -72,6 +72,7 @@ export const PersonalRequestDetail = () => {
         const data = await response.json();
         console.log(data);
         setIsCancel(true);
+        setIsOrder()
         toast.success('Request has been canceled successfully.');
       } else {
         throw new Error('Failed to update status');
@@ -82,6 +83,7 @@ export const PersonalRequestDetail = () => {
       setIsCancel(false);
     }
   };
+
   const showCancelConfirmation = () => {
     confirmAlert({
       title: 'Confirm to cancel',
@@ -89,11 +91,11 @@ export const PersonalRequestDetail = () => {
       buttons: [
         {
           label: 'Yes',
-          onClick: () => handleOnCancel('Canceled')
+          onClick: () => handleOnCancel('canceled')
         },
         {
           label: 'No',
-          onClick: () => { }
+          onClick: () => {}
         }
       ]
     });
@@ -119,47 +121,44 @@ export const PersonalRequestDetail = () => {
         <Row className='mb-3'>
           <Col md={3}>
             <div className='fw-bold'>Meeting Date</div>
-            <div>13/08/2023</div>
+            <div>{formattedDate(requestDetail.meetingDate)}</div>
           </Col>
           <Col md={3}>
             <div className='fw-bold'>Status</div>
-            <div>{requestDetail.status}</div> {/* Display status */}
+            <div>{requestDetail.status}</div>
           </Col>
           <Col md={3}>
             <div className='fw-bold'>Request ID</div>
-            <div>{state.request.id}</div>
+            <div>{state.request.requestId}</div>
           </Col>
           <Col md={3}>
             <div className='fw-bold'>Order ID</div>
-            {/* dan orderid */}
-           {orderId && <div>{orderId.id}</div>}
+            {orderId && <div>{orderId.id}</div>}
           </Col>
         </Row>
         <Row className='mb-3'>
           <Col md={6}>
             <div className='fw-bold'>Customer</div>
-            <div>{state.request.name}</div>
+            <div>{state.request.guestName}</div>
           </Col>
           <Col md={6}>
             <div className='fw-bold'>Phone</div>
-            <div>{state.request.phone}</div>
+            <div>{state.request.phoneNumber}</div>
           </Col>
         </Row>
         <Row className='mb-3'>
           <Col>
             <div className='fw-bold'>Description</div>
-            <div>Please contact me at 3:00 pm, I need to discuss something about your service, and don't be late again! Thanks</div>
+            <div>{state.request.requestDescription}</div>
           </Col>
         </Row>
         <Row className='mt-4'>
           <Col className='d-flex justify-content-end'>
-            <Button className='me-3' variant="danger" onClick={showCancelConfirmation} disabled={isCancel}>
+            <Button className='me-3' variant="danger" onClick={showCancelConfirmation} disabled={requestDetail.status === 'Canceled'}>
               {isCancel ? 'Canceled' : 'Cancel Request'}
             </Button>
             <Button className='me-3' onClick={closeToMyList}>Close</Button>
-            {/*disabled={isCancel || isOrder} */}
-            
-            <Button className='me-3' onClick={viewMyOrder} >View My Order</Button>
+            <Button className='me-3' onClick={viewMyOrder} disabled={requestDetail.status === 'Canceled'}>View My Order</Button>
           </Col>
         </Row>
       </Container>

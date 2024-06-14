@@ -1,8 +1,9 @@
-import Header from '../component/componentStaff/Header/Header.jsx'
-import { SideBar } from '../component/componentStaff/Body/SideBar/SideBar.jsx'
+import Header from '../component/componentValuationStaff/Header.jsx'
+import { SideBar } from '../component/componentValuationStaff/SideBar.jsx'
 import { Outlet } from 'react-router-dom'
 import React from 'react'
-function StaffApp() {
+
+function ValuationApp () {
   return (
     <>
       <div>
@@ -20,5 +21,4 @@ function StaffApp() {
 
   )
 }
-
-export default StaffApp
+export default ValuationApp

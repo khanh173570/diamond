@@ -5,15 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 export const UserRequestDetails1 = ({ userRequestDetail }) => {
   const navigate = useNavigate(); 
-  const [isAccepted, setIsAccepted] = useState(false);
   const [appointmentDate, setAppointmentDate] = useState(userRequestDetail.appointmentDate || '');
   const [isAppointmentDate, setIsAppointmentDate] = useState(false);
-
-  useEffect(() => {
-    if (userRequestDetail.status !== 'Accepted') {
-      setIsAccepted(true);
-    }
-  }, [userRequestDetail.status]);
 
   const createOrder = (userRequestDetail) => {
     navigate('/staff/create-receipt', { state: { userRequestDetail } });
@@ -33,8 +26,6 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
         });
         const data = await response.json();
         console.log('Update response:', data);
-        setIsAppointmentDate(true);
-
         setAppointmentDate(formattedDate(value));
       } catch (error) {
         console.error('Error updating status:', error);
@@ -90,7 +81,7 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
             </Col>
           </Row>
           <div className='d-flex justify-content-end'>
-            <Button onClick={() => createOrder(userRequestDetail)} disabled={!isAccepted}>Create Order</Button>
+            <Button onClick={() => createOrder(userRequestDetail)} disabled={userRequestDetail.status !=='Accepted'}>Create Order</Button>
           </div>
         </div>
       </div>
