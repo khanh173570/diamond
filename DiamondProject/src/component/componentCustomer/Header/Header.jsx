@@ -9,21 +9,18 @@ import '../Header/Header.css';
 
 function Header() {
     const [user, setUser] = useState(null);
-    const [isUsername, setIsUsername] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem('user'));
         if (storedUser) {
             setUser(storedUser);
-            setIsUsername(true);
         }
     }, []);
-    
+
     const handleLogout = () => {
-        setIsUsername(false);
         setUser(null);
-        localStorage.removeItem('user'); 
+        localStorage.removeItem('user');
         navigate('/login');
     };
 
@@ -45,10 +42,11 @@ function Header() {
                         <NavLink to="/home" className="nav-link">Home</NavLink>
                         <NavDropdown title="Evaluation Service" id="nav-dropdown">
                             <NavDropdown.Item as={NavLink} to="/calculate">Calculate</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item as={NavLink} to="/evaluationservice">
+                           
+                            {user && <NavDropdown.Item as={NavLink} to="/evaluationservice">
                                 Diamond Valuation Service
-                            </NavDropdown.Item>
+                            </NavDropdown.Item>  }
+                           
                             <NavDropdown.Divider />
                             <NavDropdown.Item as={NavLink} to="/policy">Diamond Valuation Policy</NavDropdown.Item>
                             <NavDropdown.Divider />
@@ -63,10 +61,12 @@ function Header() {
                             <NavDropdown.Item>Vietnamese</NavDropdown.Item>
                             <NavDropdown.Item>English</NavDropdown.Item>
                         </NavDropdown>
-                        {isUsername && user ? (
-                            <NavDropdown title={user.name} id="nav-dropdown">
+                    
+                        { user ? (
+                            <NavDropdown title={`${user.firstName} ${user.lastName}`} id="nav-dropdown">
                                 <NavDropdown.Item as={NavLink} to="/profile">My Profile</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/my-request">My Request</NavDropdown.Item>
+                                <NavDropdown.Item as={NavLink} to="/my-order">My Order</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item onClick={handleLogout}>
                                     Log out

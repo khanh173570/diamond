@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Button, Form, } from 'react-bootstrap';
+import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { GeneratePDF } from './GeneratePDF';
 import { useLocation } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import { confirmAlert } from 'react-confirm-alert';
+import updateById from '../../../utils/updateAPI/updateById';
+import 'react-toastify/dist/ReactToastify.css';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export const ValuationApplication = () => {
     const [isPrint, setIsPrint] = useState(false);
-    // const location = useLocation();
-    // const product = location.state.product;
-    const [image, setImage] = useState(null);
-    const [image1, setImage1] = useState(null);
+    const location = useLocation();
+    const product = location.state.product;
     const [result, setResult] = useState({
         diamondOrigin: '',
         measurements: '',
@@ -23,38 +26,10 @@ export const ValuationApplication = () => {
         fluorescence: '',
         description: '',
         price: 0,
-        //  orderDetailId: product.id,
-        orderDetailId: '',
-        //userId: product.address.suite
-        userId: ''
-
+        orderDetailId: product.orderDetailId,
+        userId: product.evaluationStaffId,
+        img: product.img
     });
-
-    const handleOnSubmit = async (e) => {
-        e.preventDefault();
-        const formattedResult = {
-            ...result,
-            caratWeight: parseFloat(result.caratWeight),
-            price: parseFloat(result.price)
-        };
-        try {
-            const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
-                method: 'POST',
-                body: JSON.stringify(formattedResult),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-            });
-            const data = await response.json();
-            if(data){
-
-            }
-            console.log('Submitted data', data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
@@ -63,29 +38,58 @@ export const ValuationApplication = () => {
             [name]: value
         }));
     };
+    const showConfirmation = (e) => {
+        e.preventDefault();  
+        confirmAlert({
+            title: 'Confirm to submit',
+            message: 'Click ok to create valuation result',
+            buttons: [
+                {
+                    label: 'Ok',
+                    onClick: () => handleOnSubmit()
+                },
+                {
+                    label: 'Cancel',
+                    onClick: () => {}
+                }
+            ]
+        });
+    };
 
-    const handleUploadImage = (e) => {
-        if (e.target.files && e.target.files[0]) {
-            let img = e.target.files[0];
-            setImage(URL.createObjectURL(img));
+    const handleOnSubmit = async () => {
+        const formattedResult = {
+            ...result,
+            caratWeight: parseFloat(result.caratWeight),
+            price: parseFloat(result.price)
+        };
+        try {
+            const response = await fetch('http://localhost:8080/evaluation_results/create', {
+                method: 'POST',
+                body: JSON.stringify(formattedResult),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await response.json();
+            if (data) {
+                setIsPrint(true);
+                await updateById('http://localhost:8080/order_detail_request/getOrderDe',product.orderDetailId,'status', 'Finished' )
+                toast.success('Create successfully');
+            }
+            console.log('Submitted data', data);
+        } catch (error) {
+            console.log(error);
+            toast.error('Submission Error');
         }
     };
-
-    const handleUploadImage1 = (e) => {
-        if (e.target.files && e.target.files[0]) {
-            let img = e.target.files[0];
-            setImage1(URL.createObjectURL(img));
-        }
-    };
-
-    const handlePrint = () => {
-        setIsPrint(true);
-    };
-
+    //Thêm hàm update ststus by order details id
+    
     return (
         <Container>
+            <ToastContainer />
             {!isPrint ? (
-                <Form onSubmit={handleOnSubmit}>
+                <Form onSubmit={showConfirmation}>
                     <h1 className="text-center my-3">Diamond Valuation Report</h1>
                     <Row className="mb-2 align-items-center">
                         <Col md={2}>
@@ -97,13 +101,13 @@ export const ValuationApplication = () => {
                                 id="userId"
                                 name='userId'
                                 value={result.userId}
-                                onChange={handleOnChange}
+                                readOnly
                             />
                         </Col>
                     </Row>
                     <Row className="mb-2 align-items-center">
                         <Col md={2}>
-                            <Form.Label htmlFor="orderDetailId" className="mb-0">Order Detail ID:</Form.Label>
+                            <Form.Label htmlFor="orderDetailId" className="mb-0">Product ID:</Form.Label>
                         </Col>
                         <Col md={4}>
                             <Form.Control
@@ -111,7 +115,7 @@ export const ValuationApplication = () => {
                                 id="orderDetailId"
                                 name='orderDetailId'
                                 value={result.orderDetailId}
-                                onChange={handleOnChange}
+                                readOnly
                             />
                         </Col>
                     </Row>
@@ -125,9 +129,6 @@ export const ValuationApplication = () => {
                                         <label htmlFor="diamondOrigin">Diamond Origin</label>
                                     </Col>
                                     <Col md={5}>
-                                        {/* <input type="text" id='diamondOrigin' name='diamondOrigin' value={result.diamondOrigin} style={{ border: 'none', borderBottom: 'solid' }}
-                                            onChange={handleOnChange}
-                                        /> */}
                                         <select
                                             id='diamondOrigin'
                                             name='diamondOrigin'
@@ -136,9 +137,8 @@ export const ValuationApplication = () => {
                                             onChange={handleOnChange}
                                         >
                                             <option value=""></option>
-                                            <option value="Natutal">Natural</option>
+                                            <option value="Natural">Natural</option>
                                             <option value="Lab Grown">Lab Grown</option>
-
                                         </select>
                                     </Col>
                                 </Row>
@@ -155,7 +155,7 @@ export const ValuationApplication = () => {
                                 </Row>
                                 <Row className="mb-2 align-items-end justify-content-between">
                                     <Col md={4}>
-                                        <label htmlFor="shapeCut">ShapeCut</label>
+                                        <label htmlFor="shapeCut">Shape Cut</label>
                                     </Col>
                                     <Col md={5}>
                                         <select
@@ -168,7 +168,7 @@ export const ValuationApplication = () => {
                                             <option value=""></option>
                                             <option value="Round">Round</option>
                                             <option value="Cushion">Cushion</option>
-                                            <option value="Emerlad">Emerlad</option>
+                                            <option value="Emerald">Emerald</option>
                                             <option value="Oval">Oval</option>
                                             <option value="Heart">Heart</option>
                                             <option value="Princess">Princess</option>
@@ -191,10 +191,10 @@ export const ValuationApplication = () => {
                                 <h4 className='text-center py-1' style={{ backgroundColor: '#7CF4DE' }}>Grading Results</h4>
                                 <Row className="mb-2 align-items-end justify-content-between">
                                     <Col md={4}>
-                                        <label htmlFor="carat-weight">Carat Weight</label>
+                                        <label htmlFor="caratWeight">Carat Weight</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="number" id='carat-weight' name="caratWeight" style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
+                                        <input type="number" id='caratWeight' name="caratWeight" style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
                                             value={result.caratWeight || ''}
                                             onChange={handleOnChange}
                                         />
@@ -316,7 +316,7 @@ export const ValuationApplication = () => {
                                         <label htmlFor="fluorescence">Fluorescence</label>
                                     </Col>
                                     <Col md={5}>
-                                    <select
+                                        <select
                                             id='fluorescence'
                                             name='fluorescence'
                                             value={result.fluorescence || ''}
@@ -337,17 +337,17 @@ export const ValuationApplication = () => {
                                         <label htmlFor="proportions">Proportion</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="text" id='proportions' name='proportions' value={result.proportions} style={{ border: 'none', borderBottom: 'solid',width: "100%" }}
+                                        <input type="text" id='proportions' name='proportions' value={result.proportions} style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
                                             onChange={handleOnChange}
                                         />
                                     </Col>
                                 </Row>
                                 <Row className="mb-2 align-items-end justify-content-between">
                                     <Col md={4}>
-                                        <label htmlFor="estimate-price">Estimate Price</label>
+                                        <label htmlFor="price">Estimate Price</label>
                                     </Col>
                                     <Col md={5}>
-                                        <input type="number" id='estimate-price' name='price' value={result.price || ''} style={{ border: 'none', borderBottom: 'solid',width: "100%" }}
+                                        <input type="number" id='price' name='price' value={result.price || ''} style={{ border: 'none', borderBottom: 'solid', width: "100%" }}
                                             onChange={handleOnChange}
                                         />
                                     </Col>
@@ -357,44 +357,16 @@ export const ValuationApplication = () => {
 
                         <div className='w-50'>
                             <div className='my-4 ms-4' style={{ width: '500px' }}>
-                                <h4 className='text-center py-1' style={{ backgroundColor: '#7CF4DE' }}>Proportions</h4>
+                                <h4 className='text-center py-1' style={{ backgroundColor: '#7CF4DE' }}>Product Image</h4>
                                 <div className='my-3 d-flex justify-content-center'>
-                                    {image ? <img src={image} alt="proportions-upload" height='250px' className='border border-dark' />
-                                        : <div className='w-75 d-flex justify-content-center align-items-center border border-dark' style={{ height: '250px' }}>
-                                            <img
-                                                src="/src/assets/assetsStaff/upload.svg"
-                                                alt="Upload Icon"
-                                                height='40px'
-                                                width='40px'
-                                            />
-                                        </div>}
-                                </div>
-                                <div className='d-flex justify-content-center'>
-                                    <input type="file" id="image_upload" onChange={handleUploadImage} accept=".jpg, .jpeg, .png" />
-                                </div>
-                            </div>
-                            <div className='my-4 ms-4' style={{ width: '500px' }}>
-                                <h4 className='text-center py-1' style={{ backgroundColor: '#7CF4DE' }}>Diamond Image</h4>
-                                <div className='my-3 d-flex justify-content-center'>
-                                    {image1 ? <img src={image1} alt="clarity-characteristics-upload" height='250px' className='border border-dark' />
-                                        : <div className='w-75 d-flex justify-content-center align-items-center border border-dark' style={{ height: '250px' }}>
-                                            <img
-                                                src="/src/assets/assetsStaff/upload.svg"
-                                                alt="Upload Icon"
-                                                height='40px'
-                                                width='40px'
-                                            />
-                                        </div>}
-                                </div>
-                                <div className='d-flex justify-content-center'>
-                                    <input type="file" id="image_upload" onChange={handleUploadImage1} accept=".jpg, .jpeg, .png" />
+                                    {product.img && <img src={product.img} alt="product-img" height='300' className='border border-dark w-75' />}
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div className='d-flex justify-content-end my-4'>
-                        <Button className='btn btn-success me-4' type='submit'>Confirm</Button>
-                        <Button className='btn btn-danger me-4' type='button' onClick={handlePrint}>Print</Button>
+                        <Button className='btn btn-danger me-4' type='submit'>Create</Button>
                     </div>
                 </Form>
             ) : (
@@ -405,9 +377,9 @@ export const ValuationApplication = () => {
                         className='mt-3'
                         height="20"
                         width="20"
-                        onClick={() => setIsViewDetail(false)}
+                        onClick={() => setIsPrint(false)}
                     />
-                    <GeneratePDF result={result} image={image} image1={image1}/>
+                    <GeneratePDF result={result} />
                 </div>
             )}
         </Container>

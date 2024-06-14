@@ -6,16 +6,10 @@ import formattedDate from "../../../utils/formattedDate/formattedDate";
 export const ReceiptDetails = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [editRowId, setEditRowId] = useState(null);
-  const [editColIsDiamond, setEditColIsDiamond] = useState(false);
-  const [editColStatus, setEditColStatus] = useState(false);
-  const [editStatus, setEditStatus] = useState('');
-  const [editIsDiamond, setEditIsDiamond] = useState(true);
   const { orderId } = useParams();
   const navigate = useNavigate();
 
-  const API = 'http://localhost:8080/order_detail_request/orderDetail'; // Replace with your actual API
-
+  const API = 'http://localhost:8080/order_detail_request/orderDetail'; 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,43 +24,27 @@ export const ReceiptDetails = () => {
     };
 
     fetchData();
-  }, [orderId,editIsDiamond, editStatus]);
-
-   const APIUpdate = 'http://localhost:8080/order_detail_request/getOrderDe'
-
-  const handleOnChangeStatus = (productId, field, value) => {
-    const fetchUpdateStatus = async () => {
-      try {
-        const response = await fetch(`${APIUpdate}/${productId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ [field]: value }),
-        });
-        const data = await response.json();
-        console.log('Update response:', data);
-        setEditRowId(null); 
-        setEditColIsDiamond(false);
-        setEditColStatus(false);
-      } catch (error) {
-        console.error('Error updating status:', error);
-      }
-    };
-    fetchUpdateStatus();
-  };
-
-  const handleCreateForm = (product) => {
-    navigate('/staff/valuation', { state: { product } });
-  };
-
+   
+  }, [orderId]);
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
+  // làm 1 hàm update chung nha
+  // thêm hàm update status by order id neu nhu status order detail
+  
   return (
     <div>
       <Container>
+        <div>
+          <img 
+            src="/src/assets/assetsStaff/back.svg"
+            alt=""
+            onClick={()=>{
+              navigate('/staff/view-receipt')
+            }}
+
+          />
+        </div>
         <div className="text-center my-4">
           <h1>Information of Order Detail</h1>
         </div>
@@ -80,117 +58,54 @@ export const ReceiptDetails = () => {
         </Row>
         <Row className="mb-4">
           <Col md={2}>Phone:</Col>
-          <Col md={3}>{orderDetails[0].phone}</Col>
+          <Col md={3}>{orderDetails[0].orderId.phone}</Col>
+        </Row>
+        <Row className="mb-4">
+          <Col md={2}>Status:</Col>
+          <Col md={3}>{orderDetails[0].orderId.status}</Col>
         </Row>
         <Table>
           <thead>
             <tr className="text-center">
+              <th>Product Id</th>
               <th>Image</th>
               <th>Service</th>
-              <th>Time</th>
+              <th>Deadline</th>
               <th>Valuation Staff</th>
               <th>Size</th>
               <th>Diamond</th>
               <th>Status</th>
               <th>Unit Price</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {orderDetails.map((product) => (
-              <tr key={product.orderDetailId}>
-                {/* img */}
+              <tr key={product.orderDetailId} className="text-center">
+               <td>{product.orderDetailId}</td>
                 <td>
-                <img 
-                  src={product.img}
-                  alt="" 
-                  height='80'
-                  width='80'
+                  <img
+                    src={product.img}
+                    alt=""
+                    height='80'
+                    width='80'
                   />
-                  </td>
-
+                </td>
                 {/* Service */}
                 <td>{product.serviceId.serviceType}</td>
                 {/* receive - expired */}
-                <td>{formattedDate(product.receivedDate)}-{formattedDate(product.expiredReceivedDate)}</td>
+                <td>{formattedDate(product.receivedDate)}</td>
                 {/* valuation staff */}
                 <td>{product.evaluationStaffId}</td>
                 {/* size */}
                 <td>{product.size}</td>
                 {/* isDiamond */}
-                <td>
-                  {editRowId === product.id && editColIsDiamond ? (
-                    <>
-                      <Form.Select
-                        aria-label="Is Diamond"
-                        name="isDiamond"
-                        value={editIsDiamond}
-                        onChange={(e) => setEditIsDiamond(e.target.value === 'true')}
-                      >
-                        <option value=""></option>
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                      </Form.Select>
-                      <Button onClick={() => handleOnChangeStatus(product.orderDetailId, 'isDiamond', editIsDiamond)}>Save</Button>
-                    </>
-                  ) : (
-                    <div className="d-flex justify-content-between">
-                      <div>{product.isDiamond ? "Yes" : "No"}</div>
-                      <img
-                        src="/src/assets/assetsStaff/editStatus.svg"
-                        alt="Edit"
-                        height="20"
-                        width="20"
-                        onClick={() => {
-                          setEditRowId(product.orderDetailId);
-                          setEditIsDiamond(product.isDiamond);
-                          setEditColIsDiamond(true);
-                          setEditColStatus(false);
-                        }}
-                      />
-                    </div>
-                  )}
-                </td>
+                <td>{product.isDiamond ? 'Yes' : 'No'}</td>
                 {/* status */}
                 <td>
-                  {editRowId === product.orderDetailId && editColStatus ? (
-                    <>
-                      <Form.Select
-                        aria-label="Status"
-                        value={editStatus}
-                        name="status"
-                        onChange={(e) => setEditStatus(e.target.value)}
-                      >
-                        <option value=""></option>
-                        <option value="Received">Received</option>
-                        <option value="Assigned">Assigned</option>
-                        <option value="Finished">Finished</option>
-                      </Form.Select>
-                      <Button onClick={() => handleOnChangeStatus(product.orderDetailId, 'status', editStatus)}>Save</Button>
-                    </>
-                  ) : (
-                    <div className="d-flex justify-content-between">
-                      <div>{product.status}</div>
-                      <img
-                        src="/src/assets/assetsStaff/editStatus.svg"
-                        alt="Edit"
-                        height="20"
-                        width="20"
-                        onClick={() => {
-                          setEditRowId(product.orderDetailId);
-                          setEditStatus(product.status);
-                          setEditColStatus(true);
-                          setEditColIsDiamond(false);
-                        }}
-                      />
-                    </div>
-                  )}
+                  {product.status}
                 </td>
                 {/* unit price */}
-                <td>{product.name}</td>
-                <td>
-                  <Button onClick={() => handleCreateForm(product)} disabled={!product.isDiamond}>Create Form</Button>
-                </td>
+                <td>{product.unitPrice}</td>
               </tr>
             ))}
           </tbody>

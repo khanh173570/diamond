@@ -1,52 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Stack } from 'react-bootstrap';
+import { Row, Col, Stack, Button ,Spinner} from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
+import formattedDate from '../../utils/formattedDate/formattedDate';
 
 export const PersonalRequest = () => {
     const [myRequest, setMyRequest] = useState([]);
-    const [loading, setLoading] = useState(false)
-    const [isEdit, setIsEdit] = useState(false)
-    const API = 'https://jsonplaceholder.typicode.com/users';
-    const userId = JSON.parse(localStorage.getItem('user'));
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
+    const API = 'http://localhost:8080/evaluation-request/get_by_user';
+    const userId = JSON.parse(localStorage.getItem('user'));
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${API}`);
+                const response = await fetch(`${API}/${userId.userId}`);
                 const data = await response.json();
-                // Filter requests by username (name)
-                const userRequests = data.filter((item) => item.username === userId.username);
-                setMyRequest(userRequests);
-                setLoading(true)
+                setMyRequest(data);
+                setLoading(true);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
         fetchData();
-        return ()=>{
-            setLoading(false)
-        }
-    }, [userId.username,isEdit ]);
+        return () => {
+            setLoading(false);
+        };
+    }, [userId.username]);
 
+    if (!loading) {
+        return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
+      }
 
-    const handleOnCancel = async (id, value) => {
-        try {
-            const response = await fetch(`${API}/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ status: value }),
-            });
-            const data = await response.json();
-            setIsEdit(true)
-            console.log(data)
-        } catch (error) {
-            console.error('Error updating status:', error);
-        }
+    const viewMyRequest = (request) => {
+        navigate(`/my-request/${request.requestId}`, { state: { request } });
     };
-    if(!loading){
-        return <div  style={{ minHeight: '500px' }}>Loading...</div>
-    }
 
     return (
         <div className='my-5' style={{ minHeight: '500px' }}>
@@ -54,9 +41,9 @@ export const PersonalRequest = () => {
             {myRequest.length > 0 ? (
                 <Stack gap={4}>
                     {myRequest.map((request) => (
-                        <Row key={request.id} className="justify-content-center w-50 mx-auto p-3" style={{ boxShadow: 'rgb(0 0 0 / 16%) 1px 1px 10px' }}>
+                        <Row key={request.requestId} className="justify-content-center w-50 mx-auto p-3" style={{ boxShadow: 'rgb(0 0 0 / 16%) 1px 1px 10px' }}>
                             <Col md={1} className="d-flex justify-content-center align-items-center">
-                                {request.id}
+                                {request.requestId}
                             </Col>
                             <Col xs="auto" className="d-flex align-items-center">
                                 <img
@@ -68,25 +55,23 @@ export const PersonalRequest = () => {
                             </Col>
                             <Col>
                                 <Stack>
-                                    {/* Service name */}
-                                    <div className='mb-1 fw-bold'>Valuation Diamond</div>
-                                    {/* Description */}
-                                    <div className='mb-1'>Please contact me at 3:00 pm, I need to discuss something about your service, and don't be late again! Thanks</div>
-                                    {/* Quantity */}
-                                    <div className='mb-1'>Quantity: 4</div>
+                                    <div className='mb-1 fw-bold'>{request.service}</div>
+                                    <div className='mb-1'>Request Date: {formattedDate(request.requestDate)}</div>
+                                    <div className='mb-1'>Status: {request.status}</div>
                                 </Stack>
                             </Col>
                             <Col md={2} className="d-flex">
-                                <div className="me-2 ">
-                                    {request.status}
-                                </div>
-                                <img
-                                    src="/src/assets/assetsCustomer/cancel.svg"
-                                    alt="update status"
-                                    width="20"
-                                    height="20"
-                                    onClick={() => handleOnCancel(request.id, 'Canceled')}
-                                />
+                                <Stack>
+                                    <Button style={{ backgroundColor: '#CCFBF0' }} onClick={() => viewMyRequest(request)}>
+                                        <span className='text-dark me-1'>View</span>
+                                        <img
+                                            src="/src/assets/assetsCustomer/seemore.svg"
+                                            alt=""
+                                            width="20"
+                                            height="20"
+                                        />
+                                    </Button>
+                                </Stack>
                             </Col>
                         </Row>
                     ))}

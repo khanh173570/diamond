@@ -17,6 +17,8 @@ import { PersonalInformation } from './page/pageStaff/PersonalInformation';
 import { ValuationApplication } from './page/pageStaff/ValuationApplication/ValuationApplication.jsx';
 import { ReceiptDetails } from './page/pageStaff/ReciptApplication/ReciptDetails.jsx';
 import { ValuationList } from './page/pageStaff/ValuationApplication/ValuationList.jsx';
+import { ValuationOrderDetailUpdate } from './page/pageStaff/ValuationOrderDetailUpdate.jsx';
+
 
 // Customer Pages
 import HomeCustomer from './page/pageCustomer/HomeCustomer.jsx';
@@ -27,6 +29,8 @@ import EvaluationServicePage from './page/pageCustomer/EvaluationServicePage';
 import Calculate from './page/pageCustomer/Calculate';
 import Check from './page/pageCustomer/Check';
 import { PersonalRequest } from './page/pageCustomer/PersonalRequest';
+//
+import { ValuationOrderDetail } from './page/pageStaff/ValuationOrderDetail.jsx';
 
 // Admin Pages
 import { DashBoard } from './page/pageAdmin/dashBoard.jsx';
@@ -36,36 +40,39 @@ import { ManageStaff } from './page/pageAdmin/ManageStaff';
 import { ManageSchedule } from './page/pageAdmin/ManageSchedule/ManageScheldule.jsx';
 import { ManageOrder } from './page/pageAdmin/ManageOrder';
 import { CreateNewCust } from './page/pageAdmin/CreateNewCust.jsx'
-
+import { PersonalRequestDetail } from './page/pageCustomer/PersonalRequestDetail.jsx';
+// import { ViewMyOrder } from './page/pageCustomer/ViewMyOrder.jsx';
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-       
         <Route path="/" element={<CustomerApp />}>
           <Route index element={<HomeCustomer />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />} /> 
           <Route path="signup" element={<Signup />} />
           <Route path="home" element={<HomeCustomer />} />
           <Route path="blog" element={<Blog />} />
           <Route path="contact" element={<Contact />} />
-          
           <Route path="evaluationservice" element={<EvaluationServicePage />} />
           <Route path="calculate" element={<Calculate />} />
           <Route path="check" element={<Check />} />
           <Route path="my-request" element={<PersonalRequest />} />
+          <Route path="my-request/:requestId" element={<PersonalRequestDetail />} />
+          {/* <Route path="my-order" element={<ViewMyOrder />} /> */}
         </Route>
         <Route path="/staff" element={<StaffApp />}>
           <Route index element={<HomeStaff />} />
           <Route path="home" element={<HomeStaff />} />
           <Route path="user-request" element={<UserRequest />} />
           <Route path="view-receipt" element={<ViewReciptList />} />
-          <Route path="view-receipt/:id" element={<ReceiptDetails />} />
+          <Route path="view-receipt/:orderId" element={<ReceiptDetails />} />
           <Route path="create-receipt" element={<CreateReceipt />} />
           <Route path="commitment" element={<CreateCommitment />} />
           <Route path="personal-info" element={<PersonalInformation />} />
           <Route path="valuation" element={<ValuationApplication />} />
           <Route path="valuation-result-list" element={<ValuationList />} />
+          <Route path="valuation-order" element={<ValuationOrderDetail />} />
+          <Route path="valuation-order/:orderDetailId" element={<ValuationOrderDetailUpdate />} />
         </Route>
         <Route path="/admin" element={<AdminApp />}>
           <Route path="dashboard" element={<DashBoard />} />

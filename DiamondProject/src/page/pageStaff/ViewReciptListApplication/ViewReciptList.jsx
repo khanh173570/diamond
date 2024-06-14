@@ -20,7 +20,7 @@ export const ViewReciptList = () => {
         const response = await fetch('http://localhost:8080/order_request/getOrders');
         const data = await response.json();
         setSelection(data);
-        setFilteredSelection(data); // Initialize filtered data
+        setFilteredSelection(data); 
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -31,7 +31,7 @@ export const ViewReciptList = () => {
 
   const handleSearch = () => {
     const filteredData = selection.filter(item =>
-      item.id.toString().includes(searchTerm)
+      item.orderId.toString().includes(searchTerm)
     );
     setFilteredSelection(filteredData);
   };
@@ -80,7 +80,7 @@ export const ViewReciptList = () => {
             <tr>
               <th>Order ID</th>
               <th>Date</th>
-              <th>Quantity</th>
+              <th>Product Quantity</th>
               <th>Status</th>
               <th>Action</th>
             </tr>

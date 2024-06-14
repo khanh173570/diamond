@@ -4,20 +4,22 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 function Header() {
     const [user, setUser] = useState(null);
+    const [isLogin, setIsLogin] = useState(false)
     const navigate = useNavigate();
 
-    // Get user data
     useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem('user'));
+        const storedUser = JSON.parse(localStorage.getItem('staff'));
         if (storedUser) {
             setUser(storedUser);
+            setIsLogin(true)
         }
     }, []);
 
-    // Logout function
+
     const handleLogout = () => {
         setUser(null);
-        localStorage.removeItem('user');
+        setIsLogin(false)
+        localStorage.removeItem('staff');
         navigate('/login');
     };
 
@@ -38,13 +40,11 @@ function Header() {
                         <NavLink to="/home" className="nav-link">Home</NavLink>
                         <NavLink to="/evaluation-service" className="nav-link">Evaluation Service</NavLink>
                         <NavLink to="/setting" className="nav-link">Setting</NavLink>
-                        {user ? (
-                            <NavDropdown title={user.name} id="nav-dropdown">
+                        {user &&  (
+                            <NavDropdown title={`${user.firstName} ${user.lastName}`} id="nav-dropdown">
                                 <NavDropdown.Item as={NavLink} to="/personal-info">My Profile</NavDropdown.Item>
                                 <NavDropdown.Item onClick={handleLogout}>Log out</NavDropdown.Item>
                             </NavDropdown>
-                        ) : (
-                            <NavLink to="/login" className="nav-link">Sign in</NavLink>
                         )}
                     </Nav>
                 </Navbar.Collapse>

@@ -7,8 +7,8 @@ export const ManageSchedule = () => {
   const [dataManage, setDataManage] = useState([]);
   const [evaluationStaffIds, setEvaluationStaffIds] = useState([]);
   const [selectedEvaluationStaff, setSelectedEvaluationStaff] = useState({});
-
-  // Fetch order data
+  const [showFormDetail, setShowFormDetail]= useState([false]);
+  // Fetch orderDetail data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,16 +37,17 @@ export const ManageSchedule = () => {
 
     fetchStaffIds();
   }, []);
-
-  const handleOnChangeValuationStaff = (orderId, value) => {
+    const handleShowDetail = () => setShowFormDetail(true);
+    const handleCloseDetail =() => setShowFormDetail(false);
+  const handleOnChangeValuationStaff = (orderDetailId, value) => {
     setSelectedEvaluationStaff((prevState) => ({
       ...prevState,
-      [orderId]: value,
+      [orderDetailId]: value,
     }));
   };
 
-  const handleSendClick = async (orderId) => {
-    const evaluationStaffId = selectedEvaluationStaff[orderId];
+  const handleSendClick = async (orderDetailId) => {
+    const evaluationStaffId = selectedEvaluationStaff[orderDetailId];
     if (!evaluationStaffId) return;
 
     try {
@@ -56,7 +57,7 @@ export const ManageSchedule = () => {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ orderId, evaluationStaffId }),
+        body: JSON.stringify({ orderDetailId, evaluationStaffId }),
       });
       const data = await response.json();
       console.log(data);
@@ -72,9 +73,9 @@ export const ManageSchedule = () => {
         <thead>
           <tr>
             <th>OrderId</th>
-            <th>OrderDetailID</th>
+            <th>Quantity</th>
             <th>Receive Date</th>
-            <th>Evaluation Staff ID</th>
+            <th></th>
             <th></th>
           </tr>
         </thead>

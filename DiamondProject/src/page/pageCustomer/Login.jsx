@@ -1,20 +1,19 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import { NavLink, useNavigate } from "react-router-dom";
-import {toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
-    const [username, setUsername] = useState('');
+    const [userId, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
     // test thu
-    // localStorage.setItem('user', JSON.stringify({ name: 'John Doe', role: 'customer' }));
 
     const validate = () => {
         let result = true;
-        if (username === '' || username === null) {
+        if (userId === '' || userId === null) {
             result = false;
             toast.error("Error username !", {
                 position: toast.POSITION.TOP_CENTER,
@@ -32,25 +31,32 @@ function Login() {
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-        const loginRequest = {username, password}
+        const loginRequest = { userId, password }
         if (validate()) {
             try {
-                const response = await axios.post('https://jsonplaceholder.typicode.com/posts', loginRequest, {
+                const response = await axios.post('http://localhost:8080/user_request/login', loginRequest, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     }
                 });
-                const data = response.json();
+                const data = response.data;
                 if (data) {
-                    setIsLogin(true);
-                    localStorage.setItem('user', JSON.stringify(data)); 
+
                     if (data.role === 'customer') {
                         navigate("/");
-                    } else if (data.role === 'staff') {
+                        localStorage.setItem('user', JSON.stringify(data));
+
+                    } else if (data.role === 'consultant_staff' || data.role === 'valuation_staff') {
                         navigate("/staff");
+                        localStorage.setItem('staff', JSON.stringify(data));
+
                     } else if (data.role === 'admin') {
                         navigate("/admin");
+                        localStorage.setItem('admin', JSON.stringify(data));
+                        // } else if (data.role === 'valuation_staff') {
+                        //     navigate("/staff");
+                        //     localStorage.setItem('staff', JSON.stringify(data));
                     } else {
                         setIsLogin(false);
                         setError('Invalid role');
@@ -61,7 +67,7 @@ function Login() {
                 }
             } catch (error) {
                 console.error('Invalid username or password', error);
-              
+
             }
         }
     };
@@ -84,7 +90,7 @@ function Login() {
                             type="text"
                             placeholder="Email address"
                             name="email"
-                            value={username}
+                            value={userId}
                             className="form-control mt-1 py-2"
                             onChange={(e) => setUsername(e.target.value)}
                             required
@@ -120,17 +126,15 @@ function Login() {
                         <div style={{ flex: 1, backgroundColor: "#DDE1DF", height: "2px" }} />
                     </div>
                     <div className="form-img text-center mt-4">
-                        {/* nhập đường dẫn  */}
-                    <a href="">
-                    <img
-                            src="/src/assets/assetsCustomer/Google.png"
-                            alt="google"
-                            className="img rounded-circle border border-dark"
-                            height="40"
-                            width="40"
-                        />
-                    </a>
-
+                        <a href="">
+                            <img
+                                src="/src/assets/assetsCustomer/Google.png"
+                                alt="google"
+                                className="img rounded-circle border border-dark"
+                                height="40"
+                                width="40"
+                            />
+                        </a>
                     </div>
                     <hr
                         style={{
