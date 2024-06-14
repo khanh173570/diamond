@@ -14,6 +14,5 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
         List<OrderDetail> findByOrderId(Order orderId);
         List<OrderDetail> findByStatus(String status);
         List<OrderDetail> findByEvaluationStaffIdIsNull();
-        List<OrderDetail> findByUserId(User userId);
         List<OrderDetail> findByEvaluationStaffId(String evaluationStaffId);
 }

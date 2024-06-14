@@ -99,7 +99,6 @@ public class OrderDetail {
 
 
   @JsonManagedReference
-
   @ManyToOne
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
@@ -108,15 +107,10 @@ public class OrderDetail {
 @OneToMany(mappedBy = "orderDetailId", cascade = CascadeType.ALL)
 List<EvaluationResult> evaluationResults;
 
-//  @JsonIgnore
   @JsonManagedReference
   @ManyToOne
   @JoinColumn(name = "service_id", nullable = true)
   EvaluationService serviceId;
 
-  @JsonManagedReference
-  @ManyToOne
-  @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-  User userId;
 }
 

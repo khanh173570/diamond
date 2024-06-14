@@ -186,13 +186,6 @@ public class OrderDetailServiceImp {
 
         return orderDetailRepository.save(orderDetail);
     }
-    public List<OrderDetail> getOrderDetailsByUserId(String userId) {
-        User user = userRepository.findById(userId).orElse(null);
-        if (user != null) {
-            return orderDetailRepository.findByUserId(user);
-        }
-        return null;
-    }
     public List<OrderDetail> getOrderDetailByEvaluationStaffId(String evaluationStaffId){
         return orderDetailRepository.findByEvaluationStaffId(evaluationStaffId);
     }

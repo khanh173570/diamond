@@ -30,10 +30,10 @@ public class UserController {
 //    @PostMapping("/signup-google")
 //    User signupWithGoogle(@RequestBody OAuth2AuthenticationToken token) {
 //        return token.getPrincipal().getAttributes();
-////        return userServiceImp.signupWithGoogle(token);
+//        return userServiceImp.signupWithGoogle(token);
 //    }
 
-//    @PostMapping("/login-google")
+//    @GetMapping("/login-google")
 //    public User signupOrLoginWithGoogle(OAuth2AuthenticationToken token) {
 //        return userServiceImp.signupOrLoginWithGoogle(token);
 //    }
