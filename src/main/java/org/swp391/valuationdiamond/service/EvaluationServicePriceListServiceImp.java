@@ -42,8 +42,8 @@ public class EvaluationServicePriceListServiceImp implements IEvaluationServiceP
 //        return priceList.calculateServicePrice(sampleSize);
 //    }
     @Override
-    public double calculateServicePrice(String serviceId, float sampleSize) {
-    if (sampleSize <= 2) {
+    public double calculateServicePrice(String serviceId, float size) {
+    if (size <= 2) {
         throw new IllegalArgumentException("Sample size must be greater than two");
     }
 
@@ -52,10 +52,10 @@ public class EvaluationServicePriceListServiceImp implements IEvaluationServiceP
 
     // Find the appropriate price list based on the sample size
     EvaluationServicePriceList evaluationServicePriceList = evaluationService.getServicePriceList().stream()
-            .filter(pl -> sampleSize >= pl.getSizeFrom() && (pl.getSizeTo() == 0 || sampleSize < pl.getSizeTo()))
+            .filter(pl -> size >= pl.getSizeFrom() && (pl.getSizeTo() == 0 || size < pl.getSizeTo()))
             .findFirst()
             .orElseThrow(() -> new RuntimeException("No price list available for the given sample size"));
 
-    return evaluationServicePriceList.calculateServicePrice(sampleSize);
+    return evaluationServicePriceList.calculateServicePrice(size);
 }
 }
