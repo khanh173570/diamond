@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=diamond_valuation_db
     username: sa
-    password: Gi@khoi221203
+    password: 12345
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   jpa:
