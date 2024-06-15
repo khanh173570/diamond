@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import { useReactToPrint } from "react-to-print";
+import { useLocation } from "react-router-dom";
 
 export const CreateReceipt = () => {
   const [selection, setSelection] = useState([]);
@@ -13,7 +14,8 @@ export const CreateReceipt = () => {
   const [orderDate, setOrderDate] = useState(""); // Initialize with empty string
   const [sampleSizeInput, setSampleSizeInput] = useState(""); // State to hold sampleSize input value
   const [rows, setRows] = useState([]);
-
+  const location = useLocation();
+  const {userRequestDetail}  = location.state;
   const componentRef = useRef();
 
   useEffect(() => {
@@ -162,8 +164,8 @@ data.priceService
     const dataToSend = {
       userId: "customer10",
       customerName: custName,
-      requestId: request,
-      phone: phone,
+      requestId: userRequestDetail.requestId,
+      phone: userRequestDetail.phone,
       diamondQuantity: parseInt(quantity),
       orderDate: formattedOrderDate,
       totalPrice: parseFloat(totalPrice),
