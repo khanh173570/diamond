@@ -3,7 +3,9 @@ package org.swp391.valuationdiamond.service;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.swp391.valuationdiamond.dto.OrderDTO;
 import org.swp391.valuationdiamond.dto.UserDTO;
+import org.swp391.valuationdiamond.entity.Order;
 import org.swp391.valuationdiamond.entity.Role;
 import org.swp391.valuationdiamond.entity.User;
 import org.swp391.valuationdiamond.repository.UserRepository;
@@ -74,7 +76,9 @@ public class UserServiceImp {
     public List<User> getStaffs(){
         return userRepository.getUsersByRole(Role.valuation_staff);
     }
-
+    public List<User> getCustomers(){
+        return userRepository.getUsersByRole(Role.customer);
+    }
 //    public List<User> getStaffs(){
 //        Role role = Role.valueOf("valuation_staff".toUpperCase());
 //        return userRepository.getUserByRole(role);
@@ -84,8 +88,52 @@ public class UserServiceImp {
     public User getStaff(String id){
         return userRepository.findById(id).orElseThrow(()-> new RuntimeException("Not found"));
     }
+
+
+
     public User getAUser(String id){
         return userRepository.findById(id).orElseThrow(()-> new RuntimeException("UserId Not Found"));
     }
 
+
+    public User updateUser(String userId, UserDTO userDTO){
+        User user= userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (userDTO.getPassword() != null) {
+            user.setPassword(userDTO.getPassword());
+        }
+        if (userDTO.getFirstName() != null) {
+            user.setFirstName(userDTO.getFirstName());
+        }
+        if (userDTO.getLastName() != null) {
+            user.setLastName(userDTO.getLastName());
+        }
+        if (userDTO.getBirthday() != null) {
+            user.setBirthday(userDTO.getBirthday());
+        }
+        if (userDTO.getPhoneNumber() != null) {
+            user.setPhoneNumber(userDTO.getPhoneNumber());
+        }
+        if (userDTO.getEmail() != null) {
+            user.setEmail(userDTO.getEmail());
+        }
+        if (userDTO.getAddress() != null) {
+            user.setAddress(userDTO.getAddress());
+        }
+        if (userDTO.getRole() != null) {
+            user.setRole(Role.valueOf(userDTO.getRole()));
+        }
+
+
+
+        return userRepository.save(user);
+    }
+    public void  deleteUser(String userId) {
+        User user= userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        userRepository.delete(user);
+
+    }
 }
