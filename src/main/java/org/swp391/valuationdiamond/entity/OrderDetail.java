@@ -53,7 +53,6 @@
 //}
 package org.swp391.valuationdiamond.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -80,9 +79,11 @@ public class OrderDetail {
   @Column(name = "evaluation_staff_id", nullable = true)
   String evaluationStaffId;
 
+  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "received_date", nullable = true)
   Date receivedDate;
 
+  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "expired_received_date", nullable = true)
   Date expiredReceivedDate;
 
@@ -103,9 +104,9 @@ public class OrderDetail {
   @JoinColumn(name = "order_id", nullable = true)
   Order orderId;
 
-@JsonIgnore
-@OneToMany(mappedBy = "orderDetailId", cascade = CascadeType.ALL)
-List<EvaluationResult> evaluationResults;
+  @JsonIgnore
+  @OneToMany(mappedBy = "orderDetailId", cascade = CascadeType.ALL)
+  List<EvaluationResult> evaluationResults;
 
   @JsonManagedReference
   @ManyToOne
