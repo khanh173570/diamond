@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import { useReactToPrint } from "react-to-print";
 import Toastify from 'toastify-js';
 import "toastify-js/src/toastify.css";
+import { useLocation } from "react-router-dom";
 
 export const CreateReceipt = () => {
   const [selection, setSelection] = useState([]);
@@ -15,6 +16,8 @@ export const CreateReceipt = () => {
   const [orderDate, setOrderDate] = useState(""); // Initialize with empty string
   const [sampleSizeInput, setSampleSizeInput] = useState(""); // State to hold sampleSize input value
   const [rows, setRows] = useState([]);
+  const location = useLocation();
+  const {userRequestDetail}  = location.state
 
   const componentRef = useRef();
 
@@ -159,9 +162,9 @@ export const CreateReceipt = () => {
 
     const dataToSend = {
       userId: "customer10",
-      customerName: custName,
-      requestId: request,
-      phone: phone,
+      customerName: userRequestDetail.guestName,
+      requestId: userRequestDetail.requestId,
+      phone: userRequestDetail.phoneNumber,
       diamondQuantity: parseInt(quantity),
       orderDate: orderDate, // Use formatted orderDate
       totalPrice: parseFloat(totalPrice),
@@ -260,12 +263,7 @@ return (
               <label className="form-label fw-bold">Customer Name</label>
             </div>
             <div className="col-7">
-              <input
-                type="text"
-                className="form-control"
-                value={custName}
-                onChange={(e) => setCustName(e.target.value)}
-              />
+              {userRequestDetail.guestName}
             </div>
           </div>
           <div className="row mb-3 d-flex justify-content-center">
@@ -273,12 +271,7 @@ return (
               <label className="form-label fw-bold">Phone</label>
             </div>
             <div className="col-7">
-              <input
-                type="text"
-                className="form-control"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
+              {userRequestDetail.phoneNumber}
             </div>
           </div>
           <div className="row mb-3 d-flex justify-content-center">
@@ -299,12 +292,7 @@ return (
               <label className="form-label fw-bold">Request ID</label>
             </div>
             <div className="col-7">
-              <input
-                type="text"
-                className="form-control"
-                value={request}
-                onChange={(e) => setRequest(e.target.value)}
-              />
+              {userRequestDetail.requestId}
             </div>
           </div>
           <div className="row mb-3 d-flex justify-content-center">

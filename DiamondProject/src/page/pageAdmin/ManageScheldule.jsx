@@ -6,7 +6,7 @@ export const ManageSchedule = () => {
   const [dataManage, setDataManage] = useState([]);
   const [evaluationStaffIds, setEvaluationStaffIds] = useState([]);
   const [selectedEvaluationStaff, setSelectedEvaluationStaff] = useState({});
-  const  [showFormDetails,setShowformDetails];
+  
 
 
   // Fetch order data

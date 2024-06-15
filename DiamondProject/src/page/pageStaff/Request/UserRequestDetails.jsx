@@ -33,7 +33,6 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
     };
     fetchUpdateStatus();
   };
-
   return (
     <Container>
       <h2 className='my-4 text-center'>Detailed Information</h2>
