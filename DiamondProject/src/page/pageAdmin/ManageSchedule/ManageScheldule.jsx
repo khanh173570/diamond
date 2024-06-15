@@ -22,7 +22,7 @@ export const ManageSchedule = () => {
       const data = await response.json();
       setDataManage(data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching data:', error);  
     }
   };
 
@@ -138,8 +138,7 @@ export const ManageSchedule = () => {
                   value={selectedStatus[data.id] || ''}
                 >
                   <option value="">Select Status</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Completed">Completed</option>
+                  <option value="Assigned">Assigned</option>
                   <option value="In Progress">In Progress</option>
                 </Form.Select>
               </td>
