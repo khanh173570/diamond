@@ -120,6 +120,7 @@ export const CreateReceipt = () => {
   };
 
   
+
   const fetchUnitPrice = async (serviceId, size) => {
     try {
       const response = await fetch(
