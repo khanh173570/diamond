@@ -27,6 +27,7 @@ function Login() {
         }
         return result;
     };
+    
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         const loginRequest = { userId, password }
@@ -39,10 +40,9 @@ function Login() {
                     }
                 });
                 const data = response.data;
-                
                 if (data) {
                     if (data.role === 'customer') {
-                        navigate("/");
+                        navigate("/home");
                         localStorage.setItem('user', JSON.stringify(data));
 
                     } else if (data.role === 'consultant_staff') {
@@ -65,12 +65,9 @@ function Login() {
             } catch (error) {
                 console.error('Invalid username or password', error);
                 setError('Invalid username or password');
-                
-
             }
         }
     };
-
     return (
         <div>
             <ToastContainer />
@@ -114,6 +111,8 @@ function Login() {
                             required
                         />
                     </div>
+
+
                     {error && <div className="alert alert-danger mt-3">{error}</div>}
                     <div className="form-button d-grid mt-4 text-center">
                         <button type="submit" className="btn fw-bold py-2" style={{ backgroundColor: "#CCFBF0" }}>
