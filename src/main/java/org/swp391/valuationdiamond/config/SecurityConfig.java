@@ -33,7 +33,7 @@ public class SecurityConfig {
 
 //    @Autowired
 //    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
-
+//
 //    @Bean
 //    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 //        return http
@@ -51,7 +51,7 @@ public class SecurityConfig {
 
     @Value("${frontend.url}")
     private String frontendUrl;
-//
+
 //    @Bean
 //    CorsConfigurationSource corsConfigurationSource() {
 //        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -63,7 +63,7 @@ public class SecurityConfig {
 //        source.registerCorsConfiguration("/**", config);
 //        return source;
 //    }
-
+//
 //    @Bean
 //    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauthUserService() {
 //        DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();

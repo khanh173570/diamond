@@ -6,8 +6,12 @@ import org.swp391.valuationdiamond.dto.OrderDTO;
 import org.swp391.valuationdiamond.entity.*;
 import org.swp391.valuationdiamond.repository.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,30 +68,27 @@ public class OrderServiceImp {
                     String formattedCountDetail = String.valueOf(countDetail + 1);
                     String orderDetailId = "OD" + formattedCountDetail + date;
 
-                    OrderDetail orderDetail =  OrderDetail.builder()
-                            .orderDetailId(orderDetailId)
-                            .receivedDate(od.getReceivedDate())
-                            .expiredReceivedDate(od.getExpiredReceivedDate())
-                            .unitPrice(od.getUnitPrice())
-                            .size(od.getSize())
-                            .isDiamond(od.getIsDiamond())
-                            .img(od.getImg())
-                            .status("In-Progress")
-                            .serviceId(service)
-                            .evaluationStaffId(od.getEvaluationStaffId())
-                            .build();
+                    OrderDetail orderDetail = new OrderDetail();
+                    orderDetail.setOrderDetailId(orderDetailId);
+                    orderDetail.setReceivedDate(od.getReceivedDate());
+                    orderDetail.setExpiredReceivedDate(od.getExpiredReceivedDate());
+                    orderDetail.setUnitPrice(od.getUnitPrice());
+                    orderDetail.setSize(od.getSize());
+                    orderDetail.setIsDiamond(od.getIsDiamond());
+                    orderDetail.setImg(od.getImg());
+                    orderDetail.setStatus("In-Progress");
+                    orderDetail.setServiceId(service);
+                    orderDetail.setEvaluationStaffId(od.getEvaluationStaffId());
                     orderDetail.setOrderId(savedOrder);
+
                     return orderDetailRepository.save(orderDetail);
                 })
                 .collect(Collectors.toList());
 
-
         savedOrder.setOrderDetailId(orderDetails);
-
-
-
         return savedOrder;
     }
+
 
     public Order createOrder(OrderDTO orderDTO) {
         Order order = new Order();
@@ -114,11 +115,6 @@ public class OrderServiceImp {
         return orderRepository.save(order);
 
     }
-//
-//
-//    public List<Order> getOrders() {
-//        return  orderRepository.findOrderByStatus("In-Progress");
-//    }
 
     public List<Order> getOrders() {
 

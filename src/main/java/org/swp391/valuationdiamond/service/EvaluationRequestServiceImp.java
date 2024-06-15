@@ -111,16 +111,6 @@ public class EvaluationRequestServiceImp implements IEvaluationRequestService {
     }
     return evaluationRequestRepository.save(evaluationRequest);
   }
-
-  //hàm get request by user 'R'
-
-
-
-
-
-//  public List<EvaluationRequest> getEvaluationRequestByStatus() {
-//    return evaluationRequestRepository.findByStatus("In-Progress");
-//  }
 public EvaluationRequest updateRequestStatus(String requestId, EvaluationRequestDTO evaluationRequestDTO){
    EvaluationRequest request= evaluationRequestRepository.findById(requestId).orElseThrow(() -> new RuntimeException("Request not found"));
 
@@ -129,6 +119,7 @@ public EvaluationRequest updateRequestStatus(String requestId, EvaluationRequest
   }
   return evaluationRequestRepository.save(request);
 }
+
   @Override
   public List<EvaluationRequest> getRequestByUser(String userId) {
     User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
