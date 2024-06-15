@@ -3,7 +3,7 @@ spring:
     name: valuationdiamond
 
   jackson:
-    date-format = MM/dd/yyyy, hh:mm aa
+    date-format = yyyy-MM-dd'T'HH:mm:ss.SSSXXX
 
 
   datasource:

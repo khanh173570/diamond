@@ -24,10 +24,10 @@ public class OrderDetailDTO {
     String orderDetailId;
     String evaluationStaffId;
     @JsonDeserialize(using = CustomDateDeserializer.class)
-    @DateTimeFormat(pattern = "MM/dd/yyyy, hh:mm aa")
+    @DateTimeFormat(pattern = "MM/dd/yyyy, HH:mm")
     Date receivedDate;
     @JsonDeserialize(using = CustomDateDeserializer.class)
-    @DateTimeFormat(pattern = "MM/dd/yyyy, hh:mm aa")
+    @DateTimeFormat(pattern = "MM/dd/yyyy, HH:mm")
     Date expiredReceivedDate;
     Float unitPrice;
     String img;

@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CustomDateDeserializer extends JsonDeserializer<Date> {
-    private static final SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy, hh:mm aa");
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy, HH:mm");
 
     @Override
     public Date deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
