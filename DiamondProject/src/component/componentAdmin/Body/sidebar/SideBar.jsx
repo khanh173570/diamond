@@ -13,7 +13,7 @@ const AdminSideBar = () => {
     };
 
     return (
-        <Navbar className="flex-column w-100" style={{ backgroundColor: '#263543', height: '100vh' }}>
+        <Navbar className="flex-column w-100" style={{ backgroundColor: '#263543', height: '100%' }}>
             <Nav className="flex-column w-100 p-2 menu fw-bold">
                 <NavLink className='nav-link admin mt-2 mx-2' to="/admin/dashboard">
                     Dashboard

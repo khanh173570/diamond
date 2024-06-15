@@ -29,12 +29,12 @@ export const Header = () => {
         <Container fluid className='px-1'>
           <div className='col-md-3  branddiamond '>
             <Navbar.Brand href='#home' className='p-5 fw-bold  brand-text'>
-              <img
-                src='/src/assets/assetsAdmin/diamond-svgrepo-com.svg'
-                width='60'
-                height='60'
-                alt='Logo'
-              />
+                <img
+                  src='/src/assets/assetsAdmin/logo.png'
+                  width='60'
+                  height='60'
+                  alt='Logo'
+                />
               Valuation Diamond
             </Navbar.Brand>
           </div>
