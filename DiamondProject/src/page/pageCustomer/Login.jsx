@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import { NavLink, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
@@ -9,7 +9,6 @@ function Login() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    // test thu
 
     const validate = () => {
         let result = true;
@@ -28,7 +27,7 @@ function Login() {
         }
         return result;
     };
-
+    
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         const loginRequest = { userId, password }
@@ -43,7 +42,7 @@ function Login() {
                 const data = response.data;
                 if (data) {
                     if (data.role === 'customer') {
-                        navigate("/");
+                        navigate("/home");
                         localStorage.setItem('user', JSON.stringify(data));
 
                     } else if (data.role === 'consultant_staff') {
@@ -65,14 +64,13 @@ function Login() {
                 }
             } catch (error) {
                 console.error('Invalid username or password', error);
-                
-
+                setError('Invalid username or password');
             }
         }
     };
-
     return (
         <div>
+            <ToastContainer />
             <div className="form-container d-flex justify-content-center align-items-center">
                 <form
                     className="form-row my-5 p-5"
@@ -83,7 +81,7 @@ function Login() {
                         <h1>Login</h1>
                     </div>
                     <div className="form-group mt-3">
-                        <label htmlFor="email">Email address</label>
+                        <label htmlFor="email">User name</label>
                         <input
                             id="email"
                             type="text"
@@ -113,6 +111,8 @@ function Login() {
                             required
                         />
                     </div>
+
+
                     {error && <div className="alert alert-danger mt-3">{error}</div>}
                     <div className="form-button d-grid mt-4 text-center">
                         <button type="submit" className="btn fw-bold py-2" style={{ backgroundColor: "#CCFBF0" }}>

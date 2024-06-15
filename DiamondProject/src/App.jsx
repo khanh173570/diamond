@@ -36,8 +36,8 @@ import { ManageSchedule } from './page/pageAdmin/ManageSchedule/ManageScheldule.
 import { ManageOrder } from './page/pageAdmin/ManageOrder';
 import { CreateNewCust } from './page/pageAdmin/CreateNewCust.jsx'
 import { PersonalRequestDetail } from './page/pageCustomer/PersonalRequestDetail.jsx';
-// import { ViewMyOrder } from './page/pageCustomer/ViewMyOrder.jsx';
 function App() {
+
   return (
     <BrowserRouter>
       <Routes>
@@ -53,7 +53,6 @@ function App() {
           <Route path="check" element={<Check />} />
           <Route path="my-request" element={<PersonalRequest />} />
           <Route path="my-request/:requestId" element={<PersonalRequestDetail />} />
-          {/* <Route path="my-order" element={<ViewMyOrder />} /> */}
         </Route>
         <Route path="/staff" element={<StaffApp />}>
           <Route index element={<HomeStaff />} />
@@ -84,6 +83,7 @@ function App() {
           <Route path="manageorder" element={<ManageOrder />} />
           <Route path="createnewcust" element={<CreateNewCust />} />
         </Route>
+        
       </Routes>
     </BrowserRouter>
   );

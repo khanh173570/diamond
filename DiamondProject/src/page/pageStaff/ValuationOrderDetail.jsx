@@ -8,11 +8,13 @@ import formattedDate from "../../utils/formattedDate/formattedDate";
 export const ValuationOrderDetail = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  //
-  const staff = JSON.parse(localStorage.getItem('staff'));
+  const staff = JSON.parse(localStorage.getItem('valuation-staff'));
+  const [count, setCount] = useState(0);
+  const [isAllFinished, setIsAllFinished] = useState(false)
   const navigate = useNavigate();
-  const location = useLocation();
- 
+
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,6 +31,16 @@ export const ValuationOrderDetail = () => {
     fetchData();
   }, []);
 
+    orderDetails.forEach((orderDetail) => {
+      if (orderDetail.status !== 'Finished') {
+        setIsAllFinished(false)
+      } else {
+        setIsAllFinished(false)
+      }
+    })
+   
+ console.log(isAllFinished)
+
   const handleCreateForm = (product) => {
     navigate('/valuation-staff/valuation', { state: { product } });
   };
@@ -37,7 +49,7 @@ export const ValuationOrderDetail = () => {
     return <div className="text-center my-4"><Spinner animation="border" /></div>;
   }
 
-  
+
   return (
     <Container>
       <ToastContainer />
@@ -99,8 +111,8 @@ export const ValuationOrderDetail = () => {
                   alt="Upload Icon"
                   height='20'
                   width='20'
-                  onClick={()=>{
-                    navigate(`/valuation-staff/valuation-order/${product.orderDetailId}`, {state:{product}})
+                  onClick={() => {
+                    navigate(`/valuation-staff/valuation-order/${product.orderDetailId}`, { state: { product } })
                   }}
                 />
               </td>
