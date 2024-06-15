@@ -77,8 +77,8 @@ export const ManageSchedule = () => {
       console.log(data);
 
       Swal.fire({
-        title: 'Thành công!',
-        text: 'Dữ liệu đã được lưu thành công.',
+        title: 'Success!',
+        text: 'Update successfully',
         icon: 'success',
         confirmButtonText: 'OK'
       }).then(() => {
