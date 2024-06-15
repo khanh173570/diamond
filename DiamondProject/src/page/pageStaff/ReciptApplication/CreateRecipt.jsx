@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import { useReactToPrint } from "react-to-print";
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
 
 export const CreateReceipt = () => {
   const [selection, setSelection] = useState([]);
@@ -42,15 +44,14 @@ export const CreateReceipt = () => {
   }, []);
 
   const formatDate = (dateTime) => {
-    const options = {
-      month: "2-digit",
-      day: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    };
-    return dateTime.toLocaleString("en-US", options);
+    const padZero = (num) => (num < 10 ? `0${num}` : num);
+    const month = padZero(dateTime.getMonth() + 1);
+    const day = padZero(dateTime.getDate());
+    const year = dateTime.getFullYear();
+    const hours = padZero(dateTime.getHours());
+    const minutes = padZero(dateTime.getMinutes());
+    
+    return `${month}/${day}/${year}, ${hours}:${minutes}`;
   };
 
   const handleRowChange = (index, field, value) => {
@@ -119,8 +120,6 @@ export const CreateReceipt = () => {
     }
   };
 
-  
-
   const fetchUnitPrice = async (serviceId, size) => {
     try {
       const response = await fetch(
@@ -188,6 +187,14 @@ export const CreateReceipt = () => {
 
       const result = await response.json();
       console.log("Data successfully saved:", result);
+      
+      Toastify({
+        text: "Successfully",
+        duration: 3000, // Duration the notification will be shown
+        gravity: "top", // Position of the notification
+        position: "right", // Position of the notification
+        backgroundColor: "green",
+      }).showToast();
     } catch (error) {
       console.error("Error saving data:", error);
     }
@@ -409,4 +416,3 @@ export const CreateReceipt = () => {
 };
 
 export default CreateReceipt;
-

@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "react-confirm-alert": "^3.0.6"
+    "react-confirm-alert": "^3.0.6",
+    "toastify-js": "^1.12.0"
   }
 }
