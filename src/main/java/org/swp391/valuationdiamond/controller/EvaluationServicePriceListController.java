@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.swp391.valuationdiamond.entity.EvaluationServicePriceList;
-import org.swp391.valuationdiamond.entity.OrderDetail;
 import org.swp391.valuationdiamond.service.EvaluationServicePriceListServiceImp;
 
 import java.util.List;
@@ -30,10 +29,10 @@ public class EvaluationServicePriceListController {
     @GetMapping("/calculate")
 public ResponseEntity<?> calculatePrice(
         @RequestParam String serviceId,
-        @RequestParam float sampleSize) {
+        @RequestParam float size) {
 
     try {
-        double price = evaluationServicePriceListServiceImp.calculateServicePrice(serviceId, sampleSize);
+        double price = evaluationServicePriceListServiceImp.calculateServicePrice(serviceId, size);
         return ResponseEntity.ok(price);
     } catch (IllegalArgumentException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
