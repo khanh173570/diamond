@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, Stack, Button ,Spinner} from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import formattedDate from '../../utils/formattedDate/formattedDate';
+import useAuth from '../../utils/hook/useAuth';
 
 export const PersonalRequest = () => {
     const [myRequest, setMyRequest] = useState([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-
+    const {user} = useAuth()
     const API = 'http://localhost:8080/evaluation-request/get_by_user';
-    const userId = JSON.parse(localStorage.getItem('user'));
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${API}/${userId.userId}`);
+                const response = await fetch(`${API}/${user.userId}`);
                 const data = await response.json();
                 setMyRequest(data);
                 setLoading(true);
@@ -25,7 +25,7 @@ export const PersonalRequest = () => {
         return () => {
             setLoading(false);
         };
-    }, [userId.username]);
+    }, [user.username]);
 
     if (!loading) {
         return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
