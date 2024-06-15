@@ -17,7 +17,7 @@ export const ManageCustomer = () => {
     lastname: '',
   });
   const [formEditCust, setFormEditCust] = useState(null);
-  const [originalData, setOriginalData] = useState(null); // To store original data for comparison
+  const [originalData, setOriginalData] = useState(null);      
   const [showEditForm, setShowEditForm] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -459,7 +459,7 @@ for (let number = 1; number <= Math.ceil(dataCustomer.length / itemsPerPage); nu
                           Ho Chi Minh</p>
                             </div>
                       <div className='container'>
-                      <p className='mx-4'><strong>ID:</strong> ST123242225  <strong className='mx-5'></strong><strong>Role:</strong> Staff</p>
+                      <p className='mx-4'><strong>ID:</strong> ST12345  <strong className='mx-5'></strong><strong>Role:</strong> Staff</p>
                       <p className='mx-4'><strong>Phone:</strong> 098-2444-332</p>
                       <p className='mx-4'><strong>Email:</strong> johndoe@meomeo.com</p>
                       <p className='mx-4'><strong>Username:</strong> minh123</p>
