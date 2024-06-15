@@ -70,15 +70,15 @@ export const CreateReceipt = () => {
     if (!selectedService) return;
 
     try {
-      let sampleSize = rows[index].sampleSize;
-      if (!sampleSize) {
-        sampleSize = sampleSizeInput;
+      let size = rows[index].size;
+      if (!size) {
+        size = sampleSizeInput;
       }
 
-      console.log(`Sending request for serviceId ${serviceId} with sampleSize ${sampleSize}`);
+      console.log(`Sending request for serviceId ${serviceId} with size ${size}`);
 
       // Fetch price service
-      const priceService = await fetchPriceService(serviceId, sampleSize || 0);
+      const unitPrice = await fetchUnitPrice(serviceId, size || 0);
 
       const orderDateTime = new Date(orderDate);
       const hoursRegex = /(\d+)\s*hour/i;
@@ -105,7 +105,7 @@ export const CreateReceipt = () => {
           return {
             ...row,
             serviceId: selectedService.serviceId,
-            priceService: priceService,
+            unitPrice: unitPrice,
             receivedDate: formattedReceivedDate,
             expiredReceivedDate: formattedExpiredReceivedDate,
           };
@@ -119,19 +119,20 @@ export const CreateReceipt = () => {
     }
   };
 
-  const fetchPriceService = async (serviceId, sampleSize) => {
+  
+
+  const fetchUnitPrice = async (serviceId, size) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/service_price_list/calculate?serviceId=${serviceId}&sampleSize=${sampleSize}`
+        `http://localhost:8080/service_price_list/calculate?serviceId=${serviceId}&size=${size}`
       );
       const data = await response.json();
       console.log(
-        `Fetching price for serviceId ${serviceId} with sampleSize ${sampleSize}:`,
-data.priceService
+        `Fetching price for serviceId ${serviceId} with size ${size}:`,data
       );
-      return data.priceService;
+      return data;
     } catch (error) {
-      console.error("Error fetching priceService:", error);
+      console.error("Error fetching unitPrice:", error);
       return null;
     }
   };
@@ -143,14 +144,14 @@ data.priceService
       serviceId: "",
       receivedDate: "",
       expiredReceivedDate: "",
-      sampleSize: 0,
-      priceService: 0.0,
+      size: 0,
+      unitPrice: 0.0,
     }));
     setRows(newRows);
   };
 
   const totalPrice = rows.reduce(
-    (total, row) => total + parseFloat(row.priceService || 0),
+    (total, row) => total + parseFloat(row.unitPrice || 0),
     0
   );
 
@@ -227,8 +228,8 @@ data.priceService
                       <td>{row.serviceId}</td>
                       <td>{row.receivedDate}</td>
                       <td>{row.expiredReceivedDate}</td>
-                      <td>{row.sampleSize}</td>
-                      <td>{row.priceService}</td>
+                      <td>{row.size}</td>
+                      <td>{row.unitPrice}</td>
                     </tr>
                   ))}
                   <tr>
@@ -363,15 +364,15 @@ data.priceService
                       <input
                         type="text"
                         className="form-control"
-                        value={row.sampleSize}
-                        onChange={(e) => handleRowChange(index, "sampleSize", e.target.value)}
+                        value={row.size}
+                        onChange={(e) => handleRowChange(index, "size", e.target.value)}
                       />
                     </td>
                     <td>
                       <input
                         type="text"
                         className="form-control"
-                        value={row.priceService}
+                        value={row.unitPrice}
                         readOnly
                       />
                     </td>
