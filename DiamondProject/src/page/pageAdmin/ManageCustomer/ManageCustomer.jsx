@@ -17,7 +17,7 @@ export const ManageCustomer = () => {
     lastname: '',
   });
   const [formEditCust, setFormEditCust] = useState(null);
-  const [originalData, setOriginalData] = useState(null); 
+  const [originalData, setOriginalData] = useState(null);      
   const [showEditForm, setShowEditForm] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);

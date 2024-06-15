@@ -91,7 +91,7 @@ export const ManageSchedule = () => {
 
   const indexOfLastPost = currentPage * itemsPerPage;
   const indexOfFirstPost = indexOfLastPost - itemsPerPage;
-  const currentPosts = dataManage.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = dataManage.slice(indexOfFirstPost, indexOfLastPost);       
 
   // Change page
   const paginate = (event, pageNumber) => {
