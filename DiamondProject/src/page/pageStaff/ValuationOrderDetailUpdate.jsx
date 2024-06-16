@@ -65,7 +65,9 @@ export const ValuationOrderDetailUpdate = () => {
             const data = await response.json();
             if (data) {
                 toast.success('Update successfully.');
-                navigate('/staff/valuation-order');
+                navigate('/staff/valuation-order'
+                    
+                );
             }
         } catch (error) {
             toast.error('Error updating status');
