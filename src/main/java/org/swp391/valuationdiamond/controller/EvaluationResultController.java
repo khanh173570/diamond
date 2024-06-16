@@ -1,7 +1,9 @@
 package org.swp391.valuationdiamond.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.swp391.valuationdiamond.dto.EvaluationResultDTO;
 import org.swp391.valuationdiamond.entity.EvaluationResult;
 import org.swp391.valuationdiamond.service.EvaluationResultServiceImp;
@@ -28,5 +30,17 @@ public class EvaluationResultController {
     EvaluationResult getEvaluationResult(@PathVariable String evaluationResultId) {
         return evaluationResultServiceImp.getEvaluationResult(evaluationResultId);
     }
+    @GetMapping("/getEvaluationResultsByOrderDetailId/{orderDetailId}")
+    public List<EvaluationResult> getEvaluationResultsByOrderDetailId(@PathVariable("orderDetailId") String orderDetailId) {
+        try {
+            return evaluationResultServiceImp.getResultByOrderDetailId(orderDetailId);
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order detail not found");
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while fetching the evaluation results");
+        }
+
+    }
+
 }
 

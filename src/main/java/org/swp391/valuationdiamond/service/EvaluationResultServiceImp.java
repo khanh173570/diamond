@@ -3,10 +3,7 @@ package org.swp391.valuationdiamond.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.swp391.valuationdiamond.dto.EvaluationResultDTO;
-import org.swp391.valuationdiamond.entity.EvaluationResult;
-import org.swp391.valuationdiamond.entity.Order;
-import org.swp391.valuationdiamond.entity.OrderDetail;
-import org.swp391.valuationdiamond.entity.User;
+import org.swp391.valuationdiamond.entity.*;
 import org.swp391.valuationdiamond.repository.EvaluationResultRepository;
 import org.swp391.valuationdiamond.repository.OrderDetailRepository;
 import org.swp391.valuationdiamond.repository.UserRepository;
@@ -61,6 +58,12 @@ public class EvaluationResultServiceImp {
     public EvaluationResult getEvaluationResult(String id){
         return evaluationResultRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
+    }
+
+    public List<EvaluationResult> getResultByOrderDetailId(String orderDetailId) {
+        OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId).orElseThrow(() -> new RuntimeException("Order Detail not found"));
+
+        return evaluationResultRepository.findByOrderDetailId(orderDetail);
     }
     public List<EvaluationResult> getEvaluationResult() {
         return evaluationResultRepository.findAll();
