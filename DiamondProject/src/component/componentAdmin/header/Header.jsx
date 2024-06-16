@@ -2,27 +2,20 @@ import Navbar from 'react-bootstrap/Navbar';
 import './../../componentAdmin/header/Header.css'
 import { Container, NavLink, NavDropdown } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../../utils/hook/useAuth';
 export const Header = () => {
-  const [admin, setAdmin] = useState(null);
-  const [isLogin, setIsLogin] = useState(false);
+
   const navigate = useNavigate ()
   
-  useEffect(() => {
-    const adminInfor = JSON.parse(localStorage.getItem('admin'));
-    if (adminInfor) {
-      setAdmin(adminInfor);
-      setIsLogin(true);
-    }
-  }, [])
+  const {user,dispatch} = useAuth()
+  const handleLogout = () => {
+      localStorage.removeItem('user');
+      dispatch(logout())
+      
+      navigate('/login');
+  };
 
-  const handleLogout = ()=>{
-    setAdmin(null);
-    setIsLogin(false);
-    localStorage.removeItem('admin')
-    navigate('/login')
-  }
   return (
     <>
       <Navbar expand="md" style={{ backgroundColor: '#white ' }}>
@@ -57,8 +50,8 @@ export const Header = () => {
                     height='30'
                   />
                 </NavLink>
-                {admin && isLogin && (
-                  <NavDropdown title={admin.name} id="nav-dropdown">
+                {user && (
+                  <NavDropdown title={`${user.firstName} ${user.lastName}`} id="nav-dropdown">
                     <NavDropdown.Item onClick={handleLogout}>
                       Log out
                     </NavDropdown.Item>

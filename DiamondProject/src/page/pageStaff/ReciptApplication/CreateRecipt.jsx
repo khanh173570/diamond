@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+ import React, { useState, useEffect, useRef } from "react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import { useReactToPrint } from "react-to-print";
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
+import { useLocation } from "react-router-dom";
 
 export const CreateReceipt = () => {
   const [selection, setSelection] = useState([]);
@@ -13,6 +16,8 @@ export const CreateReceipt = () => {
   const [orderDate, setOrderDate] = useState(""); // Initialize with empty string
   const [sampleSizeInput, setSampleSizeInput] = useState(""); // State to hold sampleSize input value
   const [rows, setRows] = useState([]);
+  const location = useLocation();
+  const {userRequestDetail}  = location.state
 
   const componentRef = useRef();
 
@@ -42,15 +47,14 @@ export const CreateReceipt = () => {
   }, []);
 
   const formatDate = (dateTime) => {
-    const options = {
-      month: "2-digit",
-      day: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    };
-    return dateTime.toLocaleString("en-US", options);
+    const padZero = (num) => (num < 10 ? `0${num}` : num);
+    const month = padZero(dateTime.getMonth() + 1);
+    const day = padZero(dateTime.getDate());
+    const year = dateTime.getFullYear();
+    const hours = padZero(dateTime.getHours());
+    const minutes = padZero(dateTime.getMinutes());
+    
+    return `${month}/${day}/${year}, ${hours}:${minutes}`;
   };
 
   const handleRowChange = (index, field, value) => {
@@ -119,8 +123,6 @@ export const CreateReceipt = () => {
     }
   };
 
-  
-
   const fetchUnitPrice = async (serviceId, size) => {
     try {
       const response = await fetch(
@@ -158,15 +160,13 @@ export const CreateReceipt = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    const formattedOrderDate = new Date(orderDate).toISOString();
-
     const dataToSend = {
       userId: "customer10",
-      customerName: custName,
-      requestId: request,
-      phone: phone,
+      customerName: userRequestDetail.guestName,
+      requestId: userRequestDetail.requestId,
+      phone: userRequestDetail.phoneNumber,
       diamondQuantity: parseInt(quantity),
-      orderDate: formattedOrderDate,
+      orderDate: orderDate, // Use formatted orderDate
       totalPrice: parseFloat(totalPrice),
       orderDetails: rows,
     };
@@ -188,6 +188,14 @@ export const CreateReceipt = () => {
 
       const result = await response.json();
       console.log("Data successfully saved:", result);
+      
+      Toastify({
+        text: "Successfully",
+        duration: 3000, // Duration the notification will be shown
+        gravity: "top", // Position of the notification
+        position: "right", // Position of the notification
+        backgroundColor: "green",
+      }).showToast();
     } catch (error) {
       console.error("Error saving data:", error);
     }
@@ -197,127 +205,22 @@ export const CreateReceipt = () => {
     content: () => componentRef.current,
   });
 
-  return (
-    <div>
-      {reviewMode ? (
-        <div>
-          <h2 className="d-flex justify-content-center">Review</h2>
-          <div ref={componentRef} className="print-container">
-            <div className="d-flex justify-content-center">
-              <div className="flex-column" style={{ width: "50%" }}>
-                <p>Customer Name: {custName}</p>
-                <p>Phone: {phone}</p>
-                <p>Quantity: {quantity}</p>
-                <p>Order Date: {orderDate}</p>
-              </div>
-            </div>
-            <div className="print-content">
-              <Table striped bordered className="fs-5 print-table">
-                <thead className="text-center">
-                  <tr>
-                    <th>Type Service</th>
-                    <th>Received Date</th>
-                    <th>Expired Date</th>
-                    <th>Sample Size</th>
-                    <th>Service Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((row, index) => (
-                    <tr key={index}>
-                      <td>{row.serviceId}</td>
-                      <td>{row.receivedDate}</td>
-                      <td>{row.expiredReceivedDate}</td>
-                      <td>{row.size}</td>
-                      <td>{row.unitPrice}</td>
-                    </tr>
-                  ))}
-                  <tr>
-                    <td colSpan="4" className="text-end">
-                      <strong>Total Price</strong>
-                    </td>
-                    <td>{totalPrice}</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
-          </div>
-          <div className="d-flex justify-content-end" style={{ width: "90%" }}>
-            <Button onClick={handlePrint}>Print</Button>
-          </div>
-        </div>
-      ) : (
-        <form onSubmit={handleOnSubmit}>
-          <div className="row mb-5">
-            <h2 className="p-2 text-center">Order</h2>
-            <div className="row mb-3 d-flex justify-content-center">
-              <div className="col-3" style={{ width: "15%" }}>
-                <label className="form-label fw-bold">Customer Name</label>
-              </div>
-              <div className="col-7">
-                <input
-                  type="text"
-                  className="form-control"
-                  value={custName}
-                  onChange={(e) => setCustName(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="row mb-3 d-flex justify-content-center">
-              <div className="col-3" style={{ width: "15%" }}>
-                <label className="form-label fw-bold">Phone</label>
-              </div>
-              <div className="col-7">
-                <input
-                  type="text"
-                  className="form-control"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="row mb-3 d-flex justify-content-center">
-              <div className="col-3" style={{ width: "15%" }}>
-                <label className="form-label fw-bold">Quantity</label>
-              </div>
-              <div className="col-7">
-                <input
-                  type="text"
-                  className="form-control"
-                  value={quantity}
-                  onChange={handleQuantityChange}
-                />
-              </div>
-            </div>
-            <div className="row mb-3 d-flex justify-content-center">
-              <div className="col-3" style={{ width: "15%" }}>
-                <label className="form-label fw-bold">Request ID</label>
-              </div>
-              <div className="col-7">
-                <input
-                  type="text"
-                  className="form-control"
-                  value={request}
-                  onChange={(e) => setRequest(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="row mb-3 d-flex justify-content-center">
-              <div className="col-3" style={{ width: "15%" }}>
-                <label className="form-label fw-bold">Order Date</label>
-              </div>
-              <div className="col-7">
-                <input
-                  type="text"
-                  className="form-control"
-                  value={orderDate}
-                  readOnly // Make the orderDate field readOnly in the form
-                />
-              </div>
-            </div>
-          </div>
+return (
+  <div>
+    {reviewMode ? (
+      <div>
+        <h2 className="d-flex justify-content-center">Review</h2>
+        <div ref={componentRef} className="print-container">
           <div className="d-flex justify-content-center">
-            <Table striped bordered className="fs-5" style={{ width: "80%" }}>
+            <div className="flex-column" style={{ width: "50%" }}>
+              <p>Customer Name: {custName}</p>
+              <p>Phone: {phone}</p>
+              <p>Quantity: {quantity}</p>
+              <p>Order Date: {orderDate}</p>
+            </div>
+          </div>
+          <div className="print-content">
+            <Table striped bordered className="fs-5 print-table">
               <thead className="text-center">
                 <tr>
                   <th>Type Service</th>
@@ -330,83 +233,172 @@ export const CreateReceipt = () => {
               <tbody>
                 {rows.map((row, index) => (
                   <tr key={index}>
-                    <td>
-                      <select
-                        className="form-control"
-                        value={row.serviceId}
-                        onChange={(e) => handleServiceChange(index, e.target.value)}
-                      >
-                        <option value="">Select Service</option>
-                        {selection.map((service) => (
-                          <option key={service.serviceId} value={service.serviceId}>
-                            {service.serviceType}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={row.receivedDate}
-                        readOnly
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={row.expiredReceivedDate}
-                        readOnly
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={row.size}
-                        onChange={(e) => handleRowChange(index, "size", e.target.value)}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={row.unitPrice}
-                        readOnly
-                      />
-                    </td>
+                    <td>{row.serviceId}</td>
+                    <td>{row.receivedDate}</td>
+                    <td>{row.expiredReceivedDate}</td>
+                    <td>{row.size}</td>
+                    <td>{row.unitPrice}</td>
                   </tr>
                 ))}
                 <tr>
                   <td colSpan="4" className="text-end">
                     <strong>Total Price</strong>
                   </td>
-                  <td>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={totalPrice}
-                      readOnly
-                    />
-                  </td>
+                  <td>{totalPrice}</td>
                 </tr>
               </tbody>
             </Table>
           </div>
-          <div className="d-flex justify-content-end" style={{ width: "90%" }}>
-            <Button className="btn btn-success me-4" type="submit">
-              Accept
-            </Button>
-            <Button className="btn btn-primary" onClick={() => setReviewMode(true)}>
-              Review
-            </Button>
+        </div>
+        <div className="d-flex justify-content-end" style={{ width: "90%" }}>
+          <Button onClick={handlePrint}>Print</Button>
+        </div>
+      </div>
+    ) : (
+      <form onSubmit={handleOnSubmit}>
+        <div className="row mb-5">
+          <h2 className="p-2 text-center">Order</h2>
+          <div className="row mb-3 d-flex justify-content-center">
+            <div className="col-3" style={{ width: "15%" }}>
+              <label className="form-label fw-bold">Customer Name</label>
+            </div>
+            <div className="col-7">
+              {userRequestDetail.guestName}
+            </div>
           </div>
-        </form>
-      )}
-    </div>
-  );
+          <div className="row mb-3 d-flex justify-content-center">
+            <div className="col-3" style={{ width: "15%" }}>
+              <label className="form-label fw-bold">Phone</label>
+            </div>
+            <div className="col-7">
+              {userRequestDetail.phoneNumber}
+            </div>
+          </div>
+          <div className="row mb-3 d-flex justify-content-center">
+            <div className="col-3" style={{ width: "15%" }}>
+              <label className="form-label fw-bold">Quantity</label>
+            </div>
+            <div className="col-7">
+              <input
+                type="text"
+                className="form-control"
+                value={quantity}
+                onChange={handleQuantityChange}
+              />
+            </div>
+          </div>
+          <div className="row mb-3 d-flex justify-content-center">
+            <div className="col-3" style={{ width: "15%" }}>
+              <label className="form-label fw-bold">Request ID</label>
+            </div>
+            <div className="col-7">
+              {userRequestDetail.requestId}
+            </div>
+          </div>
+          <div className="row mb-3 d-flex justify-content-center">
+            <div className="col-3" style={{ width: "15%" }}>
+              <label className="form-label fw-bold">Order Date</label>
+            </div>
+            <div className="col-7">
+              <input
+                type="text"
+                className="form-control"
+                value={orderDate}
+                readOnly // Make the orderDate field readOnly in the form
+              />
+            </div>
+          </div>
+        </div>
+        <div className="d-flex justify-content-center">
+          <Table striped bordered className="fs-5" style={{ width: "80%" }}>
+            <thead className="text-center">
+              <tr>
+                <th>Type Service</th>
+                <th>Received Date</th>
+                <th>Expired Date</th>
+                <th>Sample Size</th>
+                <th>Service Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, index) => (
+                <tr key={index}>
+                  <td>
+                    <select
+                      className="form-control"
+                      value={row.serviceId}
+                      onChange={(e) => handleServiceChange(index, e.target.value)}
+                    >
+                      <option value="">Select Service</option>
+                      {selection.map((service) => (
+                        <option key={service.serviceId} value={service.serviceId}>
+                          {service.serviceType}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={row.receivedDate}
+                      readOnly
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={row.expiredReceivedDate}
+                      readOnly
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={row.size}
+                      onChange={(e) => handleRowChange(index, "size", e.target.value)}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={row.unitPrice}
+                      readOnly
+                    />
+                  </td>
+                </tr>
+              ))}
+              <tr>
+                <td colSpan="4" className="text-end">
+                  <strong>Total Price</strong>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={totalPrice}
+                    readOnly
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        </div>
+        <div className="d-flex justify-content-end" style={{ width: "90%" }}>
+          <Button className="btn btn-success me-4" type="submit">
+            Accept
+          </Button>
+          <Button className="btn btn-primary" onClick={() => setReviewMode(true)}>
+            Review
+          </Button>
+        </div>
+      </form>
+    )}
+  </div>
+);
 };
 
 export default CreateReceipt;
-

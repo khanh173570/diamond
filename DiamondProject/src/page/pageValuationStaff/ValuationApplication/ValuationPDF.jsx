@@ -56,8 +56,7 @@ export const ValuationPDF = ({ result} ) => {
           <View style={styles.wrapLeft}>
             <View style={styles.section}>
               <Text style={styles.header}>Diamond Valuation Report</Text>
-              <Text style={styles.text}>Diamond Origin:</Text>
-              <Text style={styles.text}>{result.diamondOrigin}</Text>
+              <Text style={styles.text}>Diamond Origin:{result.diamondOrigin}</Text>
               <Text style={styles.text}>Measurements: {result.measurements}</Text>
               <Text style={styles.text}>Shape Cut: {result.shapeCut}</Text>
               <Text style={styles.text}>Description: {result.description}</Text>
@@ -80,7 +79,7 @@ export const ValuationPDF = ({ result} ) => {
           </View>
           <View style={styles.wrapRight}>
             <View style={styles.section}>
-              <Text style={styles.header}>Clarity Characteristics</Text>
+              <Text style={styles.header}>Product Image</Text>
               <Image style={styles.image} src={result.img} />
             </View>
           </View>

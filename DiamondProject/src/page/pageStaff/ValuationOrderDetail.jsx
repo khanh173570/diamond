@@ -4,19 +4,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import formattedDate from "../../utils/formattedDate/formattedDate";
+import useAuth from "../../utils/hook/useAuth";
 
 export const ValuationOrderDetail = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  //
-  const staff = JSON.parse(localStorage.getItem('staff'));
   const navigate = useNavigate();
-  const location = useLocation();
- 
+  const {user} = useAuth()
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/order_detail_request/getOrderDetailByEvaluationStaffId/${staff.userId}`);
+        const response = await fetch(`http://localhost:8080/order_detail_request/getOrderDetailByEvaluationStaffId/${user.userId}`);
         const data = await response.json();
         setOrderDetails(data);
       } catch (error) {
@@ -27,7 +26,7 @@ export const ValuationOrderDetail = () => {
     };
 
     fetchData();
-  }, []);
+  }, [user.userId]);
 
   const handleCreateForm = (product) => {
     navigate('/valuation-staff/valuation', { state: { product } });
@@ -37,7 +36,7 @@ export const ValuationOrderDetail = () => {
     return <div className="text-center my-4"><Spinner animation="border" /></div>;
   }
 
-  
+
   return (
     <Container>
       <ToastContainer />
@@ -99,8 +98,8 @@ export const ValuationOrderDetail = () => {
                   alt="Upload Icon"
                   height='20'
                   width='20'
-                  onClick={()=>{
-                    navigate(`/valuation-staff/valuation-order/${product.orderDetailId}`, {state:{product}})
+                  onClick={() => {
+                    navigate(`/valuation-staff/valuation-order/${product.orderDetailId}`, { state: { product } })
                   }}
                 />
               </td>

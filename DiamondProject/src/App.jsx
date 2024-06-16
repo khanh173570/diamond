@@ -36,26 +36,59 @@ import { ManageSchedule } from './page/pageAdmin/ManageSchedule/ManageScheldule.
 import { ManageOrder } from './page/pageAdmin/ManageOrder';
 import { CreateNewCust } from './page/pageAdmin/CreateNewCust.jsx'
 import { PersonalRequestDetail } from './page/pageCustomer/PersonalRequestDetail.jsx';
-// import { ViewMyOrder } from './page/pageCustomer/ViewMyOrder.jsx';
+import { GuestGuard } from './guards/GuestGuard.jsx';
+import { AuthGuard } from './guards/AuthGuard.jsx';
+import { RoleBasedGuard } from './guards/RoleBasedGuard.jsx';
+
+
 function App() {
+
   return (
     <BrowserRouter>
       <Routes>
+
         <Route path="/" element={<CustomerApp />}>
           <Route index element={<HomeCustomer />} />
-          <Route path="/login" element={<Login />} /> 
-          <Route path="signup" element={<Signup />} />
+          <Route path="login" element={
+            <GuestGuard>
+              <Login />
+            </GuestGuard>
+          } />
+          <Route path="signup" element={
+            <GuestGuard>
+              <Signup />
+            </GuestGuard>
+
+          } />
           <Route path="home" element={<HomeCustomer />} />
           <Route path="blog" element={<Blog />} />
           <Route path="contact" element={<Contact />} />
-          <Route path="evaluationservice" element={<EvaluationServicePage />} />
+          {/* private  */}
+          <Route path="evaluationservice" element={
+
+            <AuthGuard>
+              <EvaluationServicePage />
+            </AuthGuard>
+
+          }
+          />
+          {/*  */}
           <Route path="calculate" element={<Calculate />} />
           <Route path="check" element={<Check />} />
+          {/* Private */}
           <Route path="my-request" element={<PersonalRequest />} />
           <Route path="my-request/:requestId" element={<PersonalRequestDetail />} />
-          {/* <Route path="my-order" element={<ViewMyOrder />} /> */}
         </Route>
-        <Route path="/staff" element={<StaffApp />}>
+
+
+        {/* private route */}
+        <Route path="/staff" element={
+          <AuthGuard>
+            <RoleBasedGuard roles={'consultant_staff'}>
+              <StaffApp />
+            </RoleBasedGuard>
+          </AuthGuard>
+        }>
           <Route index element={<HomeStaff />} />
           <Route path="home" element={<HomeStaff />} />
           <Route path="user-request" element={<UserRequest />} />
@@ -66,8 +99,14 @@ function App() {
           <Route path="personal-info" element={<PersonalInformation />} />
           <Route path="valuation-result-list" element={<ValuationList />} />
         </Route>
+        <Route path="/valuation-staff" element={
+          <AuthGuard>
+            <RoleBasedGuard roles={'valuation_staff'}>
+              <ValuationApp />
+            </RoleBasedGuard>
+          </AuthGuard>
 
-        <Route path="/valuation-staff" element={<ValuationApp />}>
+        }>
           <Route index element={<HomeStaff />} />
           <Route path="home" element={<HomeStaff />} />
           <Route path="valuation-order" element={<ValuationOrderDetail />} />
@@ -75,7 +114,14 @@ function App() {
           <Route path="valuation" element={<ValuationApplication />} />
         </Route>
 
-        <Route path="/admin" element={<AdminApp />}>
+        <Route path="/admin" element={
+          <AuthGuard>
+            <RoleBasedGuard roles={'admin'}>
+          <AdminApp />
+          </RoleBasedGuard>
+        </AuthGuard>
+          
+          }>
           <Route path="dashboard" element={<DashBoard />} />
           <Route path="manageblog" element={<ManageBlog />} />
           <Route path="managecustomer" element={<ManageCustomer />} />
@@ -84,6 +130,7 @@ function App() {
           <Route path="manageorder" element={<ManageOrder />} />
           <Route path="createnewcust" element={<CreateNewCust />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
   );
