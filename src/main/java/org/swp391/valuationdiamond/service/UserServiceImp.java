@@ -5,16 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.swp391.valuationdiamond.dto.OrderDTO;
 import org.swp391.valuationdiamond.dto.UserDTO;
-import org.swp391.valuationdiamond.entity.Order;
 import org.swp391.valuationdiamond.entity.Role;
 import org.swp391.valuationdiamond.entity.User;
 import org.swp391.valuationdiamond.repository.UserRepository;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class UserServiceImp {
@@ -66,7 +62,7 @@ public class UserServiceImp {
 
     }
 
-    public List<User> getStaffs(){
+    public List<User> getStaffByRoleEvaluationStaff(){
         return userRepository.getUsersByRole(Role.valuation_staff);
     }
 
@@ -76,45 +72,12 @@ public class UserServiceImp {
 //    }
 
 
-    public User getStaff(String id){
+    public User getStaffById(String id){
         return userRepository.findById(id).orElseThrow(()-> new RuntimeException("Staff not found"));
     }
     public User getAUser(String id){
         return userRepository.findById(id).orElseThrow(()-> new RuntimeException("UserId Not Found"));
     }
-
-
-
-    //    đăng ký tài khoản với google
-//public User signupOrLoginWithGoogle(OAuth2AuthenticationToken token){
-//    Map<String, Object> map = token.getPrincipal().getAttributes();
-//    String userId = (String) map.get("email");
-//
-//    // Kiểm tra xem người dùng đã tồn tại chưa
-//    Optional<User> existingUser = userRepository.findById(userId);
-//
-//    if (((Optional<?>) existingUser).isPresent()) {
-//        return existingUser.get();
-//    } else {
-//        User user = new User();
-//        user.setUserId((String) map.get("email"));
-//        user.setFirstName((String) map.get("given_name"));
-//        user.setLastName((String) map.get("family_name"));
-//        user.setEmail((String) map.get("email"));
-//        user.setRole(Role.USER);
-//
-//        userRepository.save(user);
-//        return user;
-//    }
-//}
-
-    public List<User> getCustomers(){
-        return userRepository.getUsersByRole(Role.customer);
-    }
-//    public List<User> getStaffs(){
-//        Role role = Role.valueOf("valuation_staff".toUpperCase());
-//        return userRepository.getUserByRole(role);
-//    }
 
     public User updateUser(String userId, UserDTO userDTO){
         User user= userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
@@ -143,11 +106,9 @@ public class UserServiceImp {
         if (userDTO.getRole() != null) {
             user.setRole(Role.valueOf(userDTO.getRole()));
         }
-
-
-
         return userRepository.save(user);
     }
+
     public void  deleteUser(String userId) {
         User user= userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         if (user == null) {
@@ -156,5 +117,42 @@ public class UserServiceImp {
         userRepository.delete(user);
 
     }
+
+    public List<User> getCustomers(){
+        return userRepository.getUsersByRole(Role.customer);
+    }
+
+
+    //    đăng ký tài khoản với google
+//public User signupOrLoginWithGoogle(OAuth2AuthenticationToken token){
+//    Map<String, Object> map = token.getPrincipal().getAttributes();
+//    String userId = (String) map.get("email");
+//
+//    // Kiểm tra xem người dùng đã tồn tại chưa
+//    Optional<User> existingUser = userRepository.findById(userId);
+//
+//    if (((Optional<?>) existingUser).isPresent()) {
+//        return existingUser.get();
+//    } else {
+//        User user = new User();
+//        user.setUserId((String) map.get("email"));
+//        user.setFirstName((String) map.get("given_name"));
+//        user.setLastName((String) map.get("family_name"));
+//        user.setEmail((String) map.get("email"));
+//        user.setRole(Role.USER);
+//
+//        userRepository.save(user);
+//        return user;
+//    }
+//}
+
+
+//    public List<User> getStaffs(){
+//        Role role = Role.valueOf("valuation_staff".toUpperCase());
+//        return userRepository.getUserByRole(role);
+//    }
+
+
+
 
 }

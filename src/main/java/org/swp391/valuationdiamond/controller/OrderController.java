@@ -13,29 +13,30 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderServiceImp orderServiceImp;
-//    @PostMapping("/orders")
-//    Order createOrder(@RequestBody OrderDTO orderDTO){
-//        return orderServiceImp.createOrder(orderDTO);
-//    }
+
+    // =================================== API CREATE ======================================
 
     @PostMapping("/create")
-    Order createOrder(@RequestBody OrderDTO orderDTO){
+    Order createOrder(@RequestBody OrderDTO orderDTO) {
         return orderServiceImp.saveOrder(orderDTO);
     }
 
+    // =================================== API GET ======================================
+
     @GetMapping("/getOrderByStatusInProgress")
-    List<Order> getOrderByStatusInProgress(){
+    List<Order> getOrderByStatusInProgress() {
         return orderServiceImp.getOrders();
     }
 
     @GetMapping("/getOrder/{orderId}")
-    Order getOrder(@PathVariable("orderId") String orderId){
+    Order getOrder(@PathVariable("orderId") String orderId) {
 
         return orderServiceImp.getOrder(orderId);
     }
 
     @GetMapping("/getOrders")
-    List<Order> getOrders(){
+    List<Order> getOrders() {
+
         return orderServiceImp.getAllOrders();
     }
 
@@ -44,6 +45,8 @@ public class OrderController {
         return orderServiceImp.getOrderByRequest(requestId);
 
     }
+
+    // =================================== API UPDATE ======================================
 
     @PutMapping("/updateStatus/{orderId}")
     public Order updateOrderStatus(@PathVariable("orderId") String orderId, @RequestBody OrderDTO orderDTO) {

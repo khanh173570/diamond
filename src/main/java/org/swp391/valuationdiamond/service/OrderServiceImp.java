@@ -6,6 +6,7 @@ import org.swp391.valuationdiamond.dto.OrderDTO;
 import org.swp391.valuationdiamond.entity.*;
 import org.swp391.valuationdiamond.repository.*;
 
+import javax.management.Query;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -31,6 +32,9 @@ public class OrderServiceImp {
 
     @Autowired
     private EvaluationServiceRepository evaluationServiceRepository;
+
+
+    //=============================================== Create Order ===============================================
 
     public Order saveOrder(OrderDTO orderDTO) {
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
@@ -68,18 +72,19 @@ public class OrderServiceImp {
                     String formattedCountDetail = String.valueOf(countDetail + 1);
                     String orderDetailId = "OD" + formattedCountDetail + date;
 
-                    OrderDetail orderDetail = new OrderDetail();
-                    orderDetail.setOrderDetailId(orderDetailId);
-                    orderDetail.setReceivedDate(od.getReceivedDate());
-                    orderDetail.setExpiredReceivedDate(od.getExpiredReceivedDate());
-                    orderDetail.setUnitPrice(od.getUnitPrice());
-                    orderDetail.setSize(od.getSize());
-                    orderDetail.setIsDiamond(od.getIsDiamond());
-                    orderDetail.setImg(od.getImg());
-                    orderDetail.setStatus("In-Progress");
-                    orderDetail.setServiceId(service);
-                    orderDetail.setEvaluationStaffId(od.getEvaluationStaffId());
-                    orderDetail.setOrderId(savedOrder);
+                   OrderDetail orderDetail = OrderDetail.builder()
+                            .orderDetailId(orderDetailId)
+                            .receivedDate(od.getReceivedDate())
+                            .expiredReceivedDate(od.getExpiredReceivedDate())
+                            .unitPrice(od.getUnitPrice())
+                            .size(od.getSize())
+                            .isDiamond(od.getIsDiamond())
+                            .img(od.getImg())
+                            .status("In-Progress")
+                            .serviceId(service)
+                            .evaluationStaffId(od.getEvaluationStaffId())
+                            .orderId(savedOrder)
+                            .build();
 
                     return orderDetailRepository.save(orderDetail);
                 })
@@ -89,32 +94,7 @@ public class OrderServiceImp {
         return savedOrder;
     }
 
-
-    public Order createOrder(OrderDTO orderDTO) {
-        Order order = new Order();
-
-        long count = orderRepository.count();
-        String formattedCount = String.valueOf(count + 1);
-        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
-        String requestId = "Or" + formattedCount + date;
-
-        order.setOrderId(requestId);
-        order.setCustomerName(orderDTO.getCustomerName());
-        order.setPhone(orderDTO.getPhone());
-        order.setDiamondQuantity(orderDTO.getDiamondQuantity());
-        order.setOrderDate(orderDTO.getOrderDate());
-        order.setStatus(orderDTO.getStatus());
-        order.setTotalPrice(orderDTO.getTotalPrice());
-
-        User userId = userRepository.findById(orderDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
-        order.setUserId(userId);
-
-        EvaluationRequest evaluationRequest = evaluationRequestRepository.findById(orderDTO.getRequestId()).orElseThrow(() -> new RuntimeException("Request not found"));
-
-        order.setRequestId(evaluationRequest);
-        return orderRepository.save(order);
-
-    }
+    //===============================================Methods Get Order ===============================================
 
     public List<Order> getOrders() {
 
@@ -127,7 +107,7 @@ public class OrderServiceImp {
 
     public Order getOrder(String id){
         return orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Not Found"));
+                .orElseThrow(() -> new RuntimeException("Order with id " + id + " not found"));
     }
 
     //API get order by request id
@@ -136,6 +116,8 @@ public class OrderServiceImp {
         return orderRepository.findOrderByRequestId(request);
     }
 
+    //===============================================Methods Update Order ===============================================
+
     public Order updateOrderStatus(String orderId, OrderDTO orderDTO){
         Order order= orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
 
@@ -143,5 +125,12 @@ public class OrderServiceImp {
             order.setStatus(orderDTO.getStatus());
         }
         return orderRepository.save(order);
+    }
+
+    //===============================================Methods Delete Order ===============================================
+    public boolean deleteOrder(String orderId){
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+        orderRepository.delete(order);
+        return true;
     }
 }

@@ -56,11 +56,6 @@ public class EvaluationRequestController {
 
     //=============================== API UPDATE ======================================
 
-    @PutMapping("/updateStatus/{requestId}")
-    public EvaluationRequest updateRequestStatus(@PathVariable("requestId") String requestId, @RequestBody EvaluationRequestDTO evaluationRequestDTO) {
-        return evaluationRequestServiceImp.updateRequestStatus(requestId, evaluationRequestDTO);
-    }
-
     @PutMapping("/update/{requestId}")
     public EvaluationRequest updateRequest(@PathVariable("requestId") String requestId, @RequestBody EvaluationRequestDTO evaluationRequestDTO) {
         return evaluationRequestServiceImp.updateEvaluationRequest(requestId, evaluationRequestDTO);
@@ -68,7 +63,10 @@ public class EvaluationRequestController {
 
     //=============================== API DELETE ======================================
 
-
+    @DeleteMapping("/delete/{requestId}")
+    public boolean deleteRequest(@PathVariable("requestId") String requestId) {
+        return evaluationRequestService.deleteEvaluationRequest(requestId);
+    }
 
 }
 

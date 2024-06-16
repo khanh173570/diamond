@@ -1,6 +1,5 @@
 package org.swp391.valuationdiamond.controller;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.context.SecurityContextHolder;
@@ -8,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.swp391.valuationdiamond.dto.OrderDTO;
 import org.swp391.valuationdiamond.dto.UserDTO;
-import org.swp391.valuationdiamond.entity.Order;
 import org.swp391.valuationdiamond.entity.User;
 import org.swp391.valuationdiamond.service.UserServiceImp;
 
@@ -74,14 +71,14 @@ public class UserController {
     @GetMapping("/getUser/{userId}")
     User getStaff(@PathVariable("userId") String userId){
 
-        return userServiceImp.getStaff(userId);
+        return userServiceImp.getStaffById(userId);
     }
 
     // API get all staffs
     @GetMapping("/getStaff")
     List<User> getStaffs(){
 
-        return userServiceImp.getStaffs();
+        return userServiceImp.getStaffByRoleEvaluationStaff();
     }
 
     // API get all customers
