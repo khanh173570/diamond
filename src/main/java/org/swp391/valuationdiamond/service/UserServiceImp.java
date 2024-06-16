@@ -39,7 +39,35 @@ public class UserServiceImp {
         return userRepository.save(user);
     }
 
-//    đăng ký tài khoản với google
+    //hàm đăng nhập
+    public User login(String userId, String password) {
+        User user = userRepository.findByUserId(userId);
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
+        }
+        throw new RuntimeException("Invalid email or password");
+    }
+
+    public List<User> getStaffs(){
+        return userRepository.getUsersByRole(Role.valuation_staff);
+    }
+
+//    public List<User> getStaffs(){
+//        Role role = Role.valueOf("valuation_staff".toUpperCase());
+//        return userRepository.getUserByRole(role);
+//    }
+
+
+    public User getStaff(String id){
+        return userRepository.findById(id).orElseThrow(()-> new RuntimeException("Staff not found"));
+    }
+    public User getAUser(String id){
+        return userRepository.findById(id).orElseThrow(()-> new RuntimeException("UserId Not Found"));
+    }
+
+
+
+    //    đăng ký tài khoản với google
 //public User signupOrLoginWithGoogle(OAuth2AuthenticationToken token){
 //    Map<String, Object> map = token.getPrincipal().getAttributes();
 //    String userId = (String) map.get("email");
@@ -61,31 +89,4 @@ public class UserServiceImp {
 //        return user;
 //    }
 //}
-
-    //hàm đăng nhập
-    public User login(String userId, String password) {
-        User user = userRepository.findByUserId(userId);
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
-        }
-        throw new RuntimeException("Invalid email or password");
-    }
-
-    public List<User> getStaffs(){
-        return userRepository.getUsersByRole(Role.valuation_staff);
-    }
-
-//    public List<User> getStaffs(){
-//        Role role = Role.valueOf("valuation_staff".toUpperCase());
-//        return userRepository.getUserByRole(role);
-//    }
-
-
-    public User getStaff(String id){
-        return userRepository.findById(id).orElseThrow(()-> new RuntimeException("Not found"));
-    }
-    public User getAUser(String id){
-        return userRepository.findById(id).orElseThrow(()-> new RuntimeException("UserId Not Found"));
-    }
-
 }
