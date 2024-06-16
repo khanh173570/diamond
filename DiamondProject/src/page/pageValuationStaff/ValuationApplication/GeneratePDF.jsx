@@ -9,3 +9,4 @@ export const GeneratePDF = ({ result}) => {
     </PDFViewer>
   );
 };
+ 

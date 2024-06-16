@@ -29,6 +29,7 @@ export const ValuationOrderDetail = () => {
     };
 
     fetchData();
+<<<<<<< HEAD
   }, []);
 
     orderDetails.forEach((orderDetail) => {
@@ -40,6 +41,9 @@ export const ValuationOrderDetail = () => {
     })
    
  console.log(isAllFinished)
+=======
+  }, [user.userId]); 
+>>>>>>> FE_ANHMINH
 
   const handleCreateForm = (product) => {
     navigate('/valuation-staff/valuation', { state: { product } });

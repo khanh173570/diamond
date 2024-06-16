@@ -25,7 +25,7 @@ export const ValuationOrderDetailUpdate = () => {
             try {
                 const response = await fetch(`${API}/${orderDetailId}`);
                 const data = await response.json();
-
+ 
                 setFormEdit({
                     status: data.status,
                     isDiamond: data.isDiamond,

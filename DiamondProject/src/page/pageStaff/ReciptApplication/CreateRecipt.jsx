@@ -245,6 +245,7 @@ export const CreateReceipt = () => {
     content: () => componentRef.current,
   });
 
+<<<<<<< HEAD
   return (
     <div>
       {reviewMode ? (
@@ -300,6 +301,20 @@ export const CreateReceipt = () => {
                   </tr>
                 </tbody>
               </Table>
+=======
+return (
+  <div>
+    {reviewMode ? (
+      <div>
+        <h2 className="d-flex justify-content-center">Review</h2>
+        <div ref={componentRef} className="print-container">
+          <div className="d-flex justify-content-center">
+            <div className="flex-column" style={{ width: "50%" }}>
+              <p>Customer Name: {custName}</p>
+              <p>Phone: {phone}</p> 
+              <p>Quantity: {quantity}</p>
+              <p>Order Date: {orderDate}</p>
+>>>>>>> FE_ANHMINH
             </div>
           </div>
           <div className="d-flex justify-content-end" style={{ width: "90%" }}>

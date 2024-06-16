@@ -27,3 +27,4 @@ function useFetchDataDetail(dataApi, id) {
 }
 
 export default useFetchDataDetail;
+ 

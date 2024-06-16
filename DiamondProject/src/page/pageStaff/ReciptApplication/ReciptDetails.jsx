@@ -81,7 +81,7 @@ export const ReceiptDetails = () => {
           <tbody>
             {orderDetails.map((product) => (
               <tr key={product.orderDetailId} className="text-center">
-               <td>{product.orderDetailId}</td>
+               <td>{product.orderDetailId}</td> 
                 <td>
                   <img
                     src={product.img}

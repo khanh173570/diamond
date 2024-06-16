@@ -25,7 +25,11 @@ export const PersonalRequest = () => {
         return () => {
             setLoading(false);
         };
+<<<<<<< HEAD
     }, [userId.username]);
+=======
+    }, [user.username]); 
+>>>>>>> FE_ANHMINH
 
     if (!loading) {
         return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;

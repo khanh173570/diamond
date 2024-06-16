@@ -53,7 +53,7 @@ export const Header = () => {
                   <img
                     src="/src/assets/assetsAdmin/email.svg"
                     alt="bell"
-                    width='30'
+                    width='30' 
                     height='30'
                   />
                 </NavLink>

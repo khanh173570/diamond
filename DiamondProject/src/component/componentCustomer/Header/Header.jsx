@@ -72,7 +72,7 @@ function Header() {
                                     Log out
                                 </NavDropdown.Item>
                             </NavDropdown>
-                        ) : (
+                        ) : ( 
                             <Button className='border border-dark text-dark fw-bold' as={NavLink} to='/login'>Sign in</Button>
                         )}
                     </Nav>

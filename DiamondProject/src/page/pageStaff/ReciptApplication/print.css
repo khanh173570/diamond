@@ -14,12 +14,12 @@
     .print-header {
       text-align: center;
       font-size: 24px;
-      margin-bottom: 20px;
+      margin-bottom: 20px; 
     }
   
     .print-content {
       width: 100%;
-    }
+    } 
   
     .print-table {
       width: 100%;

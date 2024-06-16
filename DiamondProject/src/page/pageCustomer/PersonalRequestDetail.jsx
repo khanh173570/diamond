@@ -17,7 +17,7 @@ export const PersonalRequestDetail = () => {
   const [orderId, setOrderId] = useState({});
   const [isOrder, setIsOrder] = useState(true);
 
-  // API to fetch request by request id 
+  // API to fetch request by request id  
   const API = `http://localhost:8080/evaluation-request`;
   useEffect(() => {
     const fetchData = async () => {

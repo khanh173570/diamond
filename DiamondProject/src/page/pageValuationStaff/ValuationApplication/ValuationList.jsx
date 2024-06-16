@@ -37,7 +37,7 @@ export const ValuationList = () => {
   const handleGoBack = () => {
     setIsPrint(false);
     setSelectedResult(null);
-  };
+  }; 
 
   return (
     <Container>

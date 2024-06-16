@@ -50,7 +50,7 @@ export const ViewReciptList = () => {
         <Form className="mb-3">
           <Row>
             <Col>
-              <Form.Control
+              <Form.Control 
                 type="text"
                 placeholder="Search by ID"
                 value={searchTerm}
