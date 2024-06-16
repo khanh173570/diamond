@@ -17,10 +17,11 @@ export const CreateReceipt = () => {
   const [sampleSizeInput, setSampleSizeInput] = useState(""); // State to hold sampleSize input value
   const [rows, setRows] = useState([]);
   const [errors, setErrors] = useState([]);
-  const location = useLocation();
   const {userRequestDetail}  = location.state
-
+  const location = useLocation();
+  
   const componentRef = useRef();
+
 
   useEffect(() => {
     const fetchData = async () => {
