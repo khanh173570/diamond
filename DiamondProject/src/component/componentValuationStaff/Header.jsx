@@ -13,7 +13,7 @@ function Header() {
         localStorage.removeItem('user');
         dispatch(logout())
         navigate('/login');
-    };
+    }; 
 
     return (
         <Navbar expand="md" style={{ backgroundColor: '#E2FBF5' }}>
