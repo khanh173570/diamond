@@ -27,19 +27,9 @@ export const ValuationOrderDetail = () => {
         setIsLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
-    orderDetails.forEach((orderDetail) => {
-      if (orderDetail.status !== 'Finished') {
-        setIsAllFinished(false)
-      } else {
-        setIsAllFinished(false)
-      }
-    })
-   
- console.log(isAllFinished)
 
   const handleCreateForm = (product) => {
     navigate('/valuation-staff/valuation', { state: { product } });
