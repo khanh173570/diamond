@@ -21,7 +21,7 @@ export const PersonalRequest = () => {
                 console.error('Error fetching data:', error);
             }
         };
-        fetchData();
+        fetchData(); 
         return () => {
             setLoading(false);
         };

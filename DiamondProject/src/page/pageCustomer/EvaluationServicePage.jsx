@@ -23,13 +23,13 @@ function EvaluationServicePage() {
   //       guestName: user.name       // Set guestName với tên người dùng
   //     }));
   //   }
-  // }, []);
+  // }, []); 
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setFormRequest(prevState => ({
       ...prevState,
-      [name]: value
+      [name]: value      
     }));
   };
 

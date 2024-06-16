@@ -17,6 +17,6 @@ function CustomerApp() {
       </div>
     </>
   )
-}
+} 
 
 export default CustomerApp

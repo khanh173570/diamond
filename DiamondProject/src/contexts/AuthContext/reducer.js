@@ -35,7 +35,7 @@ const reducerHandlers = {
         }
         
     },
-
+     
     LOGIN :(state, action)=>{
         const {user} = action.payload;
         return {
