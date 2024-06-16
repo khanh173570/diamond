@@ -24,9 +24,11 @@ public class UserController {
     @Autowired
     private UserServiceImp userServiceImp;
 
+    // =================================== API CREATE ======================================
+
     //hàm đăng ký thông thường
     @PostMapping("/create")
-    User createUser(@RequestBody @Valid UserDTO userDTO){
+    User createUser(@RequestBody UserDTO userDTO){
 
         return userServiceImp.createUser(userDTO);
     }
@@ -55,6 +57,9 @@ public class UserController {
 //    User login(@RequestParam String email, @RequestParam String password){
 //        return userServiceImp.login(email, password);
 //    }
+
+    // =================================== API LOGIN ======================================
+
     @PostMapping("/login")
     public User login(@RequestBody Map<String, String> loginRequest) {
         String userId = loginRequest.get("userId");
@@ -62,34 +67,46 @@ public class UserController {
         return userServiceImp.login(userId, password);
     }
 
+
+    // =================================== API GET ======================================
+
+    // API get user by userId
     @GetMapping("/getUser/{userId}")
     User getStaff(@PathVariable("userId") String userId){
 
         return userServiceImp.getStaff(userId);
     }
 
+    // API get all staffs
     @GetMapping("/getStaff")
     List<User> getStaffs(){
 
         return userServiceImp.getStaffs();
     }
 
+    // API get all customers
     @GetMapping("/getCustomer")
     List<User> getCustomer(){
 
         return userServiceImp.getCustomers();
     }
 
+    // API get a user by userId
     @GetMapping("/getAUser/{userId}")
         User getAUser(@PathVariable("userId") String userId ){
 
         return userServiceImp.getAUser(userId);
         }
 
+    // =================================== API UPDATE ======================================
+
     @PutMapping("/updateUser/{userId}")
     public User updateUser(@PathVariable("userId") String userId, @RequestBody UserDTO userDTO) {
         return userServiceImp.updateUser(userId, userDTO);
     }
+
+
+    // =================================== API DELETE ======================================
     @DeleteMapping("/deleteUser/{userId}")
     public void deleteUser(@PathVariable("userId") String userId,  @RequestBody UserDTO userDTO){
         if (userId == null || userId.isEmpty()) {
@@ -107,8 +124,5 @@ public class UserController {
     }
 
 
+}
 
-    }
-
-
-//}
