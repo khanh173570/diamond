@@ -65,7 +65,9 @@ export const ValuationOrderDetailUpdate = () => {
             const data = await response.json();
             if (data) {
                 toast.success('Update successfully.');
-                navigate('/staff/valuation-order', {state:{check:true}});
+                navigate('/staff/valuation-order'
+                    
+                );
             }
         } catch (error) {
             toast.error('Error updating status');
@@ -85,7 +87,7 @@ export const ValuationOrderDetailUpdate = () => {
                         src="/src/assets/assetsStaff/back.svg"
                         alt="Back"
                         onClick={() => {
-                            navigate('/staff/valuation-order');
+                            navigate('/valuation-staff/valuation-order');
                         }}
                         style={{ cursor: 'pointer' }}
                     />
