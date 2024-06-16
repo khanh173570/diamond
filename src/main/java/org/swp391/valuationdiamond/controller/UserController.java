@@ -33,7 +33,7 @@ public class UserController {
 //        return userServiceImp.signupWithGoogle(token);
 //    }
 
-//    @GetMapping("/login-google")
+//    @PostMapping("/login-google")
 //    public User signupOrLoginWithGoogle(OAuth2AuthenticationToken token) {
 //        return userServiceImp.signupOrLoginWithGoogle(token);
 //    }

@@ -151,6 +151,8 @@ public class OrderDetailServiceImp {
         }
         return orderDetailRepository.save(orderDetail);
     }
+
+    //
     public OrderDetail updateOrderDetail(String orderDetailId, OrderDetailDTO orderDetailDTO) {
         OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId).orElseThrow(() -> new RuntimeException("Order detail not found"));
 
