@@ -21,17 +21,21 @@ USER:
 - http://localhost:8080/user_request/getCustomer
 
 - Update
-
+  http://localhost:8080/user_request/updateUser/{userId}
 - Delete
+  http://localhost:8080/user_request/deleteUser/{userId}
 
 
 ----------------------------------------------
 REQUEST:
 
 - Create
-
+  Create http://localhost:8080/evaluation-request/create
 - Read
-
+  get request from requestID http://localhost:8080/evaluation-request/{requestId}
+  get request with status http://localhost:8080/evaluation-request/list/{status}
+  get all requests http://localhost:8080/evaluation-request/gett_all
+  get request from userID http://localhost:8080/evaluation-request/get_by_user/{userId}
 - Update
 - http://localhost:8080/evaluation-request/updateStatus/{requestId}
   http://localhost:8080/evaluation-request/update/{requestId}
