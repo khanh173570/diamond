@@ -17,11 +17,9 @@ export const CreateReceipt = () => {
   const [sampleSizeInput, setSampleSizeInput] = useState(""); // State to hold sampleSize input value
   const [rows, setRows] = useState([]);
   const [errors, setErrors] = useState([]);
-  const {userRequestDetail}  = location.state
   const location = useLocation();
-  
+  const {userRequestDetail}  = location.state
   const componentRef = useRef();
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -317,7 +315,7 @@ export const CreateReceipt = () => {
                 <label className="form-label fw-bold">Customer Name</label>
               </div>
               <div className="col-7">
-               {userRequestDetail.guestName}
+              {userRequestDetail.guestName}
               </div>
             </div>
             <div className="row mb-3 d-flex justify-content-center">
@@ -325,7 +323,7 @@ export const CreateReceipt = () => {
                 <label className="form-label fw-bold">Phone</label>
               </div>
               <div className="col-7">
-                 {userRequestDetail.phoneNumber}
+                {userRequestDetail.phoneNumber}
               </div>
             </div>
             <div className="row mb-3 d-flex justify-content-center">
@@ -346,7 +344,7 @@ export const CreateReceipt = () => {
                 <label className="form-label fw-bold">Request ID</label>
               </div>
               <div className="col-7">
-                 {userRequestDetail.requestId}
+               {userRequestDetail.requestId}
               </div>
             </div>
             <div className="row mb-3 d-flex justify-content-center">
