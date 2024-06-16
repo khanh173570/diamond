@@ -65,6 +65,15 @@ function App() {
           <Route path="personal-info" element={<PersonalInformation />} />
           <Route path="valuation-result-list" element={<ValuationList />} />
         </Route>
+<<<<<<< HEAD
+=======
+        <Route path="/valuation-staff" element={
+          <AuthGuard>
+            <RoleBasedGuard roles={'valuation_staff'}>
+              <ValuationApp />
+            </RoleBasedGuard> 
+          </AuthGuard>
+>>>>>>> FE_ANHMINH
 
         <Route path="/valuation-staff" element={<ValuationApp />}>
           <Route index element={<HomeStaff />} />
