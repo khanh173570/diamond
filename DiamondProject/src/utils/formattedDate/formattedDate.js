@@ -5,4 +5,4 @@ function formattedDate(date){
     return shortDateFormat
 }
 
-export default formattedDate;  
+export default formattedDate;

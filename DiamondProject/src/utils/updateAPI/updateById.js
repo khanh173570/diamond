@@ -17,5 +17,5 @@ const updateById = async (apiUpdate, id, field, value) => {
         console.log(error);
         toast.error('Update error');
     }
-}; 
-export default updateById; 
+};
+export default updateById;

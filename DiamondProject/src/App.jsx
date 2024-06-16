@@ -48,20 +48,7 @@ function App() {
           <Route path="home" element={<HomeCustomer />} />
           <Route path="blog" element={<Blog />} />
           <Route path="contact" element={<Contact />} />
-<<<<<<< HEAD
           <Route path="evaluationservice" element={<EvaluationServicePage />} />
-=======
-          {/* private  */}
-          <Route path="evaluationservice" element={ 
-
-            <AuthGuard>
-              <EvaluationServicePage />
-            </AuthGuard>
-
-          }
-          />
-          {/*  */}
->>>>>>> FE_ANHMINH
           <Route path="calculate" element={<Calculate />} />
           <Route path="check" element={<Check />} />
           <Route path="my-request" element={<PersonalRequest />} />

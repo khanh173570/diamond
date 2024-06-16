@@ -5,4 +5,4 @@ import React from 'react'
     <div>CreateCommitment</div>
   )
 }
-export default CreateCommitment 
+export default CreateCommitment

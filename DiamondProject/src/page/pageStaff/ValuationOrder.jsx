@@ -24,7 +24,7 @@ export const ValuationOrder = () => {
                 console.error('Error fetching data:', error);
             } finally {
                 setLoading(false);
-            } 
+            }
         };
 
         fetchData();
