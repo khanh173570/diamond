@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
 function EvaluationServicePage() {
-      const {user}=useAuth()
+     
 
   const [formRequest, setFormRequest] = useState({
     service: '',
