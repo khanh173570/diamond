@@ -18,7 +18,7 @@ function ValuationApp () {
         </div>
       </div>
     </>
-
+ 
   )
 }
 export default ValuationApp

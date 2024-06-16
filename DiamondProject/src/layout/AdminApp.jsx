@@ -16,7 +16,7 @@ function AdminApp() {
         <Outlet />
       </div>
     </div>
-  </>
+  </> 
   )
 }
 
