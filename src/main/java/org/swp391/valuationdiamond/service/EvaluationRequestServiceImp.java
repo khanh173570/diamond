@@ -45,7 +45,7 @@ public class EvaluationRequestServiceImp implements IEvaluationRequestService {
         evaluationRequest.setRequestDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
         evaluationRequest.setRequestEmail(evaluationRequestDTO.getRequestEmail());
         evaluationRequest.setGuestName(evaluationRequestDTO.getGuestName());
-        evaluationRequest.setStatus("In-Progress");
+        evaluationRequest.setStatus("Requesting");
         evaluationRequest.setService(evaluationRequestDTO.getService());
         evaluationRequest.setPhoneNumber(evaluationRequestDTO.getPhoneNumber());
         evaluationRequest.setMeetingDate(evaluationRequestDTO.getMeetingDate());
