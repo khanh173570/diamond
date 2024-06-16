@@ -44,7 +44,6 @@ function Login() {
                     if (data.role === 'customer') {
                         navigate("/home");
                         localStorage.setItem('user', JSON.stringify(data));
-
                     } else if (data.role === 'consultant_staff') {
                         navigate("/staff");
                         localStorage.setItem('staff', JSON.stringify(data));
