@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
 function EvaluationServicePage() {
+      const {user}=useAuth()
+
   const [formRequest, setFormRequest] = useState({
     service: '',
     phoneNumber: '',
@@ -37,7 +39,7 @@ function EvaluationServicePage() {
     const requestData = { ...formRequest, requestDate };
 
     try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      const response = await fetch('http://localhost:8080/evaluation-request/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
