@@ -91,26 +91,27 @@ public class EvaluationRequestServiceImp implements IEvaluationRequestService {
   //hàm update 'U'
   @Override
   public EvaluationRequest updateEvaluationRequest(String requestId, EvaluationRequestDTO evaluationRequestDTO) {
-    EvaluationRequest evaluationRequest = new EvaluationRequest();
+    EvaluationRequest evaluationRequest = evaluationRequestRepository.findByRequestId(requestId);
     if (evaluationRequestRepository.findByRequestId(requestId) == null) {
       throw new RuntimeException("Evaluation Request not found");
-    } else if (evaluationRequestDTO.getRequestDescription() != null) {
+    }if (evaluationRequestDTO.getRequestDescription() != null) {
         evaluationRequest.setRequestDescription(evaluationRequestDTO.getRequestDescription());
-    } else if (evaluationRequestDTO.getRequestEmail() != null) {
+    }if (evaluationRequestDTO.getRequestEmail() != null) {
         evaluationRequest.setRequestEmail(evaluationRequestDTO.getRequestEmail());
-    } else if (evaluationRequestDTO.getGuestName() != null) {
+    }if (evaluationRequestDTO.getGuestName() != null) {
         evaluationRequest.setGuestName(evaluationRequestDTO.getGuestName());
-    } else if (evaluationRequestDTO.getPhoneNumber() != null) {
-        evaluationRequest.setPhoneNumber(evaluationRequestDTO.getPhoneNumber());
-    } else if (evaluationRequestDTO.getService() != null) {
+    }if (evaluationRequestDTO.getPhoneNumber() != null) {
+      evaluationRequest.setPhoneNumber(evaluationRequestDTO.getPhoneNumber());
+    }if (evaluationRequestDTO.getService() != null) {
         evaluationRequest.setService(evaluationRequestDTO.getService());
-    } else if (evaluationRequestDTO.getStatus() != null) {
+    }if (evaluationRequestDTO.getStatus() != null) {
         evaluationRequest.setStatus(evaluationRequestDTO.getStatus());
-    } else if (evaluationRequestDTO.getMeetingDate() != null) {
+    }if (evaluationRequestDTO.getMeetingDate() != null) {
         evaluationRequest.setMeetingDate(evaluationRequestDTO.getMeetingDate());
     }
     return evaluationRequestRepository.save(evaluationRequest);
   }
+
 public EvaluationRequest updateRequestStatus(String requestId, EvaluationRequestDTO evaluationRequestDTO){
    EvaluationRequest request= evaluationRequestRepository.findById(requestId).orElseThrow(() -> new RuntimeException("Request not found"));
 

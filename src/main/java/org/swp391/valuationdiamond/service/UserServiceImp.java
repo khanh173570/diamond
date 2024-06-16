@@ -2,6 +2,8 @@ package org.swp391.valuationdiamond.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.swp391.valuationdiamond.dto.OrderDTO;
 import org.swp391.valuationdiamond.dto.UserDTO;
@@ -25,11 +27,14 @@ public class UserServiceImp {
         if (userRepository.findByUserId(userDTO.getUserId()) != null) {
             throw new IllegalArgumentException("User with ID " + userDTO.getUserId() + " already exists");
         }
+        if (userRepository.findByEmail(userDTO.getEmail()) != null) {
+            throw new IllegalArgumentException("User with Email " + userDTO.getEmail() + " already exists");
+        }
 
         User user = new User();
-
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setUserId(userDTO.getUserId());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setBirthday(userDTO.getBirthday());

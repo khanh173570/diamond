@@ -11,9 +11,8 @@ USER:
 
 
 - Create
-
+  //tạo user
   http://localhost:8080/user_request/create
-  http://localhost:8080/user_request/login-google
 - http://localhost:8080/user_request/
 - http://localhost:8080/user_request/
 - http://localhost:8080/user_request/
@@ -30,5 +29,6 @@ Request:
 - Read
 
 - Update
-
+- http://localhost:8080/evaluation-request/updateStatus/{requestId}
+  http://localhost:8080/evaluation-request/update/{requestId}
 - Delete
