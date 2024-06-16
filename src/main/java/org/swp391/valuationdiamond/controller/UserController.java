@@ -114,10 +114,15 @@ public class UserController {
         }
         try {
             userServiceImp.deleteUser(userId);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while deleting the user");
 
         }
+
     }
 
 
