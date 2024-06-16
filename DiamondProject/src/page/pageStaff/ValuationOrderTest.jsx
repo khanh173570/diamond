@@ -18,7 +18,7 @@ export const ValuationOrderDetail = () => {
   const [image, setImage] = useState("");
 
   const staff = JSON.parse(localStorage.getItem('staff'));
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   const API = 'http://localhost:8080/order_detail_request/getOrderDetails';
 

@@ -21,7 +21,7 @@ export const ValuationOrderDetailUpdate = () => {
         img: product.img
     });
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = async () => { 
             try {
                 const response = await fetch(`${API}/${orderDetailId}`);
                 const data = await response.json();
