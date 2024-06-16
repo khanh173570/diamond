@@ -103,7 +103,7 @@ function App() {
           <AuthGuard>
             <RoleBasedGuard roles={'valuation_staff'}>
               <ValuationApp />
-            </RoleBasedGuard>
+            </RoleBasedGuard> 
           </AuthGuard>
 
         }>
