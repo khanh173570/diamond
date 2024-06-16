@@ -109,6 +109,9 @@ export const ReceiptDetails = () => {
                 <td>{product.isDiamond ? 'Yes' : 'No'}</td>
                 <td>{product.status}</td>
                 <td>{product.unitPrice}</td>
+                <td>
+                  <Button>View Detail</Button>
+                </td>
               </tr>
             ))}
           </tbody>

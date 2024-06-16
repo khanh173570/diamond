@@ -7,12 +7,11 @@ import useAuth from '../../../utils/hook/useAuth';
 export const Header = () => {
 
   const navigate = useNavigate ()
-  
   const {user,dispatch} = useAuth()
+  
   const handleLogout = () => {
       localStorage.removeItem('user');
       dispatch(logout())
-      
       navigate('/login');
   };
 

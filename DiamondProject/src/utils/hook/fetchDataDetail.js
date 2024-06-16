@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-
 function useFetchDataDetail(dataApi, id) {
     const [dataDetail, setDataDetail] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(undefined);
-    
     useEffect(() => {   
         const fetchData = async () => {
             try {

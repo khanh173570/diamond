@@ -18,7 +18,7 @@ export const ManageSchedule = () => {
   // Fetch orderDetail data
   const fetchData = async () => {
     try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/users');
+      const response = await fetch('http://localhost:8080/order_detail_request/getOrderDetailByEvaluationStaffIsNull');
       const data = await response.json();
       setDataManage(data);
     } catch (error) {
@@ -34,7 +34,7 @@ export const ManageSchedule = () => {
   useEffect(() => {
     const fetchStaffIds = async () => {
       try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+        const response = await fetch('http://localhost:8080/user_request/getStaff');
         const data = await response.json();
         setEvaluationStaffIds(data);
       } catch (error) {
@@ -65,8 +65,8 @@ export const ManageSchedule = () => {
     if (!evaluationStaffId || !status) return;
 
     try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/users', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:8080/order_detail_request/updateAllOD/${orderDetailId}`, {
+        method: 'PUT',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export const ManageSchedule = () => {
   const currentPosts = dataManage.slice(indexOfFirstPost, indexOfLastPost);       
 
   // Change page
-  const paginate = (event, pageNumber) => {
+const paginate = (event, pageNumber) => {
     event.preventDefault();
     setCurrentPage(pageNumber);
   };
@@ -116,9 +116,11 @@ export const ManageSchedule = () => {
       <Table striped bordered className="fs-5">
         <thead>
           <tr>
-            <th>OrderId</th>
+            
             <th>OrderDetailId</th>
+            <th>Image</th>
             <th>Order Date</th>
+            
             <th>Type Service</th>
             <th>Status</th>
             <th>Evaluation Staff</th>
@@ -127,15 +129,19 @@ export const ManageSchedule = () => {
         </thead>
         <tbody>
           {currentPosts.map((data) => (
-            <tr key={data.id}>
-              <td>{data.id}</td>
-              <td>{data.username}</td>
-              <td>{data.orrderDate}</td>
-              <td>{data.email}</td>
+            <tr key={data.orderDetailId}>
+            
+              <td>{data.orderDetailId}</td>
+              <td>{data.img}</td>
+              <td>{data.orderId.orderDate}</td>
+             
+              <td>{data.serviceId.serviceType}</td>
+             
+           
               <td>
                 <Form.Select
-                  onChange={(e) => handleOnChangeStatus(data.id, e.target.value)}
-                  value={selectedStatus[data.id] || ''}
+                  onChange={(e) => handleOnChangeStatus(data.orderDetailId, e.target.value)}
+                  value={selectedStatus[data.orderDetailId] || ''}
                 >
                   <option value="">Select Status</option>
                   <option value="Assigned">Assigned</option>
@@ -144,19 +150,19 @@ export const ManageSchedule = () => {
               </td>
               <td>
                 <Form.Select
-                  onChange={(e) => handleOnChangeValuationStaff(data.id, e.target.value)}
-                  value={selectedEvaluationStaff[data.id] || ''}
+                  onChange={(e) => handleOnChangeValuationStaff(data.orderDetailId, e.target.value)}
+                  value={selectedEvaluationStaff[data.orderDetailId] || ''}
                 >
                   <option value="">Select Staff</option>
                   {evaluationStaffIds.map((staff) => (
-                    <option key={staff.id} value={staff.id}>
-                      {staff.name}
+                    <option key={staff.userId} value={staff.userId}>
+                      {staff.firstName + " " + staff.lastName}
                     </option>
                   ))}
                 </Form.Select>
               </td>
               <td>
-                <Button onClick={() => handleSendClick(data.id)} className='btn text-light'>
+                <Button onClick={() => handleSendClick(data.orderDetailId)} className='btn text-light'>
                   SEND
                 </Button>
               </td>

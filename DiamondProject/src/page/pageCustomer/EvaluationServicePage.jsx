@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import useAuth from '../../utils/hook/useAuth';
 
 function EvaluationServicePage() {
+  const {user}  =useAuth()
   const [formRequest, setFormRequest] = useState({
     service: 'service',           // typeSrevice -> service
     phoneNumber: '',              // phone -> phoneNumber
     guestName: '',                // fullname -> guestName
     requestEmail: '',             // email -> requestEmail
     requestDescription: '',       // description -> requestDescription
-    userId: '',                   // Thêm userId
+    userId: user.userId,                   // Thêm userId
     requestDate: ''               // submissionDate -> requestDate
   });
 
+
+  
   // useEffect(() => {
   //   const user = JSON.parse(localStorage.getItem('user'));
   //   if (user) {
@@ -37,7 +41,7 @@ function EvaluationServicePage() {
     const requestData = { ...formRequest, requestDate };
 
     try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+        const response = await fetch('http://localhost:8080/evaluation-request/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
