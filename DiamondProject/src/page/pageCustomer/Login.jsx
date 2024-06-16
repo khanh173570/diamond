@@ -11,7 +11,7 @@ function Login() {
     const navigate = useNavigate();
 
     const validate = () => {
-        let result = true;
+        let result = true; 
         if (userId === '' || userId === null) {
             result = false;
             toast.error("Error username !", {
