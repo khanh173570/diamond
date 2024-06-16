@@ -5,8 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import org.swp391.valuationdiamond.dto.OrderDTO;
 import org.swp391.valuationdiamond.dto.UserDTO;
+import org.swp391.valuationdiamond.entity.Order;
 import org.swp391.valuationdiamond.entity.User;
 import org.swp391.valuationdiamond.service.UserServiceImp;
 
@@ -69,11 +73,41 @@ public class UserController {
 
         return userServiceImp.getStaffs();
     }
+
+    @GetMapping("/getCustomer")
+    List<User> getCustomer(){
+
+        return userServiceImp.getCustomers();
+    }
+
     @GetMapping("/getAUser/{userId}")
         User getAUser(@PathVariable("userId") String userId ){
 
         return userServiceImp.getAUser(userId);
         }
+
+    @PutMapping("/updateUser/{userId}")
+    public User updateUser(@PathVariable("userId") String userId, @RequestBody UserDTO userDTO) {
+        return userServiceImp.updateUser(userId, userDTO);
+    }
+    @DeleteMapping("/deleteUser/{userId}")
+    public void deleteUser(@PathVariable("userId") String userId,  @RequestBody UserDTO userDTO){
+        if (userId == null || userId.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid userId");
+        }
+        if (userDTO == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid userDTO");
+        }
+        try {
+            userServiceImp.deleteUser(userId);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+
+        }
+    }
+
+
+
     }
 
 

@@ -8,13 +8,13 @@ spring:
 ##                user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
 ##                user-name-attribute: sub
   jackson:
-    date-format = MM/dd/yyyy, hh:mm aa
+    date-format = yyyy-MM-dd'T'HH:mm:ss.SSSXXX
 
 
   datasource:
     url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=diamond_valuation_db
     username: sa
-    password: Gi@khoi221203
+    password: 12345
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   jpa:
