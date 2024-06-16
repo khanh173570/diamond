@@ -10,7 +10,6 @@ export const ValuationOrderDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const staff = JSON.parse(localStorage.getItem('valuation-staff'));
   const [count, setCount] = useState(0);
-  const [isAllFinished, setIsAllFinished] = useState(false)
   const navigate = useNavigate();
 
 
