@@ -3,13 +3,8 @@ package org.swp391.valuationdiamond.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
+
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -54,6 +49,7 @@ public class EvaluationRequest {
   @Column(name = "phone_number", nullable = false, length = 255)
   String phoneNumber;
 
+  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "meeting_date", nullable = true)
   Date meetingDate;
 

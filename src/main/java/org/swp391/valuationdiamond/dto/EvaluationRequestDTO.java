@@ -1,5 +1,6 @@
 package org.swp391.valuationdiamond.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -10,6 +11,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.swp391.valuationdiamond.config.CustomDateDeserializer;
 
 @Data
 @NoArgsConstructor
@@ -26,5 +29,7 @@ public class EvaluationRequestDTO {
   String service;
   String phoneNumber;
   String userId;
+  @JsonDeserialize(using = CustomDateDeserializer.class)
+  @DateTimeFormat(pattern = "MM/dd/yyyy, HH:mm")
   Date meetingDate;
 }
