@@ -21,7 +21,7 @@ function Header() {
         setIsLogin(false)
         localStorage.removeItem('staff');
         navigate('/login');
-    };
+    }; 
 
     return (
         <Navbar expand="md" style={{ backgroundColor: '#E2FBF5' }}>

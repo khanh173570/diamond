@@ -24,7 +24,7 @@ export const Header = () => {
     navigate('/login')
   }
   return (
-    <>
+    <> 
       <Navbar expand="md" style={{ backgroundColor: '#white ' }}>
         <Container fluid className='px-1'>
           <div className='col-md-3  branddiamond '>
