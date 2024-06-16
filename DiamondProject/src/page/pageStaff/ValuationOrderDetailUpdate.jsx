@@ -14,7 +14,6 @@ export const ValuationOrderDetailUpdate = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     // State for form fields
-    
     const [formEdit, setFormEdit] = useState({
         status: product.status,
         isDiamond: product.isDiamond,
@@ -65,7 +64,7 @@ export const ValuationOrderDetailUpdate = () => {
             const data = await response.json();
             if (data) {
                 toast.success('Update successfully.');
-                navigate('/staff/valuation-order', {state:{check:true}});
+                navigate('/valuation-staff/valuation-order', {state:{check:true}});
             }
         } catch (error) {
             toast.error('Error updating status');
@@ -85,7 +84,7 @@ export const ValuationOrderDetailUpdate = () => {
                         src="/src/assets/assetsStaff/back.svg"
                         alt="Back"
                         onClick={() => {
-                            navigate('/staff/valuation-order');
+                            navigate('/valuation-staff/valuation-order');
                         }}
                         style={{ cursor: 'pointer' }}
                     />

@@ -36,9 +36,10 @@ import { ManageSchedule } from './page/pageAdmin/ManageSchedule/ManageScheldule.
 import { ManageOrder } from './page/pageAdmin/ManageOrder';
 import { CreateNewCust } from './page/pageAdmin/CreateNewCust.jsx'
 import { PersonalRequestDetail } from './page/pageCustomer/PersonalRequestDetail.jsx';
-import { GuestGuard } from './guards/GuestGuard.jsx';
+
 import { AuthGuard } from './guards/AuthGuard.jsx';
 import { RoleBasedGuard } from './guards/RoleBasedGuard.jsx';
+import { GuestGuard } from './guards/GuestGuard.jsx';
 
 
 function App() {
@@ -46,11 +47,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-
         <Route path="/" element={<CustomerApp />}>
           <Route index element={<HomeCustomer />} />
           <Route path="login" element={
-            <GuestGuard>
+           <GuestGuard>
               <Login />
             </GuestGuard>
           } />
@@ -65,11 +65,9 @@ function App() {
           <Route path="contact" element={<Contact />} />
           {/* private  */}
           <Route path="evaluationservice" element={
-
             <AuthGuard>
               <EvaluationServicePage />
             </AuthGuard>
-
           }
           />
           {/*  */}
@@ -79,8 +77,6 @@ function App() {
           <Route path="my-request" element={<PersonalRequest />} />
           <Route path="my-request/:requestId" element={<PersonalRequestDetail />} />
         </Route>
-
-
         {/* private route */}
         <Route path="/staff" element={
           <AuthGuard>

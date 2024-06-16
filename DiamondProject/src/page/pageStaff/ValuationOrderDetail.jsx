@@ -11,7 +11,6 @@ export const ValuationOrderDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const {user} = useAuth()
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,7 +23,6 @@ export const ValuationOrderDetail = () => {
         setIsLoading(false);
       }
     };
-
     fetchData();
   }, [user.userId]);
 
@@ -35,8 +33,6 @@ export const ValuationOrderDetail = () => {
   if (isLoading) {
     return <div className="text-center my-4"><Spinner animation="border" /></div>;
   }
-
-
   return (
     <Container>
       <ToastContainer />

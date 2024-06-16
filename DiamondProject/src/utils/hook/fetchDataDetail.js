@@ -4,8 +4,8 @@ function useFetchDataDetail(dataApi, id) {
     const [dataDetail, setDataDetail] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(undefined);
-    useEffect(() => {
-       
+    
+    useEffect(() => {   
         const fetchData = async () => {
             try {
                 const response = await fetch(`${dataApi}/${id}`);

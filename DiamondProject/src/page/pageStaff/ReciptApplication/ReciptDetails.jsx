@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Table, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import formattedDate from "../../../utils/formattedDate/formattedDate";
+import updateById from "../../../utils/updateAPI/updateById";
+
+const API_BASE_URL = 'http://localhost:8080';
 
 export const ReceiptDetails = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { orderId } = useParams();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
+  const [allFinished, setAllFinished] = useState(false);
 
-  const API = 'http://localhost:8080/order_detail_request/orderDetail'; 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${API}/${orderId}`);
+        const response = await fetch(`${API_BASE_URL}/order_detail_request/orderDetail/${orderId}`);
         const data = await response.json();
         setOrderDetails(data);
+
+        const finishedOrders = data.filter(orderDetail => orderDetail.status === 'Finished');
+        if (finishedOrders.length === data.length) {
+          setAllFinished(true);
+        }
+
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -24,25 +33,28 @@ export const ReceiptDetails = () => {
     };
 
     fetchData();
-   
   }, [orderId]);
+
+  useEffect(() => {
+    if (allFinished) {
+      updateById(`${API_BASE_URL}/order_request/updateStatus`, orderId, 'status', 'Completed');
+    }
+  }, [allFinished, orderId]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  // làm 1 hàm update chung nha
-  // thêm hàm update status by order id neu nhu status order detail
-  
+
   return (
     <div>
       <Container>
         <div>
-          <img 
+          <img
             src="/src/assets/assetsStaff/back.svg"
             alt=""
-            onClick={()=>{
+            onClick={() => {
               navigate('/staff/view-receipt')
             }}
-
           />
         </div>
         <div className="text-center my-4">
@@ -50,19 +62,19 @@ export const ReceiptDetails = () => {
         </div>
         <Row className="mb-4">
           <Col md={2}>RequestID:</Col>
-          <Col md={3}>{orderDetails[0].orderId.requestId.requestId}</Col>
+          <Col md={3}>{orderDetails[0]?.orderId?.requestId?.requestId}</Col>
         </Row>
         <Row className="mb-4">
           <Col md={2}>Customer Name:</Col>
-          <Col md={3}>{orderDetails[0].orderId.customerName}</Col>
+          <Col md={3}>{orderDetails[0]?.orderId?.customerName}</Col>
         </Row>
         <Row className="mb-4">
           <Col md={2}>Phone:</Col>
-          <Col md={3}>{orderDetails[0].orderId.phone}</Col>
+          <Col md={3}>{orderDetails[0]?.orderId?.phone}</Col>
         </Row>
         <Row className="mb-4">
           <Col md={2}>Status:</Col>
-          <Col md={3}>{orderDetails[0].orderId.status}</Col>
+          <Col md={3}>{orderDetails[0]?.orderId?.status}</Col>
         </Row>
         <Table>
           <thead>
@@ -81,7 +93,7 @@ export const ReceiptDetails = () => {
           <tbody>
             {orderDetails.map((product) => (
               <tr key={product.orderDetailId} className="text-center">
-               <td>{product.orderDetailId}</td>
+                <td>{product.orderDetailId}</td>
                 <td>
                   <img
                     src={product.img}
@@ -90,21 +102,12 @@ export const ReceiptDetails = () => {
                     width='80'
                   />
                 </td>
-                {/* Service */}
                 <td>{product.serviceId.serviceType}</td>
-                {/* receive - expired */}
                 <td>{formattedDate(product.receivedDate)}</td>
-                {/* valuation staff */}
                 <td>{product.evaluationStaffId}</td>
-                {/* size */}
                 <td>{product.size}</td>
-                {/* isDiamond */}
                 <td>{product.isDiamond ? 'Yes' : 'No'}</td>
-                {/* status */}
-                <td>
-                  {product.status}
-                </td>
-                {/* unit price */}
+                <td>{product.status}</td>
                 <td>{product.unitPrice}</td>
               </tr>
             ))}

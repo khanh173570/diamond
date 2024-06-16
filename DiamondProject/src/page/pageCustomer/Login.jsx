@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import axios from 'axios';
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -20,7 +20,6 @@ function Login() {
             toast.error("Error username !", {
                 position: toast.POSITION.TOP_CENTER,
             });
-
         }
         if (password === '' || password === null) {
             result = false;
@@ -29,8 +28,7 @@ function Login() {
             });
         }
         return result;
-    };
-    
+    }; 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         const loginRequest = { userId, password }

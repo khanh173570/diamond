@@ -4,24 +4,11 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const HomeCustomer = () => {
- 
-    const handleValuation = async () => {
-        try {
-            const response = await axios.post('/api/valuate', { carat, color, clarity });
-            console.log(response.data); // Xử lý dữ liệu phản hồi ở đây nếu cần
-        } catch (error) {
-            console.error('Error:', error); // Xử lý lỗi ở đây nếu cần
-        }
-    };
-
     return (
         <div className="full-width-container">
             <div>
-              
-                    <img src="/src/assets/assetsCustomer/aa.png" alt="Diamond"   style={{width: "100%", height: "25%" }} className="img-fluid full-width-image" />
-            
+                <img src="/src/assets/assetsCustomer/aa.png" alt="Diamond"   style={{width: "100%", height: "25%" }} className="img-fluid full-width-image" />
             </div>
-
             <Container id="services" className="my-5">
             <h1 className="text-center">The System</h1>
                 <div className=" d-flex justify-content-center">     

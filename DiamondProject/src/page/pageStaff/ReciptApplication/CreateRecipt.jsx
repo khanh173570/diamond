@@ -166,7 +166,7 @@ export const CreateReceipt = () => {
       requestId: userRequestDetail.requestId,
       phone: userRequestDetail.phoneNumber,
       diamondQuantity: parseInt(quantity),
-      orderDate: orderDate, // Use formatted orderDate
+      orderDate: orderDate, 
       totalPrice: parseFloat(totalPrice),
       orderDetails: rows,
     };

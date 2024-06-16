@@ -48,7 +48,6 @@ export const UserRequest = () => {
           },
           body: JSON.stringify({ status: editStatus }),
         });
-
         const data = await response.json();
         setIsEdit(true);
         setEditRowId(null); // Reset edit mode
@@ -58,6 +57,7 @@ export const UserRequest = () => {
     };
     fetchUpdateStatus();
   };
+
 
   // Delete data
   const handleDeleteItem = async (requestId) => {
