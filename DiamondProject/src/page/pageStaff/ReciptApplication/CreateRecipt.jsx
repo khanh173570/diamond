@@ -214,7 +214,7 @@ return (
           <div className="d-flex justify-content-center">
             <div className="flex-column" style={{ width: "50%" }}>
               <p>Customer Name: {custName}</p>
-              <p>Phone: {phone}</p>
+              <p>Phone: {phone}</p> 
               <p>Quantity: {quantity}</p>
               <p>Order Date: {orderDate}</p>
             </div>

@@ -64,7 +64,7 @@ function App() {
           <Route path="blog" element={<Blog />} />
           <Route path="contact" element={<Contact />} />
           {/* private  */}
-          <Route path="evaluationservice" element={
+          <Route path="evaluationservice" element={ 
 
             <AuthGuard>
               <EvaluationServicePage />

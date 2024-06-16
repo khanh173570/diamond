@@ -25,7 +25,7 @@ export const PersonalRequest = () => {
         return () => {
             setLoading(false);
         };
-    }, [user.username]);
+    }, [user.username]); 
 
     if (!loading) {
         return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;

@@ -17,7 +17,7 @@ export const ValuationPDF = ({ result} ) => {
     header: {
       backgroundColor: '#7CF4DE',
       fontSize: 15,
-      textAlign: 'center',
+      textAlign: 'center', 
       marginBottom: 10,
       padding: 5,
     },

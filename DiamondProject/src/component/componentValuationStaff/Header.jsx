@@ -24,7 +24,7 @@ function Header() {
                         width='60'
                         height='60'
                         alt='Logo'
-                    />
+                    /> 
                     Valuation Diamond
                 </Navbar.Brand>
                 <Navbar.Collapse id="responsive-navbar-nav" className="me-5 fw-bold justify-content-end">

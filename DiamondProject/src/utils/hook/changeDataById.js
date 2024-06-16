@@ -26,4 +26,4 @@
     };
     fetchUpdateStatus();
   };
-export default handleOnChangeStatus
+export default handleOnChangeStatus 

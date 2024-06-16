@@ -26,7 +26,7 @@ export const ValuationOrderDetail = () => {
     };
 
     fetchData();
-  }, [user.userId]);
+  }, [user.userId]); 
 
   const handleCreateForm = (product) => {
     navigate('/valuation-staff/valuation', { state: { product } });
