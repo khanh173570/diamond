@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
-
+import 'dayjs/locale/en';
 function formattedDateTime(date) {
-  return dayjs(date).format("DD/MM/YYYY HH:mm");
+;
+  const formattedDateTime =  dayjs(date).format('MM/DD/YYYY, HH:mm');
+  return formattedDateTime;
 }
 
 export default formattedDateTime;

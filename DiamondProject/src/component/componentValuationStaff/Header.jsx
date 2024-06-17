@@ -29,7 +29,6 @@ function Header() {
                 </Navbar.Brand>
                 <Navbar.Collapse id="responsive-navbar-nav" className="me-5 fw-bold justify-content-end">
                     <Nav variant='underline'>
-                        <NavLink to="/home" className="nav-link">Home</NavLink>
                         <NavLink to="/evaluation-service" className="nav-link">Evaluation Service</NavLink>
                         <NavLink to="/setting" className="nav-link">Setting</NavLink>
                         {user &&  (
