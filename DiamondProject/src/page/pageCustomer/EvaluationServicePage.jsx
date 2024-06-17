@@ -5,7 +5,6 @@ import useAuth from '../../utils/hook/useAuth';
 function EvaluationServicePage() {
   const {user} = useAuth()
   const [formRequest, setFormRequest] = useState({
-
     userId: user.userId,
     service: '',
     phoneNumber: user.phoneNumber,
@@ -14,14 +13,14 @@ function EvaluationServicePage() {
     requestDescription: '',
     requestDate: ''
   });
-
+  
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setFormRequest(prevState => ({
       ...prevState,
-      [name]: value
-    }));
+      [name]: value      
+    })); 
   };
 
   const handleOnSubmit = async (e) => {
@@ -45,26 +44,25 @@ function EvaluationServicePage() {
       const result = await response.json();
       console.log('Success:', result);
 
-
-      Swal.fire({
-        title: 'Success!',
-        text: 'Your request has been sent successfully.',
-        icon: 'success',
-        confirmButtonText: 'OK'
+      // Show success alert
+      Swal({
+        title: "Success!",
+        text: "Your request has been sent successfully.",
+        icon: "success",
+        button: "OK"
       });
     } catch (error) {
       console.error('Error:', error);
 
-      Swal.fire({
-        title: 'Error!',
-        text: 'There was an error sending your request. Please try again.',
-        icon: 'error',
-        confirmButtonText: 'OK'
+      // Show error alert
+      Swal({
+        title: "Error!",
+        text: "There was an error sending your request. Please try again.",
+        icon: "error",
+        button: "OK"
       });
     }
   };
-
-
 
   return (
     <div className="form-container justify-content-center align-items-center">
@@ -100,7 +98,6 @@ function EvaluationServicePage() {
               <option value="RemakeEvaluationDiamond">Remake Evaluation Diamond</option>
             </select>
           </div>
->>>>>>> main
 
           <div className="form-row d-flex justify-content-between">
             <div className="form-group mt-4 col-md-6">
@@ -133,7 +130,7 @@ function EvaluationServicePage() {
               <label htmlFor="requestEmail" className='px-1'> Email: </label>
               <input
                 id="requestEmail"
-                type="email"
+                type="text"
                 name="requestEmail"
                 value={user.email}
                 className="mt-1 px-2"
@@ -165,6 +162,7 @@ function EvaluationServicePage() {
             <label htmlFor="requestDescription" className='px-3'>Description:</label>
             <textarea
               id="requestDescription"
+              type="text"
               name="requestDescription"
               value={formRequest.requestDescription}
               className="form-control mt-1 px-2"
