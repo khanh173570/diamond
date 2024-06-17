@@ -46,7 +46,7 @@ export const ValuationApplication = () => {
             buttons: [
                 {
                     label: 'Ok',
-                    onClick: () => updateFinishedOrder()
+                    onClick: () => handleOnSubmit()
                 },
                 {
                     label: 'Cancel',
@@ -88,7 +88,7 @@ export const ValuationApplication = () => {
     return (
         <Container>
             <ToastContainer />
-            <Form onSubmit={showConfirmation}>
+            <Form onSubmit={showConfirmFinished}>
                 <h1 className="text-center my-3">Diamond Valuation Report</h1>
                 <Row className="mb-2 align-items-center">
                     <Col md={2}>

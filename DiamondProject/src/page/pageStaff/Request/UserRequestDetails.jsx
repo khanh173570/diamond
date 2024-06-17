@@ -13,7 +13,7 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
   const createOrder = (userRequestDetail) => {
     navigate('/staff/create-receipt', { state: { userRequestDetail } });
   };
-  console.log(appointmentDate)
+  console.log(formattedDateTime(appointmentDate))
 
   const API = 'http://localhost:8080/evaluation-request/update';
   const handleAddDate = async (value) => {
@@ -79,7 +79,7 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
                     onChange={(e) => setAppointmentDate(e.target.value)}
                     required
                   />
-                  <Button className="mt-2" onClick={() => handleAddDate(appointmentDate)}>Save</Button>
+                  <Button className="mt-2" onClick={() => handleAddDate(formattedDateTime(appointmentDate))}>Save</Button>
                 </div>
               ) : (
                 <div>

@@ -80,7 +80,7 @@ export const ValuationPDF = ({ result} ) => {
           <View style={styles.wrapRight}>
             <View style={styles.section}>
               <Text style={styles.header}>Product Image</Text>
-              <Image style={styles.image} src={result.img} />
+              {/* <Image style={styles.image} src={result.img} /> */}
             </View>
           </View>
         </View>

@@ -43,6 +43,7 @@ export const ReceiptDetails = () => {
     }
   }, [allFinished, orderId, orderDetails]);
 
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -64,6 +65,11 @@ export const ReceiptDetails = () => {
       ]
     });
   };
+
+  const viewCertificate = (orderDetailId)=>{
+    navigate(`/staff/view-certificate/${orderDetailId}`)
+  }
+
 
   const updateFinishedOrder = async () => {
     try {
@@ -142,7 +148,7 @@ export const ReceiptDetails = () => {
                 <td>{product.status}</td>
                 <td>{product.unitPrice}</td>
                 <td >
-                  <Button>View</Button>
+                  <Button onClick={()=>viewCertificate(product.orderDetailId)}>View</Button>
                 </td>
               </tr>
             ))}

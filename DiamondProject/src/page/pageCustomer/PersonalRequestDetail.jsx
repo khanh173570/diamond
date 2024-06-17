@@ -7,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useNavigate } from 'react-router-dom';
 import formattedDate from '../../utils/formattedDate/formattedDate';
-
 export const PersonalRequestDetail = () => {
   const { requestId } = useParams();
   const navigate = useNavigate();
@@ -72,7 +71,7 @@ export const PersonalRequestDetail = () => {
         const data = await response.json();
         console.log(data);
         setIsCancel(true);
-        setIsOrder()
+      
         toast.success('Request has been canceled successfully.');
       } else {
         throw new Error('Failed to update status');
