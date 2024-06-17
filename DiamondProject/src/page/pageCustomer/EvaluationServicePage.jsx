@@ -11,7 +11,7 @@ function EvaluationServicePage() {
     guestName: user.firstName,
     requestEmail: user.email,
     requestDescription: '',
-    requestDate: ''
+    requestDate: 'anhminh'
   });
   
 
