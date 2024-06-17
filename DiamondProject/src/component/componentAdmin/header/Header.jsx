@@ -2,27 +2,21 @@ import Navbar from 'react-bootstrap/Navbar';
 import './../../componentAdmin/header/Header.css'
 import { Container, NavLink, NavDropdown } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../../utils/hook/useAuth';
+import { logout } from '../../../contexts/AuthContext/reducer';
 export const Header = () => {
-  const [admin, setAdmin] = useState(null);
-  const [isLogin, setIsLogin] = useState(false);
+
   const navigate = useNavigate ()
   
-  useEffect(() => {
-    const adminInfor = JSON.parse(localStorage.getItem('admin'));
-    if (adminInfor) {
-      setAdmin(adminInfor);
-      setIsLogin(true);
-    }
-  }, [])
+  const {user,dispatch} = useAuth()
+  const handleLogout = () => {
+      localStorage.removeItem('user');
+      dispatch(logout())
+      
+      navigate('/login');
+  };
 
-  const handleLogout = ()=>{
-    setAdmin(null);
-    setIsLogin(false);
-    localStorage.removeItem('admin')
-    navigate('/login')
-  }
   return (
     <> 
       <Navbar expand="md" style={{ backgroundColor: '#white ' }}>
@@ -53,12 +47,12 @@ export const Header = () => {
                   <img
                     src="/src/assets/assetsAdmin/email.svg"
                     alt="bell"
-                    width='30'
+                    width='30' 
                     height='30'
                   />
                 </NavLink>
-                {admin && isLogin && (
-                  <NavDropdown title={admin.name} id="nav-dropdown">
+                {user && (
+                  <NavDropdown title={`${user.firstName} ${user.lastName}`} id="nav-dropdown">
                     <NavDropdown.Item onClick={handleLogout}>
                       Log out
                     </NavDropdown.Item>
@@ -74,10 +68,3 @@ export const Header = () => {
   );
 }
 export default Header;
-
-
-
-
-
-
-

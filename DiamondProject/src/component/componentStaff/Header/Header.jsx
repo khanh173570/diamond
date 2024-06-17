@@ -1,28 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
+import useAuth from '../../../utils/hook/useAuth';
+import { logout } from '../../../contexts/AuthContext/reducer';
 
 function Header() {
-    const [user, setUser] = useState(null);
-    const [isLogin, setIsLogin] = useState(false)
+
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem('staff'));
-        if (storedUser) {
-            setUser(storedUser);
-            setIsLogin(true)
-        }
-    }, []);
-
-
+    const {user,dispatch} = useAuth()
     const handleLogout = () => {
-        setUser(null);
-        setIsLogin(false)
-        localStorage.removeItem('staff');
+        localStorage.removeItem('user');
+        dispatch(logout())
         navigate('/login');
     };
-
     return (
         <Navbar expand="md" style={{ backgroundColor: '#E2FBF5' }}>
             <Container fluid>
@@ -33,9 +24,7 @@ function Header() {
                         height='60'
                         alt='Logo'
                     />
-
-                    Valuation Diamond
-
+                    Valuation Diamond  
                 </Navbar.Brand>
                 <Navbar.Collapse id="responsive-navbar-nav" className="me-5 fw-bold justify-content-end">
                     <Nav variant='underline'>

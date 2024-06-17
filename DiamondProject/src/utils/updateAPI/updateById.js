@@ -10,12 +10,10 @@ const updateById = async (apiUpdate, id, field, value) => {
             body: JSON.stringify({ [field]: value }),
         });
         const data = await response.json();
-        if (data) {
-            toast.success('Update successfully');
-        }
+        
     } catch (error) {
         console.log(error);
-        toast.error('Update error');
+       
     }
 };
 export default updateById;

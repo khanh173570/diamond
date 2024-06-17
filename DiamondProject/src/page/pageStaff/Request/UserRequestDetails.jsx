@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Button, Container } from 'react-bootstrap';
-import formattedDate from '../../../utils/formattedDate/formattedDate';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import formattedDateTime from '../../../utils/formattedDate/formattedDateTime';
 
 export const UserRequestDetails1 = ({ userRequestDetail }) => {
   const navigate = useNavigate();
@@ -13,9 +13,9 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
   const createOrder = (userRequestDetail) => {
     navigate('/staff/create-receipt', { state: { userRequestDetail } });
   };
+  console.log(appointmentDate)
 
   const API = 'http://localhost:8080/evaluation-request/update';
-
   const handleAddDate = async (value) => {
     if (!value) {
       return;
@@ -27,15 +27,17 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ meetingDate: value }),
+        
       });
       const data = await response.json();
       if (data) {
         toast.success('Update meeting date successful');
-        setAppointmentDate(value);
+        setAppointmentDate(value);  // Update the state with the new date
         setIsEditingDate(false);
       }
     } catch (error) {
       console.error('Error updating status:', error);
+      toast.error('Failed to update meeting date');
     }
   };
 
@@ -71,7 +73,7 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
               {isEditingDate ? (
                 <div>
                   <input
-                    type="date"
+                    type="datetime-local"
                     className="form-control"
                     value={appointmentDate}
                     onChange={(e) => setAppointmentDate(e.target.value)}
@@ -81,7 +83,7 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
                 </div>
               ) : (
                 <div>
-                  <span className='me-3'>{userRequestDetail.meetingDate ? formattedDate(userRequestDetail.meetingDate) : 'Not set'}</span>
+                  <span className='me-3'>{appointmentDate ? formattedDateTime(appointmentDate) : 'Not set'}</span>
                   <img
                     src="/src/assets/assetsStaff/add.svg"
                     alt="Edit Date"

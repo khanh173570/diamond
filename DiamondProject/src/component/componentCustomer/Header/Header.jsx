@@ -5,22 +5,16 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 import { NavLink, useNavigate } from 'react-router-dom';
-import '../Header/Header.css';
+import './Header.css';
+import useAuth from '../../../utils/hook/useAuth';
+import { logout } from '../../../contexts/AuthContext/reducer';
 
 function Header() {
-    const [user, setUser] = useState(null);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem('user'));
-        if (storedUser) {
-            setUser(storedUser);
-        }
-    }, []);
-
+    const { user, dispatch } = useAuth()
     const handleLogout = () => {
-        setUser(null);
         localStorage.removeItem('user');
+        dispatch(logout())
         navigate('/login');
     };
 
@@ -42,11 +36,11 @@ function Header() {
                         <NavLink to="/home" className="nav-link">Home</NavLink>
                         <NavDropdown title="Evaluation Service" id="nav-dropdown">
                             <NavDropdown.Item as={NavLink} to="/calculate">Calculate</NavDropdown.Item>
-                           
+
                             {user && <NavDropdown.Item as={NavLink} to="/evaluationservice">
                                 Diamond Valuation Service
-                            </NavDropdown.Item>  }
-                           
+                            </NavDropdown.Item>}
+
                             <NavDropdown.Divider />
                             <NavDropdown.Item as={NavLink} to="/policy">Diamond Valuation Policy</NavDropdown.Item>
                             <NavDropdown.Divider />
@@ -61,8 +55,8 @@ function Header() {
                             <NavDropdown.Item>Vietnamese</NavDropdown.Item>
                             <NavDropdown.Item>English</NavDropdown.Item>
                         </NavDropdown>
-                    
-                        { user ? (
+
+                        {user ? (
                             <NavDropdown title={`${user.firstName} ${user.lastName}`} id="nav-dropdown">
                                 <NavDropdown.Item as={NavLink} to="/profile">My Profile</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/my-request">My Request</NavDropdown.Item>
@@ -77,7 +71,7 @@ function Header() {
                         )}
                     </Nav>
                 </Navbar.Collapse>
-            </Container> 
+            </Container>
         </Navbar>
     );
 }

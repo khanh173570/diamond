@@ -4,21 +4,18 @@ import Navbar from 'react-bootstrap/Navbar';
 import { NavLink } from 'react-router-dom';
 import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
 import '../../../componentAdmin/Body/sidebar/SideBarAdmin.css';
-
 const AdminSideBar = () => {
     const [manageAccountOpen, setManageAccountOpen] = useState(false);
 
     const toggleManageAccount = () => {
         setManageAccountOpen(!manageAccountOpen);
     };
-
     return (
-        <Navbar className="flex-column w-100" style={{ backgroundColor: '#263543', height: '100%' }}>
+        <Navbar className="flex-column w-100" style={{ backgroundColor: '#263543', height: '100vh' }}>
             <Nav className="flex-column w-100 p-2 menu fw-bold">
                 <NavLink className='nav-link admin mt-2 mx-2' to="/admin/dashboard">
                     Dashboard
                 </NavLink>
-
                 <div className='nav-link admin mx-2' onClick={toggleManageAccount} style={{ cursor: 'pointer' }}>
                     Manage Account {manageAccountOpen ? <FaCaretUp /> : <FaCaretDown />}
                 </div>
