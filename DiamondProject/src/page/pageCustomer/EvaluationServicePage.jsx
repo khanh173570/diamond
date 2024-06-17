@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import useAuth from '../../utils/hook/useAuth';
 
 function EvaluationServicePage() {
-  const {user} = useAuth()
+  const { user } = useAuth()
   const [formRequest, setFormRequest] = useState({
     userId: user.userId,
     service: '',
@@ -13,13 +13,13 @@ function EvaluationServicePage() {
     requestDescription: '',
     requestDate: ''
   });
-  
+
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setFormRequest(prevState => ({
       ...prevState,
-      [name]: value      
+      [name]: value
     }));
   };
 
@@ -45,7 +45,7 @@ function EvaluationServicePage() {
       console.log('Success:', result);
 
       // Show success alert
-      Swal({
+      Swal.fire({
         title: "Success!",
         text: "Your request has been sent successfully.",
         icon: "success",
@@ -55,7 +55,7 @@ function EvaluationServicePage() {
       console.error('Error:', error);
 
       // Show error alert
-      Swal({
+      Swal.fire({
         title: "Error!",
         text: "There was an error sending your request. Please try again.",
         icon: "error",
@@ -94,7 +94,7 @@ function EvaluationServicePage() {
               value={formRequest.service}
               onChange={handleOnChange}
             >
-<option value="EvaluationDiamond">Evaluation Diamond</option>
+              <option value="EvaluationDiamond">Evaluation Diamond</option>
               <option value="RemakeEvaluationDiamond">Remake Evaluation Diamond</option>
             </select>
           </div>
@@ -176,7 +176,7 @@ function EvaluationServicePage() {
           </div>
         </form>
       </div>
-</div>
+    </div>
   );
 }
 
