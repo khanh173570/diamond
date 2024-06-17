@@ -17,6 +17,7 @@ import { ValuationApplication } from './page/pageValuationStaff/ValuationApplica
 import { ReceiptDetails } from './page/pageStaff/ReciptApplication/ReciptDetails.jsx';
 import { ValuationList } from './page/pageValuationStaff/ValuationApplication/ValuationList.jsx';
 import { ValuationOrderDetailUpdate } from './page/pageStaff/ValuationOrderDetailUpdate.jsx';
+import { ViewCertificate } from './page/pageStaff/ReciptApplication/ViewCertificate.jsx';
 // Customer Pages
 import HomeCustomer from './page/pageCustomer/HomeCustomer.jsx';
 import Signup from './page/pageCustomer/Signup';
@@ -88,6 +89,7 @@ function App() {
           <Route path="user-request" element={<UserRequest />} />
           <Route path="view-receipt" element={<ViewReciptList />} />
           <Route path="view-receipt/:orderId" element={<ReceiptDetails />} />
+          <Route path="view-certificate/:orderDetailId" element={<ViewCertificate />} />
           <Route path="create-receipt" element={<CreateReceipt />} />
           <Route path="commitment" element={<CreateCommitment />} />
           <Route path="personal-info" element={<PersonalInformation />} />

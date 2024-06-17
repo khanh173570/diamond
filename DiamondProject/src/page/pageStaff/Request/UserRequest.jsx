@@ -41,7 +41,7 @@ export const UserRequest = () => {
   const handleOnChangeStatus = (requestId) => {
     const fetchUpdateStatus = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/evaluation-request/updateStatus/${requestId}`, {
+        const response = await fetch(`http://localhost:8080/evaluation-request/update/${requestId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

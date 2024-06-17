@@ -17,7 +17,7 @@ export const PersonalRequestDetail = () => {
   const [orderId, setOrderId] = useState({});
   const [isOrder, setIsOrder] = useState(true);
 
-  // API to fetch request by request id 
+  // API to fetch request by request id  
   const API = `http://localhost:8080/evaluation-request`;
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +58,7 @@ export const PersonalRequestDetail = () => {
   }, []);
 
   // Update request by requestID
-  const APIUpdate = 'http://localhost:8080/evaluation-request/updateStatus';
+  const APIUpdate = 'http://localhost:8080/evaluation-request/update';
   const handleOnCancel = async (value) => {
     try {
       const response = await fetch(`${APIUpdate}/${requestId}`, {
@@ -87,7 +87,7 @@ export const PersonalRequestDetail = () => {
   const showCancelConfirmation = () => {
     confirmAlert({
       title: 'Confirm to cancel',
-      message: 'Are you sure you want to cancel this request?',
+message: 'Are you sure you want to cancel this request?',
       buttons: [
         {
           label: 'Yes',

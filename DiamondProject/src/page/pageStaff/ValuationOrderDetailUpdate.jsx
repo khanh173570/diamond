@@ -41,7 +41,7 @@ export const ValuationOrderDetailUpdate = () => {
         fetchData();
     }, [orderDetailId]);
 
-    // Handle image upload
+   
     const handleUploadImage = (e) => {
         if (e.target.files && e.target.files[0]) {
             let img = e.target.files[0];
@@ -65,9 +65,7 @@ export const ValuationOrderDetailUpdate = () => {
             const data = await response.json();
             if (data) {
                 toast.success('Update successfully.');
-                navigate('/staff/valuation-order'
-                    
-                );
+                navigate('/valuation-staff/valuation-order');
             }
         } catch (error) {
             toast.error('Error updating status');

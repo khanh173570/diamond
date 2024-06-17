@@ -4,20 +4,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import formattedDate from "../../utils/formattedDate/formattedDate";
+import useAuth from "../../utils/hook/useAuth";
 
 export const ValuationOrderDetail = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const staff = JSON.parse(localStorage.getItem('valuation-staff'));
+  const {user} = useAuth()
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
-
-
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/order_detail_request/getOrderDetailByEvaluationStaffId/${staff.userId}`);
+        const response = await fetch(`http://localhost:8080/order_detail_request/getOrderDetailByEvaluationStaffId/${user.userId}`);
         const data = await response.json();
         setOrderDetails(data);
       } catch (error) {
@@ -55,7 +54,7 @@ export const ValuationOrderDetail = () => {
             <th>Size</th>
             <th>Diamond</th>
             <th>Status</th>
-            <th></th>
+           
           </tr>
         </thead>
         <tbody>
