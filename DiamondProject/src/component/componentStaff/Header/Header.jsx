@@ -33,11 +33,9 @@ function Header() {
                         height='60'
                         alt='Logo'
                     />
-<<<<<<< HEAD
+
                     Valuation Diamond
-=======
-                    Valuation Diamond  
->>>>>>> FE_ANHMINH
+
                 </Navbar.Brand>
                 <Navbar.Collapse id="responsive-navbar-nav" className="me-5 fw-bold justify-content-end">
                     <Nav variant='underline'>
