@@ -14,8 +14,6 @@ function Header() {
         dispatch(logout())
         navigate('/login');
     };
-
-
     return (
         <Navbar expand="md" style={{ backgroundColor: '#E2FBF5' }}>
             <Container fluid>
