@@ -2,34 +2,23 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
 function EvaluationServicePage() {
-     
-
   const [formRequest, setFormRequest] = useState({
     service: '',
     phoneNumber: '',
     guestName: '',
     requestEmail: '',
     requestDescription: '',
-    userId: '',
+    userId: 'customer01',
     requestDate: ''
   });
 
-  // useEffect(() => {
-  //   const user = JSON.parse(localStorage.getItem('user'));
-  //   if (user) {
-  //     setFormRequest((currentState) => ({
-  //       ...currentState,
-  //       userId: user.username,       // Lấy userId từ localStorage
-  //       guestName: user.name       // Set guestName với tên người dùng
-  //     }));
-  //   }
-  // }, []); 
+ 
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setFormRequest(prevState => ({
       ...prevState,
-      [name]: value      
+      [name]: value
     }));
   };
 
@@ -54,22 +43,20 @@ function EvaluationServicePage() {
       const result = await response.json();
       console.log('Success:', result);
 
-      // Show success alert
-      Swal({
-        title: "Success!",
-        text: "Your request has been sent successfully.",
-        icon: "success",
-        button: "OK"
+      Swal.fire({
+        title: 'Success!',
+        text: 'Your request has been sent successfully.',
+        icon: 'success',
+        confirmButtonText: 'OK'
       });
     } catch (error) {
       console.error('Error:', error);
 
-      // Show error alert
-      Swal({
-        title: "Error!",
-        text: "There was an error sending your request. Please try again.",
-        icon: "error",
-        button: "OK"
+      Swal.fire({
+        title: 'Error!',
+        text: 'There was an error sending your request. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK'
       });
     }
   };
@@ -103,9 +90,11 @@ function EvaluationServicePage() {
               className="custom-select"
               value={formRequest.service}
               onChange={handleOnChange}
+              required
             >
-              <option value="EvaluationDiamond">Evaluation Diamond</option>
-              <option value="RemakeEvaluationDiamond">Remake Evaluation Diamond</option>
+              <option value="">Select Service</option>
+              <option value="Evaluation Diamond">Evaluation Diamond</option>
+              <option value="Remake Evaluation Diamond">Remake Evaluation Diamond</option>
             </select>
           </div>
 
@@ -140,7 +129,7 @@ function EvaluationServicePage() {
               <label htmlFor="requestEmail" className='px-1'> Email: </label>
               <input
                 id="requestEmail"
-                type="text"
+                type="email"
                 name="requestEmail"
                 value={formRequest.requestEmail}
                 className="mt-1 px-2"
@@ -172,7 +161,6 @@ function EvaluationServicePage() {
             <label htmlFor="requestDescription" className='px-3'>Description:</label>
             <textarea
               id="requestDescription"
-              type="text"
               name="requestDescription"
               value={formRequest.requestDescription}
               className="form-control mt-1 px-2"
