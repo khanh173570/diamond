@@ -3,15 +3,12 @@ import axios from 'axios';
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useAuth from "../../utils/hook/useAuth";
-import { login } from "../../contexts/AuthContext/reducer";
 
 function Login() {
     const [userId, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const {dispatch} = useAuth()
 
     const validate = () => {
         let result = true; 
@@ -43,20 +40,19 @@ function Login() {
                     }
                 });
                 const data = response.data;
-                dispatch(login({
-                    user : data,
-                    isAuthenticated: true,
-                }))
-                localStorage.setItem('user', JSON.stringify(data));
                 if (data) {
                     if (data.role === 'customer') {
                         navigate("/home");
+                        localStorage.setItem('user', JSON.stringify(data));
                     } else if (data.role === 'consultant_staff') {
                         navigate("/staff");
+                        localStorage.setItem('staff', JSON.stringify(data));
                     } else if (data.role === 'admin') {
                         navigate("/admin");
+                        localStorage.setItem('admin', JSON.stringify(data));
                     } else if (data.role === 'valuation_staff') {
                         navigate("/valuation-staff");
+                        localStorage.setItem('valuation-staff', JSON.stringify(data));
                     } else {
                         setIsLogin(false);
                         setError('Invalid role');

@@ -40,7 +40,7 @@ export const ValuationApplication = () => {
     };
     const showConfirmation = (e) => {
         e.preventDefault();  
-        confirmAlert({ 
+        confirmAlert({
             title: 'Confirm to submit',
             message: 'Click ok to create valuation result',
             buttons: [

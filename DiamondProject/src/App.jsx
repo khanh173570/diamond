@@ -46,7 +46,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-
         <Route path="/" element={<CustomerApp />}>
           <Route index element={<HomeCustomer />} />
           <Route path="login" element={
@@ -63,13 +62,11 @@ function App() {
           <Route path="home" element={<HomeCustomer />} />
           <Route path="blog" element={<Blog />} />
           <Route path="contact" element={<Contact />} />
-          {/* private  */}
-          <Route path="evaluationservice" element={ 
+          <Route path="evaluationservice" element={
 
             <AuthGuard>
               <EvaluationServicePage />
             </AuthGuard>
-
           }
           />
           {/*  */}
@@ -79,9 +76,6 @@ function App() {
           <Route path="my-request" element={<PersonalRequest />} />
           <Route path="my-request/:requestId" element={<PersonalRequestDetail />} />
         </Route>
-
-
-        {/* private route */}
         <Route path="/staff" element={
           <AuthGuard>
             <RoleBasedGuard roles={'consultant_staff'}>
@@ -103,7 +97,7 @@ function App() {
           <AuthGuard>
             <RoleBasedGuard roles={'valuation_staff'}>
               <ValuationApp />
-            </RoleBasedGuard> 
+            </RoleBasedGuard>
           </AuthGuard>
 
         }>
@@ -117,11 +111,11 @@ function App() {
         <Route path="/admin" element={
           <AuthGuard>
             <RoleBasedGuard roles={'admin'}>
-          <AdminApp />
-          </RoleBasedGuard>
-        </AuthGuard>
-          
-          }>
+              <AdminApp />
+            </RoleBasedGuard>
+          </AuthGuard>
+
+        }>
           <Route path="dashboard" element={<DashBoard />} />
           <Route path="manageblog" element={<ManageBlog />} />
           <Route path="managecustomer" element={<ManageCustomer />} />

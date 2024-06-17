@@ -4,18 +4,20 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import formattedDate from "../../utils/formattedDate/formattedDate";
-import useAuth from "../../utils/hook/useAuth";
 
 export const ValuationOrderDetail = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const staff = JSON.parse(localStorage.getItem('valuation-staff'));
+  const [count, setCount] = useState(0);
   const navigate = useNavigate();
-  const {user} = useAuth()
+
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/order_detail_request/getOrderDetailByEvaluationStaffId/${user.userId}`);
+        const response = await fetch(`http://localhost:8080/order_detail_request/getOrderDetailByEvaluationStaffId/${staff.userId}`);
         const data = await response.json();
         setOrderDetails(data);
       } catch (error) {
@@ -24,9 +26,9 @@ export const ValuationOrderDetail = () => {
         setIsLoading(false);
       }
     };
-
     fetchData();
-  }, [user.userId]); 
+  }, []);
+
 
   const handleCreateForm = (product) => {
     navigate('/valuation-staff/valuation', { state: { product } });

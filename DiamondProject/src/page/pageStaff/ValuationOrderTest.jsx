@@ -26,7 +26,7 @@ export const ValuationOrderDetail = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(API);
-        const data = await response.json(); 
+        const data = await response.json();
         setOrderDetails(data);
       } catch (error) {
         console.error('Error fetching data:', error);

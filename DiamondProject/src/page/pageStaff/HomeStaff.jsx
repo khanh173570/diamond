@@ -5,4 +5,4 @@ import React from 'react'
     <div>Chao anh khanh dep trai</div>
   )
 }
-export default HomeStaff 
+export default HomeStaff
