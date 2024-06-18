@@ -12,6 +12,7 @@ import { Status } from '../../../component/Status';
 
 export const UserRequest = () => {
   const [userRequest, setUserRequest] = useState([]);
+  const [filteredRequests, setFilteredRequests] = useState([]); // State mới để lưu trữ danh sách đã lọc
   const [currentDetail, setCurrentDetail] = useState({});
   const [isViewDetail, setIsViewDetail] = useState(false);
   const [editRowId, setEditRowId] = useState(null);
@@ -19,7 +20,6 @@ export const UserRequest = () => {
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate(); // add useNavigate hook
   const [searchTerm, setSearchTerm] = useState('');
-
   const [loading, setLoading] = useState(false);
 
   // Pagination
@@ -29,14 +29,22 @@ export const UserRequest = () => {
   // Get current requests
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentRequest = userRequest.slice(indexOfFirstPost, indexOfLastPost);
+  const currentRequest = filteredRequests.slice(indexOfFirstPost, indexOfLastPost);
+
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  //handle search
 
+  // handle search
   const handleSearch = () => {
-    
+    const filtered = userRequest.filter(request =>
+      request.requestId.toString().includes(searchTerm) ||
+      request.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.status.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredRequests(filtered);
+    setCurrentPage(1); // Reset lại trang hiện tại về trang đầu tiên sau khi tìm kiếm
   }
+
   // List data
   const API = 'http://localhost:8080/evaluation-request/gett_all';
   useEffect(() => {
@@ -45,10 +53,11 @@ export const UserRequest = () => {
         const response = await fetch(`${API}`);
         const data = await response.json();
         setUserRequest(data);
-        setLoading(true)
+        setFilteredRequests(data); // Khởi tạo filteredRequests với toàn bộ dữ liệu
+        setLoading(true);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setLoading(false)
+        setLoading(false);
       }
     };
     fetchData();
@@ -98,7 +107,6 @@ export const UserRequest = () => {
   }
   return (
     <Container>
-
       {!isViewDetail ? (
         <>
           <h2 className="text-center my-4">User Request</h2>
@@ -108,7 +116,7 @@ export const UserRequest = () => {
                 <Col>
                   <Form.Control
                     type="text"
-                    placeholder="Search by ID"
+                    placeholder="Search by ID or Guest Name"
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
                   />
@@ -196,7 +204,7 @@ export const UserRequest = () => {
           </Table>
           <Pagination
             postsPerPage={postsPerPage}
-            totalPosts={userRequest.length}
+            totalPosts={filteredRequests.length}
             paginate={paginate}
           />
         </>

@@ -160,7 +160,7 @@ export const PersonalRequestDetail = () => {
               {requestDetail.status === 'Canceled' ? 'Canceled' : 'Cancel Request'}
             </Button>
             <Button className='me-3' onClick={closeToMyList}>Close</Button>
-            <Button className='me-3' onClick={viewMyOrder} disabled={requestDetail.status === 'Canceled'}>View My Order</Button>
+            {/* <Button className='me-3' onClick={viewMyOrder} disabled={requestDetail.status === 'Canceled'}>View My Order</Button> */}
           </Col>
         </Row>
       </Container>

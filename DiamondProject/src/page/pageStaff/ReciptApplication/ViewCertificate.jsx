@@ -32,23 +32,7 @@ export const ViewCertificate = () => {
         return <div>Loading...</div>;
     }
 
-    const showConfirmSealed = (e) => {
-        e.preventDefault();
-        confirmAlert({
-            title: 'Confirm to submit',
-            message: 'Click ok to seal the valuation result',
-            buttons: [
-                {
-                    label: 'Ok',
-                    onClick: () => updateSealed()
-                },
-                {
-                    label: 'Cancel',
-                    onClick: () => { }
-                }
-            ]
-        });
-    };
+
 
     const showConfirmPrint = (e) => {
         e.preventDefault();
@@ -121,118 +105,118 @@ export const ViewCertificate = () => {
                     </Row>
 
                     <Row>
-                        <Col md={6}>
-                            <div className='my-4' style={{ width: '100%' }}>
+                        <Col md={6} >
+                            <div className='my-4 fs-5' style={{ width: '100%' }}>
                                 <h4 className='text-center py-2' style={{ backgroundColor: '#7CF4DE' }}>Diamond Valuation Report</h4>
-                                <Row className="mb-2">
-                                    <Col md={4}>
+                                <Row className="mb-2 ">
+                                    <Col md={6}>
                                         <Form.Label>Diamond Origin</Form.Label>
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6} >
                                         <p>{certificate[0]?.diamondOrigin}</p>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2">
-                                    <Col md={4}>
+                                    <Col md={6}>
                                         <Form.Label>Measurements</Form.Label>
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6} >
                                         <p>{certificate[0]?.measurements}</p>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2">
-                                    <Col md={4}>
+                                    <Col md={6}>
                                         <Form.Label>Shape Cut</Form.Label>
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         <p>{certificate[0]?.shapeCut}</p>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2">
-                                    <Col md={4}>
+                                    <Col md={6}>
                                         <Form.Label>Description</Form.Label>
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         <p>{certificate[0]?.description}</p>
                                     </Col>
                                 </Row>
                             </div>
 
-                            <div className='my-4' style={{ width: '100%' }}>
+                            <div className='my-4 fs-5' style={{ width: '100%' }}>
                                 <h4 className='text-center py-2' style={{ backgroundColor: '#7CF4DE' }}>Grading Results</h4>
                                 <Row className="mb-2">
-                                    <Col md={4}>
+                                    <Col md={6}>
                                         <Form.Label>Carat Weight</Form.Label>
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         <p>{certificate[0]?.caratWeight}</p>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2">
-                                    <Col md={4}>
+                                    <Col md={6}>
                                         <Form.Label>Color Grade</Form.Label>
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         <p>{certificate[0]?.color}</p>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2">
-                                    <Col md={4}>
+                                    <Col md={6}>
                                         <Form.Label>Clarity Grade</Form.Label>
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         <p>{certificate[0]?.clarity}</p>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2">
-                                    <Col md={4}>
+                                    <Col md={6}>
                                         <Form.Label>Cut Grade</Form.Label>
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         <p>{certificate[0]?.cut}</p>
                                     </Col>
                                 </Row>
                             </div>
 
-                            <div className='my-4' style={{ width: '100%' }}>
+                            <div className='my-4 fs-5' style={{ width: '100%' }}>
                                 <h4 className='text-center py-2' style={{ backgroundColor: '#7CF4DE' }}>Additional Grading Information</h4>
                                 <Row className="mb-2">
-                                    <Col md={4}>
+                                    <Col md={6}>
                                         <Form.Label>Polish</Form.Label>
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         <p>{certificate[0]?.polish}</p>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2">
-                                    <Col md={4}>
+                                    <Col md={6}>
                                         <Form.Label>Symmetry</Form.Label>
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         <p>{certificate[0]?.symmetry}</p>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2">
-                                    <Col md={4}>
+                                    <Col md={6}>
                                         <Form.Label>Fluorescence</Form.Label>
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         <p>{certificate[0]?.fluorescence}</p>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2">
-                                    <Col md={4}>
+                                    <Col md={6}>
                                         <Form.Label>Proportion</Form.Label>
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         <p>{certificate[0]?.proportions}</p>
                                     </Col>
                                 </Row>
                                 <Row className="mb-2">
-                                    <Col md={4}>
+                                    <Col md={6}>
                                         <Form.Label>Estimate Price</Form.Label>
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         <p>{certificate[0]?.price}</p>
                                     </Col>
                                 </Row>
@@ -260,9 +244,6 @@ export const ViewCertificate = () => {
                         <Col className='d-flex justify-content-end'>
                             <Button className='btn btn-danger me-2' type='button' onClick={showConfirmPrint}>
                                 Print
-                            </Button>
-                            <Button className='btn btn-danger' type='button' onClick={showConfirmSealed}>
-                                Sealed
                             </Button>
                         </Col>
                     </Row>
