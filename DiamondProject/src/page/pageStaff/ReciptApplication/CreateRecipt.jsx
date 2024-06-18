@@ -10,15 +10,12 @@ export const CreateReceipt = () => {
   const [selection, setSelection] = useState([]);
   const [custName, setCustName] = useState("");
   const [phone, setPhone] = useState("");
-  const [request, setRequest] = useState("");
   const [quantity, setQuantity] = useState("");
   const [reviewMode, setReviewMode] = useState(false);
-  const [orderDate, setOrderDate] = useState(""); // Initialize with empty string
-  const [sampleSizeInput, setSampleSizeInput] = useState(""); // State to hold sampleSize input value
+  const [orderDate, setOrderDate] = useState("");
   const [rows, setRows] = useState([]);
-  const [errors, setErrors] = useState([]);
   const location = useLocation();
-  const {userRequestDetail}  = location.state
+  const { userRequestDetail } = location.state;
   const componentRef = useRef();
 
   useEffect(() => {
@@ -38,14 +35,13 @@ export const CreateReceipt = () => {
   }, []);
 
   useEffect(() => {
-    // Function to initialize orderDate with current date and time
     const initializeOrderDate = () => {
       const now = new Date();
       const formattedDate = formatDate(now);
       setOrderDate(formattedDate);
     };
 
-    initializeOrderDate(); // Call the initialization function
+    initializeOrderDate();
   }, []);
 
   const formatDate = (dateTime) => {
@@ -59,98 +55,65 @@ export const CreateReceipt = () => {
     return `${month}/${day}/${year}, ${hours}:${minutes}`;
   };
 
-  const handleRowChange = (index, field, value) => {
-    // Remove leading zeros and ensure only numeric input
+  const handleRowChange = async (index, field, value) => {
     const numericValue = value.replace(/^0+(?=\d)|[^.\d]/g, '');
-
-    // Validate sample size
-    if (field === "size") {
-      if (!/^\d*\.?\d*$/.test(numericValue)) {
-        setErrors(prevErrors => ({
-          ...prevErrors,
-          [index]: "Sample size must be a valid number."
-        }));
-      } else if (parseFloat(numericValue) <= 2) {
-        setErrors(prevErrors => ({
-          ...prevErrors,
-          [index]: "Sample size must be greater than 2."
-        }));
-      } else {
-        setErrors(prevErrors => {
-          const updatedErrors = { ...prevErrors };
-          delete updatedErrors[index]; // Clear error if sample size is valid
-          return updatedErrors;
-        });
-      }
-    }
 
     const updatedRows = rows.map((row, rowIndex) =>
       rowIndex === index ? { ...row, [field]: numericValue } : row
     );
     setRows(updatedRows);
 
-    // Log sampleSize change
-    console.log(`Sample size updated at index ${index}: ${numericValue}`);
-
-    // Set unit price to 0 if serviceId or size is not set
-    if (!rows[index].serviceId || !rows[index].size) {
-      updatedRows[index].unitPrice = 0;
-      setRows(updatedRows);
+    if (field === "size" && updatedRows[index].serviceId && numericValue) {
+      const unitPrice = await fetchUnitPrice(updatedRows[index].serviceId, numericValue);
+      updatedRows[index].unitPrice = unitPrice || 0;
+      updateDatesAndPrices(index, updatedRows);
     }
   };
 
   const handleServiceChange = async (index, serviceId) => {
+    const updatedRows = rows.map((row, rowIndex) =>
+      rowIndex === index ? { ...row, serviceId } : row
+    );
+    setRows(updatedRows);
+
+    if (serviceId) {
+      updateDatesAndPrices(index, updatedRows);
+      if (updatedRows[index].size) {
+        const unitPrice = await fetchUnitPrice(serviceId, updatedRows[index].size);
+        updatedRows[index].unitPrice = unitPrice || 0;
+        setRows([...updatedRows]);
+      }
+    }
+  };
+
+  const updateDatesAndPrices = (index, updatedRows) => {
     const selectedService = selection.find(
-      (service) => service.serviceId === serviceId
+      (service) => service.serviceId === updatedRows[index].serviceId
     );
     if (!selectedService) return;
 
-    try {
-      const size = rows[index].size || sampleSizeInput;
-      console.log(
-        `Sending request for serviceId ${serviceId} with size ${size}`
-      );
-
-      // Fetch price service
-      const unitPrice = await fetchUnitPrice(serviceId, size || 0);
-
-      const orderDateTime = new Date(orderDate);
-      const hoursRegex = /(\d+)\s*hour/i;
-      const match = selectedService.serviceType.match(hoursRegex);
-      let hoursToAdd = 0;
-      if (match) {
-        hoursToAdd = parseInt(match[1], 10);
-      }
-
-      // Calculate received and expired received dates
-      const receivedDateTime = new Date(
-        orderDateTime.getTime() + hoursToAdd * 3600000
-      );
-      const expiredReceivedDateTime = new Date(
-        receivedDateTime.getTime() + 30 * 24 * 3600000
-      );
-
-      const formattedReceivedDate = formatDate(receivedDateTime);
-      const formattedExpiredReceivedDate = formatDate(expiredReceivedDateTime);
-
-      // Update rows state with new data
-      const newRows = rows.map((row, rowIndex) => {
-        if (rowIndex === index) {
-          return {
-            ...row,
-            serviceId: selectedService.serviceId,
-            unitPrice: unitPrice || 0, // Set unitPrice to 0 if unitPrice is not fetched
-            receivedDate: formattedReceivedDate,
-            expiredReceivedDate: formattedExpiredReceivedDate,
-          };
-        }
-        return row;
-      });
-
-      setRows(newRows);
-    } catch (error) {
-      console.error("Error handling service change:", error);
+    const orderDateTime = new Date(orderDate);
+    const hoursRegex = /(\d+)\s*hour/i;
+    const match = selectedService.serviceType.match(hoursRegex);
+    let hoursToAdd = 0;
+    if (match) {
+      hoursToAdd = parseInt(match[1], 10);
     }
+
+    const receivedDateTime = new Date(
+      orderDateTime.getTime() + hoursToAdd * 3600000
+    );
+    const expiredReceivedDateTime = new Date(
+      receivedDateTime.getTime() + 30 * 24 * 3600000
+    );
+
+    const formattedReceivedDate = formatDate(receivedDateTime);
+    const formattedExpiredReceivedDate = formatDate(expiredReceivedDateTime);
+
+    updatedRows[index].receivedDate = formattedReceivedDate;
+    updatedRows[index].expiredReceivedDate = formattedExpiredReceivedDate;
+
+    setRows([...updatedRows]);
   };
 
   const fetchUnitPrice = async (serviceId, size) => {
@@ -191,19 +154,13 @@ export const CreateReceipt = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    // Check for errors in sample size validation
-    if (Object.keys(errors).length > 0) {
-      console.log("Validation errors:", errors);
-      return; // Prevent form submission if there are errors
-    }
-
     const dataToSend = {
       userId: "customer10",
       customerName: userRequestDetail.guestName,
       requestId: userRequestDetail.requestId,
       phone: userRequestDetail.phoneNumber,
       diamondQuantity: parseInt(quantity),
-      orderDate: orderDate, // Use formatted orderDate
+      orderDate: orderDate,
       totalPrice: parseFloat(totalPrice),
       orderDetails: rows,
     };
@@ -231,9 +188,9 @@ export const CreateReceipt = () => {
 
       Toastify({
         text: "Successfully",
-        duration: 3000, // Duration the notification will be shown
-        gravity: "top", // Position of the notification
-        position: "right", // Position of the notification
+        duration: 3000,
+        gravity: "top",
+        position: "right",
         backgroundColor: "green",
       }).showToast();
     } catch (error) {
@@ -257,7 +214,7 @@ export const CreateReceipt = () => {
                 <p>Phone: {phone}</p>
                 <p>Quantity: {quantity}</p>
                 <p>Order Date: {orderDate}</p>
-                </div>
+              </div>
             </div>
             <div className="print-content">
               <Table striped bordered className="fs-5 print-table">
@@ -285,9 +242,6 @@ export const CreateReceipt = () => {
                             handleRowChange(index, "size", e.target.value)
                           }
                         />
-                        {errors[index] && (
-                          <div className="text-danger">{errors[index]}</div>
-                        )}
                       </td>
                       <td>{row.unitPrice}</td>
                     </tr>
@@ -314,17 +268,13 @@ export const CreateReceipt = () => {
               <div className="col-3" style={{ width: "15%" }}>
                 <label className="form-label fw-bold">Customer Name</label>
               </div>
-              <div className="col-7">
-              {userRequestDetail.guestName}
-              </div>
+              <div className="col-7">{userRequestDetail.guestName}</div>
             </div>
             <div className="row mb-3 d-flex justify-content-center">
               <div className="col-3" style={{ width: "15%" }}>
                 <label className="form-label fw-bold">Phone</label>
               </div>
-              <div className="col-7">
-                {userRequestDetail.phoneNumber}
-              </div>
+              <div className="col-7">{userRequestDetail.phoneNumber}</div>
             </div>
             <div className="row mb-3 d-flex justify-content-center">
               <div className="col-3" style={{ width: "15%" }}>
@@ -343,9 +293,7 @@ export const CreateReceipt = () => {
               <div className="col-3" style={{ width: "15%" }}>
                 <label className="form-label fw-bold">Request ID</label>
               </div>
-              <div className="col-7">
-               {userRequestDetail.requestId}
-              </div>
+              <div className="col-7">{userRequestDetail.requestId}</div>
             </div>
             <div className="row mb-3 d-flex justify-content-center">
               <div className="col-3" style={{ width: "15%" }}>
@@ -356,7 +304,7 @@ export const CreateReceipt = () => {
                   type="text"
                   className="form-control"
                   value={orderDate}
-                  readOnly // Make the orderDate field readOnly in the form
+                  readOnly
                 />
               </div>
             </div>
@@ -379,57 +327,32 @@ export const CreateReceipt = () => {
                       <select
                         className="form-control"
                         value={row.serviceId}
-                        onChange={(e) =>
-                          handleServiceChange(index, e.target.value)
-                        }
+                        onChange={(e) => handleServiceChange(index, e.target.value)}
                       >
                         <option value="">Select Service</option>
                         {selection.map((service) => (
-                          <option
-                            key={service.serviceId}
-                            value={service.serviceId}
-                          >
+                          <option key={service.serviceId} value={service.serviceId}>
                             {service.serviceType}
                           </option>
                         ))}
                       </select>
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={row.receivedDate}
-                        readOnly
-                      />
+                      <input type="text" className="form-control" value={row.receivedDate} readOnly />
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={row.expiredReceivedDate}
-                        readOnly
-                      />
+                      <input type="text" className="form-control" value={row.expiredReceivedDate} readOnly />
                     </td>
                     <td>
                       <input
                         type="text"
                         className="form-control"
                         value={row.size}
-                        onChange={(e) =>
-                          handleRowChange(index, "size", e.target.value)
-                        }
+                        onChange={(e) => handleRowChange(index, "size", e.target.value)}
                       />
-                      {errors[index] && (
-                        <div className="text-danger">{errors[index]}</div>
-                      )}
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={row.unitPrice}
-                        readOnly
-                      />
+                      <input type="text" className="form-control" value={row.unitPrice} readOnly />
                     </td>
                   </tr>
                 ))}
@@ -438,12 +361,7 @@ export const CreateReceipt = () => {
                     <strong>Total Price</strong>
                   </td>
                   <td>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={totalPrice}
-                      readOnly
-                    />
+                    <input type="text" className="form-control" value={totalPrice} readOnly />
                   </td>
                 </tr>
               </tbody>
@@ -453,10 +371,7 @@ export const CreateReceipt = () => {
             <Button className="btn btn-success me-4" type="submit">
               Accept
             </Button>
-            <Button
-              className="btn btn-primary"
-              onClick={() => setReviewMode(true)}
-            >
+            <Button className="btn btn-primary" onClick={() => setReviewMode(true)}>
               Review
             </Button>
           </div>
@@ -467,3 +382,4 @@ export const CreateReceipt = () => {
 };
 
 export default CreateReceipt;
+//khanhtran
