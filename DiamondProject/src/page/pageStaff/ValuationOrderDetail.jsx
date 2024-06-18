@@ -5,6 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import formattedDate from "../../utils/formattedDate/formattedDate";
 import useAuth from "../../utils/hook/useAuth";
+import { Status } from "../../component/Status";
 
 export const ValuationOrderDetail = () => {
   const [orderDetails, setOrderDetails] = useState([]);
@@ -86,7 +87,7 @@ export const ValuationOrderDetail = () => {
                 <div className="text-center">{product.isDiamond ? "Yes" : "No"}</div>
               </td>
               <td>
-                <div>{product.status}</div>
+                <div><Status status={product.status}/></div>
               </td>
               <td>
                 <Button onClick={() => handleCreateForm(product)} disabled={!product.isDiamond}>Create Certificate</Button>

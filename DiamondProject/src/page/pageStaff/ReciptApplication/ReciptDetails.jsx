@@ -7,6 +7,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { Status } from "../../../component/Status";
 
 const API_BASE_URL = 'http://localhost:8080';
 
@@ -66,7 +67,7 @@ export const ReceiptDetails = () => {
     });
   };
 
-  const viewCertificate = (orderDetailId)=>{
+  const viewCertificate = (orderDetailId) => {
     navigate(`/staff/view-certificate/${orderDetailId}`)
   }
 
@@ -112,7 +113,9 @@ export const ReceiptDetails = () => {
         </Row>
         <Row className="mb-4">
           <Col md={2}>Status:</Col>
-          <Col md={3}>{orderDetails[0]?.orderId?.status}</Col>
+          <Col md={3}>
+            <Status status={orderDetails[0]?.orderId?.status} />
+          </Col>
         </Row>
         <Table>
           <thead>
@@ -145,10 +148,10 @@ export const ReceiptDetails = () => {
                 <td>{product.evaluationStaffId}</td>
                 <td>{product.size}</td>
                 <td>{product.isDiamond ? 'Yes' : 'No'}</td>
-                <td>{product.status}</td>
+                <td><Status status={product.status} /></td>
                 <td>{product.unitPrice}</td>
                 <td >
-                  <Button onClick={()=>viewCertificate(product.orderDetailId)}>View</Button>
+                  <Button onClick={() => viewCertificate(product.orderDetailId)}>View</Button>
                 </td>
               </tr>
             ))}

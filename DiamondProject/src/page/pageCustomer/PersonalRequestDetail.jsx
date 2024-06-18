@@ -7,17 +7,20 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useNavigate } from 'react-router-dom';
 import formattedDate from '../../utils/formattedDate/formattedDate';
+import { Status } from '../../component/Status';
+
 export const PersonalRequestDetail = () => {
   const { requestId } = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
   const [isCancel, setIsCancel] = useState(false);
   const [requestDetail, setRequestDetail] = useState({});
-  const [orderId, setOrderId] = useState({});
-  const [isOrder, setIsOrder] = useState(true);
+  const [order, setOrder] = useState([]);
+  const [isOrder, setIsOrder] = useState(false);
 
   // API to fetch request by request id  
   const API = `http://localhost:8080/evaluation-request`;
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -35,29 +38,30 @@ export const PersonalRequestDetail = () => {
   }, [requestId, isCancel]); 
 
   // Get order by request id
-  const APIOrderById = `https://jsonplaceholder.typicode.com/users`;
+  const APIOrderById = `http://localhost:8080/order_request/getOrderByRequestId`;
+  
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchOrderData = async () => {
       try {
-        // const response = await fetch(`${APIOrderById}/${requestId}`);
-        const response = await fetch(`${APIOrderById}/${1}`);
+        const response = await fetch(`${APIOrderById}/${requestId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch order details');
         }
         const data = await response.json();
         if (data) {
-          setOrderId(data);
+          setOrder(data);
           setIsOrder(true);
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching order data:', error);
       }
     };
-    fetchData();
-  }, []);
+    fetchOrderData();
+  }, [requestId]);
 
   // Update request by requestID
   const APIUpdate = 'http://localhost:8080/evaluation-request/update';
+  
   const handleOnCancel = async (value) => {
     try {
       const response = await fetch(`${APIUpdate}/${requestId}`, {
@@ -69,9 +73,8 @@ export const PersonalRequestDetail = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setIsCancel(true);
-      
+        // setRequestDetail(prev => ({ ...prev, status: 'Canceled' }));
         toast.success('Request has been canceled successfully.');
       } else {
         throw new Error('Failed to update status');
@@ -86,11 +89,11 @@ export const PersonalRequestDetail = () => {
   const showCancelConfirmation = () => {
     confirmAlert({
       title: 'Confirm to cancel',
-message: 'Are you sure you want to cancel this request?',
+      message: 'Are you sure you want to cancel this request?',
       buttons: [
         {
           label: 'Yes',
-          onClick: () => handleOnCancel('canceled')
+          onClick: () => handleOnCancel('Canceled')
         },
         {
           label: 'No',
@@ -124,7 +127,7 @@ message: 'Are you sure you want to cancel this request?',
           </Col>
           <Col md={3}>
             <div className='fw-bold'>Status</div>
-            <div>{requestDetail.status}</div>
+            <Status status={requestDetail.status} />
           </Col>
           <Col md={3}>
             <div className='fw-bold'>Request ID</div>
@@ -132,7 +135,7 @@ message: 'Are you sure you want to cancel this request?',
           </Col>
           <Col md={3}>
             <div className='fw-bold'>Order ID</div>
-            {orderId && <div>{orderId.id}</div>}
+            {isOrder && order.length > 0 && <div>{order[0].orderId}</div>}
           </Col>
         </Row>
         <Row className='mb-3'>
@@ -154,7 +157,7 @@ message: 'Are you sure you want to cancel this request?',
         <Row className='mt-4'>
           <Col className='d-flex justify-content-end'>
             <Button className='me-3' variant="danger" onClick={showCancelConfirmation} disabled={requestDetail.status === 'Canceled'}>
-              {isCancel ? 'Canceled' : 'Cancel Request'}
+              {requestDetail.status === 'Canceled' ? 'Canceled' : 'Cancel Request'}
             </Button>
             <Button className='me-3' onClick={closeToMyList}>Close</Button>
             <Button className='me-3' onClick={viewMyOrder} disabled={requestDetail.status === 'Canceled'}>View My Order</Button>

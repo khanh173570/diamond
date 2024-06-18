@@ -8,6 +8,7 @@ import Container from 'react-bootstrap/Container';
 import { UserRequestDetails1 } from './UserRequestDetails';
 import formattedDate from '../../../utils/formattedDate/formattedDate';
 import { Pagination } from '../../../component/Pagination/Pagination';
+import { Status } from '../../../component/Status';
 
 export const UserRequest = () => {
   const [userRequest, setUserRequest] = useState([]);
@@ -67,7 +68,7 @@ export const UserRequest = () => {
 
         const data = await response.json();
         setIsEdit(true);
-        setEditRowId(null); // Reset edit mode
+        setEditRowId(null); 
       } catch (error) {
         console.error('Error updating status:', error);
       }
@@ -100,7 +101,6 @@ export const UserRequest = () => {
 
       {!isViewDetail ? (
         <>
-
           <h2 className="text-center my-4">User Request</h2>
           <div className='justify-content-center' style={{ width: '80%', margin: '0 auto' }}>
             <Form className="mb-3">
@@ -121,7 +121,7 @@ export const UserRequest = () => {
               </Row>
             </Form>
           </div>
-          <Table striped bordered className="fs-5">
+          <Table striped bordered >
             <thead style={{ backgroundColor: '#E2FBF5' }}>
               <tr>
                 <th>Request ID</th>
@@ -154,7 +154,7 @@ export const UserRequest = () => {
                       </>
                     ) : (
                       <div className='d-flex justify-content-between'>
-                        <div>{user.status}</div>
+                        <div><Status status={user.status} /></div>
                         <img
                           src="/src/assets/assetsStaff/editStatus.svg"
                           alt="Edit"

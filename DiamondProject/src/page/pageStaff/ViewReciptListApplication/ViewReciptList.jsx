@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import formattedDate from '../../../utils/formattedDate/formattedDate';
 import { Pagination } from '../../../component/Pagination/Pagination';
+import { Status } from '../../../component/Status';
 
 export const ViewReciptList = () => {
   const [selection, setSelection] = useState([]);
@@ -102,7 +103,7 @@ export const ViewReciptList = () => {
                 <td>{item.orderId}</td>
                 <td>{formattedDate(item.orderDate)}</td>
                 <td>{item.diamondQuantity}</td>
-                <td>{item.status}</td>
+                <td><Status status={item.status} /></td>
                 <td>
                   <Button variant="info" onClick={() => viewDetail(item)}>
                     View Detail
