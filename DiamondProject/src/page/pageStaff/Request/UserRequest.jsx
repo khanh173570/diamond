@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom'; // import useNavigate from react
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
-import { Row,Col } from 'react-bootstrap';
+import { Row, Col, Spinner } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { UserRequestDetails1 } from './UserRequestDetails';
 import formattedDate from '../../../utils/formattedDate/formattedDate';
+import { Pagination } from '../../../component/Pagination/Pagination';
 
 export const UserRequest = () => {
   const [userRequest, setUserRequest] = useState([]);
@@ -16,11 +17,24 @@ export const UserRequest = () => {
   const [editStatus, setEditStatus] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate(); // add useNavigate hook
-  const [searchTerm,setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
+  const [loading, setLoading] = useState(false);
 
-  const handleSearch = ()=>{
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(6);
 
+  // Get current requests
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentRequest = userRequest.slice(indexOfFirstPost, indexOfLastPost);
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  //handle search
+
+  const handleSearch = () => {
+    
   }
   // List data
   const API = 'http://localhost:8080/evaluation-request/gett_all';
@@ -30,12 +44,14 @@ export const UserRequest = () => {
         const response = await fetch(`${API}`);
         const data = await response.json();
         setUserRequest(data);
+        setLoading(true)
       } catch (error) {
         console.error('Error fetching data:', error);
+        setLoading(false)
       }
     };
     fetchData();
-  }, [isEdit,editStatus]);
+  }, [isEdit, editStatus]);
 
   // Update data
   const handleOnChangeStatus = (requestId) => {
@@ -76,32 +92,35 @@ export const UserRequest = () => {
     setIsViewDetail(true);
   };
 
+  if (!loading) {
+    return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
+  }
   return (
     <Container>
-           
+
       {!isViewDetail ? (
         <>
-        
+
           <h2 className="text-center my-4">User Request</h2>
           <div className='justify-content-center' style={{ width: '80%', margin: '0 auto' }}>
-        <Form className="mb-3">
-          <Row>
-            <Col>
-              <Form.Control
-                type="text"
-                placeholder="Search by ID"
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-              />
-            </Col>
-            <Col xs="auto">
-              <Button variant="primary" onClick={handleSearch}>
-                Search
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+            <Form className="mb-3">
+              <Row>
+                <Col>
+                  <Form.Control
+                    type="text"
+                    placeholder="Search by ID"
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                  />
+                </Col>
+                <Col xs="auto">
+                  <Button variant="primary" onClick={handleSearch}>
+                    Search
+                  </Button>
+                </Col>
+              </Row>
+            </Form>
+          </div>
           <Table striped bordered className="fs-5">
             <thead style={{ backgroundColor: '#E2FBF5' }}>
               <tr>
@@ -114,7 +133,7 @@ export const UserRequest = () => {
               </tr>
             </thead>
             <tbody>
-              {userRequest.map((user) => (
+              {currentRequest.map((user) => (
                 <tr key={user.requestId}>
                   <td>{user.requestId}</td>
                   <td>{user.guestName}</td>
@@ -160,21 +179,26 @@ export const UserRequest = () => {
                     </Button>
                   </td>
                   <td className=''>
-                  <Button variant="danger" size="sm">
-                  <img
-                      src='/src/assets/assetsStaff/delete.svg'
-                      alt="Delete"
-                      height="20"
-                      width="20"
-                      onClick={() => handleDeleteItem(user.requestId)}
-                    />
-                  </Button>
-                  
+                    <Button variant="danger" size="sm">
+                      <img
+                        src='/src/assets/assetsStaff/delete.svg'
+                        alt="Delete"
+                        height="20"
+                        width="20"
+                        onClick={() => handleDeleteItem(user.requestId)}
+                      />
+                    </Button>
+
                   </td>
                 </tr>
               ))}
             </tbody>
           </Table>
+          <Pagination
+            postsPerPage={postsPerPage}
+            totalPosts={userRequest.length}
+            paginate={paginate}
+          />
         </>
       ) : (
         currentDetail && (
@@ -190,7 +214,7 @@ export const UserRequest = () => {
             <UserRequestDetails1
               key={currentDetail.requestId}
               userRequestDetail={currentDetail}
-              navigate={navigate} 
+              navigate={navigate}
             />
           </div>
         )

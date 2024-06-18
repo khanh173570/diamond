@@ -1,33 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import useAuth from '../../utils/hook/useAuth';
+import {format} from 'date-fns'
 
 function EvaluationServicePage() {
-  const {user} = useAuth()
+  const { user } = useAuth();
   const [formRequest, setFormRequest] = useState({
-    userId: user.userId,
     service: '',
-    phoneNumber: user.phoneNumber,
-    guestName: user.firstName,
-    requestEmail: user.email,
+    phoneNumber: '',
+    guestName: '',
+    requestEmail: '',
     requestDescription: '',
+    userId: '',
     requestDate: ''
   });
-  
+
+  useEffect(() => {
+    if (user) {
+      setFormRequest(prevState => ({
+        ...prevState,
+        guestName: user.firstName + ' ' + user.lastName,
+        requestEmail: user.email,
+        phoneNumber: user.phoneNumber,
+        userId: user.userId,
+      }));
+    }
+  }, [user]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setFormRequest(prevState => ({
       ...prevState,
+<<<<<<< HEAD
       [name]: value      
     })); 
+=======
+      [name]: value
+    }));
+>>>>>>> main
   };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    const requestDate = new Date().toISOString();
+    const requestDate = format(new Date(), 'MM/dd/yyyy, HH:mm'); 
     const requestData = { ...formRequest, requestDate };
-
+    console.log(requestData);
     try {
       const response = await fetch('http://localhost:8080/evaluation-request/create', {
         method: 'POST',
@@ -35,6 +52,7 @@ function EvaluationServicePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestData)
+        
       });
 
       if (!response.ok) {
@@ -44,8 +62,7 @@ function EvaluationServicePage() {
       const result = await response.json();
       console.log('Success:', result);
 
-      // Show success alert
-      Swal({
+      Swal.fire({
         title: "Success!",
         text: "Your request has been sent successfully.",
         icon: "success",
@@ -54,8 +71,7 @@ function EvaluationServicePage() {
     } catch (error) {
       console.error('Error:', error);
 
-      // Show error alert
-      Swal({
+      Swal.fire({
         title: "Error!",
         text: "There was an error sending your request. Please try again.",
         icon: "error",
@@ -93,8 +109,10 @@ function EvaluationServicePage() {
               className="custom-select"
               value={formRequest.service}
               onChange={handleOnChange}
+              required
             >
-<option value="EvaluationDiamond">Evaluation Diamond</option>
+              <option value="">Select Service</option>
+              <option value="EvaluationDiamond">Evaluation Diamond</option>
               <option value="RemakeEvaluationDiamond">Remake Evaluation Diamond</option>
             </select>
           </div>
@@ -113,7 +131,7 @@ function EvaluationServicePage() {
                 id="guestName"
                 type="text"
                 name="guestName"
-                value={user.firstName}
+                value={formRequest.guestName}
                 className="mt-1 px-2"
                 onChange={handleOnChange}
                 required
@@ -132,7 +150,7 @@ function EvaluationServicePage() {
                 id="requestEmail"
                 type="text"
                 name="requestEmail"
-                value={user.email}
+                value={formRequest.requestEmail}
                 className="mt-1 px-2"
                 onChange={handleOnChange}
                 required
@@ -152,7 +170,7 @@ function EvaluationServicePage() {
               id="phoneNumber"
               type="text"
               name="phoneNumber"
-              value={user.phoneNumber}
+              value={formRequest.phoneNumber}
               className="mt-1 px-2"
               onChange={handleOnChange}
               required
@@ -176,7 +194,7 @@ function EvaluationServicePage() {
           </div>
         </form>
       </div>
-</div>
+    </div>
   );
 }
 

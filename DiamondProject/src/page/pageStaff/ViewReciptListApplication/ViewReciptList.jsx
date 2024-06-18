@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import formattedDate from '../../../utils/formattedDate/formattedDate';
+import { Pagination } from '../../../component/Pagination/Pagination';
 
 export const ViewReciptList = () => {
   const [selection, setSelection] = useState([]);
@@ -14,13 +15,23 @@ export const ViewReciptList = () => {
   const [filteredSelection, setFilteredSelection] = useState([]);
   const navigate = useNavigate();
 
+  //paginate
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(6);
+
+  // Get current requests
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentOrders = filteredSelection.slice(indexOfFirstPost, indexOfLastPost);
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:8080/order_request/getOrders');
         const data = await response.json();
         setSelection(data);
-        setFilteredSelection(data); 
+        setFilteredSelection(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -86,7 +97,7 @@ export const ViewReciptList = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredSelection.map(item => (
+            {currentOrders.map(item => (
               <tr key={item.orderId}>
                 <td>{item.orderId}</td>
                 <td>{formattedDate(item.orderDate)}</td>
@@ -95,13 +106,21 @@ export const ViewReciptList = () => {
                 <td>
                   <Button variant="info" onClick={() => viewDetail(item)}>
                     View Detail
-</Button>
+                  </Button>
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
+
+        <Pagination
+        postsPerPage={postsPerPage}
+        totalPosts={filteredSelection.length}
+        paginate={paginate}
+
+      />
       </div>
+     
     </div>
   );
 };

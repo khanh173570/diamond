@@ -36,8 +36,6 @@ export const ValuationOrderDetail = () => {
   if (isLoading) {
     return <div className="text-center my-4"><Spinner animation="border" /></div>;
   }
-
-
   return (
     <Container>
       <ToastContainer />

@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Container, Row, Col ,Form} from 'react-bootstrap';
+import { Table, Button, Container, Row, Col, Form, Spinner } from 'react-bootstrap';
 import { GeneratePDF } from './GeneratePDF';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import formattedDate from '../../../utils/formattedDate/formattedDate';
+import { Pagination } from '../../../component/Pagination/Pagination';
 
 export const ValuationList = () => {
   const [valuationResult, setValuationRequest] = useState([]);
   const [isPrint, setIsPrint] = useState(false);
   const [selectedResult, setSelectedResult] = useState(null);
-  const [searchTerm,setSearchTerm] = useState('');
-
-
-  const handleSearch = ()=>{
-
-  }
+  const [searchTerm, setSearchTerm] = useState('');
+  // pagination
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(6);
+  //
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage
+  const currentCertificate = valuationResult.slice(indexOfFirstPost, indexOfLastPost);
+  // change paginate
+  const paginate = (number) => setCurrentPage(number);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,14 +27,21 @@ export const ValuationList = () => {
         const response = await fetch('http://localhost:8080/evaluation_results/getEvaluationResults');
         const data = await response.json();
         setValuationRequest(data);
+        setLoading(true)
       } catch (error) {
         console.error('Error fetching data:', error);
+        setLoading(false)
       }
     };
-
     fetchData();
   }, []);
+  if (!loading) {
+    return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
+  }
 
+  const handleSearch = ()=>{
+    
+  }
   const handleOnPrint = (result) => {
     setSelectedResult(result);
     setIsPrint(true);
@@ -45,24 +58,24 @@ export const ValuationList = () => {
         <>
           <h2 className="text-center my-4">Valuation Report List</h2>
           <div className='justify-content-center' style={{ width: '80%', margin: '0 auto' }}>
-        <Form className="mb-3">
-          <Row>
-            <Col>
-              <Form.Control
-                type="text"
-                placeholder="Search by ID"
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-              />
-            </Col>
-            <Col xs="auto">
-              <Button variant="primary" onClick={handleSearch}>
-                Search
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+            <Form className="mb-3">
+              <Row>
+                <Col>
+                  <Form.Control
+                    type="text"
+                    placeholder="Search by ID"
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                  />
+                </Col>
+                <Col xs="auto">
+                  <Button variant="primary" onClick={handleSearch}>
+                    Search
+                  </Button>
+                </Col>
+              </Row>
+            </Form>
+          </div>
           <Table striped bordered hover responsive className="text-center">
             <thead style={{ backgroundColor: '#E2FBF5' }}>
               <tr>
@@ -76,7 +89,7 @@ export const ValuationList = () => {
               </tr>
             </thead>
             <tbody>
-              {valuationResult.map((result) => (
+              {currentCertificate.map((result) => (
                 <tr key={result.evaluationResultId}>
                   <td>{result.evaluationResultId}</td>
                   <td>{result.orderDetailId.orderDetailId}</td>
@@ -133,6 +146,12 @@ export const ValuationList = () => {
           </Row>
         </div>
       )}
+      <Pagination
+        postsPerPage={postsPerPage}
+        totalPosts={valuationResult.length}
+        paginate={paginate}
+
+      />
     </Container>
   );
 };
