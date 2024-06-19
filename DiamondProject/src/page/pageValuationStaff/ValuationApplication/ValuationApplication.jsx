@@ -7,7 +7,6 @@ import { confirmAlert } from 'react-confirm-alert';
 import updateById from '../../../utils/updateAPI/updateById';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-
 export const ValuationApplication = () => {
     const location = useLocation();
     const product = location.state.product;

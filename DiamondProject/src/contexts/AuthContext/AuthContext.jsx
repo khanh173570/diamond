@@ -28,5 +28,4 @@ const AuthProvider = ({children})=>{
         {state.isInitialized ? children : null}
     </AuthContext.Provider>
 }
-
 export {AuthContext, AuthProvider} 

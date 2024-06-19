@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import formattedDate from '../../utils/formattedDate/formattedDate';
 import useAuth from '../../utils/hook/useAuth';
 import { Pagination } from '../../component/Pagination/Pagination';
+import { Status } from '../../component/Status';
 
 export const PersonalRequest = () => {
     const [myRequest, setMyRequest] = useState([]);
@@ -27,14 +28,18 @@ export const PersonalRequest = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setLoading(true);
                 const response = await fetch(`${API}/${user.userId}`);
                 const data = await response.json();
-                setMyRequest(data);
-               
+                if(data){
+                    setLoading(true);
+                    setMyRequest(data);  
+                }             
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setLoading(false);
+            }
+            return ()=>{
+                setLoading(false)
             }
         };
         fetchData();
@@ -70,7 +75,7 @@ export const PersonalRequest = () => {
                                 <Stack>
                                     <div className='mb-1 fw-bold'>{request.service}</div>
                                     <div className='mb-1'>Request Date: {formattedDate(request.requestDate)}</div>
-                                    <div className='mb-1'>Status: {request.status}</div>
+                                    <div className='mb-1'>Status: <Status status={request.status} /> </div>
                                 </Stack>
                             </Col>
                             <Col md={2} className="d-flex">
