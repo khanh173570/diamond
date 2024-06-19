@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import formattedDate from "../../utils/formattedDate/formattedDate";
+import formattedDateTime from "../../utils/formattedDate/formattedDateTime";
 
 export const ValuationOrderDetail = () => {
   const [orderDetails, setOrderDetails] = useState([]);
@@ -87,7 +88,7 @@ export const ValuationOrderDetail = () => {
       <Table>
         <thead>
           <tr className="text-center">
-            <th>Product Id</th>
+            <th>Sample Valuation Id</th>
             <th>Image</th>
             <th>Service</th>
             <th>Dealine</th>
@@ -130,7 +131,7 @@ export const ValuationOrderDetail = () => {
                 </div>
               </td>
               <td>{product.serviceId.serviceType}</td>
-              <td>{formattedDate(product.receivedDate)}</td>
+              <td>{formattedDateTime(product.receivedDate)}</td>
               <td>{product.size}</td>
               <td>
                 {editRowId === product.orderDetailId && editColIsDiamond ? (

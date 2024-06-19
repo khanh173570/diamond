@@ -8,9 +8,11 @@ import Container from 'react-bootstrap/Container';
 import { UserRequestDetails1 } from './UserRequestDetails';
 import formattedDate from '../../../utils/formattedDate/formattedDate';
 import { Pagination } from '../../../component/Pagination/Pagination';
+import { Status } from '../../../component/Status';
 
 export const UserRequest = () => {
   const [userRequest, setUserRequest] = useState([]);
+  const [filteredRequests, setFilteredRequests] = useState([]); // State mới để lưu trữ danh sách đã lọc
   const [currentDetail, setCurrentDetail] = useState({});
   const [isViewDetail, setIsViewDetail] = useState(false);
   const [editRowId, setEditRowId] = useState(null);
@@ -18,7 +20,6 @@ export const UserRequest = () => {
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate(); // add useNavigate hook
   const [searchTerm, setSearchTerm] = useState('');
-
   const [loading, setLoading] = useState(false);
 
   // Pagination
@@ -28,14 +29,22 @@ export const UserRequest = () => {
   // Get current requests
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentRequest = userRequest.slice(indexOfFirstPost, indexOfLastPost);
+  const currentRequest = filteredRequests.slice(indexOfFirstPost, indexOfLastPost);
+
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  //handle search
 
+  // handle search
   const handleSearch = () => {
-    
+    const filtered = userRequest.filter(request =>
+      request.requestId.toString().includes(searchTerm) ||
+      request.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.status.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredRequests(filtered);
+    setCurrentPage(1); // Reset lại trang hiện tại về trang đầu tiên sau khi tìm kiếm
   }
+
   // List data
   const API = 'http://localhost:8080/evaluation-request/gett_all';
   useEffect(() => {
@@ -44,10 +53,11 @@ export const UserRequest = () => {
         const response = await fetch(`${API}`);
         const data = await response.json();
         setUserRequest(data);
-        setLoading(true)
+        setFilteredRequests(data); // Khởi tạo filteredRequests với toàn bộ dữ liệu
+        setLoading(true);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setLoading(false)
+        setLoading(false);
       }
     };
     fetchData();
@@ -67,7 +77,7 @@ export const UserRequest = () => {
 
         const data = await response.json();
         setIsEdit(true);
-        setEditRowId(null); // Reset edit mode
+        setEditRowId(null); 
       } catch (error) {
         console.error('Error updating status:', error);
       }
@@ -97,10 +107,8 @@ export const UserRequest = () => {
   }
   return (
     <Container>
-
       {!isViewDetail ? (
         <>
-
           <h2 className="text-center my-4">User Request</h2>
           <div className='justify-content-center' style={{ width: '80%', margin: '0 auto' }}>
             <Form className="mb-3">
@@ -108,7 +116,7 @@ export const UserRequest = () => {
                 <Col>
                   <Form.Control
                     type="text"
-                    placeholder="Search by ID"
+                    placeholder="Search by ID or Guest Name"
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
                   />
@@ -121,7 +129,7 @@ export const UserRequest = () => {
               </Row>
             </Form>
           </div>
-          <Table striped bordered className="fs-5">
+          <Table striped bordered >
             <thead style={{ backgroundColor: '#E2FBF5' }}>
               <tr>
                 <th>Request ID</th>
@@ -154,7 +162,7 @@ export const UserRequest = () => {
                       </>
                     ) : (
                       <div className='d-flex justify-content-between'>
-                        <div>{user.status}</div>
+                        <div><Status status={user.status} /></div>
                         <img
                           src="/src/assets/assetsStaff/editStatus.svg"
                           alt="Edit"
@@ -196,7 +204,7 @@ export const UserRequest = () => {
           </Table>
           <Pagination
             postsPerPage={postsPerPage}
-            totalPosts={userRequest.length}
+            totalPosts={filteredRequests.length}
             paginate={paginate}
           />
         </>

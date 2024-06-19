@@ -13,8 +13,7 @@ export const ValuationOrderDetailUpdate = () => {
     const product = location.state.product;
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
-    // State for form fields
-    
+    // State for form fields   
     const [formEdit, setFormEdit] = useState({
         status: product.status,
         isDiamond: product.isDiamond,
@@ -37,11 +36,8 @@ export const ValuationOrderDetailUpdate = () => {
                 setIsLoading(false);
             }
         };
-
         fetchData();
     }, [orderDetailId]);
-
-   
     const handleUploadImage = (e) => {
         if (e.target.files && e.target.files[0]) {
             let img = e.target.files[0];

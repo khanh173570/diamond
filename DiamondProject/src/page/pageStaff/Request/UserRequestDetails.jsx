@@ -27,7 +27,7 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ meetingDate: value }),
-        
+
       });
       const data = await response.json();
       if (data) {
@@ -87,7 +87,16 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
                   <img
                     src="/src/assets/assetsStaff/add.svg"
                     alt="Edit Date"
-                    onClick={() => setIsEditingDate(true)}
+                    onClick={() => {
+                      if(userRequestDetail.status === 'Canceled'){
+                        setIsEditingDate(false);
+                        toast.error('The requested is canceled')
+                      }else{
+                        setIsEditingDate(true)
+                      }
+                      
+                    }
+                    }
                     style={{ cursor: 'pointer' }}
                   />
                 </div>

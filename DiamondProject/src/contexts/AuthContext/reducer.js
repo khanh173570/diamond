@@ -1,4 +1,3 @@
-
 const INITIALIZE = 'INITIALIZE';
 const LOGIN = 'LOGIN'
 const LOGOUT = 'LOGOUT'
@@ -30,12 +29,10 @@ const reducerHandlers = {
             ...state,
             isAuthenticated,
             isInitialized:true,
-            user,
-            
+            user,  
         }
         
     },
-     
     LOGIN :(state, action)=>{
         const {user} = action.payload;
         return {
@@ -53,9 +50,7 @@ const reducerHandlers = {
         }
     }
 
-
 }
-
 export function reducer (state, action) {
     if(!reducerHandlers[action.type]) return state
     return reducerHandlers[action.type](state, action)
