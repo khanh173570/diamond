@@ -78,7 +78,7 @@ public class UserController {
     @GetMapping("/getStaff")
     List<User> getStaffs(){
 
-        return userServiceImp.getStaffByRoleEvaluationStaff();
+        return userServiceImp.getStaff();
     }
 
     // API get all customers

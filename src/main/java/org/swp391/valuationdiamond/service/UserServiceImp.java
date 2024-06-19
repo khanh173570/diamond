@@ -10,6 +10,8 @@ import org.swp391.valuationdiamond.entity.Role;
 import org.swp391.valuationdiamond.entity.User;
 import org.swp391.valuationdiamond.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -65,6 +67,15 @@ public class UserServiceImp {
     public List<User> getStaffByRoleEvaluationStaff(){
         return userRepository.getUsersByRole(Role.valuation_staff);
     }
+    public List<User> getStaff() {
+        List<User> staff = new ArrayList<>();
+
+        staff.addAll(userRepository.getUsersByRole(Role.valuation_staff));
+        staff.addAll(userRepository.getUsersByRole(Role.consultant_staff));
+
+        return staff;
+    }
+
 
 //    public List<User> getStaffs(){
 //        Role role = Role.valueOf("valuation_staff".toUpperCase());
