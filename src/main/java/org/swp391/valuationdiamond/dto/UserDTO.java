@@ -16,6 +16,7 @@ public class UserDTO {
     String firstName;
     String lastName;
     Date birthday;
+    @Size(min = 10, max = 10, message = "Phone number must be 10 characters")
     String phoneNumber;
     String email;
     String address;

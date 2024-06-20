@@ -31,6 +31,7 @@ public class EvaluationRequest {
   @Column(name = "request_description", nullable = true, length = 255)
   String requestDescription;
 
+  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "request_date", nullable = true)
   Date requestDate;
 
@@ -53,7 +54,6 @@ public class EvaluationRequest {
   @Column(name = "meeting_date", nullable = true)
   Date meetingDate;
 
-  //hình như gán sai
   @JsonManagedReference
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")

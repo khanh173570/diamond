@@ -1,5 +1,6 @@
 package org.swp391.valuationdiamond.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +26,7 @@ public class UserController {
 
     //hàm đăng ký thông thường
     @PostMapping("/create")
-    User createUser(@RequestBody UserDTO userDTO){
+    User createUser(@RequestBody @Valid UserDTO userDTO){
 
         return userServiceImp.createUser(userDTO);
     }
