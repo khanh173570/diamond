@@ -10,6 +10,8 @@ import org.swp391.valuationdiamond.entity.Role;
 import org.swp391.valuationdiamond.entity.User;
 import org.swp391.valuationdiamond.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -42,7 +44,63 @@ public class UserServiceImp {
 
         return userRepository.save(user);
     }
+    public User createCustomer(UserDTO userDTO){
+        if (userRepository.findByUserId(userDTO.getUserId()) != null) {
+            throw new IllegalArgumentException("User with ID " + userDTO.getUserId() + " already exists");
+        }
+        if (userRepository.findByEmail(userDTO.getEmail()) != null) {
+            throw new IllegalArgumentException("User with Email " + userDTO.getEmail() + " already exists");
+        }
 
+        User user = new User();
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setUserId(userDTO.getUserId());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setRole(Role.customer);
+
+        return userRepository.save(user);
+    }
+    public User createConsultantStaff(UserDTO userDTO){
+        if (userRepository.findByUserId(userDTO.getUserId()) != null) {
+            throw new IllegalArgumentException("User with ID " + userDTO.getUserId() + " already exists");
+        }
+        if (userRepository.findByEmail(userDTO.getEmail()) != null) {
+            throw new IllegalArgumentException("User with Email " + userDTO.getEmail() + " already exists");
+        }
+
+        User user = new User();
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setUserId(userDTO.getUserId());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setRole(Role.consultant_staff);
+
+        return userRepository.save(user);
+    }
+    public User createEvaluationStaff(UserDTO userDTO){
+        if (userRepository.findByUserId(userDTO.getUserId()) != null) {
+            throw new IllegalArgumentException("User with ID " + userDTO.getUserId() + " already exists");
+        }
+        if (userRepository.findByEmail(userDTO.getEmail()) != null) {
+            throw new IllegalArgumentException("User with Email " + userDTO.getEmail() + " already exists");
+        }
+
+        User user = new User();
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setUserId(userDTO.getUserId());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setRole(Role.valuation_staff);
+
+        return userRepository.save(user);
+    }
     //hàm đăng nhập
     public User login(String userId, String password) {
         User user = userRepository.findByUserId(userId);
@@ -65,6 +123,15 @@ public class UserServiceImp {
     public List<User> getStaffByRoleEvaluationStaff(){
         return userRepository.getUsersByRole(Role.valuation_staff);
     }
+    public List<User> getStaff() {
+        List<User> staff = new ArrayList<>();
+
+        staff.addAll(userRepository.getUsersByRole(Role.valuation_staff));
+        staff.addAll(userRepository.getUsersByRole(Role.consultant_staff));
+
+        return staff;
+    }
+
 
 //    public List<User> getStaffs(){
 //        Role role = Role.valueOf("valuation_staff".toUpperCase());

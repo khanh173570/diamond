@@ -30,6 +30,22 @@ public class UserController {
 
         return userServiceImp.createUser(userDTO);
     }
+    @PostMapping("/createCustomer")
+    User createCustomer(@RequestBody UserDTO userDTO){
+
+        return userServiceImp.createCustomer(userDTO);
+    }
+    @PostMapping("/createConsultantStaff")
+    User createConsultantStaff(@RequestBody UserDTO userDTO){
+
+        return userServiceImp.createConsultantStaff(userDTO);
+    }
+    @PostMapping("/createEvaluationStaff")
+    User createEvaluationStaff(@RequestBody UserDTO userDTO){
+
+        return userServiceImp.createEvaluationStaff(userDTO);
+    }
+
     //hàm đăng ký với google
 //    @PostMapping("/signup-google")
 //    User signupWithGoogle(@RequestBody OAuth2AuthenticationToken token) {
@@ -79,7 +95,7 @@ public class UserController {
     @GetMapping("/getStaff")
     List<User> getStaffs(){
 
-        return userServiceImp.getStaffByRoleEvaluationStaff();
+        return userServiceImp.getStaff();
     }
 
     // API get all customers
