@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+
 import java.util.Date;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,8 @@ import org.swp391.valuationdiamond.config.CustomDateDeserializer;
 public class EvaluationRequestDTO {
   String requestId;
   String requestDescription;
+  @JsonDeserialize(using = CustomDateDeserializer.class)
+  @DateTimeFormat(pattern = "MM/dd/yyyy, HH:mm")
   Date requestDate;
   String requestEmail;
   String guestName;
