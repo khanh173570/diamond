@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import useAuth from '../../utils/hook/useAuth';
 import {format} from 'date-fns'
-
 function EvaluationServicePage() {
   const { user } = useAuth();
   const [formRequest, setFormRequest] = useState({

@@ -14,7 +14,8 @@ export const ReceiptDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { orderId } = useParams();
   const navigate = useNavigate();
-  const [allFinished, setAllFinished] = useState(false);
+
+  // const [allFinished, setAllFinished] = useState(false);
   const [isFinishedOrder, setIsFinishedOrder] = useState(false);
 
   useEffect(() => {
@@ -23,31 +24,34 @@ export const ReceiptDetails = () => {
         const response = await fetch(`${API_BASE_URL}/order_detail_request/orderDetail/${orderId}`);
         const data = await response.json();
         setOrderDetails(data);
-        setIsLoading(true)
-        const finishedOrders = data.filter(orderDetail => orderDetail.status === 'Finished');
-        if (finishedOrders.length === data.length) {
-          setAllFinished(true);
-        }
+        setIsLoading(true);
+
+        // const finishedOrders = data.filter(orderDetail => orderDetail.status === 'Finished');
+        // if (finishedOrders.length === data.length) {
+        //   setAllFinished(true);
+        // }
+
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         setIsLoading(false);
       }
+
     };
     fetchData();
+    return ()=>{
+      setIsLoading(false)
+    }
   }, [orderId]);
 
-  //tự cập nhật trạng thái khi tất cả đều thành công
-  useEffect(() => {
-    if (allFinished && (orderDetails[0]?.orderId?.status !== 'Finished' && orderDetails[0]?.orderId?.status !== 'Sealed') ) {
-      updateById(`${API_BASE_URL}/order_request/updateStatus`, orderId, 'status', 'Completed');
-    }
-  }, [allFinished, orderId, orderDetails]);
+  // // tự cập nhật trạng thái khi tất cả đều thành công
+  // useEffect(() => {
+  //   if (allFinished && (orderDetails[0]?.orderId?.status !== 'Finished' && orderDetails[0]?.orderId?.status !== 'Sealed') ) {
+  //     updateById(`${API_BASE_URL}/order_request/updateStatus`, orderId, 'status', 'Completed');
+  //   }
+  // }, [allFinished, orderId, orderDetails]);
 
 
-  if (isLoading) {
-    return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
-  }
 
   //show confirm finished
   const showConfirmFinished = (e) => {
@@ -86,6 +90,7 @@ export const ReceiptDetails = () => {
     });
   };
 
+  //cho nay
   const updateSealedOrder = async () => {
     try {
       await updateById(`${API_BASE_URL}/order_request/updateStatus`, orderId, 'status', 'Sealed');
@@ -93,11 +98,12 @@ export const ReceiptDetails = () => {
       setIsLoading(true)
     } catch {
       console.error('Error updating order status:', error);
-      toast.error('Failed to update order status');
-      
+      toast.error('Failed to update order status'); 
+      setIsLoading(false)
     }finally{
       setIsLoading(false)
     }
+    
   }
   const viewCertificate = (orderDetailId) => {
 
@@ -116,7 +122,9 @@ export const ReceiptDetails = () => {
       setIsLoading(false)
     }
   };
-
+  if (isLoading) {
+    return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
+  }
   return (
     <div>
       <ToastContainer />
@@ -197,6 +205,11 @@ export const ReceiptDetails = () => {
           </Button>
           <Button style={{margin:"0px 13px"}} onClick={showConfirmedSealed}>
             {!isFinishedOrder ? 'Sealed' : 'Seal Order'}
+          </Button>
+          <Button style={{margin:"0px 13px"}} onClick={()=>{
+            navigate('/staff/commitment', {state:{orderDetails}})
+          }}>
+            Create Commitment
           </Button>
         </div>
       </Container>

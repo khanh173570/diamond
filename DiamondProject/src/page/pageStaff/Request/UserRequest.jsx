@@ -15,9 +15,11 @@ export const UserRequest = () => {
   const [filteredRequests, setFilteredRequests] = useState([]); // State mới để lưu trữ danh sách đã lọc
   const [currentDetail, setCurrentDetail] = useState({});
   const [isViewDetail, setIsViewDetail] = useState(false);
+  //
   const [editRowId, setEditRowId] = useState(null);
   const [editStatus, setEditStatus] = useState('');
   const [isEdit, setIsEdit] = useState(false);
+  //
   const navigate = useNavigate(); // add useNavigate hook
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);

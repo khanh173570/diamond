@@ -11,7 +11,7 @@ import HomeStaff from './page/pageStaff/HomeStaff.jsx';
 import { UserRequest } from './page/pageStaff/Request/UserRequest.jsx';
 import { ViewReciptList } from './page/pageStaff/ViewReciptListApplication/ViewReciptList.jsx';
 import { CreateReceipt } from './page/pageStaff/ReciptApplication/CreateRecipt.jsx';
-import CreateCommitment from './page/pageStaff/CreateCommitment';
+import CreateCommitment from './page/pageStaff/Commitment/CreateCommitment.jsx';
 import { PersonalInformation } from './page/pageStaff/PersonalInformation';
 import { ValuationApplication } from './page/pageValuationStaff/ValuationApplication/ValuationApplication.jsx';
 import { ReceiptDetails } from './page/pageStaff/ReciptApplication/ReciptDetails.jsx';
@@ -40,6 +40,8 @@ import { PersonalRequestDetail } from './page/pageCustomer/PersonalRequestDetail
 import { GuestGuard } from './guards/GuestGuard.jsx';
 import { AuthGuard } from './guards/AuthGuard.jsx';
 import { RoleBasedGuard } from './guards/RoleBasedGuard.jsx';
+import CommitmentList from './page/pageStaff/Commitment/CommitmentList.jsx';
+import  CommitmentDetail  from './page/pageStaff/Commitment/CommitmentDetail.jsx';
 
 
 function App() {
@@ -92,6 +94,8 @@ function App() {
           <Route path="view-certificate/:orderDetailId" element={<ViewCertificate />} />
           <Route path="create-receipt" element={<CreateReceipt />} />
           <Route path="commitment" element={<CreateCommitment />} />
+          <Route path="commitment-list" element={<CommitmentList />} />
+          <Route path="commitment-list/:committedId" element={<CommitmentDetail />} />
           <Route path="personal-info" element={<PersonalInformation />} />
           <Route path="valuation-result-list" element={<ValuationList />} />
         </Route>
