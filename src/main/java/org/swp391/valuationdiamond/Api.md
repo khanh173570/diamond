@@ -55,3 +55,12 @@ EVALUATION RESULT:
 - Read
 - Update
 - Delete
+-------------------------------------------------
+Committed paper:
+- Create
+  http://localhost:8080/committed_Paper/create
+- Read
+  get all http://localhost:8080/committed_Paper/getCommittedPaper
+  get by committedId http://localhost:8080/committed_Paper/getCommittedPaper/{committedId}
+  get by userId  http://localhost:8080/committed_Paper/getCommittedPaperByUserId/{userId}
+  get by orderId http://localhost:8080/committed_Paper/getCommittedPaperByOrderId/{orderId}
