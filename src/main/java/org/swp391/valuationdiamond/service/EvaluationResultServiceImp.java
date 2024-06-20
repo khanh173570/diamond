@@ -11,7 +11,6 @@ import org.swp391.valuationdiamond.repository.UserRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.math.BigDecimal;
 
 @Service
 public class EvaluationResultServiceImp {
@@ -65,7 +64,8 @@ public class EvaluationResultServiceImp {
 
         return evaluationResultRepository.findByOrderDetailId(orderDetail);
     }
-    public List<EvaluationResult> getEvaluationResult() {
+
+    public List<EvaluationResult> getAllEvaluationResult() {
         return evaluationResultRepository.findAll();
     }
 

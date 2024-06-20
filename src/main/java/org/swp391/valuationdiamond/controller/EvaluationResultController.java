@@ -21,15 +21,14 @@ public class EvaluationResultController {
     }
     @GetMapping("/getEvaluationResults")
     List<EvaluationResult> getEvaluationResults(){
-        {
-            return evaluationResultServiceImp.getEvaluationResult();
-        }
+            return evaluationResultServiceImp.getAllEvaluationResult();
     }
 
     @GetMapping("/getEvaluationResults/{evaluationResultId}")
     EvaluationResult getEvaluationResult(@PathVariable String evaluationResultId) {
         return evaluationResultServiceImp.getEvaluationResult(evaluationResultId);
     }
+
     @GetMapping("/getEvaluationResultsByOrderDetailId/{orderDetailId}")
     public List<EvaluationResult> getEvaluationResultsByOrderDetailId(@PathVariable("orderDetailId") String orderDetailId) {
         try {
