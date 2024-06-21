@@ -29,6 +29,7 @@ public class DiamondAssessmentServiceImp {
         diamondAssessment.setAssessOrigin(diamondAssessmentDTO.getAssessOrigin());
         diamondAssessment.setAssessMeasurement(diamondAssessmentDTO.getAssessMeasurement());
         diamondAssessment.setAssessCut(diamondAssessmentDTO.getAssessCut());
+        diamondAssessment.setProportions(diamondAssessmentDTO.getProportions());
         diamondAssessment.setAssessShapeCut(diamondAssessmentDTO.getAssessShapeCut());
         diamondAssessment.setAssessColor(diamondAssessmentDTO.getAssessColor());
         diamondAssessment.setAssessClarity(diamondAssessmentDTO.getAssessClarity());
@@ -41,6 +42,7 @@ public class DiamondAssessmentServiceImp {
         return diamondAssessmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
     }
+
     public List<DiamondAssessment> getDiamondAssessmentList() {
         return diamondAssessmentRepository.findAll();
     }

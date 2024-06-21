@@ -3,9 +3,7 @@ package org.swp391.valuationdiamond.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.swp391.valuationdiamond.dto.DiamondAssessmentDTO;
-import org.swp391.valuationdiamond.dto.EvaluationResultDTO;
 import org.swp391.valuationdiamond.entity.DiamondAssessment;
-import org.swp391.valuationdiamond.entity.EvaluationResult;
 import org.swp391.valuationdiamond.service.DiamondAssessmentServiceImp;
 
 import java.security.PrivateKey;
@@ -23,15 +21,16 @@ public class DiamondAssessmentController {
         return diamondAssessmentServiceImp.createDiamondAssessment(diamondAssessmentDTO);
 
     }
-    @GetMapping("/getDiamondAsessments")
+    @GetMapping("/getDiamondAssessments")
     List<DiamondAssessment> getDiamondAssessments(){
         {
             return diamondAssessmentServiceImp.getDiamondAssessmentList();
         }
     }
     @GetMapping("/getDiamondAssessments/{diamondAssessmentId}")
-    DiamondAssessment getDiamondAssessments(@PathVariable String diamondAssessmentId) {
+    DiamondAssessment getDiamondAssessments(@PathVariable("diamondAssessmentId") String diamondAssessmentId) {
         return diamondAssessmentServiceImp.getDiamondAssessment(diamondAssessmentId);
     }
+
 
 }
