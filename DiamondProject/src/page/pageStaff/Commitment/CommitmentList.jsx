@@ -22,7 +22,7 @@ export const CommitmentList = () => {
       try {
         const response = await fetch('http://localhost:8080/committed_Paper/getCommittedPaper');
         const data = await response.json();
-        setCommitment(data);
+        setCommitment(data.reverse());
         setFilteredCommitment(data);
         setLoading(false);
       } catch (error) {

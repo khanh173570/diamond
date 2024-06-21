@@ -25,27 +25,28 @@ export const PersonalRequest = () => {
 
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch(`${API}/${user.userId}`);
                 const data = await response.json();
-                if(data){
-                    setMyRequest(data);
-                }             
+                setMyRequest(data.reverse());
             } catch (error) {
                 console.error('Error fetching data:', error);
+            } finally {
                 setLoading(false);
-            }
-            return ()=>{
-                setLoading(false)
             }
         };
         fetchData();
     }, [user.userId]);
 
-    if (!loading) {
-        return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
+    if (loading) {
+        return (
+            <div className="text-center my-4" style={{ minHeight: '500px' }}>
+                <Spinner animation="border" />
+            </div>
+        );
     }
 
     const viewMyRequest = (request) => {
@@ -100,7 +101,6 @@ export const PersonalRequest = () => {
                 postsPerPage={postsPerPage}
                 totalPosts={myRequest.length}
                 paginate={paginate}
-                
             />
         </div>
     );

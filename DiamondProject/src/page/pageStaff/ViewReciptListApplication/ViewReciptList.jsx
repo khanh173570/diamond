@@ -57,7 +57,7 @@ export const ViewReciptList = () => {
         const response = await fetch(`${API_BASE_URL}/order_request/getOrders`);
         let data = await response.json();
         data = await checkAndUpdateOrderStatus(data);
-        setSelection(data);
+        setSelection(data.reverse());
         setFilteredSelection(data);
         setLoading(true);
       } catch (error) {

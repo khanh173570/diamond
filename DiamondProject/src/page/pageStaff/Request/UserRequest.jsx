@@ -54,8 +54,8 @@ export const UserRequest = () => {
       try {
         const response = await fetch(`${API}`);
         const data = await response.json();
-        setUserRequest(data);
-        setFilteredRequests(data); // Khởi tạo filteredRequests với toàn bộ dữ liệu
+        setUserRequest(data.reverse());
+        setFilteredRequests(data); //
         setLoading(true);
       } catch (error) {
         console.error('Error fetching data:', error);

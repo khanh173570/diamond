@@ -42,8 +42,8 @@ export const PersonalRequestDetail = () => {
     };
   }, [requestId, isCancel]);
 
+  // get order by request id 
   const APIOrderById = `http://localhost:8080/order_request/getOrderByRequestId`;
-
   useEffect(() => {
     const fetchOrderData = async () => {
       try {
@@ -52,7 +52,7 @@ export const PersonalRequestDetail = () => {
           throw new Error('Failed to fetch order details');
         }
         const data = await response.json();
-        if (data) {
+        if (data != null) {
           setOrder(data);
           setIsOrder(true);
         }
@@ -64,8 +64,12 @@ export const PersonalRequestDetail = () => {
   }, [requestId]);
 
   const APIUpdate = 'http://localhost:8080/evaluation-request/update';
-
   const handleOnCancel = async (value) => {
+    if (order.length > 0 && order[0].orderId) {
+      toast.error("You have had an order, so you cannot cancel at this time");
+      return;
+    }
+
     try {
       const response = await fetch(`${APIUpdate}/${requestId}`, {
         method: 'PUT',
@@ -158,7 +162,7 @@ export const PersonalRequestDetail = () => {
         </Row>
         <Row className='mt-4'>
           <Col className='d-flex justify-content-end'>
-            <Button className='me-3' variant="danger" onClick={showCancelConfirmation} disabled={requestDetail.status === 'Canceled'}>
+            <Button className='me-3' variant="danger" onClick={showCancelConfirmation} disabled={requestDetail.status === 'Canceled' }>
               {requestDetail.status === 'Canceled' ? 'Canceled' : 'Cancel Request'}
             </Button>
             <Button className='me-3' onClick={closeToMyList}>Close</Button>

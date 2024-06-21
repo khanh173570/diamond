@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import formattedDate from "../../../utils/formattedDate/formattedDate";
 import dayjs from "dayjs";
+import validator from "validator";
 
 const CreateCommitment = () => {
   const location = useLocation();
@@ -25,15 +26,30 @@ const CreateCommitment = () => {
     userId: user.userId,
   });
 
+  const [errorCivilId, setErrorCivilId] = useState("");
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setCommittedForm((currentState) => ({
       ...currentState,
       [name]: value,
     }));
+
+    // Xóa thông báo lỗi khi người dùng bắt đầu nhập lại
+    if (name === "civilId") {
+      setErrorCivilId("");
+    }
   };
 
-  const handleOnSubmit = async () => {
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+
+    // Kiểm tra validation cho civilId
+    if (!validator.isNumeric(committedForm.civilId) || !validator.isLength(committedForm.civilId, { min: 10, max: 10 })) {
+      setErrorCivilId("Civil Id must be numeric and contain exactly 10 digits");
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:8080/committed_Paper/create", {
         method: "POST",
@@ -54,24 +70,6 @@ const CreateCommitment = () => {
     }
   };
 
-  const showConfirmCreate = (e) => {
-    e.preventDefault();
-    confirmAlert({
-      title: "Confirm to create commitment",
-      message: "Click ok to create commitment",
-      buttons: [
-        {
-          label: "Ok",
-          onClick: handleOnSubmit,
-        },
-        {
-          label: "Cancel",
-          onClick: () => {},
-        },
-      ],
-    });
-  };
-
   return (
     <div>
       <ToastContainer />
@@ -86,7 +84,7 @@ const CreateCommitment = () => {
       </div>
       <div className="d-flex justify-content-center mt-5">
         <div className="w-75">
-          <Form onSubmit={showConfirmCreate} className="mb-4">
+          <Form onSubmit={handleOnSubmit} className="mb-4">
             <Container className="border border-dark rounded p-4">
               <Row className="d-flex">
                 <Col md={4}>
@@ -150,7 +148,11 @@ const CreateCommitment = () => {
                     name="civilId"
                     value={committedForm.civilId}
                     onChange={handleOnChange}
+                    isInvalid={!!errorCivilId}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errorCivilId}
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Container className="border border-dark rounded p-3">

@@ -26,22 +26,24 @@ function Calculate() {
     setDiamondCalculate((currentItem) => ({ ...currentItem, [type]: item }));
   };
 
-  const handleOnCalculate = () => {
+  const handleOnCalculate = async () => {
     setLoading(true);
     setError(null);
     const queryParams = new URLSearchParams(diamondCalculate).toString();
     console.log(queryParams)
-    const apiUrl = `https://www.stonealgo.com/diamond-price-calculator/calc?${queryParams}`;
-    
-    axios.get(apiUrl)
-      .then(response => {
-        setResult(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        setError(error);
-        setLoading(false);
-      });
+    const calculateURL = `https://www.stonealgo.com/diamond-price-calculator/calc?${queryParams}`;
+    try{
+      const response = await fetch(calculateURL);
+      if(response){
+       
+      }
+      const resultCalculate = await response.json();
+      setResult(resultCalculate)
+    }catch(error){
+      setError(error)
+    }finally{
+      setLoading(false)
+    }
   };
 
   return (
