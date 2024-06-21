@@ -74,10 +74,14 @@ public class UserController {
 
         return userServiceImp.getStaffById(userId);
     }
-
-    // API get all staffs
     @GetMapping("/getStaff")
     List<User> getStaffs(){
+
+        return userServiceImp.getStaffByRoleEvaluationStaff();
+    }
+    // API get all staffs
+    @GetMapping("/getAllStaff")
+    List<User> getAllStaffs(){
 
         return userServiceImp.getStaff();
     }
