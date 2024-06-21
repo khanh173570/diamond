@@ -90,7 +90,7 @@ export const UserRequest = () => {
   // Delete data
   const handleDeleteItem = async (requestId) => {
     try {
-      await fetch(`http://localhost:8080/evaluation-request/${requestId}`, {
+      await fetch(`http://localhost:8080/evaluation-request/delete/${requestId}`, {
         method: 'DELETE',
       });
       setIsEdit(true);

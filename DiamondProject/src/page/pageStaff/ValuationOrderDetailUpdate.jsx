@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button, Spinner } from "react-bootstrap";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -19,8 +19,6 @@ export const ValuationOrderDetailUpdate = () => {
     isDiamond: product.isDiamond,
     img: product.img,
   });
-
-  const inputFileRef = useRef(null);
 
   const saveImage = async () => {
     if (!image) {
@@ -66,23 +64,6 @@ export const ValuationOrderDetailUpdate = () => {
     };
     fetchData();
   }, [orderDetailId]);
-
-  const handleUploadImage = () => {
-    if (inputFileRef.current) {
-      inputFileRef.current.click();
-    }
-  };
-
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let img = e.target.files[0];
-      setImage(img);
-      setFormEdit((currentState) => ({
-        ...currentState,
-        img: URL.createObjectURL(img),
-      }));
-    }
-  };
 
   const handleFormChange = (field, value) => {
     setFormEdit((currentState) => ({ ...currentState, [field]: value }));
@@ -191,17 +172,13 @@ export const ValuationOrderDetailUpdate = () => {
             <Col md={4}>
               {formEdit.img ? (
                 <img
-                  className="w-100 rounded-xl"
+                  className=" w-72 lg:w-96  rounded-xl"
                   src={formEdit.img}
                   alt="img"
                 />
               ) : (
                 <div className="text-center">
-                  <label
-                    htmlFor="upload-img"
-                    style={{ cursor: "pointer" }}
-                    onClick={handleUploadImage}
-                  >
+                  <label htmlFor="upload-img" style={{ cursor: "pointer" }}>
                     <img
                       src="/src/assets/assetsStaff/upload.svg"
                       alt="Upload Icon"
@@ -210,10 +187,9 @@ export const ValuationOrderDetailUpdate = () => {
                     />
                   </label>
                   <input
-                    ref={inputFileRef}
                     type="file"
                     id="upload-img"
-                    onChange={handleFileChange}
+                    onChange={(e) => setImage(e.target.files[0])}
                     accept=".jpg, .jpeg, .png"
                     style={{ display: "none" }}
                   />
