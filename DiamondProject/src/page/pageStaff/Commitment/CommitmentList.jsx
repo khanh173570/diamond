@@ -87,7 +87,6 @@ export const CommitmentList = () => {
         <thead style={{ backgroundColor: '#E2FBF5' }}>
           <tr>
             <th>Commitment ID</th>
-            
             <th>Customer Name</th>
             <th>Date</th>
             <th>Delete</th>

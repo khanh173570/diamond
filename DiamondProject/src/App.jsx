@@ -24,7 +24,7 @@ import Signup from './page/pageCustomer/Signup';
 import Blog from './page/pageCustomer/Blog';
 import Contact from './page/pageCustomer/Contact';
 import EvaluationServicePage from './page/pageCustomer/EvaluationServicePage';
-import Calculate from './page/pageCustomer/Calculate';
+import Calculate from './page/pageCustomer/Calculate/Calculate.jsx';
 import Check from './page/pageCustomer/Check';
 import { PersonalRequest } from './page/pageCustomer/PersonalRequest';
 import { ValuationOrderDetail } from './page/pageStaff/ValuationOrderDetail.jsx';
