@@ -70,7 +70,7 @@ const CheckDiamond = () => {
               value={assess_id}
               onChange={(e) => setAssessId(e.target.value)}
             />
-            <Button variant="primary" className="ms-2" onClick={handleSearch} style={{color: }}> 
+            <Button variant="primary" className="ms-2" onClick={handleSearch} style={{ }}> 
               Run Check
             </Button>
           </InputGroup>
