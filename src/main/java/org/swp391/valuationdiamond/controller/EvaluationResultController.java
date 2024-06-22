@@ -40,10 +40,10 @@ public class EvaluationResultController {
         }
 
     }
-    @GetMapping("/getEvaluationResultsByUserId/{UserId}")
-    public List<EvaluationResult> getEvaluationResultsByUserId(@PathVariable("UserId") String UserId) {
+    @GetMapping("/getEvaluationResultsByUserId/{userId}")
+    public List<EvaluationResult> getEvaluationResultsByUserId(@PathVariable("userId") String userId) {
         try {
-            return evaluationResultServiceImp.getResultByUserId(UserId);
+            return evaluationResultServiceImp.getResultByUserId(userId);
         } catch (RuntimeException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         } catch (Exception e) {
