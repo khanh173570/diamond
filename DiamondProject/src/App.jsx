@@ -63,7 +63,6 @@ function App() {
           <Route path="blog" element={<Blog />} />
           <Route path="contact" element={<Contact />} />
         </Route>
-
         <Route
           element={
             <CustomerGuard>

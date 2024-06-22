@@ -48,7 +48,7 @@ function Header() {
                                 Type of Valuation
                             </NavDropdown.Item>
                         </NavDropdown>
-                        <NavLink to="/check" className="nav-link">Check</NavLink>
+                        <NavLink to="/checkdiamond" className="nav-link">Check</NavLink>
                         <NavLink to="/blog" className="nav-link">Blog</NavLink>
                         <NavLink to="/contact" className="nav-link">Contact</NavLink>
                         <NavDropdown title="Language" id="nav-dropdown">
