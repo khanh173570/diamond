@@ -40,6 +40,9 @@ public class EvaluationResultController {
         }
 
     }
-
+    @PutMapping("/updateEvaluationResult/{resultId}")
+    public EvaluationResult updateResult(@PathVariable("resultId") String resultId, @RequestBody EvaluationResultDTO evaluationResultDTO) {
+        return evaluationResultServiceImp.updateResult(resultId, evaluationResultDTO);
+    }
 }
 

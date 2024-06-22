@@ -3,6 +3,7 @@ package org.swp391.valuationdiamond.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.swp391.valuationdiamond.dto.EvaluationResultDTO;
+
 import org.swp391.valuationdiamond.entity.*;
 import org.swp391.valuationdiamond.repository.EvaluationResultRepository;
 import org.swp391.valuationdiamond.repository.OrderDetailRepository;
@@ -69,6 +70,55 @@ public class EvaluationResultServiceImp {
         return evaluationResultRepository.findAll();
     }
 
+    public EvaluationResult updateResult(String resultId, EvaluationResultDTO evaluationResultDTO){
+        EvaluationResult result= evaluationResultRepository.findById(resultId).orElseThrow(() -> new RuntimeException("Evaluation Result not found"));
+
+        if (evaluationResultDTO.getDiamondOrigin() != null) {
+            result.setDiamondOrigin(evaluationResultDTO.getDiamondOrigin());
+        }
+        if (evaluationResultDTO.getMeasurements() != null) {
+            result.setMeasurements(evaluationResultDTO.getMeasurements());
+        }
+        if (evaluationResultDTO.getProportions() != null) {
+            result.setProportions(evaluationResultDTO.getProportions());
+        }
+        if (evaluationResultDTO.getShapeCut() != null) {
+            result.setShapeCut(evaluationResultDTO.getShapeCut());
+        }
+        if (evaluationResultDTO.getCaratWeight() != null) {
+            result.setCaratWeight(evaluationResultDTO.getCaratWeight());
+        }
+        if (evaluationResultDTO.getColor() != null) {
+            result.setColor(evaluationResultDTO.getColor());
+        }
+        if (evaluationResultDTO.getClarity() != null) {
+            result.setClarity(evaluationResultDTO.getClarity());
+        }
+        if (evaluationResultDTO.getCut() != null) {
+            result.setCut(evaluationResultDTO.getCut());
+        }
+        if (evaluationResultDTO.getSymmetry() != null) {
+            result.setSymmetry(evaluationResultDTO.getSymmetry());
+        }
+        if (evaluationResultDTO.getPolish() != null) {
+            result.setPolish(evaluationResultDTO.getPolish());
+        }
+        if (evaluationResultDTO.getFluorescence() != null) {
+            result.setFluorescence(evaluationResultDTO.getFluorescence());
+        }
+        if (evaluationResultDTO.getDescription() != null) {
+            result.setDescription(evaluationResultDTO.getDescription());
+        }
+        if (evaluationResultDTO.getPrice() != null) {
+            result.setPrice(evaluationResultDTO.getPrice());
+        }
+        if (evaluationResultDTO.getImg() != null) {
+            result.setImg(evaluationResultDTO.getImg());
+        }
+
+
+        return evaluationResultRepository.save(result);
+    }
 }
 
 
