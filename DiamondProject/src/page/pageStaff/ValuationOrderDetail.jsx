@@ -7,14 +7,26 @@ import formattedDate from "../../utils/formattedDate/formattedDate";
 import formattedDateTime from "../../utils/formattedDate/formattedDateTime";
 import useAuth from "../../utils/hook/useAuth";
 import { Status } from "../../component/Status";
+import { Pagination } from "../../component/Pagination/Pagination";
 
 export const ValuationOrderDetail = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const {user} = useAuth()
-  const [count, setCount] = useState(0);
   const navigate = useNavigate();
 
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(6);
+
+  // Get current requests
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentOrderDetails = orderDetails.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -58,7 +70,7 @@ export const ValuationOrderDetail = () => {
           </tr>
         </thead>
         <tbody>
-          {orderDetails.map((product) => (
+          {currentOrderDetails.map((product) => (
             <tr key={product.orderDetailId} className="text-center">
               <td>{product.orderDetailId}</td>
               <td>
@@ -108,6 +120,12 @@ export const ValuationOrderDetail = () => {
           ))}
         </tbody>
       </Table>
+      <Pagination
+            postsPerPage={postsPerPage}
+            totalPosts={orderDetails.length}
+            paginate={paginate}
+          />
+      
     </Container>
   );
 };

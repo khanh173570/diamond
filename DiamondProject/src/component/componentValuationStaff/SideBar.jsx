@@ -18,7 +18,8 @@ export const SideBar = () => {
                 <Button variant="outline-success">Search</Button>
             </Form>
             <Nav className="flex-column w-100 p-2 menu fw-bold">
-                <NavLink className='nav-link' to="/valuation-staff/valuation-order">Valuation's Product</NavLink>    
+                <NavLink className='nav-link' to="/valuation-staff/valuation-order">Valuation's Product</NavLink>  
+                <NavLink className='nav-link' to="/valuation-staff/certificate-list">Certificate List</NavLink>  
             </Nav>
         </Navbar>
     );

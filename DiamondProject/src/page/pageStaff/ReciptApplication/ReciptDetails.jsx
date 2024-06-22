@@ -93,8 +93,13 @@ export const ReceiptDetails = () => {
   //cho nay
   const updateSealedOrder = async () => {
     try {
-      await updateById(`${API_BASE_URL}/order_request/updateStatus`, orderId, 'status', 'Sealed');
+      const res = await updateById(`${API_BASE_URL}/order_request/updateStatus`, orderId, 'status', 'Sealed');
+      console.log(res)
       toast.success('Sealed');
+      // setOrderDetails((currentState)=> ({
+      //     ...currentState,
+      //     status:'Sealed'
+      // }))
       setIsLoading(true)
     } catch {
       console.error('Error updating order status:', error);
@@ -109,12 +114,18 @@ export const ReceiptDetails = () => {
 
     navigate(`/staff/view-certificate/${orderDetailId}`)
   }
+
+
+
+
+
   const updateFinishedOrder = async () => {
     try {
       await updateById(`${API_BASE_URL}/order_request/updateStatus`, orderId, 'status', 'Finished');
       setIsFinishedOrder(true);
       setIsLoading(true)
       toast.success('Finished');
+
     } catch (error) {
       console.error('Error updating order status:', error);
       toast.error('Failed to update order status');
@@ -122,6 +133,10 @@ export const ReceiptDetails = () => {
       setIsLoading(false)
     }
   };
+
+
+
+
   if (isLoading) {
     return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
   }

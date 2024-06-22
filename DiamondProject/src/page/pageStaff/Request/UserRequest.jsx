@@ -76,7 +76,6 @@ export const UserRequest = () => {
           },
           body: JSON.stringify({ status: editStatus }),
         });
-
         const data = await response.json();
         setIsEdit(true);
         setEditRowId(null); 
