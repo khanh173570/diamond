@@ -52,4 +52,9 @@ public class OrderController {
     public Order updateOrderStatus(@PathVariable("orderId") String orderId, @RequestBody OrderDTO orderDTO) {
         return orderServiceImp.updateOrderStatus(orderId, orderDTO);
     }
+
+    @GetMapping("/countOrderCreated/{year}/{month}")
+    public long countOrdersRegisteredWithinMonth(@PathVariable int year, @PathVariable int month) {
+        return orderServiceImp.countOrdersRegisteredWithinMonth(year, month);
+    }
 }
