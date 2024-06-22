@@ -7,7 +7,6 @@ import CustomerApp from "./layout/CustomerApp";
 import AdminApp from "./layout/AdminApp.jsx";
 import ValuationApp from "./layout/ValuationApp.jsx";
 // Staff Pages
-import HomeStaff from "./page/pageStaff/HomeStaff.jsx";
 import { UserRequest } from "./page/pageStaff/Request/UserRequest.jsx";
 import { ViewReciptList } from "./page/pageStaff/ViewReciptListApplication/ViewReciptList.jsx";
 import { CreateReceipt } from "./page/pageStaff/ReciptApplication/CreateRecipt.jsx";
@@ -21,7 +20,6 @@ import { ViewCertificate } from "./page/pageStaff/ReciptApplication/ViewCertific
 import { MyCertificateList } from "./page/pageValuationStaff/ValuationApplication/MyCertificateList.jsx";
 import { CertificateDetail } from "./page/pageValuationStaff/ValuationApplication/CertificateDetail.jsx";
 // Customer Pages
-
 import HomeCustomer from "./page/pageCustomer/HomeCustomer.jsx";
 import Signup from "./page/pageCustomer/Signup";
 import Blog from "./page/pageCustomer/Blog";
@@ -31,6 +29,9 @@ import Calculate from "./page/pageCustomer/Calculate/Calculate.jsx";
 import Check from "./page/pageCustomer/Check";
 import { PersonalRequest } from "./page/pageCustomer/PersonalRequest";
 import { ValuationOrderDetail } from "./page/pageStaff/ValuationOrderDetail.jsx";
+import CheckDiamond from "./page/pageCustomer/CheckDiamond/CheckDiamond.jsx";
+import DetailDiamondCheck from "./page/pageCustomer/CheckDiamond/DetailDiamondCheck.jsx";
+
 // Admin Pages
 import { DashBoard } from "./page/pageAdmin/dashBoard.jsx";
 import { ManageBlog } from "./page/pageAdmin/ManageBlog";
@@ -46,7 +47,6 @@ import { RoleBasedGuard } from "./guards/RoleBasedGuard.jsx";
 import CommitmentList from "./page/pageStaff/Commitment/CommitmentList.jsx";
 import CommitmentDetail from "./page/pageStaff/Commitment/CommitmentDetail.jsx";
 import { CustomerGuard } from "./guards/CustomerGuard.jsx";
-
 function App() {
   return (
     <BrowserRouter>
@@ -75,10 +75,7 @@ function App() {
         >
           <Route path="evaluationservice" element={<EvaluationServicePage />} />
           <Route path="my-request" element={<PersonalRequest />} />
-          <Route
-            path="my-request/:requestId"
-            element={<PersonalRequestDetail />}
-          />
+          <Route path="my-request/:requestId" element={<PersonalRequestDetail />}/>
         </Route>
 
         {/* ROLE:GUEST*/}
@@ -99,10 +96,9 @@ function App() {
               </GuestGuard>
             }
           />
-
-          {/*  */}
           <Route path="calculate" element={<Calculate />} />
-          <Route path="check" element={<Check />} />
+          <Route path="checkdiamond" element={<CheckDiamond />} />
+          <Route path="inforcheck/:id" element={<DetailDiamondCheck />} />
           {/* Private */}
         </Route>
 
