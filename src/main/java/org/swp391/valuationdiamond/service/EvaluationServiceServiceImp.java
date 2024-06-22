@@ -11,7 +11,9 @@ import java.util.List;
 public class EvaluationServiceServiceImp {
     @Autowired
     EvaluationServiceRepository evaluationServiceRepository;
+
     public List<EvaluationService> getServices() {
+
         return  evaluationServiceRepository.findAll();
     }
 }

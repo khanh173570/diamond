@@ -65,3 +65,15 @@ Committed paper:
   get by committedId http://localhost:8080/committed_Paper/getCommittedPaper/{committedId}
   get by userId  http://localhost:8080/committed_Paper/getCommittedPaperByUserId/{userId}
   get by orderId http://localhost:8080/committed_Paper/getCommittedPaperByOrderId/{orderId}
+
+
+
+
+Service Price List
+- Create
+- Read
+- Update
+  - Update by Service Id: http://localhost:8080/service_price_list/updateServicePriceList/{serviceId}
+  - Update by price list http://localhost:8080/service_price_list/updateServicePriceListById/{id}
+- Delete
+- 

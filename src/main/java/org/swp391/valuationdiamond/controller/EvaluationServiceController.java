@@ -16,6 +16,7 @@ import java.util.List;
 public class EvaluationServiceController {
     @Autowired
     private EvaluationServiceServiceImp evaluationServiceServiceImp;
+
     @GetMapping("/getServices")
     List<EvaluationService> getServices() {
         return evaluationServiceServiceImp.getServices();

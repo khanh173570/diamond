@@ -59,6 +59,7 @@ public class Order {
   @JsonBackReference
   @OneToMany(mappedBy = "orderId")
   List<OrderDetail> orderDetailId;
+
   @JsonIgnore
   @OneToMany(mappedBy = "orderId")
   List<CommittedPaper> committedPapers;
