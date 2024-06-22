@@ -21,7 +21,7 @@ function Header() {
     return (
         <Navbar expand="md" className='nav-header'>
             <Container fluid>
-                <Navbar.Brand href='#home' className='p-3 fw-bold fst-italic'>
+                <Navbar.Brand href='/' className='p-3 fw-bold fst-italic'>
                     <img
                         src='/src/assets/assetsCustomer/logo.png'
                         width='20%'
@@ -33,13 +33,13 @@ function Header() {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" className="me-5 fw-bold justify-content-end">
                     <Nav variant='underline'>
-                        <NavLink to="/home" className="nav-link">Home</NavLink>
+                        <NavLink to="/" className="nav-link">Home</NavLink>
                         <NavDropdown title="Evaluation Service" id="nav-dropdown">
                             <NavDropdown.Item as={NavLink} to="/calculate">Calculate</NavDropdown.Item>
-
-                            {user && <NavDropdown.Item as={NavLink} to="/evaluationservice">
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item as={NavLink} to="/evaluationservice">
                                 Diamond Valuation Service
-                            </NavDropdown.Item>}
+                            </NavDropdown.Item>
 
                             <NavDropdown.Divider />
                             <NavDropdown.Item as={NavLink} to="/policy">Diamond Valuation Policy</NavDropdown.Item>
