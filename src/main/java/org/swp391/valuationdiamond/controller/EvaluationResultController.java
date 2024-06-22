@@ -40,6 +40,17 @@ public class EvaluationResultController {
         }
 
     }
+    @GetMapping("/getEvaluationResultsByUserId/{UserId}")
+    public List<EvaluationResult> getEvaluationResultsByUserId(@PathVariable("UserId") String UserId) {
+        try {
+            return evaluationResultServiceImp.getResultByUserId(UserId);
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while fetching the evaluation results");
+        }
+
+    }
     @PutMapping("/updateEvaluationResult/{resultId}")
     public EvaluationResult updateResult(@PathVariable("resultId") String resultId, @RequestBody EvaluationResultDTO evaluationResultDTO) {
         return evaluationResultServiceImp.updateResult(resultId, evaluationResultDTO);

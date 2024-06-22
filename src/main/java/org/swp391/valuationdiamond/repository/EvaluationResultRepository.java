@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface EvaluationResultRepository extends JpaRepository<EvaluationResult, String> {
     List<EvaluationResult> findByOrderDetailId(OrderDetail OrderDetailId);
-
+    List<EvaluationResult> findByUserId(User userId);
     }
 

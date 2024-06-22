@@ -65,6 +65,11 @@ public class EvaluationResultServiceImp {
 
         return evaluationResultRepository.findByOrderDetailId(orderDetail);
     }
+    public List<EvaluationResult> getResultByUserId(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        return evaluationResultRepository.findByUserId(user);
+    }
 
     public List<EvaluationResult> getAllEvaluationResult() {
         return evaluationResultRepository.findAll();
