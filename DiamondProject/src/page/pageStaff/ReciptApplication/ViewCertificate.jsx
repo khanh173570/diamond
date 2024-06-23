@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Button, Form, Image } from 'react-bootstrap';
+import { Container, Row, Col, Button, Form, Image, Spinner } from 'react-bootstrap';
 import { GeneratePDF } from '../../pageValuationStaff/ValuationApplication/GeneratePDF';
 import { useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -29,11 +29,9 @@ export const ViewCertificate = () => {
     }, [orderDetailId]);
 
     if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-
-
+        return <div className="text-center my-4"><Spinner animation="border" /></div>;
+      }
+      
     const showConfirmPrint = (e) => {
         e.preventDefault();
         confirmAlert({
@@ -51,28 +49,6 @@ export const ViewCertificate = () => {
             ]
         });
     };
-
-    const updateSealed = () => {
-        const fetchUpdateStatus = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/evaluation-request/updateStatus/${orderDetailId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ status: 'sealed' }), // Assuming 'sealed' is the status to update
-                });
-                const data = await response.json();
-                if (data) {
-                    toast.success('Sealed successfully');
-                }
-            } catch (error) {
-                console.error('Error updating status:', error);
-            }
-        };
-        fetchUpdateStatus();
-    };
-
     const printResult = () => {
         setIsPrint(true);
     };

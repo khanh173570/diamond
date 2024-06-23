@@ -15,9 +15,11 @@ export const UserRequest = () => {
   const [filteredRequests, setFilteredRequests] = useState([]); // State mới để lưu trữ danh sách đã lọc
   const [currentDetail, setCurrentDetail] = useState({});
   const [isViewDetail, setIsViewDetail] = useState(false);
+  //
   const [editRowId, setEditRowId] = useState(null);
   const [editStatus, setEditStatus] = useState('');
   const [isEdit, setIsEdit] = useState(false);
+  //
   const navigate = useNavigate(); // add useNavigate hook
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
@@ -52,8 +54,8 @@ export const UserRequest = () => {
       try {
         const response = await fetch(`${API}`);
         const data = await response.json();
-        setUserRequest(data);
-        setFilteredRequests(data); // Khởi tạo filteredRequests với toàn bộ dữ liệu
+        setUserRequest(data.reverse());
+        setFilteredRequests(data); //
         setLoading(true);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -74,7 +76,6 @@ export const UserRequest = () => {
           },
           body: JSON.stringify({ status: editStatus }),
         });
-
         const data = await response.json();
         setIsEdit(true);
         setEditRowId(null); 
@@ -88,7 +89,7 @@ export const UserRequest = () => {
   // Delete data
   const handleDeleteItem = async (requestId) => {
     try {
-      await fetch(`http://localhost:8080/evaluation-request/${requestId}`, {
+      await fetch(`http://localhost:8080/evaluation-request/delete/${requestId}`, {
         method: 'DELETE',
       });
       setIsEdit(true);

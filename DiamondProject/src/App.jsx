@@ -29,12 +29,12 @@ import Check from './page/pageCustomer/Check';
 import { PersonalRequest } from './page/pageCustomer/PersonalRequest';
 import { ValuationOrderDetail } from './page/pageStaff/ValuationOrderDetail.jsx';
 // Admin Pages
-import { DashBoard } from './page/pageAdmin/dashBoard/dashBoard.jsx';
-
+import { DashBoard } from './page/pageAdmin/dashBoard.jsx';
+import { ManageBlog } from './page/pageAdmin/ManageBlog';
 import { ManageCustomer } from './page/pageAdmin/ManageCustomer/ManageCustomer.jsx';
 import { ManageStaff } from './page/pageAdmin/ManageStaff/ManageStaff.jsx';
 import { ManageSchedule } from './page/pageAdmin/ManageSchedule/ManageScheldule.jsx';
-
+import { ManageOrder } from './page/pageAdmin/ManageOrder';
 import { CreateNewCust } from './page/pageAdmin/CreateNewCust.jsx'
 import { PersonalRequestDetail } from './page/pageCustomer/PersonalRequestDetail.jsx';
 import { GuestGuard } from './guards/GuestGuard.jsx';
@@ -118,11 +118,11 @@ function App() {
 
         }>
           <Route path="dashboard" element={<DashBoard />} />
-        
+          <Route path="manageblog" element={<ManageBlog />} />
           <Route path="managecustomer" element={<ManageCustomer />} />
           <Route path="managestaff" element={<ManageStaff />} />
           <Route path="manageschedule" element={<ManageSchedule />} />
-         
+          <Route path="manageorder" element={<ManageOrder />} />
           <Route path="createnewcust" element={<CreateNewCust />} />
           <Route path="manageservice" element={<ManageService />} />
         </Route>

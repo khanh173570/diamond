@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { useLocation, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
@@ -7,20 +7,21 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useNavigate } from 'react-router-dom';
 import formattedDate from '../../utils/formattedDate/formattedDate';
+import formattedDateTime from '../../utils/formattedDate/formattedDateTime';
 import { Status } from '../../component/Status';
 
 export const PersonalRequestDetail = () => {
   const { requestId } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { state } = useLocation();
   const [isCancel, setIsCancel] = useState(false);
   const [requestDetail, setRequestDetail] = useState({});
   const [order, setOrder] = useState([]);
   const [isOrder, setIsOrder] = useState(false);
 
-  // API to fetch request by request id  
   const API = `http://localhost:8080/evaluation-request`;
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,16 +31,19 @@ export const PersonalRequestDetail = () => {
         }
         const data = await response.json();
         setRequestDetail(data);
+        setLoading(true);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
     fetchData();
-  }, [requestId, isCancel]); 
+    return () => {
+      setLoading(false);
+    };
+  }, [requestId, isCancel]);
 
-  // Get order by request id
+  // get order by request id 
   const APIOrderById = `http://localhost:8080/order_request/getOrderByRequestId`;
-  
   useEffect(() => {
     const fetchOrderData = async () => {
       try {
@@ -48,7 +52,7 @@ export const PersonalRequestDetail = () => {
           throw new Error('Failed to fetch order details');
         }
         const data = await response.json();
-        if (data) {
+        if (data != null) {
           setOrder(data);
           setIsOrder(true);
         }
@@ -59,10 +63,13 @@ export const PersonalRequestDetail = () => {
     fetchOrderData();
   }, [requestId]);
 
-  // Update request by requestID
   const APIUpdate = 'http://localhost:8080/evaluation-request/update';
-  
   const handleOnCancel = async (value) => {
+    if (order.length > 0 && order[0].orderId) {
+      toast.error("You have had an order, so you cannot cancel at this time");
+      return;
+    }
+
     try {
       const response = await fetch(`${APIUpdate}/${requestId}`, {
         method: 'PUT',
@@ -74,7 +81,6 @@ export const PersonalRequestDetail = () => {
       if (response.ok) {
         const data = await response.json();
         setIsCancel(true);
-        // setRequestDetail(prev => ({ ...prev, status: 'Canceled' }));
         toast.success('Request has been canceled successfully.');
       } else {
         throw new Error('Failed to update status');
@@ -103,12 +109,12 @@ export const PersonalRequestDetail = () => {
     });
   };
 
+  if (!loading) {
+    return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
+  }
+
   const closeToMyList = () => {
     navigate('/my-request');
-  };
-
-  const viewMyOrder = () => {
-    navigate('/my-order');
   };
 
   return (
@@ -123,7 +129,7 @@ export const PersonalRequestDetail = () => {
         <Row className='mb-3'>
           <Col md={3}>
             <div className='fw-bold'>Meeting Date</div>
-            <div>{formattedDate(requestDetail.meetingDate)}</div>
+            <div>{formattedDateTime(requestDetail.meetingDate)}</div>
           </Col>
           <Col md={3}>
             <div className='fw-bold'>Status</div>
@@ -156,11 +162,10 @@ export const PersonalRequestDetail = () => {
         </Row>
         <Row className='mt-4'>
           <Col className='d-flex justify-content-end'>
-            <Button className='me-3' variant="danger" onClick={showCancelConfirmation} disabled={requestDetail.status === 'Canceled'}>
+            <Button className='me-3' variant="danger" onClick={showCancelConfirmation} disabled={requestDetail.status === 'Canceled' }>
               {requestDetail.status === 'Canceled' ? 'Canceled' : 'Cancel Request'}
             </Button>
             <Button className='me-3' onClick={closeToMyList}>Close</Button>
-            {/* <Button className='me-3' onClick={viewMyOrder} disabled={requestDetail.status === 'Canceled'}>View My Order</Button> */}
           </Col>
         </Row>
       </Container>

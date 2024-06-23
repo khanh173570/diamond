@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import useAuth from '../../utils/hook/useAuth';
-import {format} from 'date-fns'
 
+import {format} from 'date-fns'
 function EvaluationServicePage() {
   const { user } = useAuth();
   const [formRequest, setFormRequest] = useState({
@@ -56,7 +56,7 @@ function EvaluationServicePage() {
 
       const result = await response.json();
       console.log('Success:', result);
-
+      
       Swal.fire({
         title: "Success!",
         text: "Your request has been sent successfully.",

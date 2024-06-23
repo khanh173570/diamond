@@ -5,10 +5,11 @@ import formattedDate from '../../utils/formattedDate/formattedDate';
 import useAuth from '../../utils/hook/useAuth';
 import { Pagination } from '../../component/Pagination/Pagination';
 import { Status } from '../../component/Status';
+import formattedDateTime from '../../utils/formattedDate/formattedDateTime';
 
 export const PersonalRequest = () => {
     const [myRequest, setMyRequest] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { user } = useAuth();
     const API = 'http://localhost:8080/evaluation-request/get_by_user';
@@ -30,23 +31,22 @@ export const PersonalRequest = () => {
             try {
                 const response = await fetch(`${API}/${user.userId}`);
                 const data = await response.json();
-                if(data){
-                    setLoading(true);
-                    setMyRequest(data);  
-                }             
+                setMyRequest(data.reverse());
             } catch (error) {
                 console.error('Error fetching data:', error);
+            } finally {
                 setLoading(false);
-            }
-            return ()=>{
-                setLoading(false)
             }
         };
         fetchData();
     }, [user.userId]);
 
-    if (!loading) {
-        return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
+    if (loading) {
+        return (
+            <div className="text-center my-4" style={{ minHeight: '500px' }}>
+                <Spinner animation="border" />
+            </div>
+        );
     }
 
     const viewMyRequest = (request) => {
@@ -101,7 +101,6 @@ export const PersonalRequest = () => {
                 postsPerPage={postsPerPage}
                 totalPosts={myRequest.length}
                 paginate={paginate}
-                
             />
         </div>
     );
