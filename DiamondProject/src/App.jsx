@@ -25,7 +25,9 @@ import Blog from './page/pageCustomer/Blog';
 import Contact from './page/pageCustomer/Contact';
 import EvaluationServicePage from './page/pageCustomer/EvaluationServicePage';
 import Calculate from './page/pageCustomer/Calculate/Calculate.jsx';
-import Check from './page/pageCustomer/Check';
+import CheckDiamond from "./page/pageCustomer/CheckDiamond/CheckDiamond.jsx";
+import DetailDiamondCheck from "./page/pageCustomer/CheckDiamond/DetailDiamondCheck.jsx";
+
 import { PersonalRequest } from './page/pageCustomer/PersonalRequest';
 import { ValuationOrderDetail } from './page/pageStaff/ValuationOrderDetail.jsx';
 import ServicePolicy from "./page/pageCustomer/ServicePolicy.jsx";
