@@ -164,7 +164,7 @@ export const UserRequest = () => {
                       <div className='d-flex justify-content-between'>
                         <div><Status status={user.status} /></div>
                         <img
-                          src="/src/assets/assetsStaff/editStatus.svg"
+                          src="/src/assets/assetsAdmin/edit.svg"
                           alt="Edit"
                           height="20"
                           width="20"
