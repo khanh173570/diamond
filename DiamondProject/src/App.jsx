@@ -40,12 +40,16 @@ import { AuthGuard } from "./guards/AuthGuard.jsx";
 import { RoleBasedGuard } from "./guards/RoleBasedGuard.jsx";
 import { ManageService } from "./page/pageAdmin/MangeService/ManageService.jsx";
 import { CustomerGuard } from "./guards/CustomerGuard.jsx";
-
+import { MyCertificateList } from "./page/pageValuationStaff/ValuationApplication/MyCertificateList.jsx";
+import { CertificateDetail } from "./page/pageValuationStaff/ValuationApplication/CertificateDetail.jsx";
+import CommitmentList from "./page/pageStaff/Commitment/CommitmentList.jsx";
+import CommitmentDetail from "./page/pageStaff/Commitment/CommitmentDetail.jsx";
+import CheckDiamond from "./page/pageCustomer/CheckDiamond/CheckDiamond.jsx";
+import DetailDiamondCheck from "./page/pageCustomer/CheckDiamond/DetailDiamondCheck.jsx";
 
 function App() {
   return (
     <BrowserRouter>
-    
       <Routes>
         <Route path="/" element={<CustomerApp />}>
           <Route index element={<HomeCustomer />} />
@@ -68,7 +72,6 @@ function App() {
           <Route path="blog" element={<Blog />} />
           <Route path="contact" element={<Contact />} />
         </Route>
-
 
         <Route
           element={
@@ -107,8 +110,10 @@ function App() {
           />
           <Route path="calculate" element={<Calculate />} />
           <Route path="checkdiamond" element={<CheckDiamond />} />
-          <Route path="inforcheck/:id" element={<DetailDiamondCheck />} />
-          {/* Private */}
+          <Route
+            path="inforcheck/:assess_id"
+            element={<DetailDiamondCheck />}
+          />
         </Route>
 
         {/* ROLE:CONSULTANT_STAFF */}
@@ -133,10 +138,17 @@ function App() {
           />
           <Route path="create-receipt" element={<CreateReceipt />} />
           <Route path="commitment" element={<CreateCommitment />} />
+          <Route path="commitment-list" element={<CommitmentList />} />
+          <Route
+            path=" commitment-list/:committedId"
+            element={<CommitmentDetail />}
+          />
+
           <Route path="personal-info" element={<PersonalInformation />} />
           <Route path="valuation-result-list" element={<ValuationList />} />
         </Route>
 
+        {/* ROLE: VALUATION_STAFF */}
         <Route
           path="/valuation-staff"
           element={
@@ -154,9 +166,12 @@ function App() {
             element={<ValuationOrderDetailUpdate />}
           />
           <Route path="valuation" element={<ValuationApplication />} />
-        
+          <Route path="certificate-list" element={<MyCertificateList />} />
+          <Route
+            path="certificate-list/:evaluationResultId"
+            element={<CertificateDetail />}
+          />
         </Route>
-
 
         <Route
           path="/admin"
