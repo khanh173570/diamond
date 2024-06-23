@@ -28,6 +28,7 @@ import Calculate from './page/pageCustomer/Calculate/Calculate.jsx';
 import Check from './page/pageCustomer/Check';
 import { PersonalRequest } from './page/pageCustomer/PersonalRequest';
 import { ValuationOrderDetail } from './page/pageStaff/ValuationOrderDetail.jsx';
+import ServicePolicy from "./page/pageCustomer/ServicePolicy.jsx";
 // Admin Pages
 import { DashBoard } from './page/pageAdmin/dashBoard/dashBoard.jsx';
 import { ManageCustomer } from './page/pageAdmin/ManageCustomer/ManageCustomer.jsx';
@@ -71,7 +72,9 @@ function App() {
           />
           {/*  */}
           <Route path="calculate" element={<Calculate />} />
-          <Route path="check" element={<Check />} />
+          <Route path="checkdiamond" element={<CheckDiamond />} />
+          <Route path="inforcheck/:id" element={<DetailDiamondCheck />} />
+          <Route path="policy" element={<ServicePolicy />} />
           {/* Private */}
           <Route path="my-request" element={<PersonalRequest />} />
           <Route path="my-request/:requestId" element={<PersonalRequestDetail />} />
