@@ -59,4 +59,4 @@ jobs:
         with:
           app-name: 'kiemtra-deploy-swp'
           slot-name: 'Production'
-          package: .
+          package: '/published/**'
