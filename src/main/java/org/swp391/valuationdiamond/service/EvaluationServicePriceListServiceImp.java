@@ -8,6 +8,8 @@ import org.swp391.valuationdiamond.entity.EvaluationServicePriceList;
 import org.swp391.valuationdiamond.repository.EvaluationServicePriceListReponsitory;
 import org.swp391.valuationdiamond.repository.EvaluationServiceRepository;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -23,7 +25,21 @@ public class EvaluationServicePriceListServiceImp implements IEvaluationServiceP
 
     @Override
     public EvaluationServicePriceList createServicePriceList(EvaluationServicePriceListDTO evaluationServicePriceListDTO) {
-       return null;
+        EvaluationServicePriceList evaluationServicePriceList = new EvaluationServicePriceList();
+
+        long count = evaluationServicePriceListRepository.count();
+        String formattedCount = String.valueOf(count + 1);
+        String priceId = "SP" + formattedCount;
+
+        evaluationServicePriceList.setPriceList(priceId);
+        evaluationServicePriceList.setSizeFrom(evaluationServicePriceListDTO.getSizeFrom());
+        evaluationServicePriceList.setSizeTo(evaluationServicePriceListDTO.getSizeTo());
+        evaluationServicePriceList.setInitPrice(evaluationServicePriceListDTO.getInitPrice());
+        evaluationServicePriceList.setPriceUnit(evaluationServicePriceListDTO.getPriceUnit());
+        EvaluationService serviceId = evaluationServiceRepository.findById(evaluationServicePriceListDTO.getServiceId()).orElseThrow(() -> new RuntimeException("Service not found"));
+        evaluationServicePriceList.setServiceId(serviceId);
+
+       return evaluationServicePriceListRepository.save(evaluationServicePriceList);
     }
 
     @Override
