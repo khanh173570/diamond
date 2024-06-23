@@ -13,16 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup MSBuild
-        run: |
-          choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.MSBuildTools"
-          choco install visualstudio2019-workload-webbuildtools
-          export PATH="/c/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin:$PATH"
+      - name: Setup MSBuild path
+        uses: microsoft/setup-msbuild@v1
 
       - name: Setup NuGet
-        run: |
-          choco install nuget
-          export PATH="/c/ProgramData/chocolatey/bin:$PATH"
+        uses: NuGet/setup-nuget@v1
 
       - name: Restore NuGet packages
         run: nuget restore
