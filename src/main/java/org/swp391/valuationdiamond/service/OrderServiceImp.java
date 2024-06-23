@@ -157,6 +157,25 @@ public class OrderServiceImp {
 
         return ordersWithinMonth.size();
     }
+    public BigDecimal sumTotalPriceWithinMonth(int year, int month) {
+        YearMonth yearMonth = YearMonth.of(year, month);
+        LocalDate startDate = yearMonth.atDay(1);
+        LocalDate endDate = yearMonth.atEndOfMonth();
 
+        List<Order> allOrders = orderRepository.findAll();
+        List<OrderDetail> allOrderDetails = orderDetailRepository.findAll();
+
+        BigDecimal totalPriceSum = allOrderDetails.stream()
+                .filter(orderDetail -> {
+                    Date receivedDate = orderDetail.getReceivedDate();
+                    LocalDate receivedLocalDate = receivedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    return (receivedLocalDate.isEqual(startDate) || receivedLocalDate.isAfter(startDate)) &&
+                            (receivedLocalDate.isEqual(endDate) || receivedLocalDate.isBefore(endDate));
+                })
+                .map(orderDetail -> orderDetail.getOrderId().getTotalPrice())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return totalPriceSum;
+    }
 
     }

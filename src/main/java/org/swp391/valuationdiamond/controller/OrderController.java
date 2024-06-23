@@ -6,6 +6,7 @@ import org.swp391.valuationdiamond.dto.OrderDTO;
 import org.swp391.valuationdiamond.entity.Order;
 import org.swp391.valuationdiamond.service.OrderServiceImp;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -56,5 +57,10 @@ public class OrderController {
     @GetMapping("/countOrderCreated/{year}/{month}")
     public long countOrdersRegisteredWithinMonth(@PathVariable int year, @PathVariable int month) {
         return orderServiceImp.countOrdersRegisteredWithinMonth(year, month);
+    }
+
+    @GetMapping("/sumTotalPriceByOrderCreated/{year}/{month}")
+    public BigDecimal sumTotalPriceByOrderCreated(@PathVariable int year, @PathVariable int month) {
+        return orderServiceImp.sumTotalPriceWithinMonth(year, month);
     }
 }
