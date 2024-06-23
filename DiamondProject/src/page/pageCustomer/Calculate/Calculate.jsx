@@ -6,15 +6,15 @@ import { useNavigate } from "react-router-dom";
 
 function Calculate() {
   const [diamondCalculate, setDiamondCalculate] = useState({
-    diamondOrigin: "Natural",
+    isLabGrown: true ,
     shape: "Round",
-    carat: "",
+    caratWeight: "",
     clarity: "SI2",
     color: "K",
-    cut: "FAIR",
-    symmetry: "FAIR",
-    polish: "FAIR",
-    fluorescence: "VSTG",
+    cut: "Fair",
+    symmetry: "Fair",
+    polish: "Fair",
+    fluorescence: "Fair",
   });
 
   const navigate = useNavigate();
@@ -22,12 +22,10 @@ function Calculate() {
   const selectedOption = (type, item) => {
     setDiamondCalculate((currentItem) => ({ ...currentItem, [type]: item }));
   };
-
   const handleOnCalculate = () => {
     const queryParams = new URLSearchParams(diamondCalculate).toString();
     navigate(`/calculate?${queryParams}`);
   };
-
   return (
     <div>
       <div className="text-center">
@@ -40,10 +38,11 @@ function Calculate() {
             <div className="fs-3 fw-bold">Calculate Input</div>
             <label htmlFor="">DIAMOND ORIGIN</label>
             <div className="d-flex flex-wrap mb-4 button-group ">
+
               {["Natural", "Lab Grown"].map((value) => (
                 <Button
-                  key={value}
-                  onClick={() => selectedOption("diamondOrigin", value)}
+                  key={"Lab Grown" ? true : false}
+                  onClick={() => selectedOption("isLabGrown", value)}
                   style={{ width: "45%", marginLeft: "10px" }}
                   className={diamondCalculate.diamondOrigin === value ? "selected" : ""}
                 >
@@ -53,7 +52,7 @@ function Calculate() {
             </div>
             <label htmlFor="">SHAPE</label>
             <div className="d-flex flex-wrap mb-3 button-group">
-              {["Round", "Oval", "Emerald", "Pear", "Trillion", "Heart"].map((value) => (
+              {["Round", "Oval", "Emerald", "Pear", "Cushion", "Heart"].map((value) => (
                 <Button
                   key={value}
                   onClick={() => selectedOption("shape", value)}
@@ -109,7 +108,7 @@ function Calculate() {
             </div>
             <label htmlFor="">CUT</label>
             <div className="d-flex flex-wrap ms-2 mb-3 button-group">
-              {["FAIR", "GOOD", "V.GOOD", "EX."].map((cut) => (
+              {["Fair", "Good", "Very Good", "Excellent"].map((cut) => (
                 <Button
                   key={cut}
                   style={{ width: "23%", margin: "3px 2px", textAlign: "center" }}

@@ -16,7 +16,7 @@ export const CalculateOutput = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://www.stonealgo.com/diamond-price-calculator/calc?${queryParams}`
+          `http://localhost:8080/api/diamond/calculateFinalPrice${queryParams}`
         );
         const data = await response.json();
         setResult(data);
