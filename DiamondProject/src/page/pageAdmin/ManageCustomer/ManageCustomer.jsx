@@ -49,7 +49,7 @@ export const ManageCustomer = () => {
     e.preventDefault();
     const usernameHavedTrim = formAddCust.userId.trim();
     const passwordHavedTrim = formAddCust.password.trim();
-    
+
     if (formAddCust.password !== formAddCust.confirmPassword) {
       Swal.fire({
         title: 'Error!',
@@ -59,8 +59,8 @@ export const ManageCustomer = () => {
       });
       return;
     }
-    
-    if (usernameHavedTrim.length < 8 || passwordHavedTrim < 8) {
+
+    if (usernameHavedTrim.length < 8 || passwordHavedTrim.length < 8) {  
       Swal.fire({
         title: 'Error!',
         text: 'Username or password must be greater than 8 characters.',
@@ -69,7 +69,7 @@ export const ManageCustomer = () => {
       });
       return;
     }
-  
+
     const formSendAddNewCust = {
       userId: usernameHavedTrim,
       password: passwordHavedTrim,
@@ -77,7 +77,7 @@ export const ManageCustomer = () => {
       lastName: formAddCust.lastName,
       role: formAddCust.role,
     };
-    
+
     try {
       const response = await fetch('http://localhost:8080/user_request/create', {
         method: 'POST',
@@ -85,7 +85,7 @@ export const ManageCustomer = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formSendAddNewCust),
-    
+
       });
       console.log(formSendAddNewCust);
       if (response.ok) {
@@ -98,9 +98,9 @@ export const ManageCustomer = () => {
           icon: 'success',
           confirmButtonText: 'OK',
         });
-       
+
         handleClose();
-      } else if (response.status === 400) { 
+      } else if (response.status === 400) {
         Swal.fire({
           title: 'Error!',
           text: 'Username is already existed.',
