@@ -32,7 +32,7 @@ import { ValuationOrderDetail } from './page/pageStaff/ValuationOrderDetail.jsx'
 import { DashBoard } from './page/pageAdmin/dashBoard.jsx';
 import { ManageBlog } from './page/pageAdmin/ManageBlog';
 import { ManageCustomer } from './page/pageAdmin/ManageCustomer/ManageCustomer.jsx';
-import { ManageStaff } from './page/pageAdmin/ManageStaff';
+import { ManageStaff } from './page/pageAdmin/ManageStaff/ManageStaff.jsx';
 import { ManageSchedule } from './page/pageAdmin/ManageSchedule/ManageScheldule.jsx';
 import { ManageOrder } from './page/pageAdmin/ManageOrder';
 import { CreateNewCust } from './page/pageAdmin/CreateNewCust.jsx'
@@ -40,6 +40,7 @@ import { PersonalRequestDetail } from './page/pageCustomer/PersonalRequestDetail
 import { GuestGuard } from './guards/GuestGuard.jsx';
 import { AuthGuard } from './guards/AuthGuard.jsx';
 import { RoleBasedGuard } from './guards/RoleBasedGuard.jsx';
+import {ManageService} from './page/pageAdmin/MangeService/ManageService.jsx'
 
 
 function App() {
@@ -123,6 +124,7 @@ function App() {
           <Route path="manageschedule" element={<ManageSchedule />} />
           <Route path="manageorder" element={<ManageOrder />} />
           <Route path="createnewcust" element={<CreateNewCust />} />
+          <Route path="manageservice" element={<ManageService />} />
         </Route>
 
       </Routes>

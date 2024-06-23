@@ -50,7 +50,7 @@ function Login() {
                 localStorage.setItem('user', JSON.stringify(data));
                 if (data) {
                     if (data.role === 'customer') {
-                        navigate("/home");
+                        navigate("/");
                     } else if (data.role === 'consultant_staff') {
                         navigate("/staff");
                     } else if (data.role === 'admin') {

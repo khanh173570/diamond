@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import './ManageCustomer.css';
+import './ManageStaff.css';
 import { Modal, Button, Form, Pagination, Row, Col } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import formattedDate from '../../../utils/formattedDate/formattedDate';
 
-export const ManageCustomer = () => {
-  const [dataCustomer, setDataCustomer] = useState([]);
+export const ManageStaff = () => {
+  const [dataStaff, setDataStaff] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [formContainCustById, setFormContainCustById] = useState(null);
+  const [formContainStaffById, setFormContainStaffById] = useState(null);
   const [showFormInfor, setShowFormInfor] = useState(false);
-  const [formAddCust, setFormAddCust] = useState({
+  const [formAddStaff, setFormAddStaff] = useState({
     userId: "",
     password: "",
     confirmPassword: "",
@@ -17,7 +17,7 @@ export const ManageCustomer = () => {
     lastName: "",
     role: '',
   });
-  const [formEditCust, setFormEditCust] = useState(null);
+  const [formEditStaff, setFormEditStaff] = useState(null);
   const [originalData, setOriginalData] = useState(null);
   const [showEditForm, setShowEditForm] = useState(false);
 
@@ -30,27 +30,27 @@ export const ManageCustomer = () => {
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    setFormAddCust({
-      ...formAddCust,
+    setFormAddStaff({
+      ...formAddStaff,
       [name]: value,
     });
   };
 
   const handleEditOnChange = (e) => {
     const { name, value } = e.target;
-    setFormEditCust({
-      ...formEditCust,
+    setFormEditStaff({
+      ...formEditStaff,
       [name]: value,
     });
   };
 
-  // Save new customer
+  // Save new staff
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    const usernameHavedTrim = formAddCust.userId.trim();
-    const passwordHavedTrim = formAddCust.password.trim();
+    const usernameHavedTrim = formAddStaff.userId.trim();
+    const passwordHavedTrim = formAddStaff.password.trim();
     
-    if (formAddCust.password !== formAddCust.confirmPassword) {
+    if (formAddStaff.password !== formAddStaff.confirmPassword) {
       Swal.fire({
         title: 'Error!',
         text: 'Confirm Password failed.',
@@ -60,7 +60,7 @@ export const ManageCustomer = () => {
       return;
     }
     
-    if (usernameHavedTrim.length < 8 || passwordHavedTrim < 8) {
+    if (usernameHavedTrim.length < 8 || passwordHavedTrim.length < 8) {
       Swal.fire({
         title: 'Error!',
         text: 'Username or password must be greater than 8 characters.',
@@ -70,31 +70,30 @@ export const ManageCustomer = () => {
       return;
     }
   
-    const formSendAddNewCust = {
+    const formSendAddNewStaff = {
       userId: usernameHavedTrim,
       password: passwordHavedTrim,
-      firstName: formAddCust.firstName,
-      lastName: formAddCust.lastName,
-      role: formAddCust.role,
+      firstName: formAddStaff.firstName,
+      lastName: formAddStaff.lastName,
+      role: formAddStaff.role,
     };
-    
+      console.log(formSendAddNewStaff);
     try {
       const response = await fetch('http://localhost:8080/user_request/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formSendAddNewCust),
+        body: JSON.stringify(formSendAddNewStaff),
     
       });
-      console.log(formSendAddNewCust);
       if (response.ok) {
-        const newDataCustAdd = await response.json();
-        setDataCustomer([...dataCustomer, newDataCustAdd]);
-        setFilteredSelection([...dataCustomer, newDataCustAdd]);
+        const newStaff = await response.json();
+        setDataStaff([...dataStaff, newStaff]);
+        setFilteredSelection([...dataStaff, newStaff]);
         Swal.fire({
           title: 'Success!',
-          text: 'Add new customer successfully.',
+          text: 'Add new staff successfully.',
           icon: 'success',
           confirmButtonText: 'OK',
         });
@@ -116,65 +115,65 @@ export const ManageCustomer = () => {
     }
   };
 
-  // Fetch customer data
+  // Fetch staff data
   useEffect(() => {
-    const fetchDataCustomer = async () => {
+    const fetchDataStaff = async () => {
       try {
-        const response = await fetch('http://localhost:8080/user_request/getCustomer');
+        const response = await fetch('http://localhost:8080/user_request/getAllStaff');
         const data = await response.json();
-        setDataCustomer(data);
+        setDataStaff(data);
         setFilteredSelection(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-    fetchDataCustomer();
+    fetchDataStaff();
   }, []);
 
-  // Show customer information
-  const handleShowCustomerInfor = async (userId) => {
+  // Show staff information
+  const handleShowStaffInfor = async (userId) => {
     try {
       const response = await fetch(`http://localhost:8080/user_request/getAUser/${userId}`);
-      const customer = await response.json();
-      setFormContainCustById(customer);
+      const staff = await response.json();
+      setFormContainStaffById(staff);
       setShowFormInfor(true);
     } catch (error) {
       console.log('Error:', error);
     }
   };
 
-  const handleCloseCustomerInfor = () => {
+  const handleCloseStaffInfor = () => {
     setShowFormInfor(false);
-    setFormContainCustById(null);
+    setFormContainStaffById(null);
   };
 
-  // Show edit customer form
-  const handleShowEditCustomer = async (customerId) => {
+  // Show edit staff form
+  const handleShowEditStaff = async (staffId) => {
     try {
-      const response = await fetch(`http://localhost:8080/user_request/getAUser/${customerId}`);
-      const customer = await response.json();
-      setFormEditCust(customer);
-      setOriginalData(customer); // Store the original data
+      const response = await fetch(`http://localhost:8080/user_request/getAUser/${staffId}`);
+      const staff = await response.json();
+      setFormEditStaff(staff);
+      setOriginalData(staff); // Store the original data
       setShowEditForm(true);
     } catch (error) {
       console.log('Error:', error);
     }
   };
 
-  const handleCloseEditCustomer = () => {
+  const handleCloseEditStaff = () => {
     setShowEditForm(false);
-    setFormEditCust(null);
+    setFormEditStaff(null);
     setOriginalData(null);
   };
 
-  // Handle edit customer form submit
+  // Handle edit staff form submit
   const handleEditOnSubmit = async (e) => {
     e.preventDefault();
-    if (!formEditCust) return;
-
-    const passwordHavedTrim = formEditCust.password.trim();
-
+    if (!formEditStaff) return;
+  
+    const passwordHavedTrim = formEditStaff.password.trim();
+  
     if (passwordHavedTrim.length < 8) {
       Swal.fire({
         title: 'Error!',
@@ -184,31 +183,31 @@ export const ManageCustomer = () => {
       });
       return;
     }
-
+  
     try {
-      const response = await fetch(`http://localhost:8080/user_request/updateUser/${formEditCust.userId}`, {
+      const response = await fetch(`http://localhost:8080/user_request/updateUser/${formEditStaff.userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formEditCust),
+        body: JSON.stringify(formEditStaff),
       });
-
+  
       if (response.ok) {
-        const updatedCustomer = await response.json();
-        setDataCustomer((prevData) =>
-          prevData.map((cust) => (cust.userId === updatedCustomer.userId ? updatedCustomer : cust))
+        const updatedStaff = await response.json();
+        setDataStaff((prevData) =>
+          prevData.map((staff) => (staff.userId === updatedStaff.userId ? updatedStaff : staff))
         );
         setFilteredSelection((prevData) =>
-          prevData.map((cust) => (cust.userId === updatedCustomer.userId ? updatedCustomer : cust))
+          prevData.map((staff) => (staff.userId === updatedStaff.userId ? updatedStaff : staff))
         );
         Swal.fire({
           title: 'Success!',
-          text: 'Customer updated successfully.',
+          text: 'Staff updated successfully.',
           icon: 'success',
           confirmButtonText: 'OK',
         });
-        handleCloseEditCustomer();
+        handleCloseEditStaff();
       } else {
         console.log('Update failed');
       }
@@ -216,8 +215,8 @@ export const ManageCustomer = () => {
       console.log('Error:', error);
     }
   };
-  //delete cust
-  const handleDeleteCustomer = async (userId) => {
+  //delete staff
+  const handleDeleteStaff = async (userId) => {
     const confirmResult = await Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -235,11 +234,11 @@ export const ManageCustomer = () => {
         });
   
         if (response.ok) {
-          setDataCustomer(dataCustomer.filter(customer => customer.userId !== userId));
-          setFilteredSelection(filteredSelection.filter(customer => customer.userId !== userId));
+          setDataStaff(dataStaff.filter(staff => staff.userId !== userId));
+          setFilteredSelection(filteredSelection.filter(staff => staff.userId !== userId));
           Swal.fire(
             'Deleted!',
-            'Customer has been deleted.',
+            'Staff has been deleted.',
             'success'
           );
         } else {
@@ -274,10 +273,9 @@ export const ManageCustomer = () => {
 
   // Handle search
   const handleSearch = () => {
-    const filteredData = dataCustomer.filter((item) => item.userId.toString().includes(searchTerm));
+    const filteredData = dataStaff.filter((item) => item.userId.toString().includes(searchTerm));
     setFilteredSelection(filteredData);
   };
-
     return (
       <div className='container'>
         <div className='justify-content-first d-flex my-2 p-4'>
@@ -288,7 +286,7 @@ export const ManageCustomer = () => {
             className='my-3'
             alt='Logo'
           />
-          <h4 className='p-4'>Manage Customer</h4>
+          <h4 className='p-4'>Manage Staff</h4>
           <Button onClick={handleShow} className="nav-link h-100 my-4" >
             <img
               src='/src/assets/assetsAdmin/plus.svg'
@@ -329,21 +327,21 @@ export const ManageCustomer = () => {
         <div className="customer-list fs-5">
           <div>
             <div className='row  mx-2 my-2'>
-              <p className='col-md-2'>CustomerID</p>
-              <p className='col-md-3'>CustName</p>
+              <p className='col-md-2'>StaffID</p>
+              <p className='col-md-3'>StaffName</p>
               <p className='col-md-3'>Phone</p>
               <p className='col-md-2'>Email</p>
             </div>
           </div>
-          {currentPosts.map((dataCust, index) => (
-            <div key={`customer_${dataCust.userId}_${index}`} className="customer-card my-4 border hover">
+          {currentPosts.map((dataStaff, index) => (
+            <div key={`customer_${dataStaff.userId}_${index}`} className="customer-card my-4 border hover">
               <div className="row">
-                <p className='col-md-2'> {dataCust.userId}</p>
-                <p className='col-md-3'>{dataCust.firstName +' '+ dataCust.lastName}</p>
-                <p className='col-md-3'> {dataCust.email}</p>
-                <p className='col-md-2'>{dataCust.phoneNumber}</p>
+                <p className='col-md-2'> {dataStaff.userId}</p>
+                <p className='col-md-3'>{dataStaff.firstName +' '+ dataStaff.lastName}</p>
+                <p className='col-md-3'> {dataStaff.email}</p>
+                <p className='col-md-2'>{dataStaff.phoneNumber}</p>
                 <div className='col-md-2 d-flex justify-content-around'>
-                  <Button onClick={() => handleShowCustomerInfor(dataCust.userId)} className='nav-link'>
+                  <Button onClick={() => handleShowStaffInfor(dataStaff.userId)} className='nav-link'>
                     <img
                       src='/src/assets/assetsAdmin/eye.svg'
                       width='20'
@@ -353,7 +351,7 @@ export const ManageCustomer = () => {
                     
                     />
                   </Button>
-                  <Button onClick={() => handleShowEditCustomer(dataCust.userId)} className="nav-link">
+                  <Button onClick={() => handleShowEditStaff(dataStaff.userId)} className="nav-link">
                     <img
                       src='/src/assets/assetsAdmin/pen.svg'
                       width='20'
@@ -362,7 +360,7 @@ export const ManageCustomer = () => {
                       alt='Edit'
                     />
                   </Button>
-                  <Button className="nav-link" onClick={() => handleDeleteCustomer(dataCust.userId)}>
+                  <Button className="nav-link" onClick={() => handleDeleteStaff(dataStaff.userId)}>
                     <img
                       src='/src/assets/assetsAdmin/trash.svg'
                       width='20'
@@ -407,7 +405,7 @@ export const ManageCustomer = () => {
                     id='firstName'
                     type='text'
                     name='firstName'
-                    value={formAddCust.firstName}
+                    value={formAddStaff.firstName}
                     className='mx-2'
                     onChange={handleOnChange}
                     style={{ width: "70%", borderRadius: "5px" }}
@@ -420,7 +418,7 @@ export const ManageCustomer = () => {
                     id='lastName'
                     type='text'
                     name='lastName'
-                    value={formAddCust.lastName}
+                    value={formAddStaff.lastName}
                     className='mx-2'
                     onChange={handleOnChange}
                     style={{ width: "70%", borderRadius: "5px" }}
@@ -434,7 +432,7 @@ export const ManageCustomer = () => {
                   id='userId'
                   type='text'
                   name='userId'
-                  value={formAddCust.userId}
+                  value={formAddStaff.userId}
                   className='mx-2'
                   onChange={handleOnChange}
                   style={{ width: "70%", borderRadius: "5px" }}
@@ -447,7 +445,7 @@ export const ManageCustomer = () => {
                   id='password'
                   type='password'
                   name='password'
-                  value={formAddCust.password}
+                  value={formAddStaff.password}
                   className='mx-2'
                   onChange={handleOnChange}
                   style={{ width: "70%", borderRadius: "5px" }}
@@ -460,14 +458,26 @@ export const ManageCustomer = () => {
                   id='confirmPassword'
                   type='password'
                   name='confirmPassword'
-                  value={formAddCust.confirmPassword}
+                  value={formAddStaff.confirmPassword}
                   className='mx-2'
                   onChange={handleOnChange}
                   style={{ width: "50%", borderRadius: "5px" }}
                   required
                 />
               </div>
-             
+              <div className='form-group d-flex'>
+                    <Form.Label className='my-2'> Role : </Form.Label>
+                    <Form.Select name='role' 
+                                  value={formAddStaff.role}
+                                  onChange={handleOnChange}
+                                  className='w-50 mx-3'
+                                  required >
+                                <option value=''>Select Role</option>
+                                <option value='evaluation_staff'>Evaluation Staff</option>
+                                <option value='consultant_staff'>Consultant Staff</option>    
+
+                    </Form.Select>
+              </div>
               <div className='form-button text-center d-flex justify-content-end'>
                 <button type="submit" className='p-2 mx-2' style={{ width: "70px", backgroundColor: "#CCFBF0" }}>Save</button>
               </div>
@@ -475,8 +485,8 @@ export const ManageCustomer = () => {
           </Modal.Body>
         </Modal>
                   {/* Modal show Infor Customer */}
-        {formContainCustById && (
-            <Modal show={showFormInfor} onHide={handleCloseCustomerInfor}  className='p-5' size='lg'>
+        {formContainStaffById && (
+            <Modal show={showFormInfor} onHide={handleCloseStaffInfor}  className='p-5' size='lg'>
                 <Modal.Header closeButton>
           <img
             src='/src/assets/assetsAdmin/logo.png'
@@ -485,7 +495,7 @@ export const ManageCustomer = () => {
             alt='Logo'
             className=''
           />
-          <Modal.Title className='w-100 d-flex justify-content-center'>INFORMATION OF CUSTOMER</Modal.Title>
+          <Modal.Title className='w-100 d-flex justify-content-center'>INFORMATION OF Staff</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex flex-column align-items-center">
@@ -499,7 +509,7 @@ export const ManageCustomer = () => {
                     </div>
                     <div>
                             <div className='container d-flex'>
-                          <h4 className='p-4'> {formContainCustById.firstName+' '+ formContainCustById.lastName}</h4>
+                          <h4 className='p-4'> {formContainStaffById.firstName+' '+ formContainStaffById.lastName}</h4>
                           <p className='p-4 my-1'>
                           <img
                               src='/src/assets/assetsAdmin/map.svg'
@@ -508,14 +518,14 @@ export const ManageCustomer = () => {
                               alt='Logo'
                               className=''
                             />
-                              {formContainCustById.address}</p>
+                              {formContainStaffById.address}</p>
                               </div>
                         <div className='container'>
-                        <p className='mx-4'><strong>ID:</strong> {formContainCustById.userId} <strong className='mx-5'></strong><strong>Role:</strong> {formContainCustById.role} </p>
-                        <p className='mx-4'><strong>Phone:</strong> {formContainCustById.phoneNumber}</p>
-                        <p className='mx-4'><strong>Email:</strong> {formContainCustById.email}</p>
-                        <p className='mx-4'><strong>Password:</strong> {formContainCustById.password}</p>
-                        <p className='mx-4'><strong>Birthday:</strong> {formattedDate(formContainCustById.birthday)}</p>
+                        <p className='mx-4'><strong>ID:</strong> {formContainStaffById.userId} <strong className='mx-4'></strong><strong>Role:</strong> {formContainStaffById.role} </p>
+                        <p className='mx-4'><strong>Phone:</strong> {formContainStaffById.phoneNumber}</p>
+                        <p className='mx-4'><strong>Email:</strong> {formContainStaffById.email}</p>
+                        <p className='mx-4'><strong>Password:</strong> {formContainStaffById.password}</p>
+                        <p className='mx-4'><strong>Birthday:</strong> {formattedDate(formContainStaffById.birthday)}</p>
                         </div>
                 </div>
                 </div>
@@ -525,8 +535,8 @@ export const ManageCustomer = () => {
       </Modal>
         )}
                   {/* Modal Edit Customer */}
-        {formEditCust && (
-          <Modal show={showEditForm} onHide={handleCloseEditCustomer} className='p-5' size='lg'>
+        {formEditStaff && (
+          <Modal show={showEditForm} onHide={handleCloseStaffInfor} className='p-5' size='lg'>
             <Modal.Header closeButton>
               <img
                 src='/src/assets/assetsAdmin/logo.png'
@@ -553,7 +563,7 @@ export const ManageCustomer = () => {
                       id='firstName'
                       type='text'
                       name='firstName'
-                      value={formEditCust.firstName}
+                      value={formEditStaff.firstName}
                       className='mx-2'
                       onChange={handleEditOnChange}
                       style={{ width: "70%", borderRadius: "5px" }}
@@ -566,7 +576,7 @@ export const ManageCustomer = () => {
                       id='lastName'
                       type='text'
                       name='lastName'
-                      value={formEditCust.lastName}
+                      value={formEditStaff.lastName}
                       className='mx-2'
                       onChange={handleEditOnChange}
                       style={{ width: "70%", borderRadius: "5px" }}
@@ -580,7 +590,7 @@ export const ManageCustomer = () => {
                     id='role'
                     type='text'
                     name='role'
-                    value={formEditCust.role}
+                    value={formEditStaff.role}
                     className='mx-2'
                     onChange={handleEditOnChange}
                     style={{ width: "70%", borderRadius: "5px" }}
@@ -593,7 +603,7 @@ export const ManageCustomer = () => {
                     id='password'
                     type='password'
                     name='password'
-                    value={formEditCust.password}
+                    value={formEditStaff.password}
                     className='mx-2'
                     onChange={handleEditOnChange}
                     style={{ width: "70%", borderRadius: "5px" }}
@@ -606,7 +616,7 @@ export const ManageCustomer = () => {
                     id='email'
                     type='email'
                     name='email'
-                    value={formEditCust.email}
+                    value={formEditStaff.email}
                     className='mx-2'
                     onChange={handleEditOnChange}
                     style={{ width: "70%", borderRadius: "5px" }}
@@ -619,7 +629,7 @@ export const ManageCustomer = () => {
                     id='phoneNumber'
                     type='text'
                     name='phoneNumber'
-                    value={formEditCust.phoneNumber}
+                    value={formEditStaff.phoneNumber}
                     className='mx-2'
                     onChange={handleEditOnChange}
                     style={{ width: "70%", borderRadius: "5px" }}
@@ -632,7 +642,7 @@ export const ManageCustomer = () => {
                     id='address'
                     type='text'
                     name='address'
-                    value={formEditCust.address}
+                    value={formEditStaff.address}
                     className='mx-2'
                     onChange={handleEditOnChange}
                     style={{ width: "70%", borderRadius: "5px" }}
@@ -645,7 +655,7 @@ export const ManageCustomer = () => {
                     id='birthday'
                     type='text'
                     name='birthday'
-                    value={formEditCust.birthday}
+                    value={formEditStaff.birthday}
                     className='mx-2'
                     onChange={handleEditOnChange}
                     style={{ width: "70%", borderRadius: "5px" }}

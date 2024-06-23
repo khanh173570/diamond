@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
-import { GeneratePDF } from './GeneratePDF';
 import { useLocation } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import { confirmAlert } from 'react-confirm-alert';
 import updateById from '../../../utils/updateAPI/updateById';
 import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { confirmAlert } from 'react-confirm-alert';
+
 export const ValuationApplication = () => {
     const location = useLocation();
     const product = location.state.product;

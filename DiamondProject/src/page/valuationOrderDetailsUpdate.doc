@@ -14,6 +14,8 @@ export const ValuationOrderDetailUpdate = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [image, setImage] = useState(null);
+  const [url, setUrl] = useState(product.img);
+
   const [formEdit, setFormEdit] = useState({
     status: product.status,
     isDiamond: product.isDiamond,
@@ -22,8 +24,9 @@ export const ValuationOrderDetailUpdate = () => {
 
   const saveImage = async () => {
     if (!image) {
-      return null;
+      return toast.error("Please upload an image");
     }
+
     const data = new FormData();
     data.append("file", image);
     data.append("upload_preset", "diamondValuation");
@@ -38,11 +41,15 @@ export const ValuationOrderDetailUpdate = () => {
         }
       );
       const cloudData = await res.json();
-      return cloudData.url;
+      setUrl(cloudData.url);
+      setFormEdit((currentState) => ({
+        ...currentState,
+        img: cloudData.url,
+      }));
+      toast.success("Image uploaded successfully");
     } catch (error) {
       console.log(error);
       toast.error("Error uploading image");
-      return null;
     }
   };
 
@@ -51,6 +58,7 @@ export const ValuationOrderDetailUpdate = () => {
       try {
         const response = await fetch(`${API}/${orderDetailId}`);
         const data = await response.json();
+
         setFormEdit({
           status: data.status,
           isDiamond: data.isDiamond,
@@ -65,20 +73,24 @@ export const ValuationOrderDetailUpdate = () => {
     fetchData();
   }, [orderDetailId]);
 
+  const handleUploadImage = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      let img = e.target.files[0];
+      setImage(img);
+      setFormEdit((currentState) => ({
+        ...currentState,
+        img: URL.createObjectURL(img),
+      }));
+    }
+  };
+
   const handleFormChange = (field, value) => {
     setFormEdit((currentState) => ({ ...currentState, [field]: value }));
   };
 
   const handleSaveChanges = async () => {
-    let imageUrl = formEdit.img;
     if (image) {
-      imageUrl = await saveImage();
-      if (imageUrl) {
-        setFormEdit((currentState) => ({
-          ...currentState,
-          img: imageUrl,
-        }));
-      }
+      await saveImage();
     }
 
     try {
@@ -87,7 +99,7 @@ export const ValuationOrderDetailUpdate = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...formEdit, img: imageUrl }),
+        body: JSON.stringify(formEdit),
       });
       const data = await response.json();
       if (data) {
@@ -189,7 +201,7 @@ export const ValuationOrderDetailUpdate = () => {
                   <input
                     type="file"
                     id="upload-img"
-                    onChange={(e) => setImage(e.target.files[0])}
+                    onChange={handleUploadImage}
                     accept=".jpg, .jpeg, .png"
                     style={{ display: "none" }}
                   />
