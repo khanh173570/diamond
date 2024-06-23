@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.swp391.valuationdiamond.dto.DiamondPriceDTO;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -157,7 +158,7 @@ public class DiamondPriceServiceImp {
 
         return lowerPrice.add((upperPrice.subtract(lowerPrice))
                 .multiply(caratWeight.subtract(lowerKey))
-                .divide(upperKey.subtract(lowerKey), BigDecimal.ROUND_HALF_UP));
+                .divide(upperKey.subtract(lowerKey), RoundingMode.HALF_UP));
     }
 
     public BigDecimal getPricePerCarat(String shape, BigDecimal caratWeight, boolean isLabGrown) {

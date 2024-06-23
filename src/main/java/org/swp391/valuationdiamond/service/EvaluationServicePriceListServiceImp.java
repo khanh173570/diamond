@@ -36,20 +36,12 @@ public class EvaluationServicePriceListServiceImp implements IEvaluationServiceP
     public List<EvaluationServicePriceList> getAllServicePriceList() {
         return evaluationServicePriceListRepository.findAll();
     }
-
-    //    public double calculateServicePrice(String serviceId, float sampleSize) {
-//        EvaluationService service = evaluationServiceRepository.findById(serviceId)
-//                .orElseThrow(() -> new RuntimeException("Service not found"));
-//
-//        // Assuming that there is only one price list for simplicity.
-//        // Adjust if multiple price lists need to be handled.
-//        EvaluationServicePriceList priceList = service.getServicePriceList().stream()
-//                .filter(pl -> sampleSize >= pl.getSizeFrom() && (pl.getSizeTo() == 0 || sampleSize < pl.getSizeTo()))
-//                .findFirst()
-//                .orElseThrow(() -> new RuntimeException("No price list available for the given sample size"));
-//
-//        return priceList.calculateServicePrice(sampleSize);
-//    }
+//======================================Calculate SampleSize===========================================
+     double calculateServicePrice(double initPrice, float size, float sizeFrom) {
+        double priceUnit = size < 12 ? 0 : 1200000;
+        double unitPrice = initPrice + (size - sizeFrom) * priceUnit;
+        return unitPrice;
+    }
     @Override
     public double calculateServicePrice(String serviceId, float size) {
         if (size <= 2) {
@@ -65,7 +57,10 @@ public class EvaluationServicePriceListServiceImp implements IEvaluationServiceP
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("No price list available for the given sample size"));
 
-        return evaluationServicePriceList.calculateServicePrice(size);
+        double initPrice = evaluationServicePriceList.getInitPrice();
+        float sizeFrom = evaluationServicePriceList.getSizeFrom();
+
+        return calculateServicePrice(initPrice, size, sizeFrom);
     }
 
 

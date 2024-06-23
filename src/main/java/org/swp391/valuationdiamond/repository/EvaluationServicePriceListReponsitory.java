@@ -13,4 +13,5 @@ import java.util.List;
 public interface EvaluationServicePriceListReponsitory extends JpaRepository<EvaluationServicePriceList, String> {
     //    List<EvaluationServicePriceList> getEvaluationServicePriceListByServiceId(EvaluationService serviceId);
     List<EvaluationServicePriceList> findByServiceId(EvaluationService serviceId);
+
 }
