@@ -41,7 +41,6 @@ export const ValuationPDF = ({ result }) => {
     value: {
       marginLeft: 'auto',
       textAlign: 'right'
-      
     },
     wrap: {
       flexDirection: 'row',

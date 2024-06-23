@@ -100,7 +100,7 @@ export const ManageStaff = () => {
 
        
         handleClose();
-      } else if (response.status === 409) { 
+      } else if (response.status === 400) { 
         Swal.fire({
           title: 'Error!',
           text: 'Username is already existed.',
@@ -377,7 +377,7 @@ export const ManageStaff = () => {
 
             <Pagination className='d-flex justify-content-center'>{items}</Pagination>
         </div>
-                          {/* Modal Add  New Cust */}
+                         
         <Modal show={showForm} onHide={handleClose} className='p-5' size='lg'>
           <Modal.Header closeButton className='mx-4'>
           <img
@@ -387,7 +387,7 @@ export const ManageStaff = () => {
                     alt='Logo'
                     className=''
                   />
-            <Modal.Title className="d-flex justify-content-center w-100">Add New Customer</Modal.Title>
+            <Modal.Title className="d-flex justify-content-center w-100">Add New Staff</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form

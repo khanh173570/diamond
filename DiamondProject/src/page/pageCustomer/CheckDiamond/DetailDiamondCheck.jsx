@@ -66,15 +66,14 @@ const DetailDiamondCheck = () => {
           marginTop: "20px",
         }}
       >
-        <Form.Label style={{ marginRight: "10px", marginBottom: "0", width: "10%" }}>
+        <Form.Label  style={{ marginRight: "10px", marginBottom: "0", width: "10%" }}>
           Assess ID
         </Form.Label>
-        <Form.Control type="text" readOnly value={diamond.assess_id} style={{ flex: "1" }} />
+        <Form.Control type="text" readOnly value={diamond.assessId} style={{ flex: "1" }} />
       </Form.Group>
 
       <Col md="8">
         <Card style={{ marginBottom: "150px", marginTop: "150px" }}>
-          <Card.Header>Diamond Details - Assess ID: {assess_id}</Card.Header>
           <Card.Body>
             <Form>
               <Row>
@@ -89,7 +88,7 @@ const DetailDiamondCheck = () => {
                         <Form.Control
                           type="text"
                           readOnly
-                          value={diamond.assess_origin}
+                          value={diamond.assessOrigin}
                         />
                       </Form.Group>
                       <Form.Group
@@ -100,7 +99,7 @@ const DetailDiamondCheck = () => {
                         <Form.Control
                           type="text"
                           readOnly
-                          value={diamond.assess_measurement}
+                          value={diamond.assessMeasurement}
                         />
                       </Form.Group>
                       <Form.Group
@@ -124,7 +123,7 @@ const DetailDiamondCheck = () => {
                         <Form.Control
                           type="text"
                           readOnly
-                          value={diamond.assess_cut}
+                          value={diamond.assessCut}
                         />
                       </Form.Group>
                       <Form.Group
@@ -135,7 +134,7 @@ const DetailDiamondCheck = () => {
                         <Form.Control
                           type="text"
                           readOnly
-                          value={diamond.assess_shape_cut}
+                          value={diamond.assessShapeCut}
                         />
                       </Form.Group>
                       <Form.Group
@@ -146,7 +145,7 @@ const DetailDiamondCheck = () => {
                         <Form.Control
                           type="text"
                           readOnly
-                          value={diamond.assess_color}
+                          value={diamond.assessColor}
                         />
                       </Form.Group>
                     </Col>
@@ -159,7 +158,7 @@ const DetailDiamondCheck = () => {
                         <Form.Control
                           type="text"
                           readOnly
-                          value={diamond.assess_clarity}
+                          value={diamond.assessClarity}
                         />
                       </Form.Group>
                       <Form.Group
@@ -215,7 +214,7 @@ const DetailDiamondCheck = () => {
               marginBottom: "15px",
             }}
           >
-            Hôm nay là: {formattedDate}
+           Today is: {formattedDate}
           </div>
         </Card>
       </Col>

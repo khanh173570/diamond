@@ -72,7 +72,7 @@ export const ManageService = () => {
     const handleOnServiceDescriptionChange = (serviceId) => {
         const fetchUpdateData = async() => {
             try {
-                await fetch(`/api/service/${serviceId}`, {
+                await fetch(`http://localhost:8080/service/update/${serviceId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json', 
@@ -103,7 +103,7 @@ export const ManageService = () => {
     const handleAddNewService = async(e) => {
         e.preventDefault();
         try { 
-            const response = await fetch('http://localhost:8080/service/addService', {
+            const response = await fetch('http://localhost:8080/service/create', {
                 method : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -208,14 +208,11 @@ export const ManageService = () => {
             });
             return;
         }
-    
         setformAddNewServicePriceList({
             ...formAddNewServicePriceList,
             [name]: value.trim(), // Trimmed value is stored
         });
     };
-    
-    
     // handle submit for saving new price list
     const handleSubmitSaveNewPriceList = async (e) => {
         e.preventDefault();
@@ -282,7 +279,7 @@ export const ManageService = () => {
     const handleSavePriceList = (priceList) => {
         const fetchUpdatePriceList = async () => {
             try {
-                await fetch(`http://localhost:8080/servicePriceList/${priceList}`, {
+                await fetch(`http://localhost:8080/service_price_list/updateServicePriceListById/${priceList}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -541,7 +538,7 @@ export const ManageService = () => {
                                             {editPriceRowId === price.priceList ? (
                                                 <Form.Control
                                                     type="text"
-                                                    value={editPriceList[price.id]?.sizeFrom || price.sizeFrom}
+                                                    value={editPriceList.sizeFrom}
                                                     onChange={(e) => handleEditPriceList(price.priceList, 'sizeFrom', e.target.value)}
                                                 />
                                             ) : (

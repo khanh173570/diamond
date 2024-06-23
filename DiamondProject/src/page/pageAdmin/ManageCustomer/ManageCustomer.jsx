@@ -15,7 +15,7 @@ export const ManageCustomer = () => {
     confirmPassword: "",
     firstName: "",
     lastName: "",
-    role: '',
+    role: 'customer',
   });
   const [formEditCust, setFormEditCust] = useState(null);
   const [originalData, setOriginalData] = useState(null);
@@ -98,10 +98,9 @@ export const ManageCustomer = () => {
           icon: 'success',
           confirmButtonText: 'OK',
         });
-
        
         handleClose();
-      } else if (response.status === 409) { 
+      } else if (response.status === 400) { 
         Swal.fire({
           title: 'Error!',
           text: 'Username is already existed.',
