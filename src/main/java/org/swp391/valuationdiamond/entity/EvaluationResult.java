@@ -1,7 +1,12 @@
 package org.swp391.valuationdiamond.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -74,7 +79,7 @@ public class EvaluationResult {
 //  @JoinColumn(name = "assess_id", referencedColumnName = "assess_id")
 //  DiamondAssessment assessId;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "order_de_id", referencedColumnName = "order_de_id")
   OrderDetail orderDetailId;
 }
