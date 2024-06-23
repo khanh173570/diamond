@@ -14,6 +14,7 @@ export const CreateReceipt = () => {
   const [reviewMode, setReviewMode] = useState(false);
   const [orderDate, setOrderDate] = useState("");
   const [rows, setRows] = useState([]);
+  const [sizeError, setSizeError] = useState(""); // State để lưu thông tin lỗi size
   const location = useLocation();
   const { userRequestDetail } = location.state;
   const componentRef = useRef();
@@ -45,6 +46,14 @@ export const CreateReceipt = () => {
     initializeOrderDate();
   }, []);
 
+  useEffect(() => {
+    // Set customer name and phone number from userRequestDetail
+    if (userRequestDetail) {
+      setCustName(userRequestDetail.guestName);
+      setPhone(userRequestDetail.phoneNumber);
+    }
+  }, [userRequestDetail]);
+
   const formatDate = (dateTime) => {
     const padZero = (num) => (num < 10 ? `0${num}` : num);
     const month = padZero(dateTime.getMonth() + 1);
@@ -63,6 +72,15 @@ export const CreateReceipt = () => {
       rowIndex === index ? { ...row, [field]: numericValue } : row
     );
     setRows(updatedRows);
+
+    // Kiểm tra size có hợp lệ không
+    if (field === "size") {
+      if (isNaN(numericValue) || parseFloat(numericValue) <= 2) {
+        setSizeError("Size must be a number and greater than or equal to 2");
+      } else {
+        setSizeError(""); // Xóa thông báo lỗi nếu size hợp lệ
+      }
+    }
 
     if (field === "size" && updatedRows[index].serviceId && numericValue) {
       const unitPrice = await fetchUnitPrice(updatedRows[index].serviceId, numericValue);
@@ -155,6 +173,19 @@ export const CreateReceipt = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
+    // Kiểm tra xem có lỗi size không
+    if (sizeError) {
+      // Hiển thị thông báo lỗi
+      Toastify({
+        text: sizeError,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "red",
+      }).showToast();
+      return; // Dừng lại nếu có lỗi size
+    }
+
     const dataToSend = {
       userId:user.userId,
       customerName: userRequestDetail.guestName,
@@ -218,7 +249,7 @@ export const CreateReceipt = () => {
               </div>
             </div>
             <div className="print-content">
-              <Table striped bordered className="fs-5 print-table">
+              <Table striped bordered className="fs-5 print-table" style={{width:"50%", marginLeft:"250px"}}>
                 <thead className="text-center">
                   <tr>
                     <th>Type Service</th>
@@ -243,6 +274,10 @@ export const CreateReceipt = () => {
                             handleRowChange(index, "size", e.target.value)
                           }
                         />
+                        {/* Hiển thị thông báo lỗi size */}
+                        {index === 0 && sizeError && (
+                          <span className="text-danger">{sizeError}</span>
+                        )}
                       </td>
                       <td>{row.unitPrice}</td>
                     </tr>
@@ -351,6 +386,10 @@ export const CreateReceipt = () => {
                         value={row.size}
                         onChange={(e) => handleRowChange(index, "size", e.target.value)}
                       />
+                      {/* Hiển thị thông báo lỗi size */}
+                      {index === 0 && sizeError && (
+                        <span className="text-danger">{sizeError}</span>
+                      )}
                     </td>
                     <td>
                       <input type="text" className="form-control" value={row.unitPrice} readOnly />
@@ -383,4 +422,3 @@ export const CreateReceipt = () => {
 };
 
 export default CreateReceipt;
-//khanhtran
