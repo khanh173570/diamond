@@ -26,8 +26,9 @@ const AdminSideBar = () => {
                     </div>
                 )}
                 <NavLink className='nav-link admin mx-2' to="/admin/manageschedule">Manage Schedule</NavLink>
-                <NavLink className='nav-link admin mx-2' to="/admin/manageblog">Manage Blog</NavLink>
-                <NavLink className='nav-link admin mx-2' to="/admin/manageorder">Manage Order</NavLink>
+            
+    
+                <NavLink className='nav-link admin mx-2' to="/admin/manageservice">Manage Service</NavLink>
             </Nav>
         </Navbar>
     );

@@ -7,18 +7,17 @@ import CustomerApp from "./layout/CustomerApp";
 import AdminApp from "./layout/AdminApp.jsx";
 import ValuationApp from "./layout/ValuationApp.jsx";
 // Staff Pages
+import HomeStaff from "./page/pageStaff/HomeStaff.jsx";
 import { UserRequest } from "./page/pageStaff/Request/UserRequest.jsx";
 import { ViewReciptList } from "./page/pageStaff/ViewReciptListApplication/ViewReciptList.jsx";
 import { CreateReceipt } from "./page/pageStaff/ReciptApplication/CreateRecipt.jsx";
-import CreateCommitment from "./page/pageStaff/Commitment/CreateCommitment.jsx";
+import CreateCommitment from "./page/pageStaff/Commitment/CreateCommitment";
 import { PersonalInformation } from "./page/pageStaff/PersonalInformation";
 import { ValuationApplication } from "./page/pageValuationStaff/ValuationApplication/ValuationApplication.jsx";
 import { ReceiptDetails } from "./page/pageStaff/ReciptApplication/ReciptDetails.jsx";
 import { ValuationList } from "./page/pageValuationStaff/ValuationApplication/ValuationList.jsx";
 import { ValuationOrderDetailUpdate } from "./page/pageStaff/ValuationOrderDetailUpdate.jsx";
 import { ViewCertificate } from "./page/pageStaff/ReciptApplication/ViewCertificate.jsx";
-import { MyCertificateList } from "./page/pageValuationStaff/ValuationApplication/MyCertificateList.jsx";
-import { CertificateDetail } from "./page/pageValuationStaff/ValuationApplication/CertificateDetail.jsx";
 // Customer Pages
 import HomeCustomer from "./page/pageCustomer/HomeCustomer.jsx";
 import Signup from "./page/pageCustomer/Signup";
@@ -29,40 +28,48 @@ import Calculate from "./page/pageCustomer/Calculate/Calculate.jsx";
 import Check from "./page/pageCustomer/Check";
 import { PersonalRequest } from "./page/pageCustomer/PersonalRequest";
 import { ValuationOrderDetail } from "./page/pageStaff/ValuationOrderDetail.jsx";
-import CheckDiamond from "./page/pageCustomer/CheckDiamond/CheckDiamond.jsx";
-import DetailDiamondCheck from "./page/pageCustomer/CheckDiamond/DetailDiamondCheck.jsx";
-
 // Admin Pages
-import { DashBoard } from "./page/pageAdmin/dashBoard.jsx";
-import { ManageBlog } from "./page/pageAdmin/ManageBlog";
+import { DashBoard } from "./page/pageAdmin/dashBoard/dashBoard.jsx";
 import { ManageCustomer } from "./page/pageAdmin/ManageCustomer/ManageCustomer.jsx";
-import { ManageStaff } from "./page/pageAdmin/ManageStaff";
+import { ManageStaff } from "./page/pageAdmin/ManageStaff/ManageStaff.jsx";
 import { ManageSchedule } from "./page/pageAdmin/ManageSchedule/ManageScheldule.jsx";
-import { ManageOrder } from "./page/pageAdmin/ManageOrder";
-import { CreateNewCust } from "./page/pageAdmin/CreateNewCust.jsx";
+
 import { PersonalRequestDetail } from "./page/pageCustomer/PersonalRequestDetail.jsx";
 import { GuestGuard } from "./guards/GuestGuard.jsx";
 import { AuthGuard } from "./guards/AuthGuard.jsx";
 import { RoleBasedGuard } from "./guards/RoleBasedGuard.jsx";
-import CommitmentList from "./page/pageStaff/Commitment/CommitmentList.jsx";
-import CommitmentDetail from "./page/pageStaff/Commitment/CommitmentDetail.jsx";
+import { ManageService } from "./page/pageAdmin/MangeService/ManageService.jsx";
 import { CustomerGuard } from "./guards/CustomerGuard.jsx";
+
+
 function App() {
   return (
     <BrowserRouter>
+    
       <Routes>
-        {/* ROLES: CUSTOMER OR GUEST */}
-        <Route
-          element={
-            <CustomerGuard>
-              <CustomerApp />
-            </CustomerGuard>
-          }
-        >
-          <Route path="/" element={<HomeCustomer />} />
+        <Route path="/" element={<CustomerApp />}>
+          <Route index element={<HomeCustomer />} />
+          <Route
+            path="login"
+            element={
+              <GuestGuard>
+                <Login />
+              </GuestGuard>
+            }
+          />
+          <Route
+            path="signup"
+            element={
+              <GuestGuard>
+                <Signup />
+              </GuestGuard>
+            }
+          />
           <Route path="blog" element={<Blog />} />
           <Route path="contact" element={<Contact />} />
         </Route>
+
+
         <Route
           element={
             <CustomerGuard>
@@ -74,7 +81,10 @@ function App() {
         >
           <Route path="evaluationservice" element={<EvaluationServicePage />} />
           <Route path="my-request" element={<PersonalRequest />} />
-          <Route path="my-request/:requestId" element={<PersonalRequestDetail />}/>
+          <Route
+            path="my-request/:requestId"
+            element={<PersonalRequestDetail />}
+          />
         </Route>
 
         {/* ROLE:GUEST*/}
@@ -123,16 +133,10 @@ function App() {
           />
           <Route path="create-receipt" element={<CreateReceipt />} />
           <Route path="commitment" element={<CreateCommitment />} />
-          <Route path="commitment-list" element={<CommitmentList />} />
-          <Route
-            path="commitment-list/:committedId"
-            element={<CommitmentDetail />}
-          />
           <Route path="personal-info" element={<PersonalInformation />} />
           <Route path="valuation-result-list" element={<ValuationList />} />
         </Route>
 
-        {/* ROLE:VALUATION_STAFF  */}
         <Route
           path="/valuation-staff"
           element={
@@ -150,14 +154,10 @@ function App() {
             element={<ValuationOrderDetailUpdate />}
           />
           <Route path="valuation" element={<ValuationApplication />} />
-          <Route path="certificate-list" element={<MyCertificateList />} />
-          <Route
-            path="certificate-list/:evaluationResultId"
-            element={<CertificateDetail />}
-          />
+        
         </Route>
 
-        {/* ROLE:ADMIN*/}
+
         <Route
           path="/admin"
           element={
@@ -169,12 +169,11 @@ function App() {
           }
         >
           <Route path="dashboard" element={<DashBoard />} />
-          <Route path="manageblog" element={<ManageBlog />} />
+
           <Route path="managecustomer" element={<ManageCustomer />} />
           <Route path="managestaff" element={<ManageStaff />} />
           <Route path="manageschedule" element={<ManageSchedule />} />
-          <Route path="manageorder" element={<ManageOrder />} />
-          <Route path="createnewcust" element={<CreateNewCust />} />
+          <Route path="manageservice" element={<ManageService />} />
         </Route>
       </Routes>
     </BrowserRouter>
