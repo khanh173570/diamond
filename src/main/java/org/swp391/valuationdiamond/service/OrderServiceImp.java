@@ -149,6 +149,9 @@ public class OrderServiceImp {
         List<OrderDetail> ordersWithinMonth = allOrderDetails.stream()
                 .filter(orderDetail -> {
                     Date receivedDate = orderDetail.getReceivedDate();
+                    if (receivedDate == null) {
+                        return false;
+                    }
                     LocalDate receivedLocalDate = receivedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                     return (receivedLocalDate.isEqual(startDate) || receivedLocalDate.isAfter(startDate)) &&
                             (receivedLocalDate.isEqual(endDate) || receivedLocalDate.isBefore(endDate));
@@ -168,6 +171,9 @@ public class OrderServiceImp {
         BigDecimal totalPriceSum = allOrderDetails.stream()
                 .filter(orderDetail -> {
                     Date receivedDate = orderDetail.getReceivedDate();
+                    if (receivedDate == null) {
+                        return false;
+                    }
                     LocalDate receivedLocalDate = receivedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                     return (receivedLocalDate.isEqual(startDate) || receivedLocalDate.isAfter(startDate)) &&
                             (receivedLocalDate.isEqual(endDate) || receivedLocalDate.isBefore(endDate));
@@ -176,6 +182,29 @@ public class OrderServiceImp {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return totalPriceSum;
+    }
+    public int sumQuantityWithinMonth(int year, int month) {
+        YearMonth yearMonth = YearMonth.of(year, month);
+        LocalDate startDate = yearMonth.atDay(1);
+        LocalDate endDate = yearMonth.atEndOfMonth();
+
+        List<Order> allOrders = orderRepository.findAll();
+        List<OrderDetail> allOrderDetails = orderDetailRepository.findAll();
+
+        int totalQuantitySum = allOrderDetails.stream()
+                .filter(orderDetail -> {
+                    Date receivedDate = orderDetail.getReceivedDate();
+                    if (receivedDate == null) {
+                        return false;
+                    }
+                    LocalDate receivedLocalDate = receivedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    return (receivedLocalDate.isEqual(startDate) || receivedLocalDate.isAfter(startDate)) &&
+                            (receivedLocalDate.isEqual(endDate) || receivedLocalDate.isBefore(endDate));
+                })
+                .mapToInt(orderDetail -> orderDetail.getOrderId().getDiamondQuantity())
+                .sum();
+
+        return totalQuantitySum;
     }
 
     }
