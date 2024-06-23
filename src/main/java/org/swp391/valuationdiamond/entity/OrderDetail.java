@@ -105,9 +105,8 @@ public class OrderDetail {
   Order orderId;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "orderDetailId", cascade = CascadeType.ALL)
-  List<EvaluationResult> evaluationResults;
-
+  @OneToOne(mappedBy = "orderDetailId", cascade = CascadeType.ALL)
+  EvaluationResult evaluationResult;
   @JsonManagedReference
   @ManyToOne
   @JoinColumn(name = "service_id", nullable = true)
