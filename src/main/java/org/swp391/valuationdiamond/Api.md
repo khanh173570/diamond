@@ -76,4 +76,14 @@ Service Price List
   - Update by Service Id: http://localhost:8080/service_price_list/updateServicePriceList/{serviceId}
   - Update by price list http://localhost:8080/service_price_list/updateServicePriceListById/{id}
 - Delete
-- 
+
+-------------------------------------------------
+Service
+- Create
+  http://localhost:8080/service/create
+- Read
+  http://localhost:8080/service/getServiceById/{serviceId}
+  http://localhost:8080/service/getServices
+- Update
+  http://localhost:8080/service/update/{serviceId}
+- Delete

@@ -2,6 +2,7 @@ package org.swp391.valuationdiamond.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.swp391.valuationdiamond.controller.OrderDetailController;
 import org.swp391.valuationdiamond.dto.OrderDTO;
 import org.swp391.valuationdiamond.entity.*;
 import org.swp391.valuationdiamond.repository.*;
@@ -40,6 +41,8 @@ public class OrderServiceImp {
 
     @Autowired
     private OrderDetailServiceImp orderDetailServiceImp;
+    @Autowired
+    private OrderDetailController orderDetailController;
     //=============================================== Create Order ===============================================
 
     public Order saveOrder(OrderDTO orderDTO) {
@@ -140,42 +143,115 @@ public class OrderServiceImp {
         return true;
     }
 
+//    public long countOrdersRegisteredWithinMonth(int year, int month) {
+//        YearMonth yearMonth = YearMonth.of(year, month);
+//        LocalDate startDate = yearMonth.atDay(1);
+//        LocalDate endDate = yearMonth.atEndOfMonth();
+//
+//        List<OrderDetail> allOrderDetails = orderDetailRepository.findAll();
+//        List<OrderDetail> ordersWithinMonth = allOrderDetails.stream()
+//                .filter(orderDetail -> {
+//                    Date receivedDate = orderDetail.getReceivedDate();
+//                    if (receivedDate == null) {
+//                        return false;
+//                    }
+//                    LocalDate receivedLocalDate = receivedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//                    return (receivedLocalDate.isEqual(startDate) || receivedLocalDate.isAfter(startDate)) &&
+//                            (receivedLocalDate.isEqual(endDate) || receivedLocalDate.isBefore(endDate));
+//                })
+//                .collect(Collectors.toList());
+//
+//        return ordersWithinMonth.size();
+//    }
     public long countOrdersRegisteredWithinMonth(int year, int month) {
         YearMonth yearMonth = YearMonth.of(year, month);
         LocalDate startDate = yearMonth.atDay(1);
         LocalDate endDate = yearMonth.atEndOfMonth();
 
-        List<OrderDetail> allOrderDetails = orderDetailRepository.findAll();
-        List<OrderDetail> ordersWithinMonth = allOrderDetails.stream()
-                .filter(orderDetail -> {
-                    Date receivedDate = orderDetail.getReceivedDate();
-                    LocalDate receivedLocalDate = receivedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    return (receivedLocalDate.isEqual(startDate) || receivedLocalDate.isAfter(startDate)) &&
-                            (receivedLocalDate.isEqual(endDate) || receivedLocalDate.isBefore(endDate));
+        List<Order> allOrders = orderRepository.findAll();
+        List<Order> ordersWithinMonth = allOrders.stream()
+                .filter(order -> {
+                    Date orderDate = order.getOrderDate();
+                    if (orderDate == null) {
+                        return false;
+                    }
+                    LocalDate LocalDate = orderDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    return (LocalDate.isEqual(startDate) || LocalDate.isAfter(startDate)) &&
+                            (LocalDate.isEqual(endDate) || LocalDate.isBefore(endDate));
                 })
                 .collect(Collectors.toList());
 
         return ordersWithinMonth.size();
     }
+//
+//
+//    public BigDecimal sumTotalPriceWithinMonth(int year, int month) {
+//        YearMonth yearMonth = YearMonth.of(year, month);
+//        LocalDate startDate = yearMonth.atDay(1);
+//        LocalDate endDate = yearMonth.atEndOfMonth();
+//
+//        List<Order> allOrders = orderRepository.findAll();
+//        List<OrderDetail> allOrderDetails = orderDetailRepository.findAll();
+//
+//        BigDecimal totalPriceSum = allOrderDetails.stream()
+//                .filter(orderDetail -> {
+//                    Date receivedDate = orderDetail.getReceivedDate();
+//                    if (receivedDate == null) {
+//                        return false;
+//                    }
+//                    LocalDate receivedLocalDate = receivedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//                    return (receivedLocalDate.isEqual(startDate) || receivedLocalDate.isAfter(startDate)) &&
+//                            (receivedLocalDate.isEqual(endDate) || receivedLocalDate.isBefore(endDate));
+//                })
+//                .map(orderDetail -> orderDetail.getOrderId().getTotalPrice())
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
+//
+//        return totalPriceSum;
+//    }
     public BigDecimal sumTotalPriceWithinMonth(int year, int month) {
         YearMonth yearMonth = YearMonth.of(year, month);
         LocalDate startDate = yearMonth.atDay(1);
         LocalDate endDate = yearMonth.atEndOfMonth();
 
         List<Order> allOrders = orderRepository.findAll();
-        List<OrderDetail> allOrderDetails = orderDetailRepository.findAll();
 
-        BigDecimal totalPriceSum = allOrderDetails.stream()
-                .filter(orderDetail -> {
-                    Date receivedDate = orderDetail.getReceivedDate();
-                    LocalDate receivedLocalDate = receivedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        BigDecimal totalPriceSum = allOrders.stream()
+                .filter(order -> {
+                    Date orderDate = order.getOrderDate();
+                    if (orderDate == null) {
+                        return false;
+                    }
+                    LocalDate receivedLocalDate = orderDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                     return (receivedLocalDate.isEqual(startDate) || receivedLocalDate.isAfter(startDate)) &&
                             (receivedLocalDate.isEqual(endDate) || receivedLocalDate.isBefore(endDate));
                 })
-                .map(orderDetail -> orderDetail.getOrderId().getTotalPrice())
+                .map(Order::getTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return totalPriceSum;
+    }
+    public int sumQuantityWithinMonth(int year, int month) {
+        YearMonth yearMonth = YearMonth.of(year, month);
+        LocalDate startDate = yearMonth.atDay(1);
+        LocalDate endDate = yearMonth.atEndOfMonth();
+
+        List<Order> allOrders = orderRepository.findAll();
+
+        int totalQuantitySum = allOrders.stream()
+                .filter(order -> {
+                    Date orderDate = order.getOrderDate();
+                    if (orderDate == null) {
+                        return false;
+                    }
+                    LocalDate receivedLocalDate = orderDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    return (receivedLocalDate.isEqual(startDate) || receivedLocalDate.isAfter(startDate)) &&
+                            (receivedLocalDate.isEqual(endDate) || receivedLocalDate.isBefore(endDate));
+                })
+                .mapToInt(Order::getDiamondQuantity)
+                .sum();
+
+        return totalQuantitySum;
     }
 
     }

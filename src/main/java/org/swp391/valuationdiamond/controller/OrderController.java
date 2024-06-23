@@ -63,4 +63,8 @@ public class OrderController {
     public BigDecimal sumTotalPriceByOrderCreated(@PathVariable int year, @PathVariable int month) {
         return orderServiceImp.sumTotalPriceWithinMonth(year, month);
     }
+    @GetMapping("/sumQuantityWithinMonth/{year}/{month}")
+    public int sumQuantityWithinMonth(@PathVariable int year, @PathVariable int month) {
+        return orderServiceImp.sumQuantityWithinMonth(year, month);
+    }
 }
