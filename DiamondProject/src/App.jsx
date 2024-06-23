@@ -11,7 +11,7 @@ import HomeStaff from './page/pageStaff/HomeStaff.jsx';
 import { UserRequest } from './page/pageStaff/Request/UserRequest.jsx';
 import { ViewReciptList } from './page/pageStaff/ViewReciptListApplication/ViewReciptList.jsx';
 import { CreateReceipt } from './page/pageStaff/ReciptApplication/CreateRecipt.jsx';
-import CreateCommitment from './page/pageStaff/CreateCommitment';
+import CreateCommitment from './page/pageStaff/Commitment/CreateCommitment';
 import { PersonalInformation } from './page/pageStaff/PersonalInformation';
 import { ValuationApplication } from './page/pageValuationStaff/ValuationApplication/ValuationApplication.jsx';
 import { ReceiptDetails } from './page/pageStaff/ReciptApplication/ReciptDetails.jsx';
@@ -24,18 +24,16 @@ import Signup from './page/pageCustomer/Signup';
 import Blog from './page/pageCustomer/Blog';
 import Contact from './page/pageCustomer/Contact';
 import EvaluationServicePage from './page/pageCustomer/EvaluationServicePage';
-import Calculate from './page/pageCustomer/Calculate';
+import Calculate from './page/pageCustomer/Calculate/Calculate.jsx';
 import Check from './page/pageCustomer/Check';
 import { PersonalRequest } from './page/pageCustomer/PersonalRequest';
 import { ValuationOrderDetail } from './page/pageStaff/ValuationOrderDetail.jsx';
 // Admin Pages
-import { DashBoard } from './page/pageAdmin/dashBoard.jsx';
-import { ManageBlog } from './page/pageAdmin/ManageBlog';
+import { DashBoard } from './page/pageAdmin/dashBoard/dashBoard.jsx';
 import { ManageCustomer } from './page/pageAdmin/ManageCustomer/ManageCustomer.jsx';
 import { ManageStaff } from './page/pageAdmin/ManageStaff/ManageStaff.jsx';
 import { ManageSchedule } from './page/pageAdmin/ManageSchedule/ManageScheldule.jsx';
-import { ManageOrder } from './page/pageAdmin/ManageOrder';
-import { CreateNewCust } from './page/pageAdmin/CreateNewCust.jsx'
+
 import { PersonalRequestDetail } from './page/pageCustomer/PersonalRequestDetail.jsx';
 import { GuestGuard } from './guards/GuestGuard.jsx';
 import { AuthGuard } from './guards/AuthGuard.jsx';
@@ -118,12 +116,10 @@ function App() {
 
         }>
           <Route path="dashboard" element={<DashBoard />} />
-          <Route path="manageblog" element={<ManageBlog />} />
+
           <Route path="managecustomer" element={<ManageCustomer />} />
           <Route path="managestaff" element={<ManageStaff />} />
           <Route path="manageschedule" element={<ManageSchedule />} />
-          <Route path="manageorder" element={<ManageOrder />} />
-          <Route path="createnewcust" element={<CreateNewCust />} />
           <Route path="manageservice" element={<ManageService />} />
         </Route>
 
