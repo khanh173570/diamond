@@ -6,7 +6,6 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useNavigate } from 'react-router-dom';
-import formattedDate from '../../utils/formattedDate/formattedDate';
 import formattedDateTime from '../../utils/formattedDate/formattedDateTime';
 import { Status } from '../../component/Status';
 
@@ -15,7 +14,6 @@ export const PersonalRequestDetail = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { state } = useLocation();
-  const [isCancel, setIsCancel] = useState(false);
   const [requestDetail, setRequestDetail] = useState({});
   const [order, setOrder] = useState([]);
   const [isOrder, setIsOrder] = useState(false);
@@ -40,7 +38,7 @@ export const PersonalRequestDetail = () => {
     return () => {
       setLoading(false);
     };
-  }, [requestId, isCancel]);
+  }, [requestId]);
 
   // get order by request id 
   const APIOrderById = `http://localhost:8080/order_request/getOrderByRequestId`;
@@ -80,7 +78,9 @@ export const PersonalRequestDetail = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        setIsCancel(true);
+        setRequestDetail((currentState) => ({
+          ...currentState, status: data.status
+        }))
         toast.success('Request has been canceled successfully.');
       } else {
         throw new Error('Failed to update status');
@@ -88,7 +88,8 @@ export const PersonalRequestDetail = () => {
     } catch (error) {
       console.error('Error updating status:', error);
       toast.error('Error updating status. Please try again.');
-      setIsCancel(false);
+     
+      
     }
   };
 

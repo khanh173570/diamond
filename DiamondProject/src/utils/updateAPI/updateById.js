@@ -1,5 +1,3 @@
-import 'react-toastify/dist/ReactToastify.css';
-import { toast, ToastContainer } from 'react-toastify';
 const updateById = async (apiUpdate, id, field, value) => {
     try {
         const response = await fetch(`${apiUpdate}/${id}`, {

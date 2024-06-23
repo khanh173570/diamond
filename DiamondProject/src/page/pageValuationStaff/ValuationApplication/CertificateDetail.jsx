@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,6 +9,9 @@ import { Form, Button, Col, Container, Row } from "react-bootstrap";
 export const CertificateDetail = () => {
   const location = useLocation();
   const { result } = location.state;
+  const navigate = useNavigate();
+  const [image, setImage] = useState(null);
+  const [imgUpload, setImgUpload] = useState(null)
 
   const [resultEdit, setResultEdit] = useState({
     diamondOrigin: result.diamondOrigin,
@@ -46,15 +49,23 @@ export const CertificateDetail = () => {
   };
 
   const updateResult = async () => {
+    let imageUrl = resultEdit.img;
+    if (imgUpload) {
+      imageUrl = await saveImage();
+      if (!imageUrl) {
+        return;
+      }
+    }
     const formattedResult = {
       ...resultEdit,
       caratWeight: parseFloat(resultEdit.caratWeight),
       price: parseFloat(resultEdit.price),
+      img: imageUrl
     };
 
     try {
       const response = await fetch(
-        "https://jsonplaceholder.typicode.com/posts/1",
+        `http://localhost:8080/evaluation_results/updateEvaluationResult/${result.evaluationResultId}`,
         {
           method: "PUT",
           body: JSON.stringify(formattedResult),
@@ -66,6 +77,7 @@ export const CertificateDetail = () => {
       const data = await response.json();
       if (data) {
         toast.success("Update successfully");
+        // navigate("/valuation-staff/certificate-list");
       }
     } catch (error) {
       console.log(error);
@@ -77,17 +89,54 @@ export const CertificateDetail = () => {
     const { name, value } = e.target;
     setResultEdit((currentState) => ({ ...currentState, [name]: value }));
   };
-  
-  const handleOnchangeImage = (e) =>{
-    const img = e.target.file[0];
-  }
 
-  const handleUpdateImage = () =>{
+  const handleOnchangeImage = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const img = e.target.files[0];
+      const imageUrl = URL.createObjectURL(img);
+      setImage(imageUrl);
+      setImgUpload(img);
+    }
+  };
 
-  }
+  // add image into cloudinary
+  const saveImage = async () => {
+    if (!imgUpload) {
+      return;
+    }
+    const data = new FormData();
+    data.append("file", imgUpload);
+    data.append("upload_preset", "diamondValuation");
+    data.append("cloud_name", "dz2dv8lk4");
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dz2dv8lk4/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+      const cloudData = await res.json();
+      return cloudData.url;
+    } catch (error) {
+      console.log(error);
+      toast.error("Error uploading image");
+      return null;
+    }
+  };
 
   return (
     <Container>
+      <div className="mb-4">
+        <img
+          src="/src/assets/assetsStaff/back.svg"
+          alt="Back"
+          onClick={() => {
+            navigate("/valuation-staff/valuation-order");
+          }}
+          style={{ cursor: "pointer" }}
+        />
+      </div>
       <ToastContainer />
       <h1 className="text-center my-3">Diamond Valuation Report</h1>
       <Row className="justify-content-center">
@@ -433,19 +482,18 @@ export const CertificateDetail = () => {
               Product Image
             </h4>
             <div className="my-3 d-flex justify-content-center">
-              {resultEdit.img && (
+             
                 <img
-                  src={resultEdit.img}
+                  src={image || resultEdit.img}
                   alt="product-img"
                   height="300"
                   className="border border-dark w-75"
                 />
-              )}
+           
             </div>
             <div className="d-flex justify-content-center">
-            <input type="file" name="" id="" onChange={handleOnchangeImage} />
+              <input type="file" name="" id="" onChange={handleOnchangeImage} />
             </div>
-
           </div>
         </div>
       </div>

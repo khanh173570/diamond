@@ -45,7 +45,7 @@ const CreateCommitment = () => {
     e.preventDefault();
 
     // Kiểm tra validation cho civilId
-    if (!validator.isNumeric(committedForm.civilId) || !validator.isLength(committedForm.civilId, { min: 10, max: 10 })) {
+    if (!validator.isNumeric(committedForm.civilId) || !validator.isLength(committedForm.civilId, { min: 12, max: 12 })) {
       setErrorCivilId("Civil Id must be numeric and contain exactly 10 digits");
       return;
     }

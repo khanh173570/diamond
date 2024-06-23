@@ -18,6 +18,7 @@ export const ViewCertificate = () => {
             try {
                 const response = await fetch(`http://localhost:8080/evaluation_results/getEvaluationResultsByOrderDetailId/${orderDetailId}`);
                 const data = await response.json();
+                console.log(data)
                 setCertificate(data);
             } catch (error) {
                 console.error('Error fetching data:', error);

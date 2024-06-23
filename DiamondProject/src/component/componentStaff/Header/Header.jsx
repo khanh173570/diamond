@@ -17,7 +17,7 @@ function Header() {
     return (
         <Navbar expand="md" style={{ backgroundColor: '#E2FBF5' }}>
             <Container fluid>
-                <Navbar.Brand href='#home' className='p-3 fw-bold fst-italic'>
+                <Navbar.Brand href='/staff' className='p-3 fw-bold fst-italic'>
                     <img
                         src='/src/assets/assetsStaff/diamond-svgrepo-com.svg'
                         width='60'

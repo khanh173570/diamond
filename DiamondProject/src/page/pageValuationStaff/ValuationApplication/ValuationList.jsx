@@ -4,7 +4,7 @@ import { GeneratePDF } from './GeneratePDF';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import formattedDate from '../../../utils/formattedDate/formattedDate';
 import { Pagination } from '../../../component/Pagination/Pagination';
-
+// ROLE: CONSULTANT_STAFF
 export const ValuationList = () => {
   const [valuationResult, setValuationRequest] = useState([]);
   const [isPrint, setIsPrint] = useState(false);
@@ -84,7 +84,6 @@ export const ValuationList = () => {
                 <th>Customer Name</th>
                 <th>Date</th>
                 <th>Valuation Staff</th>
-                <th>Delete</th>
                 <th>Print</th>
               </tr>
             </thead>
@@ -96,16 +95,6 @@ export const ValuationList = () => {
                   <td>{result.orderDetailId.orderId.customerName}</td>
                   <td>{formattedDate(result.orderDetailId.expiredReceivedDate)}</td>
                   <td>{result.userId.firstName + ' ' + result.userId.lastName}</td>
-                  <td>
-                    <Button variant="danger" size="sm">
-                      <img
-                        src="/src/assets/assetsStaff/delete.svg"
-                        alt="Delete"
-                        width="20"
-                        height="20"
-                      />
-                    </Button>
-                  </td>
                   <td>
                     <Button
                       variant="info"

@@ -89,7 +89,7 @@ export const CommitmentList = () => {
             <th>Commitment ID</th>
             <th>Customer Name</th>
             <th>Date</th>
-            <th>Delete</th>
+          
             <th></th>
           </tr>
         </thead>
@@ -99,16 +99,6 @@ export const CommitmentList = () => {
               <td>{result.committedId}</td>
               <td>{result.committedName}</td>
               <td>{formattedDate(result.committedDate)}</td>
-              <td>
-                <Button variant="danger" size="sm">
-                  <img
-                    src="/src/assets/assetsStaff/delete.svg"
-                    alt="Delete"
-                    width="20"
-                    height="20"
-                  />
-                </Button>
-              </td>
               <td>
                 <Button
                   variant="info"

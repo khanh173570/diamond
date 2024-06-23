@@ -3,7 +3,6 @@ import { Container, Table, Form, Button, Spinner } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import formattedDate from "../../utils/formattedDate/formattedDate";
 import formattedDateTime from "../../utils/formattedDate/formattedDateTime";
 import useAuth from "../../utils/hook/useAuth";
 import { Status } from "../../component/Status";
@@ -44,6 +43,7 @@ export const ValuationOrderDetail = () => {
 
 
   const handleCreateForm = (product) => {
+
     navigate('/valuation-staff/valuation', { state: { product } });
   };
 

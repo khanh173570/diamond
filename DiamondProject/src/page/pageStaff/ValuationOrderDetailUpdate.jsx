@@ -13,7 +13,10 @@ export const ValuationOrderDetailUpdate = () => {
   const product = location.state.product;
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  //
   const [image, setImage] = useState(null);
+  const [imageUpload, setImageUpload] = useState(null);
+  //
   const [formEdit, setFormEdit] = useState({
     status: product.status,
     isDiamond: product.isDiamond,
@@ -21,14 +24,13 @@ export const ValuationOrderDetailUpdate = () => {
   });
 
   const saveImage = async () => {
-    if (!image) {
+    if (!imageUpload) {
       return null;
     }
     const data = new FormData();
-    data.append("file", image);
+    data.append("file", imageUpload);
     data.append("upload_preset", "diamondValuation");
     data.append("cloud_name", "dz2dv8lk4");
-
     try {
       const res = await fetch(
         "https://api.cloudinary.com/v1_1/dz2dv8lk4/image/upload",
@@ -45,7 +47,7 @@ export const ValuationOrderDetailUpdate = () => {
       return null;
     }
   };
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -69,18 +71,25 @@ export const ValuationOrderDetailUpdate = () => {
     setFormEdit((currentState) => ({ ...currentState, [field]: value }));
   };
 
+  //on change image
+  const handleOnchangeImage = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const img = e.target.files[0];
+      const imageUrl = URL.createObjectURL(img);
+      setImage(imageUrl);
+      setImageUpload(img);
+    }
+  };
+
+
   const handleSaveChanges = async () => {
     let imageUrl = formEdit.img;
-    if (image) {
+    if (imageUpload) {
       imageUrl = await saveImage();
-      if (imageUrl) {
-        setFormEdit((currentState) => ({
-          ...currentState,
-          img: imageUrl,
-        }));
+      if (!imageUrl) {
+        return;
       }
     }
-
     try {
       const response = await fetch(`${APIUpdate}/${orderDetailId}`, {
         method: "PUT",
@@ -170,10 +179,10 @@ export const ValuationOrderDetailUpdate = () => {
               <Form.Label>Image</Form.Label>
             </Col>
             <Col md={4}>
-              {formEdit.img ? (
+              {formEdit.img || image ? (
                 <img
-                  className=" w-72 lg:w-96  rounded-xl"
-                  src={formEdit.img}
+                  className="w-100 h-100"
+                  src={image || formEdit.img}
                   alt="img"
                 />
               ) : (
@@ -189,7 +198,7 @@ export const ValuationOrderDetailUpdate = () => {
                   <input
                     type="file"
                     id="upload-img"
-                    onChange={(e) => setImage(e.target.files[0])}
+                    onChange={handleOnchangeImage}
                     accept=".jpg, .jpeg, .png"
                     style={{ display: "none" }}
                   />

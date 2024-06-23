@@ -16,7 +16,7 @@ const DetailDiamondCheck = () => {
     const fetchDiamondDetails = async () => {
       try {
         const response = await fetch(
-          `https://api.example.com/products/${assess_id}`
+          `http://localhost:8080/diamond_assessment/getDiamondAssessments/${assess_id}`
         );
         if (!response.ok) {
           throw new Error("Diamond not found");

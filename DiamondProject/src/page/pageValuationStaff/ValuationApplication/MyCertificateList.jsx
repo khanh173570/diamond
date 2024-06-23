@@ -3,13 +3,13 @@ import { Button, Container, Table } from "react-bootstrap";
 import { Pagination } from "../../../component/Pagination/Pagination";
 import formattedDate from "../../../utils/formattedDate/formattedDate";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../../utils/hook/useAuth";
 
 export const MyCertificateList = () => {
   //get certificate list
   const [certificateList, setCertificateList] = useState([]);
   const navigate = useNavigate();
-  
-
+  const {user} = useAuth()
   const [loading, setLoading] = useState(true);
 
   // Pagination
@@ -35,7 +35,7 @@ export const MyCertificateList = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/evaluation_results/getEvaluationResults"
+          `http://localhost:8080/evaluation_results/getEvaluationResultsByUserId/${user.userId}`
         );
         const data = await response.json();
         setCertificateList(data);
@@ -57,6 +57,7 @@ export const MyCertificateList = () => {
 
   return (
     <div>
+
       <Container>
         <div>
           <h1 className="text-center my-4">Certificate List</h1>
@@ -87,7 +88,12 @@ export const MyCertificateList = () => {
                   size="md"
                   onClick={()=>viewCertificateDetail(result)}
                   >
-                    View
+                    <img 
+                     src="/src/assets/assetsStaff/editStatus.svg"
+                     alt="Upload Icon"
+                     height='20'
+                     width='20'
+                    />
                   </Button>
                 </td>
               </tr>

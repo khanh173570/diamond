@@ -120,7 +120,6 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
                   {errorMeetingDate && (
                     <div className="text-danger">{errorMeetingDate}</div>
                   )}
-
                   <Button
                     className="mt-2"
                     onClick={() =>
