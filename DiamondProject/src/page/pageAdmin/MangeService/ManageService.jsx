@@ -197,12 +197,10 @@ export const ManageService = () => {
     const closeFormAddNewPriceList = () =>setShowFormAddNewPriceList(false);
     const handleSaveNewPriceList = (e) => {
         const { name, value } = e.target;
-    
-        // Check if value entered is not a number after trimming whitespace
-        if (isNaN(value.trim())) {
+        if (value < 0) {
             Swal.fire({
                 title: 'Error!',
-                text: `${name} must be a number.`,
+                text: `${name} must be a positive number.`,
                 icon: 'error',
                 confirmButtonText: 'OK',
             });
@@ -210,26 +208,14 @@ export const ManageService = () => {
         }
         setformAddNewServicePriceList({
             ...formAddNewServicePriceList,
-            [name]: value.trim(), // Trimmed value is stored
+            [name]: value,
         });
     };
-    // handle submit for saving new price list
+
+    // Handle submit for saving new price list
     const handleSubmitSaveNewPriceList = async (e) => {
         e.preventDefault();
-    
-        // Check if any input fields are not numbers after trimming whitespace
-        for (const key in formAddNewServicePriceList) {
-            if (isNaN(formAddNewServicePriceList[key].trim())) {
-                Swal.fire({
-                    title: 'Error!',
-                    text: `${key} must be a number.`,
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                });
-                return;
-            }
-        }
-    
+
         try {
             const response = await fetch('http://localhost:8080/service_price_list/addPriceList', {
                 method: 'POST',
@@ -263,9 +249,18 @@ export const ManageService = () => {
             console.error("Error Save New Price List: " + error);
         }
     };
-    
-    //
+
+    // Handle edit price list
     const handleEditPriceList = (priceList, field, value) => {
+        if (value < 0) {
+            Swal.fire({
+                title: 'Error!',
+                text: `${field} must be a positive number.`,
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+            return;
+        }
         setEditPriceList(prevState => ({
             ...prevState,
             [priceList]: {
@@ -275,29 +270,35 @@ export const ManageService = () => {
         }));
     };
 
-    // Save price list changes
-    const handleSavePriceList = (priceList) => {
-        const fetchUpdatePriceList = async () => {
-            try {
-                await fetch(`http://localhost:8080/service_price_list/updateServicePriceListById/${priceList}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(editPriceList[priceList]),
-                });
-                setServicePriceList(prevState => prevState.map(price =>
-                    price.priceList === priceList ? { ...price, ...editPriceList[priceList] } : price
+    const handleSaveEditPriceList = async (priceListId) => {
+        const editedPriceList = editPriceList[priceListId];
+        if (!editedPriceList) return;
+
+        try {
+            const response = await fetch(`http://localhost:8080/service_price_list/editServicePriceList/${priceListId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(editedPriceList),
+            });
+
+            if (response.ok) {
+                setServicePriceList(prevState => prevState.map(priceList =>
+                    priceList.servicePriceId === priceListId ? { ...priceList, ...editedPriceList } : priceList
                 ));
                 setEditPriceRowId(null);
-                setEditPriceList({});
-            } catch (error) {
-                console.error("Error updating price list: " + error);
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Price List updated successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                });
             }
-        };
-        fetchUpdatePriceList();
+        } catch (error) {
+            console.error("Error updating price list: " + error);
+        }
     };
-
     // Delete price list item
     const handleDeletePriceList = (priceList) => {
         Swal.fire({
@@ -537,7 +538,7 @@ export const ManageService = () => {
                                         <td>
                                             {editPriceRowId === price.priceList ? (
                                                 <Form.Control
-                                                    type="text"
+                                                    type="number"
                                                     value={editPriceList.sizeFrom}
                                                     onChange={(e) => handleEditPriceList(price.priceList, 'sizeFrom', e.target.value)}
                                                 />
@@ -548,8 +549,8 @@ export const ManageService = () => {
                                         <td>
                                             {editPriceRowId === price.priceList ? (
                                                 <Form.Control
-                                                    type="text"
-                                                    value={editPriceList[price.priceList]?.sizeTo || price.sizeTo}
+                                                    type="number"
+                                                    value={editPriceList.sizeTo}
                                                     onChange={(e) => handleEditPriceList(price.priceList, 'sizeTo', e.target.value)}
                                                 />
                                             ) : (
@@ -559,8 +560,8 @@ export const ManageService = () => {
                                         <td>
                                             {editPriceRowId === price.priceList ? (
                                                 <Form.Control
-                                                    type="text"
-                                                    value={editPriceList[price.priceList]?.initPrice || price.initPrice}
+                                                    type="number"
+                                                    value={editPriceList.initPrice}
                                                     onChange={(e) => handleEditPriceList(price.priceList, 'initPrice', e.target.value)}
                                                 />
                                             ) : (
@@ -571,7 +572,7 @@ export const ManageService = () => {
                                             {editPriceRowId === price.priceList ? (
                                                 <Form.Control
                                                     type="text"
-                                                    value={editPriceList[price.priceList]?.priceUnit || price.priceUnit}
+                                                    value={editPriceList.priceUnit}
                                                     onChange={(e) => handleEditPriceList(price.priceList, 'priceUnit', e.target.value)}
                                                 />
                                             ) : (
@@ -580,7 +581,7 @@ export const ManageService = () => {
                                         </td>
                                         <td>
                                             {editPriceRowId === price.priceList ? (
-                                                <Button onClick={() => handleSavePriceList(price.priceList)}>Save</Button>
+                                                <Button onClick={() => handleSaveEditPriceList(price.priceList)}>Save</Button>
                                             ) : (
                                                 <Button onClick={() => setEditPriceRowId(price.priceList)}>Edit</Button>
                                             )}
@@ -635,7 +636,7 @@ export const ManageService = () => {
                   <label htmlFor='sizeFrom'>Size From:</label>
                   <input
                     id='sizeFrom'
-                    type='text'
+                    type='number'
                     name='sizeFrom'
                     value={formAddNewServicePriceList.sizeFrom}
                     className='mx-2'
@@ -648,7 +649,7 @@ export const ManageService = () => {
                   <label htmlFor='sizeTo'>Size To:</label>
                   <input
                     id='sizeTo'
-                    type='text'
+                    type='number'
                     name='sizeTo'
                     value={formAddNewServicePriceList.sizeTo}
                     className='mx-3'
@@ -661,7 +662,7 @@ export const ManageService = () => {
                   <label htmlFor='initPrice'>Init Price:</label>
                   <input
                     id='initPrice'
-                    type='text'
+                    type='number'
                     name='initPrice'
                     value={formAddNewServicePriceList.initPrice}
                     className='mx-2'
@@ -674,7 +675,7 @@ export const ManageService = () => {
                   <label htmlFor='priceUnit'>Price Unit:</label>
                   <input
                     id='priceUnit'
-                    type='text'
+                    type='number'
                     name='priceUnit'
                     value={formAddNewServicePriceList.priceUnit}
                     className='mx-2'

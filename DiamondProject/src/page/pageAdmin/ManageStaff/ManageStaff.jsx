@@ -324,7 +324,7 @@ export const ManageStaff = () => {
           }
         `}
       </style>
-        <div className="customer-list fs-5">
+        <div className="staff-list fs-5">
           <div>
             <div className='row  mx-2 my-2'>
               <p className='col-md-2'>StaffID</p>
@@ -334,7 +334,7 @@ export const ManageStaff = () => {
             </div>
           </div>
           {currentPosts.map((dataStaff, index) => (
-            <div key={`customer_${dataStaff.userId}_${index}`} className="customer-card my-4 border hover">
+            <div key={`staff_${dataStaff.userId}_${index}`} className="staff-card my-4 border hover">
               <div className="row">
                 <p className='col-md-2'> {dataStaff.userId}</p>
                 <p className='col-md-3'>{dataStaff.firstName +' '+ dataStaff.lastName}</p>
@@ -396,7 +396,7 @@ export const ManageStaff = () => {
               onSubmit={handleOnSubmit}
             >
                 <div className='justify-content-center d-flex my-2 p-4'>
-                          <h3>Form Add New Customer</h3>
+                          <h3>Form Add New Staff</h3>
                 </div>
               <div className='form-row d-flex my-5'>
                 <div className='form-group col-md-6'>
@@ -502,7 +502,7 @@ export const ManageStaff = () => {
             <div className="card p-4" style={{ width: '100%', maxWidth: '700px' }}>
                 <div className='container d-flex'>
                     <div>
-                          <img src="https://www.beelancer.vn/storage/2022/10/casemiro-365x405.jpg" alt="customer" 
+                          <img src="https://www.beelancer.vn/storage/2022/10/casemiro-365x405.jpg" alt="staff" 
                                 width='200'
                               height='200'
                             />
@@ -534,7 +534,7 @@ export const ManageStaff = () => {
         </Modal.Body>
       </Modal>
         )}
-                  {/* Modal Edit Customer */}
+                  {/* Modal Edit Staff */}
         {formEditStaff && (
           <Modal show={showEditForm} onHide={handleCloseStaffInfor} className='p-5' size='lg'>
             <Modal.Header closeButton>
@@ -545,7 +545,7 @@ export const ManageStaff = () => {
                 alt='Logo'
                 className=''
               />
-              <Modal.Title className='w-100 d-flex justify-content-center'>EDIT CUSTOMER</Modal.Title>
+              <Modal.Title className='w-100 d-flex justify-content-center'>EDIT Staff</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form
@@ -554,7 +554,7 @@ export const ManageStaff = () => {
                 onSubmit={handleEditOnSubmit}
               >
                 <div className='justify-content-center d-flex my-2 p-4'>
-                  <h3>Form Edit Customer</h3>
+                  <h3>Form Edit Staff</h3>
                 </div>
                 <div className='form-row d-flex my-5'>
                   <div className='form-group col-md-6'>

@@ -25,7 +25,12 @@
     "react-router-dom": "^6.23.1",
     "react-to-print": "^2.15.1",
     "react-toastify": "^10.0.5",
+<<<<<<< HEAD
+    "recharts": "^2.12.7",
+    "sweetalert2": "^11.11.1",
+=======
     "sweetalert2": "^11.6.13",
+>>>>>>> 51c6c6f9c96bc5eec0631eb589e01abd07a9ade7
     "toastify-js": "^1.12.0",
     "validator": "^13.12.0"
   },
