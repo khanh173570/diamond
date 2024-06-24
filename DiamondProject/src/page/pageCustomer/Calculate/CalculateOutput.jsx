@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Calculate.css";
 import { Row, Col, Spinner } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
+import formattedDateTime from "../../../utils/formattedDate/formattedDateTime";
 
 export const CalculateOutput = () => {
   const [loading, setLoading] = useState(false);
@@ -16,10 +17,11 @@ export const CalculateOutput = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/diamond/calculateFinalPrice${queryParams}`
+          `http://localhost:8080/api/diamond/calculateFinalPrice?${queryParams}`
         );
         const data = await response.json();
         setResult(data);
+        console.log(data)
       } catch (error) {
         setError(error);
       } finally {
@@ -38,7 +40,6 @@ export const CalculateOutput = () => {
       </div>
     );
   }
-
   if (error) {
     return <div className="text-danger">Error fetching data</div>;
   }
@@ -46,7 +47,6 @@ export const CalculateOutput = () => {
   if (!result) {
     return <div>No data available</div>;
   }
-
   return (
     <div>
       <div className="border border-dark rounded pt-4 mb-3">
@@ -56,7 +56,7 @@ export const CalculateOutput = () => {
           </div>
           <div className="d-flex justify-content-center">
             <div className="quality-diamond">
-              {`${result.diamondOrigin} - ${result.shape} - ${result.carat} - ${result.clarity} - ${result.color} - ${result.cut}`}
+              {/* {`${result.diamondOrigin} - ${result.shape} - ${result.carat} - ${result.clarity} - ${result.color} - ${result.cut}`} */}
             </div>
           </div>
           <div className="d-flex justify-content-center">
@@ -64,22 +64,24 @@ export const CalculateOutput = () => {
               className="fw-bold fs-1 p-2 border border-dark"
               style={{ borderRadius: "15px" }}
             >
-              {`$${result.priceRange.min}-$${result.priceRange.max}`}
+              {`$${Math.round(result.basePrice)}`}
             </div>
           </div>
         </div>
         <Row>
           <Col md={6} className="text-center p-4">
-            <div>Last 30 days change</div>
-            <div className="fw-bold">{`${result.last30DaysChange}%`}</div>
+            <div>Time</div>
+            {/* <div className="fw-bold">{`${result.last30DaysChange}%`}</div> */}
+            <div className="fw-bold">{`${formattedDateTime(result.currentDate)}`}</div>
+
           </Col>
           <Col md={6} className="text-center p-4">
             <div>Estimate Range</div>
-            <div className="fw-bold">{`$${result.estimateRange.min}-$${result.estimateRange.max}`}</div>
+            <div className="fw-bold">{`$${Math.round(result.minPrice)}-$${Math.round(result.maxPrice)}`}</div>
           </Col>
         </Row>
       </div>
-      <div className="border border-dark rounded">
+      {/* <div className="border border-dark rounded">
         <div className="fs-5 ms-3">Recommend Store</div>
         {result.stores.map((store, index) => (
           <div className="border border-dark rounded m-3" key={index}>
@@ -114,7 +116,8 @@ export const CalculateOutput = () => {
             </Row>
           </div>
         ))}
-      </div>
+      </div> */}
+
     </div>
   );
 };

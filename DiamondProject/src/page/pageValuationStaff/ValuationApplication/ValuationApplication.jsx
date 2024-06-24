@@ -1,22 +1,24 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import updateById from "../../../utils/updateAPI/updateById";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { confirmAlert } from "react-confirm-alert";
+import validator from "validator";
 
-// ROLE: VALUATION_STAFF
 export const ValuationApplication = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const product = location.state.product;
+
   const [result, setResult] = useState({
     diamondOrigin: "",
     measurements: "",
     proportions: "",
     shapeCut: "",
-    caratWeight: 0,
+    caratWeight: "",
     color: "",
     clarity: "",
     cut: "",
@@ -24,17 +26,23 @@ export const ValuationApplication = () => {
     polish: "",
     fluorescence: "",
     description: "",
-    price: 0,
+    price: "",
     orderDetailId: product.orderDetailId,
     userId: product.evaluationStaffId,
     img: product.img,
   });
+
+  const [errors, setErrors] = useState({});
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setResult((currentState) => ({
       ...currentState,
       [name]: value,
+    }));
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      [name]: "",
     }));
   };
 
@@ -57,12 +65,24 @@ export const ValuationApplication = () => {
   };
 
   const handleOnSubmit = async () => {
-    
+    const newErrors = {};
+    Object.keys(result).forEach((key) => {
+      if (validator.isEmpty(result[key].toString())) {
+        newErrors[key] = `${key} không được để trống.`;
+      }
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     const formattedResult = {
       ...result,
       caratWeight: parseFloat(result.caratWeight),
       price: parseFloat(result.price),
     };
+
     try {
       const response = await fetch(
         "http://localhost:8080/evaluation_results/create",
@@ -91,7 +111,6 @@ export const ValuationApplication = () => {
       toast.error("Submission Error");
     }
   };
-  //Thêm hàm update ststus by order details id
 
   return (
     <Container>
@@ -124,6 +143,7 @@ export const ValuationApplication = () => {
             />
           </Col>
         </Row>
+
         <Row className="mb-2 align-items-center">
           <Col md={2}>
             <Form.Label htmlFor="orderDetailId" className="mb-0">
@@ -165,19 +185,28 @@ export const ValuationApplication = () => {
                       width: "100%",
                     }}
                     onChange={handleOnChange}
+                    isInvalid={!!errors.diamondOrigin}
                   >
                     <option value=""></option>
                     <option value="Natural">Natural</option>
                     <option value="Lab Grown">Lab Grown</option>
                   </select>
+                  {errors.diamondOrigin && (
+                    <Form.Control.Feedback type="invalid">
+                      {errors.diamondOrigin}
+                    </Form.Control.Feedback>
+                  )}
                 </Col>
               </Row>
+              {/* Measurements */}
               <Row className="mb-2 align-items-end justify-content-between">
                 <Col md={4}>
                   <label htmlFor="measurements">Measurements</label>
                 </Col>
                 <Col md={5}>
                   <input
+                    minLength={2}
+                    maxLength={10}
                     type="text"
                     id="measurements"
                     name="measurements"
@@ -188,9 +217,16 @@ export const ValuationApplication = () => {
                     }}
                     value={result.measurements || ""}
                     onChange={handleOnChange}
+                    isInvalid={!!errors.measurements}
                   />
+                  {errors.measurements && (
+                    <Form.Control.Feedback type="invalid">
+                      {errors.measurements}
+                    </Form.Control.Feedback>
+                  )}
                 </Col>
               </Row>
+              {/* Shape Cut */}
               <Row className="mb-2 align-items-end justify-content-between">
                 <Col md={4}>
                   <label htmlFor="shapeCut">Shape Cut</label>
@@ -206,6 +242,7 @@ export const ValuationApplication = () => {
                       width: "100%",
                     }}
                     onChange={handleOnChange}
+                    isInvalid={!!errors.shapeCut}
                   >
                     <option value=""></option>
                     <option value="Round">Round</option>
@@ -215,8 +252,14 @@ export const ValuationApplication = () => {
                     <option value="Heart">Heart</option>
                     <option value="Princess">Princess</option>
                   </select>
+                  {errors.shapeCut && (
+                    <Form.Control.Feedback type="invalid">
+                      {errors.shapeCut}
+                    </Form.Control.Feedback>
+                  )}
                 </Col>
               </Row>
+              {/* Description */}
               <Row className="mb-2 align-items-end justify-content-between">
                 <Col md={4}>
                   <label htmlFor="description">Description</label>
@@ -233,11 +276,17 @@ export const ValuationApplication = () => {
                       width: "100%",
                     }}
                     onChange={handleOnChange}
+                    isInvalid={!!errors.description}
                   />
+                  {errors.description && (
+                    <Form.Control.Feedback type="invalid">
+                      {errors.description}
+                    </Form.Control.Feedback>
+                  )}
                 </Col>
               </Row>
             </div>
-
+            {/* Grading Results */}
             <div className="my-4 ms-4" style={{ width: "500px" }}>
               <h4
                 className="text-center py-1"
@@ -252,16 +301,23 @@ export const ValuationApplication = () => {
                 <Col md={5}>
                   <input
                     type="number"
+                    min={0}
                     id="caratWeight"
                     name="caratWeight"
+                    value={result.caratWeight || ""}
                     style={{
                       border: "none",
                       borderBottom: "solid",
                       width: "100%",
                     }}
-                    value={result.caratWeight || ""}
                     onChange={handleOnChange}
+                    isInvalid={!!errors.caratWeight}
                   />
+                  {errors.caratWeight && (
+                    <Form.Control.Feedback type="invalid">
+                      {errors.caratWeight}
+                    </Form.Control.Feedback>
+                  )}
                 </Col>
               </Row>
               <Row className="mb-2 align-items-end justify-content-between">
@@ -279,15 +335,22 @@ export const ValuationApplication = () => {
                       width: "100%",
                     }}
                     onChange={handleOnChange}
+                    isInvalid={!!errors.color}
                   >
                     <option value=""></option>
-                    <option value="K">K</option>
-                    <option value="J">J</option>
-                    <option value="I">I</option>
-                    <option value="H">H</option>
-                    <option value="G">G</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
                     <option value="F">F</option>
+                    <option value="G">G</option>
+                    <option value="H">H</option>
+                    <option value="I">I</option>
+                    <option value="J">J</option>
                   </select>
+                  {errors.color && (
+                    <Form.Control.Feedback type="invalid">
+                      {errors.color}
+                    </Form.Control.Feedback>
+                  )}
                 </Col>
               </Row>
               <Row className="mb-2 align-items-end justify-content-between">
@@ -305,17 +368,26 @@ export const ValuationApplication = () => {
                       width: "100%",
                     }}
                     onChange={handleOnChange}
+                    isInvalid={!!errors.clarity}
                   >
                     <option value=""></option>
-                    <option value="SI2">SI2</option>
-                    <option value="SI1">SI1</option>
-                    <option value="VS2">VS2</option>
-                    <option value="VS1">VS1</option>
-                    <option value="VVS2">VVS2</option>
-                    <option value="VVS1">VVS1</option>
-                    <option value="IF">IF</option>
                     <option value="FL">FL</option>
+                    <option value="IF">IF</option>
+                    <option value="VVS1">VVS1</option>
+                    <option value="VVS2">VVS2</option>
+                    <option value="VS1">VS1</option>
+                    <option value="VS2">VS2</option>
+                    <option value="SI1">SI1</option>
+                    <option value="SI2">SI2</option>
+                    <option value="I1">I1</option>
+                    <option value="I2">I2</option>
+                    <option value="I3">I3</option>
                   </select>
+                  {errors.clarity && (
+                    <Form.Control.Feedback type="invalid">
+                      {errors.clarity}
+                    </Form.Control.Feedback>
+                  )}
                 </Col>
               </Row>
               <Row className="mb-2 align-items-end justify-content-between">
@@ -333,49 +405,22 @@ export const ValuationApplication = () => {
                       width: "100%",
                     }}
                     onChange={handleOnChange}
+                    isInvalid={!!errors.cut}
                   >
                     <option value=""></option>
-                    <option value="FAIR">FAIR</option>
-                    <option value="GOOD">GOOD</option>
-                    <option value="V.GOOD">V.GOOD</option>
-                    <option value="EX.">EX.</option>
+                    <option value="Ideal">Ideal</option>
+                    <option value="Excellent">Excellent</option>
+                    <option value="Very Good">Very Good</option>
+                    <option value="Good">Good</option>
+                    <option value="Fair">Fair</option>
                   </select>
+                  {errors.cut && (
+                    <Form.Control.Feedback type="invalid">
+                      {errors.cut}
+                    </Form.Control.Feedback>
+                  )}
                 </Col>
               </Row>
-            </div>
-
-            <div className="my-4 ms-4" style={{ width: "500px" }}>
-              <h4
-                className="text-center py-1"
-                style={{ backgroundColor: "#7CF4DE" }}
-              >
-                Additional Grading Information
-              </h4>
-              <Row className="mb-2 align-items-end justify-content-between">
-                <Col md={4}>
-                  <label htmlFor="polish">Polish</label>
-                </Col>
-                <Col md={5}>
-                  <select
-                    id="polish"
-                    name="polish"
-                    value={result.polish || ""}
-                    style={{
-                      border: "none",
-                      borderBottom: "solid",
-                      width: "100%",
-                    }}
-                    onChange={handleOnChange}
-                  >
-                    <option value=""></option>
-                    <option value="FAIR">FAIR</option>
-                    <option value="GOOD">GOOD</option>
-                    <option value="V.GOOD">V.GOOD</option>
-                    <option value="EX.">EX.</option>
-                  </select>
-                </Col>
-              </Row>
-
               <Row className="mb-2 align-items-end justify-content-between">
                 <Col md={4}>
                   <label htmlFor="symmetry">Symmetry</label>
@@ -391,13 +436,51 @@ export const ValuationApplication = () => {
                       width: "100%",
                     }}
                     onChange={handleOnChange}
+                    isInvalid={!!errors.symmetry}
                   >
                     <option value=""></option>
-                    <option value="FAIR">FAIR</option>
-                    <option value="GOOD">GOOD</option>
-                    <option value="V.GOOD">V.GOOD</option>
-                    <option value="EX.">EX.</option>
+                    <option value="Excellent">Excellent</option>
+                    <option value="Very Good">Very Good</option>
+                    <option value="Good">Good</option>
+                    <option value="Fair">Fair</option>
+                    <option value="Poor">Poor</option>
                   </select>
+                  {errors.symmetry && (
+                    <Form.Control.Feedback type="invalid">
+                      {errors.symmetry}
+                    </Form.Control.Feedback>
+                  )}
+                </Col>
+              </Row>
+              <Row className="mb-2 align-items-end justify-content-between">
+                <Col md={4}>
+                  <label htmlFor="polish">Polish</label>
+                </Col>
+                <Col md={5}>
+                  <select
+                    id="polish"
+                    name="polish"
+                    value={result.polish || ""}
+                    style={{
+                      border: "none",
+                      borderBottom: "solid",
+                      width: "100%",
+                    }}
+                    onChange={handleOnChange}
+                    isInvalid={!!errors.polish}
+                  >
+                    <option value=""></option>
+                    <option value="Excellent">Excellent</option>
+                    <option value="Very Good">Very Good</option>
+                    <option value="Good">Good</option>
+                    <option value="Fair">Fair</option>
+                    <option value="Poor">Poor</option>
+                  </select>
+                  {errors.polish && (
+                    <Form.Control.Feedback type="invalid">
+                      {errors.polish}
+                    </Form.Control.Feedback>
+                  )}
                 </Col>
               </Row>
               <Row className="mb-2 align-items-end justify-content-between">
@@ -415,86 +498,74 @@ export const ValuationApplication = () => {
                       width: "100%",
                     }}
                     onChange={handleOnChange}
+                    isInvalid={!!errors.fluorescence}
                   >
                     <option value=""></option>
-                    <option value="VSTG">VSTG</option>
-                    <option value="STG">STG</option>
-                    <option value="MED">MED</option>
-                    <option value="FNT">FNT</option>
-                    <option value="NON">NON</option>
+                    <option value="None">None</option>
+                    <option value="Faint">Faint</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Strong">Strong</option>
+                    <option value="Very Strong">Very Strong</option>
                   </select>
-                </Col>
-              </Row>
-              <Row className="mb-2 align-items-end justify-content-between">
-                <Col md={4}>
-                  <label htmlFor="proportions">Proportion</label>
-                </Col>
-                <Col md={5}>
-                  <input
-                    type="text"
-                    id="proportions"
-                    name="proportions"
-                    value={result.proportions}
-                    style={{
-                      border: "none",
-                      borderBottom: "solid",
-                      width: "100%",
-                    }}
-                    onChange={handleOnChange}
-                  />
-                </Col>
-              </Row>
-              <Row className="mb-2 align-items-end justify-content-between">
-                <Col md={4}>
-                  <label htmlFor="price">Estimate Price</label>
-                </Col>
-                <Col md={5}>
-                  <input
-                    type="number"
-                    id="price"
-                    name="price"
-                    value={result.price || ""}
-                    style={{
-                      border: "none",
-                      borderBottom: "solid",
-                      width: "100%",
-                    }}
-                    onChange={handleOnChange}
-                  />
+                  {errors.fluorescence && (
+                    <Form.Control.Feedback type="invalid">
+                      {errors.fluorescence}
+                    </Form.Control.Feedback>
+                  )}
                 </Col>
               </Row>
             </div>
           </div>
-
-          <div className="w-50">
-            <div className="my-4 ms-4" style={{ width: "500px" }}>
-              <h4
-                className="text-center py-1"
-                style={{ backgroundColor: "#7CF4DE" }}
-              >
-                Product Image
-              </h4>
-              <div className="my-3 d-flex justify-content-center">
-                {product.img && (
-                  <img
-                    src={product.img}
-                    alt="product-img"
-                    height="300"
-                    className="border border-dark w-75"
+          <div className="mx-5 my-5 d-flex flex-column">
+            <img
+              src={result.img}
+              alt="Diamond"
+              style={{ width: "500px", height: "500px" }}
+            />
+            <div className="my-3">
+              <Row className="align-items-end justify-content-between">
+                <Col md={3}>
+                  <label htmlFor="price">Price</label>
+                </Col>
+                <Col md={7}>
+                  <input
+                    type="number"
+                    min={0}
+                    id="price"
+                    name="price"
+                    style={{
+                      border: "none",
+                      borderBottom: "solid",
+                      width: "100%",
+                    }}
+                    value={result.price || ""}
+                    onChange={handleOnChange}
+                    isInvalid={!!errors.price}
                   />
-                )}
-              </div>
+                  {errors.price && (
+                    <Form.Control.Feedback type="invalid">
+                      {errors.price}
+                    </Form.Control.Feedback>
+                  )}
+                </Col>
+              </Row>
             </div>
           </div>
         </div>
-
-        <div className="d-flex justify-content-end my-4">
-          <Button className="btn btn-danger me-4" type="submit">
-            Create
+        <div className="text-center mb-5">
+          <Button
+            type="submit"
+            style={{
+              backgroundColor: "#F05656",
+              borderRadius: "0",
+              border: "none",
+              width: "200px",
+            }}
+          >
+            Submit
           </Button>
         </div>
       </Form>
-      )
     </Container>
   );
 };

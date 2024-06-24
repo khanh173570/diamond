@@ -131,6 +131,7 @@ function App() {
           />
           <Route path="personal-info" element={<PersonalInformation />} />
           <Route path="valuation-result-list" element={<ValuationList />} />
+
         </Route>
         {/* ROLE:VALUATION_STAFF */}
         <Route path="/valuation-staff" element={

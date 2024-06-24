@@ -6,31 +6,40 @@ import { useNavigate } from "react-router-dom";
 
 function Calculate() {
   const [diamondCalculate, setDiamondCalculate] = useState({
-    isLabGrown: true ,
+    isLabGrown: true,
     shape: "Round",
     caratWeight: "",
-    clarity: "SI2",
+    clarity: "VVS1",
     color: "K",
     cut: "Fair",
     symmetry: "Fair",
     polish: "Fair",
-    fluorescence: "Fair",
+    fluorescence: "Very Strong",
   });
 
   const navigate = useNavigate();
 
   const selectedOption = (type, item) => {
-    setDiamondCalculate((currentItem) => ({ ...currentItem, [type]: item }));
+    setDiamondCalculate((currentItem) => ({
+      ...currentItem,
+      [type]: item,
+    }));
   };
+
   const handleOnCalculate = () => {
     const queryParams = new URLSearchParams(diamondCalculate).toString();
     navigate(`/calculate?${queryParams}`);
   };
+
+  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
   return (
     <div>
       <div className="text-center">
         <h1>Diamond Price Calculate</h1>
-        <hr style={{ background: "#DDE1DF", height: "2px", marginTop: "1.5em" }} />
+        <hr
+          style={{ background: "#DDE1DF", height: "2px", marginTop: "1.5em" }}
+        />
       </div>
       <div>
         <Row className="justify-content-center ">
@@ -38,57 +47,71 @@ function Calculate() {
             <div className="fs-3 fw-bold">Calculate Input</div>
             <label htmlFor="">DIAMOND ORIGIN</label>
             <div className="d-flex flex-wrap mb-4 button-group ">
-
-              {["Natural", "Lab Grown"].map((value) => (
+              {[
+                { label: "Natural", value: false },
+                { label: "Lab grown", value: true },
+              ].map((option) => (
                 <Button
-                  key={"Lab Grown" ? true : false}
-                  onClick={() => selectedOption("isLabGrown", value)}
+                  key={option.label}
+                  onClick={() => selectedOption("isLabGrown", option.value)}
                   style={{ width: "45%", marginLeft: "10px" }}
-                  className={diamondCalculate.diamondOrigin === value ? "selected" : ""}
+                  className={
+                    diamondCalculate.isLabGrown === option.value
+                      ? "selected"
+                      : ""
+                  }
                 >
-                  {value}
+                  {capitalize(option.label)}
                 </Button>
               ))}
             </div>
             <label htmlFor="">SHAPE</label>
             <div className="d-flex flex-wrap mb-3 button-group">
-              {["Round", "Oval", "Emerald", "Pear", "Cushion", "Heart"].map((value) => (
-                <Button
-                  key={value}
-                  onClick={() => selectedOption("shape", value)}
-                  style={{ width: "30%", margin: "3px 5px" }}
-                  className={diamondCalculate.shape === value ? "selected" : ""}
-                >
-                  {value}
-                </Button>
-              ))}
+              {["Round", "Oval", "Emerald", "Pear", "Princess", "Cushion"].map(
+                (value) => (
+                  <Button
+                    key={value}
+                    onClick={() => selectedOption("shape", value)}
+                    style={{ width: "30%", margin: "3px 5px" }}
+                    className={
+                      diamondCalculate.shape === value ? "selected" : ""
+                    }
+                  >
+                    {capitalize(value)}
+                  </Button>
+                )
+              )}
             </div>
             <div className="mb-3">
-              <label htmlFor="carat" className="w-100">CARAT</label>
+              <label htmlFor="caratWeight" className="w-100">
+                CARAT
+              </label>
               <input
-                id="carat"
-                type="text"
-                name="carat"
+                id="caratWeight"
+                type="number"
+                name="caratWeight"
                 className="w-100"
                 onChange={(e) =>
                   setDiamondCalculate((currentItem) => ({
                     ...currentItem,
-                    carat: e.target.value,
+                    caratWeight: e.target.value,
                   }))
                 }
               />
             </div>
             <label htmlFor="">CLARITY</label>
             <div className="d-flex flex-wrap ms-2 mb-3 button-group">
-              {["IF", "VVS1", "VVS2", "VS1", "VS2", "SI1", "SI2", "I1"].map(
+              {["FL", "IF", "VVS1", "VVS2", "VS1", "VS2", "SI1", "SI2"].map(
                 (clarity) => (
                   <Button
                     key={clarity}
-                    className={diamondCalculate.clarity === clarity ? "selected" : ""}
+                    className={
+                      diamondCalculate.clarity === clarity ? "selected" : ""
+                    }
                     style={{ width: "23%", margin: "3px 2px" }}
                     onClick={() => selectedOption("clarity", clarity)}
                   >
-                    {clarity}
+                    {capitalize(clarity)}
                   </Button>
                 )
               )}
@@ -98,7 +121,9 @@ function Calculate() {
               {["K", "J", "I", "H", "G", "F", "E", "D"].map((color) => (
                 <Button
                   key={color}
-                  className={diamondCalculate.color === color ? "selected" : ""}
+                  className={
+                    diamondCalculate.color === color ? "selected" : ""
+                  }
                   style={{ width: "23%", margin: "3px 2px" }}
                   onClick={() => selectedOption("color", color)}
                 >
@@ -111,50 +136,78 @@ function Calculate() {
               {["Fair", "Good", "Very Good", "Excellent"].map((cut) => (
                 <Button
                   key={cut}
-                  style={{ width: "23%", margin: "3px 2px", textAlign: "center" }}
-                  className={diamondCalculate.cut === cut ? "selected" : ""}
+                  style={{
+                    width: "23%",
+                    margin: "3px 2px",
+                    textAlign: "center",
+                  }}
+                  className={
+                    diamondCalculate.cut === cut ? "selected" : ""
+                  }
                   onClick={() => selectedOption("cut", cut)}
                 >
-                  {cut}
+                  {capitalize(cut)}
                 </Button>
               ))}
             </div>
             <label htmlFor="">SYMMETRY</label>
             <div className="d-flex flex-wrap ms-2 mb-4 button-group">
-              {["FAIR", "GOOD", "V.GOOD", "EX."].map((symmetry) => (
+              {["Fair", "Good", "Very Good", "Excellent"].map((symmetry) => (
                 <Button
                   key={symmetry}
-                  style={{ width: "23%", margin: "3px 2px", textAlign: "center" }}
-                  className={diamondCalculate.symmetry === symmetry ? "selected" : ""}
+                  style={{
+                    width: "23%",
+                    margin: "3px 2px",
+                    textAlign: "center",
+                  }}
+                  className={
+                    diamondCalculate.symmetry === symmetry ? "selected" : ""
+                  }
                   onClick={() => selectedOption("symmetry", symmetry)}
                 >
-                  {symmetry}
+                  {capitalize(symmetry)}
                 </Button>
               ))}
             </div>
             <label htmlFor="">POLISH</label>
             <div className="d-flex flex-wrap ms-2 mb-3 button-group">
-              {["FAIR", "GOOD", "V.GOOD", "EX."].map((polish) => (
+              {["Fair", "Good", "Very Good", "Excellent"].map((polish) => (
                 <Button
                   key={polish}
-                  style={{ width: "23%", margin: "3px 2px", textAlign: "center" }}
-                  className={diamondCalculate.polish === polish ? "selected" : ""}
+                  style={{
+                    width: "23%",
+                    margin: "3px 2px",
+                    textAlign: "center",
+                  }}
+                  className={
+                    diamondCalculate.polish === polish ? "selected" : ""
+                  }
                   onClick={() => selectedOption("polish", polish)}
                 >
-                  {polish}
+                  {capitalize(polish)}
                 </Button>
               ))}
             </div>
             <label htmlFor="">FLUORESCENCE</label>
             <div className="d-flex flex-wrap ms-2 mb-3 button-group">
-              {["VSTG", "STG", "MED", "FNT", "NDN"].map((fluorescence) => (
+              {["Very Strong", "Strong", "Medium", "Faint", "None"].map((fluorescence) => (
                 <Button
                   key={fluorescence}
-                  style={{ width: "18%", margin: "3px 2px", textAlign: "center" }}
-                  onClick={() => selectedOption("fluorescence", fluorescence)}
-                  className={diamondCalculate.fluorescence === fluorescence ? "selected" : ""}
+                  style={{
+                    width: "18%",
+                    margin: "3px 2px",
+                    textAlign: "center",
+                  }}
+                  onClick={() =>
+                    selectedOption("fluorescence", fluorescence)
+                  }
+                  className={
+                    diamondCalculate.fluorescence === fluorescence
+                      ? "selected"
+                      : ""
+                  }
                 >
-                  {fluorescence}
+                  {capitalize(fluorescence)}
                 </Button>
               ))}
             </div>

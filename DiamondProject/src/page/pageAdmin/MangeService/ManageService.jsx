@@ -179,7 +179,6 @@ export const ManageService = () => {
             }
         });
     };
-
     // Fetch service price list by service ID
     const handleViewServicePriceList = async(serviceId) => {
         setSelectedServiceId(serviceId);
@@ -192,6 +191,7 @@ export const ManageService = () => {
             console.error("Error fetching service price list: " + error);
         }
     };
+
     const [showFormAddNewPriceList, setShowFormAddNewPriceList] = useState(false);
     const showModalFormAddNewPriceList = () => setShowFormAddNewPriceList(true);
     const closeFormAddNewPriceList = () =>setShowFormAddNewPriceList(false);
@@ -273,21 +273,29 @@ export const ManageService = () => {
     const handleSaveEditPriceList = async (priceListId) => {
         const editedPriceList = editPriceList[priceListId];
         if (!editedPriceList) return;
-
+    
         try {
-            const response = await fetch(`http://localhost:8080/service_price_list/editServicePriceList/${priceListId}`, {
+            const response = await fetch(`http://localhost:8080/service_price_list/updateServicePriceListById/${priceListId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(editedPriceList),
             });
-
+    
             if (response.ok) {
-                setServicePriceList(prevState => prevState.map(priceList =>
-                    priceList.servicePriceId === priceListId ? { ...priceList, ...editedPriceList } : priceList
-                ));
+                const updatedPriceList = await response.json();
+                setServicePriceList(prevState => 
+                    prevState.map(priceList =>
+                        priceList.priceList === priceListId ? updatedPriceList : priceList
+                    )
+                );
                 setEditPriceRowId(null);
+                setEditPriceList(prevState => {
+                    const newState = { ...prevState };
+                    delete newState[priceListId];
+                    return newState;
+                });
                 Swal.fire({
                     title: 'Success!',
                     text: 'Price List updated successfully.',
@@ -299,6 +307,7 @@ export const ManageService = () => {
             console.error("Error updating price list: " + error);
         }
     };
+    
     // Delete price list item
     const handleDeletePriceList = (priceList) => {
         Swal.fire({

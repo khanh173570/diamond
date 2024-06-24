@@ -4,6 +4,7 @@ import { GeneratePDF } from './GeneratePDF';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import formattedDate from '../../../utils/formattedDate/formattedDate';
 import { Pagination } from '../../../component/Pagination/Pagination';
+import { RemakeGenerate } from '../RemakeValution/RemakeGenerate';
 // ROLE: CONSULTANT_STAFF
 export const ValuationList = () => {
   const [valuationResult, setValuationRequest] = useState([]);
@@ -130,7 +131,7 @@ export const ValuationList = () => {
           </Row>
           <Row className="mt-4">
             <Col>
-              <GeneratePDF result={selectedResult} />
+              <RemakeGenerate result={selectedResult} />
             </Col>
           </Row>
         </div>
