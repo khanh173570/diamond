@@ -1,18 +1,21 @@
 package org.swp391.valuationdiamond.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.swp391.valuationdiamond.dto.DiamondPriceDTO;
+import org.swp391.valuationdiamond.entity.DiamondPrice;
+import org.swp391.valuationdiamond.repository.DiamondPriceRepository;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
 public class DiamondPriceServiceImp {
+    @Autowired
+    private DiamondPriceRepository diamondPriceRepository;
+
 
     // Price adjustment factors
     private static final Map<String, BigDecimal> CUT_ADJUSTMENTS = new HashMap<>();
@@ -200,20 +203,20 @@ public class DiamondPriceServiceImp {
     }
 
     public static class PriceDetails {
-        private BigDecimal basePrice;
+        private BigDecimal baseFinalPrice;
         private BigDecimal minPrice;
         private BigDecimal maxPrice;
         private LocalDateTime currentDate;
 
-        public PriceDetails(BigDecimal basePrice, BigDecimal minPrice, BigDecimal maxPrice, LocalDateTime currentDate) {
-            this.basePrice = basePrice;
+        public PriceDetails(BigDecimal baseFinalPrice, BigDecimal minPrice, BigDecimal maxPrice, LocalDateTime currentDate) {
+            this.baseFinalPrice = baseFinalPrice;
             this.minPrice = minPrice;
             this.maxPrice = maxPrice;
             this.currentDate = currentDate;
         }
 
-        public BigDecimal getBasePrice() {
-            return basePrice;
+        public BigDecimal getBaseFinalPrice() {
+            return baseFinalPrice;
         }
 
         public BigDecimal getMinPrice() {
@@ -227,4 +230,46 @@ public class DiamondPriceServiceImp {
             return currentDate;
         }
     }
-}
+
+
+
+
+
+    public List<DiamondPrice> findByDiamondOriginAndShapeAndCaratWeightBetweenAndColorAndClarityAndCutAndFluorescenceAndPolishAndSymmetryAndPriceBetween(
+            String diamondOrigin, String shape, BigDecimal caratWeightMin, BigDecimal caratWeightMax,
+            String color, String clarity, String cut, String fluorescence, String polish, String symmetry,
+            BigDecimal priceMin, BigDecimal priceMax) {
+
+        // Set default values if not provided
+        if (diamondOrigin == null) diamondOrigin = "Lab Grown";
+        if (shape == null) shape = "Round";
+        if (caratWeightMin == null) caratWeightMin = BigDecimal.ZERO;
+        if (caratWeightMax == null) caratWeightMax = BigDecimal.ZERO;
+        if (color == null) color = "G";
+        if (clarity == null) clarity = "VS1";
+        if (cut == null) cut = "Good";
+        if (fluorescence == null) fluorescence = "None";
+        if (polish == null) polish = "Good";
+        if (symmetry == null) symmetry = "Good";
+        if (priceMin == null) priceMin = BigDecimal.ZERO;
+        if (priceMax == null) priceMax = BigDecimal.ZERO;
+
+        return diamondPriceRepository.findByDiamondOriginAndShapeAndCaratWeightBetweenAndColorAndClarityAndCutAndFluorescenceAndPolishAndSymmetryAndPriceBetween(
+                diamondOrigin, shape, caratWeightMin, caratWeightMax, color, clarity, cut, fluorescence, polish, symmetry, priceMin, priceMax);
+    }
+    public List<DiamondPrice> findSimilarDiamonds(BigDecimal caratWeight, String shape, String cut,
+                                                  String fluorescence, String symmetry, String polish,
+                                                  String color, String clarity, boolean isLabGrown, BigDecimal priceMin, BigDecimal priceMax) {
+
+        BigDecimal caratWeightMin = caratWeight.subtract(new BigDecimal("0.1"));
+        BigDecimal caratWeightMax = caratWeight.add(new BigDecimal("0.1"));
+
+        return diamondPriceRepository.findByDiamondOriginLikeAndShapeLikeAndCaratWeightBetweenAndColorLikeAndClarityLikeAndCutLikeAndFluorescenceLikeAndPolishLikeAndSymmetryLikeAndPriceBetween(
+                "%", shape, caratWeightMin, caratWeightMax, color, clarity, cut, fluorescence, polish, symmetry, priceMin, priceMax);
+    }
+    public List<DiamondPrice> findDiamondsByCaratWeightOrPriceRange(BigDecimal caratWeightMax,BigDecimal caratWeightMin, BigDecimal priceMin, BigDecimal priceMax) {
+        // Implementation to find diamonds by carat weight and price range
+        return diamondPriceRepository.findDiamondsByCaratWeightOrPriceRange(caratWeightMax,caratWeightMin, priceMin, priceMax);
+    }
+    }
+
