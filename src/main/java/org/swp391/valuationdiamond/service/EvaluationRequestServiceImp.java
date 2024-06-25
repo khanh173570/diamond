@@ -38,7 +38,7 @@ public class EvaluationRequestServiceImp implements IEvaluationRequestService {
         long count = evaluationRequestRepository.count();
         String formattedCount = String.valueOf(count + 1);
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
-        String requestId = "ER" + formattedCount + date;
+        String requestId = "ER"+ date + formattedCount ;
 
         evaluationRequest.setRequestId(requestId);
         evaluationRequest.setRequestDescription(evaluationRequestDTO.getRequestDescription());

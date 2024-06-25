@@ -19,7 +19,7 @@ USER:
 
 - http://localhost:8080/user_request/getUser/{userId}
 - http://localhost:8080/user_request/getStaff
-- http://localhost:8080/user_request/getCustomer
+- http://localhost:8080/user_requesuser_request/getStafft/getCustomer
 
 - Update
   http://localhost:8080/user_request/updateUser/{userId}
