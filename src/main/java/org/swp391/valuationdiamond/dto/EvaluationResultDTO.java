@@ -29,7 +29,7 @@ public class EvaluationResultDTO {
     String userId;
     String orderDetailId;
     String img;
-    Date date;
+    Date createDate;
 
 
 }

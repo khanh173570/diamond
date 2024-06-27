@@ -46,7 +46,7 @@ public class EvaluationResultServiceImp {
                 .description(EvaluationResultDTO.getDescription())
                 .price(EvaluationResultDTO.getPrice())
                 .img(EvaluationResultDTO.getImg())
-                .date(EvaluationResultDTO.getDate())
+                .createDate(EvaluationResultDTO.getCreateDate())
                 .build();
 
         User userId = userRepository.findById(EvaluationResultDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));

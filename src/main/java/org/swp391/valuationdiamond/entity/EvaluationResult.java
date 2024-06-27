@@ -72,8 +72,8 @@ public class EvaluationResult {
   @Column(name = "price", nullable = true, precision = 18, scale = 2)
   BigDecimal price;
 
-  @Column(name = "date", nullable = true)
-  Date date;
+  @Column(name = "create_date", nullable = true)
+  Date createDate;
 
   @ManyToOne
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")
