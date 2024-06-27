@@ -25,10 +25,6 @@ public class UserServiceImp {
             throw new IllegalArgumentException("User with ID " + userDTO.getUserId() + " already exists");
         }
 
-        if (userRepository.findByEmail(userDTO.getEmail()) != null) {
-            throw new IllegalArgumentException("User with Email " + userDTO.getEmail() + " already exists");
-        }
-
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         User user = User.builder()
                 .userId(userDTO.getUserId())

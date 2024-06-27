@@ -57,7 +57,7 @@ public class OrderServiceImp {
 
         long count = orderRepository.count();
         String formattedCount = String.valueOf(count + 1);
-        String orderId = "Or" + formattedCount + date;
+        String orderId = "Or" + date + formattedCount;
 
         Order order = Order.builder()
                 .orderId(orderId)
@@ -79,7 +79,7 @@ public class OrderServiceImp {
 
                     long countDetail = orderDetailRepository.count();
                     String formattedCountDetail = String.valueOf(countDetail + 1);
-                    String orderDetailId = "OD" + formattedCountDetail + date;
+                    String orderDetailId = "OD" + date + formattedCountDetail;
 
                    OrderDetail orderDetail = OrderDetail.builder()
                             .orderDetailId(orderDetailId)

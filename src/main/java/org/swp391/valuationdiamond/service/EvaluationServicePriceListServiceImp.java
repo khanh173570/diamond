@@ -23,25 +23,25 @@ public class EvaluationServicePriceListServiceImp implements IEvaluationServiceP
         this.evaluationServiceRepository = evaluationServiceRepository;
     }
 
+    //============================================ CREATE ====================================================
     @Override
     public EvaluationServicePriceList createServicePriceList(EvaluationServicePriceListDTO evaluationServicePriceListDTO) {
-        EvaluationServicePriceList evaluationServicePriceList = new EvaluationServicePriceList();
-
         long count = evaluationServicePriceListRepository.count();
         String formattedCount = String.valueOf(count + 1);
-        String priceId = "SP" + formattedCount;
+        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
+        String servicePriceList = "ESPL"+ date + formattedCount ;
+       EvaluationServicePriceList evaluationServicePriceList = EvaluationServicePriceList.builder()
+               .priceList(servicePriceList)
+               .initPrice(evaluationServicePriceListDTO.getInitPrice())
+               .priceUnit(evaluationServicePriceListDTO.getPriceUnit())
+               .sizeFrom(evaluationServicePriceListDTO.getSizeFrom())
+               .sizeTo(evaluationServicePriceListDTO.getSizeTo())
+               .build();
+       return  evaluationServicePriceListRepository.save(evaluationServicePriceList);
 
-        evaluationServicePriceList.setPriceList(priceId);
-        evaluationServicePriceList.setSizeFrom(evaluationServicePriceListDTO.getSizeFrom());
-        evaluationServicePriceList.setSizeTo(evaluationServicePriceListDTO.getSizeTo());
-        evaluationServicePriceList.setInitPrice(evaluationServicePriceListDTO.getInitPrice());
-        evaluationServicePriceList.setPriceUnit(evaluationServicePriceListDTO.getPriceUnit());
-        EvaluationService serviceId = evaluationServiceRepository.findById(evaluationServicePriceListDTO.getServiceId()).orElseThrow(() -> new RuntimeException("Service not found"));
-        evaluationServicePriceList.setServiceId(serviceId);
-
-       return evaluationServicePriceListRepository.save(evaluationServicePriceList);
     }
 
+    //============================================ GET ====================================================
     @Override
     public List<EvaluationServicePriceList> getPriceListByServiceId(String serviceId) {
         EvaluationService evaluationService = evaluationServiceRepository.findById(serviceId).orElseThrow(() -> new RuntimeException("ServiceId not found"));
@@ -83,6 +83,7 @@ public class EvaluationServicePriceListServiceImp implements IEvaluationServiceP
 
 
     //================================= Hàm update ===================================
+    //UPDATE PRICE LIST BY SERVICE ID
     @Override
     public List<EvaluationServicePriceList> updateServicePriceListByServiceId(String serviceId, EvaluationServicePriceListDTO evaluationServicePriceListDTO) {
         List<EvaluationServicePriceList> evaluationServicePriceLists = evaluationServicePriceListRepository.findByServiceId(evaluationServiceRepository.findById(serviceId).orElseThrow(() -> new RuntimeException("Service not found")));
@@ -107,6 +108,7 @@ public class EvaluationServicePriceListServiceImp implements IEvaluationServiceP
 
     }
 
+    //UPDATE PRICE LIST BY ID
     @Override
     public EvaluationServicePriceList updateServicePriceListById(String id, EvaluationServicePriceListDTO evaluationServicePriceListDTO) {
         EvaluationServicePriceList evaluationServicePriceList = evaluationServicePriceListRepository.findById(id).orElseThrow(() -> new RuntimeException("Price list not found with " + id + " id"));
