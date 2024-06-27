@@ -54,17 +54,17 @@ public class OrderController {
         return orderServiceImp.updateOrderStatus(orderId, orderDTO);
     }
 
-    @GetMapping("/countOrderCreated/{year}/{month}")
-    public long countOrdersRegisteredWithinMonth(@PathVariable int year, @PathVariable int month) {
-        return orderServiceImp.countOrdersRegisteredWithinMonth(year, month);
+    @GetMapping("/countOrderCreated")
+    public long countOrdersRegisteredWithinMonth() {
+        return orderServiceImp.countOrdersRegisteredWithinCurrentMonth();
     }
 
-    @GetMapping("/sumTotalPriceByOrderCreated/{year}/{month}")
-    public BigDecimal sumTotalPriceByOrderCreated(@PathVariable int year, @PathVariable int month) {
-        return orderServiceImp.sumTotalPriceWithinMonth(year, month);
+    @GetMapping("/sumTotalPriceByOrderCreated")
+    public BigDecimal sumTotalPriceByOrderCreated() {
+        return orderServiceImp.sumTotalPriceWithinMonth();
     }
-    @GetMapping("/sumQuantityWithinMonth/{year}/{month}")
-    public int sumQuantityWithinMonth(@PathVariable int year, @PathVariable int month) {
-        return orderServiceImp.sumQuantityWithinMonth(year, month);
+    @GetMapping("/sumQuantityWithinMonth")
+    public int sumQuantityWithinMonth() {
+        return orderServiceImp.sumQuantityWithinMonth();
     }
 }

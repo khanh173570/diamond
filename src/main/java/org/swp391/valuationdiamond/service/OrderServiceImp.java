@@ -163,26 +163,26 @@ public class OrderServiceImp {
 //
 //        return ordersWithinMonth.size();
 //    }
-    public long countOrdersRegisteredWithinMonth(int year, int month) {
-        YearMonth yearMonth = YearMonth.of(year, month);
-        LocalDate startDate = yearMonth.atDay(1);
-        LocalDate endDate = yearMonth.atEndOfMonth();
+public long countOrdersRegisteredWithinCurrentMonth() {
+    YearMonth currentYearMonth = YearMonth.now();
+    LocalDate startDate = currentYearMonth.atDay(1);
+    LocalDate endDate = currentYearMonth.atEndOfMonth();
 
-        List<Order> allOrders = orderRepository.findAll();
-        List<Order> ordersWithinMonth = allOrders.stream()
-                .filter(order -> {
-                    Date orderDate = order.getOrderDate();
-                    if (orderDate == null) {
-                        return false;
-                    }
-                    LocalDate LocalDate = orderDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    return (LocalDate.isEqual(startDate) || LocalDate.isAfter(startDate)) &&
-                            (LocalDate.isEqual(endDate) || LocalDate.isBefore(endDate));
-                })
-                .collect(Collectors.toList());
+    List<Order> allOrders = orderRepository.findAll();
+    List<Order> ordersWithinMonth = allOrders.stream()
+            .filter(order -> {
+                Date orderDate = order.getOrderDate();
+                if (orderDate == null) {
+                    return false;
+                }
+                LocalDate localDate = orderDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                return (localDate.isEqual(startDate) || localDate.isAfter(startDate)) &&
+                        (localDate.isEqual(endDate) || localDate.isBefore(endDate));
+            })
+            .collect(Collectors.toList());
 
-        return ordersWithinMonth.size();
-    }
+    return ordersWithinMonth.size();
+}
 //
 //
 //    public BigDecimal sumTotalPriceWithinMonth(int year, int month) {
@@ -208,8 +208,8 @@ public class OrderServiceImp {
 //
 //        return totalPriceSum;
 //    }
-    public BigDecimal sumTotalPriceWithinMonth(int year, int month) {
-        YearMonth yearMonth = YearMonth.of(year, month);
+    public BigDecimal sumTotalPriceWithinMonth() {
+        YearMonth yearMonth = YearMonth.now();
         LocalDate startDate = yearMonth.atDay(1);
         LocalDate endDate = yearMonth.atEndOfMonth();
 
@@ -231,8 +231,8 @@ public class OrderServiceImp {
 
         return totalPriceSum;
     }
-    public int sumQuantityWithinMonth(int year, int month) {
-        YearMonth yearMonth = YearMonth.of(year, month);
+    public int sumQuantityWithinMonth() {
+        YearMonth yearMonth = YearMonth.now();
         LocalDate startDate = yearMonth.atDay(1);
         LocalDate endDate = yearMonth.atEndOfMonth();
 
