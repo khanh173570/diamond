@@ -19,7 +19,7 @@ export const ViewReciptList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredSelection, setFilteredSelection] = useState([]);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   //paginate
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,12 +33,14 @@ export const ViewReciptList = () => {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  //update order status is completed when order all finished is completed
+  // get order details
   const fetchOrderDetails = async (orderId) => {
     const response = await fetch(`${API_BASE_URL}/order_detail_request/orderDetail/${orderId}`);
     const data = await response.json();
     return data;
   };
-
+  // update order details
   const checkAndUpdateOrderStatus = async (orders) => {
     for (const order of orders) {
       const orderDetails = await fetchOrderDetails(order.orderId);
@@ -60,16 +62,12 @@ export const ViewReciptList = () => {
         const sortedData = data.sort((a, b) => Date.parse(b.orderDate) - Date.parse(a.orderDate));
         setSelection(sortedData);
         setFilteredSelection(sortedData);
-        setLoading(true);
       } catch (error) {
         console.error('Error fetching data:', error);
         setLoading(false);
       }
     };
     fetchData();
-    return ()=>{
-      setLoading(false)
-    }
   }, []);
 
   const handleSearch = () => {

@@ -66,10 +66,13 @@ export const PersonalOrderDetail = () => {
     // update order status by order id
     // confirm finish
     const APIUpdate = `${API_BASE_URL}/order_request/updateStatus`;
-
     const handleOnFinished = async (value) => {
         if((order?.status !== "Completed" || order?.status !== "Finished" )){
-            toast.error("Your order is in-progress")
+            toast.error("Your order is In-progress")
+            return;
+        }
+        if((order?.status == "Sealed")){
+            toast.error("Your order is Sealed")
             return;
         }
         try {
@@ -114,11 +117,9 @@ export const PersonalOrderDetail = () => {
             ]
         });
     };
-
     if (loading) {
         return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
     }
-
     return (
         <div>
             <ToastContainer />
@@ -238,7 +239,7 @@ export const PersonalOrderDetail = () => {
                                     className='p-2 border border-none rounded text-dark' 
                                     style={{ backgroundColor: "#CCFBF0" }}
                                     onClick={showReceivedOrderConfirmation}
-                                    disabled = {order.status === 'Finished'}
+                                    disabled = {order.status === 'Finished' || order.status === 'Sealed'}
                                     >
                                     Finished
                                 </Button>

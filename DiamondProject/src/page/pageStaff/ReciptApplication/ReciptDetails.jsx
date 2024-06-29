@@ -152,10 +152,12 @@ export const ReceiptDetails = () => {
                 <td style={{ backgroundColor: getColorTime(orderDetails[0]?.orderId?.orderDate, product.receivedDate) }}>{formattedDateTime(product.receivedDate)}</td>
                 <td>{product.evaluationStaffId}</td>
                 <td>{product.size}</td>
-                {/* <td>{product.isDiamond }</td> */}
+                <td>{product.isDiamond ? "Diamond" : "Not a diamond"}</td>
+                {/* <td>
                 <div style={{ alignItems: "center" }}>
                   {product.isDiamond === null ? "Unknown" : (product.isDiamond ? "Diamond" : "Not a diamond")}
                 </div>
+                </td> */}
                 <td>
                   <Status status={product.status} />
                 </td>
