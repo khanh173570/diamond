@@ -28,7 +28,6 @@ export const UserRequest = () => {
   const [postsPerPage] = useState(6);
   const navigate = useNavigate();
 
-  // Fetch user requests
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -40,8 +39,9 @@ export const UserRequest = () => {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-        setUserRequest(data.reverse());
-        setFilteredRequests(data);
+        const sortedData = data.sort((a, b) => Date.parse(b.requestDate) - Date.parse(a.requestDate));
+        setUserRequest(sortedData);
+        setFilteredRequests(sortedData);
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("Failed to fetch data");

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Table } from "react-bootstrap";
+import { Button, Container, Spinner, Table } from "react-bootstrap";
 import { Pagination } from "../../../component/Pagination/Pagination";
 import formattedDate from "../../../utils/formattedDate/formattedDate";
 import { useNavigate } from "react-router-dom";
@@ -38,16 +38,19 @@ export const MyCertificateList = () => {
           `http://localhost:8080/evaluation_results/getEvaluationResultsByUserId/${user.userId}`
         );
         const data = await response.json();
+        // const sortedData = data.sort((a, b) => Date.parse(b.requestDate) - Date.parse(a.requestDate));
         setCertificateList(data);
-        setLoading(true);
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
+      }finally {
+        setLoading(false)
       }
     };
     fetchData();
   }, []);
-  if (!loading) {
+
+  if (loading) {
     return (
       <div className="text-center my-4" style={{ minHeight: "500px" }}>
         <Spinner animation="border" />

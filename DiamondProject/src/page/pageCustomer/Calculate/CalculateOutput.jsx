@@ -64,7 +64,7 @@ export const CalculateOutput = () => {
               className="fw-bold fs-1 p-2 border border-dark"
               style={{ borderRadius: "15px" }}
             >
-              {`$${Math.round(result.basePrice)}`}
+              { result.basePrice? `$${Math.round(result.basePrice)}` : 0}
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@ export const CalculateOutput = () => {
           </Col>
           <Col md={6} className="text-center p-4">
             <div>Estimate Range</div>
-            <div className="fw-bold">{`$${Math.round(result.minPrice)}-$${Math.round(result.maxPrice)}`}</div>
+            <div className="fw-bold">{ (result.minPrice &&result.maxPrice ) ? `$${Math.round(result.minPrice)} - $${Math.round(result.maxPrice)}` : 0 - 0}</div>
           </Col>
         </Row>
       </div>

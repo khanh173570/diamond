@@ -31,7 +31,8 @@ export const PersonalRequest = () => {
             try {
                 const response = await fetch(`${API}/${user.userId}`);
                 const data = await response.json();
-                setMyRequest(data.reverse());
+                const sortedData = data.sort((a, b) => Date.parse(b.requestDate) - Date.parse(a.requestDate));
+                setMyRequest(sortedData);
             } catch (error) {
                 console.error('Error fetching data:', error);
             } finally {

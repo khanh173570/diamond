@@ -11,8 +11,9 @@ export const CertificateDetail = () => {
   const { result } = location.state;
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
-  const [imgUpload, setImgUpload] = useState(null)
-
+  const [imgUpload, setImgUpload] = useState(null);
+  const [priceMarket, setPriceMarket] = useState({})
+  // result default
   const [resultEdit, setResultEdit] = useState({
     diamondOrigin: result.diamondOrigin,
     measurements: result.measurements,
@@ -30,25 +31,148 @@ export const CertificateDetail = () => {
     img: result.img,
   });
 
-  const showConfirmUpdate = (e) => {
-    e.preventDefault();
-    confirmAlert({
-      title: "Confirm to update",
-      message: "Click ok to update the valuation result",
-      buttons: [
-        {
-          label: "Ok",
-          onClick: () => updateResult(),
-        },
-        {
-          label: "Cancel",
-          onClick: () => {},
-        },
-      ],
-    });
+  console.log(resultEdit);
+  // validation
+  const [validationErrors, setValidationErrors] = useState({
+    diamondOrigin: "",
+    measurements: "",
+    proportions: "",
+    shapeCut: "",
+    description: "",
+    caratWeight: "",
+    color: "",
+    clarity: "",
+    cut: "",
+    symmetry: "",
+    polish: "",
+    fluorescence: "",
+    price: "",
+    img: ""
+  });
+
+  // market price 
+  const [marketPrice, setMarketPrice] = useState({
+    isLabGrown: resultEdit.diamondOrigin === 'Lab Grown' ? true : false,
+    shape: result.shapeCut,
+    color: result.color,
+    clarity: result.clarity,
+    caratWeight: result.caratWeight,
+    cut: result.cut,
+    symmetry: result.symmetry,
+    polish: result.polish,
+    fluorescence: result.fluorescence,
+  })
+
+  // view market price
+  const viewMarketPrice = () => {
+    const queryParams = new URLSearchParams(marketPrice).toString();
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/diamond/calculateFinalPrice?${queryParams}`
+        );
+        const data = await response.json();
+        setPriceMarket(data);
+        console.log(data)
+      } catch (error) {
+        setError(error);
+      } finally {
+        
+      }
+    };
+    fetchData();
+
+  }
+
+  console.log(marketPrice)
+
+  const validateForm = () => {
+    const errors = {};
+    if (!resultEdit.diamondOrigin) {
+      errors.diamondOrigin = "Diamond origin is required";
+    }
+    if (!resultEdit.measurements) {
+      errors.measurements = "Measurements are required";
+    }
+
+    if (!resultEdit.shapeCut) {
+      errors.shapeCut = "Shape cut is required";
+    }
+    if (!resultEdit.description) {
+      errors.description = "Description is required";
+    }
+    if (resultEdit.description.length > 100 || resultEdit.description.length < 5) {
+      errors.description = "Description must include 5 and 100 character";
+    }
+
+
+    if (!resultEdit.caratWeight) {
+      errors.caratWeight = "Carat weight is required";
+    }
+    if (Number.parseFloat(resultEdit.caratWeight) <= 0) {
+      errors.caratWeight = "Carat weight must have positive";
+    }
+    if (!resultEdit.color) {
+      errors.color = "Color grade is required";
+    }
+
+    if (!resultEdit.clarity) {
+      errors.clarity = "Clarity grade is required";
+    }
+    if (!resultEdit.cut) {
+      errors.cut = "Cut grade is required";
+    }
+
+    if (!resultEdit.symmetry) {
+      errors.symmetry = "Symmetry  is required";
+    }
+    if (!resultEdit.polish) {
+      errors.polish = " Polish is required";
+    }
+
+    if (!resultEdit.proportions) {
+      errors.proportions = "Proportions is required";
+    }
+    if (!resultEdit.img) {
+      errors.img = "Image is required";
+    }
+
+    if (!resultEdit.fluorescence) {
+      errors.fluorescence = "Fluorescence is required";
+    }
+    if (!resultEdit.price) {
+      errors.price = "Price is required";
+    }
+    if (Number.parseFloat(resultEdit.price) <= 500) {
+      errors.price = "Price must have greater than 500 dollars ";
+    }
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
+  const showConfirmUpdate = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      confirmAlert({
+        title: "Confirm to update",
+        message: "Click ok to update the valuation result",
+        buttons: [
+          {
+            label: "Ok",
+            onClick: () => updateResult(),
+          },
+          {
+            label: "Cancel",
+            onClick: () => { },
+          },
+        ],
+      });
+    }
+
+  };
+  // update result
   const updateResult = async () => {
+
     let imageUrl = resultEdit.img;
     if (imgUpload) {
       imageUrl = await saveImage();
@@ -88,8 +212,24 @@ export const CertificateDetail = () => {
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setResultEdit((currentState) => ({ ...currentState, [name]: value }));
-  };
+    setValidationErrors((currentState) => ({ ...currentState, [name]: "" }));
 
+    if (name === "diamondOrigin") {
+      setMarketPrice((currentState) => ({
+        ...currentState,
+        isLabGrown: value === 'Lab Grown'
+      }));
+    } else if (name === "shapeCut") {
+      setMarketPrice((currentState) => ({
+        ...currentState,
+        shape: value
+      }));
+    }
+
+    else {
+      setMarketPrice((currentState) => ({ ...currentState, [name]: value }));
+    }
+  };
   const handleOnchangeImage = (e) => {
     if (e.target.files && e.target.files[0]) {
       const img = e.target.files[0];
@@ -132,7 +272,7 @@ export const CertificateDetail = () => {
           src="/src/assets/assetsStaff/back.svg"
           alt="Back"
           onClick={() => {
-            navigate("/valuation-staff/valuation-order");
+            navigate("/valuation-staff/certificate-list");
           }}
           style={{ cursor: "pointer" }}
         />
@@ -162,7 +302,8 @@ export const CertificateDetail = () => {
                 <label htmlFor="diamondOrigin">Diamond Origin</label>
               </Col>
               <Col md={5}>
-                <select
+                <Form.Control
+                  as="select"
                   id="diamondOrigin"
                   name="diamondOrigin"
                   value={resultEdit.diamondOrigin}
@@ -170,13 +311,18 @@ export const CertificateDetail = () => {
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
+                    borderRadius: "0px"
                   }}
+                  isInvalid={!!validationErrors.diamondOrigin}
                   onChange={handleOnChange}
                 >
                   <option value=""></option>
                   <option value="Natural">Natural</option>
                   <option value="Lab Grown">Lab Grown</option>
-                </select>
+                </Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  {validationErrors.diamondOrigin}
+                </Form.Control.Feedback>
               </Col>
             </Row>
             <Row className="mb-2 align-items-end justify-content-between">
@@ -184,7 +330,7 @@ export const CertificateDetail = () => {
                 <label htmlFor="measurements">Measurements</label>
               </Col>
               <Col md={5}>
-                <input
+                <Form.Control
                   type="text"
                   id="measurements"
                   name="measurements"
@@ -192,10 +338,15 @@ export const CertificateDetail = () => {
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
+                    borderRadius: "0px"
                   }}
+                  isInvalid={!!validationErrors.measurements}
                   value={resultEdit.measurements || ""}
                   onChange={handleOnChange}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {validationErrors.measurements}
+                </Form.Control.Feedback>
               </Col>
             </Row>
             <Row className="mb-2 align-items-end justify-content-between">
@@ -203,7 +354,8 @@ export const CertificateDetail = () => {
                 <label htmlFor="shapeCut">Shape Cut</label>
               </Col>
               <Col md={5}>
-                <select
+                <Form.Control
+                  as="select"
                   id="shapeCut"
                   name="shapeCut"
                   value={resultEdit.shapeCut || ""}
@@ -211,17 +363,22 @@ export const CertificateDetail = () => {
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
+                    borderRadius: "0px"
                   }}
                   onChange={handleOnChange}
+                  isInvalid={!!validationErrors.shapeCut}
                 >
                   <option value=""></option>
                   <option value="Round">Round</option>
                   <option value="Cushion">Cushion</option>
                   <option value="Emerald">Emerald</option>
                   <option value="Oval">Oval</option>
-                  <option value="Heart">Heart</option>
+                  <option value="Pear">Pear</option>
                   <option value="Princess">Princess</option>
-                </select>
+                </Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  {validationErrors.shapeCut}
+                </Form.Control.Feedback>
               </Col>
             </Row>
             <Row className="mb-2 align-items-end justify-content-between">
@@ -229,7 +386,7 @@ export const CertificateDetail = () => {
                 <label htmlFor="description">Description</label>
               </Col>
               <Col md={5}>
-                <input
+                <Form.Control
                   type="text"
                   id="description"
                   name="description"
@@ -238,10 +395,14 @@ export const CertificateDetail = () => {
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
+                    borderRadius: "0px"
                   }}
                   onChange={handleOnChange}
+                  isInvalid={!!validationErrors.description}
                 />
+                <Form.Control.Feedback type="invalid">{validationErrors.description}</Form.Control.Feedback>
               </Col>
+
             </Row>
           </div>
 
@@ -257,18 +418,22 @@ export const CertificateDetail = () => {
                 <label htmlFor="caratWeight">Carat Weight</label>
               </Col>
               <Col md={5}>
-                <input
+                <Form.Control
                   type="number"
+                  min={0}
                   id="caratWeight"
                   name="caratWeight"
                   style={{
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
+                    borderRadius: "0px"
                   }}
                   value={resultEdit.caratWeight || ""}
                   onChange={handleOnChange}
+                  isInvalid={!!validationErrors.caratWeight}
                 />
+                <Form.Control.Feedback type="invalid">{validationErrors.caratWeight}</Form.Control.Feedback>
               </Col>
             </Row>
             <Row className="mb-2 align-items-end justify-content-between">
@@ -276,7 +441,8 @@ export const CertificateDetail = () => {
                 <label htmlFor="color">Color Grade</label>
               </Col>
               <Col md={5}>
-                <select
+                <Form.Control
+                  as="select"
                   id="color"
                   name="color"
                   value={resultEdit.color || ""}
@@ -284,17 +450,22 @@ export const CertificateDetail = () => {
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
+                    borderRadius: "0px"
                   }}
                   onChange={handleOnChange}
+                  isInvalid={!!validationErrors.color}
                 >
                   <option value=""></option>
-                  <option value="K">K</option>
-                  <option value="J">J</option>
-                  <option value="I">I</option>
-                  <option value="H">H</option>
+                  <option value="D">D</option>
+                  <option value="E">E</option>
                   <option value="G">G</option>
                   <option value="F">F</option>
-                </select>
+                  <option value="I">I</option>
+                  <option value="H">H</option>
+                  <option value="J">J</option>
+                  <option value="K">K</option>
+                </Form.Control>
+                <Form.Control.Feedback type="invalid">{validationErrors.color}</Form.Control.Feedback>
               </Col>
             </Row>
             <Row className="mb-2 align-items-end justify-content-between">
@@ -302,7 +473,8 @@ export const CertificateDetail = () => {
                 <label htmlFor="clarity">Clarity Grade</label>
               </Col>
               <Col md={5}>
-                <select
+                <Form.Control
+                  as="select"
                   id="clarity"
                   name="clarity"
                   value={resultEdit.clarity || ""}
@@ -310,7 +482,9 @@ export const CertificateDetail = () => {
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
+                    borderRadius: "0px"
                   }}
+                  isInvalid={!!validationErrors.clarity}
                   onChange={handleOnChange}
                 >
                   <option value=""></option>
@@ -322,7 +496,8 @@ export const CertificateDetail = () => {
                   <option value="VVS1">VVS1</option>
                   <option value="IF">IF</option>
                   <option value="FL">FL</option>
-                </select>
+                </Form.Control>
+                <Form.Control.Feedback type="invalid">{validationErrors.clarity}</Form.Control.Feedback>
               </Col>
             </Row>
             <Row className="mb-2 align-items-end justify-content-between">
@@ -330,7 +505,8 @@ export const CertificateDetail = () => {
                 <label htmlFor="cut">Cut Grade</label>
               </Col>
               <Col md={5}>
-                <select
+                <Form.Control
+                  as="select"
                   id="cut"
                   name="cut"
                   value={resultEdit.cut || ""}
@@ -338,15 +514,18 @@ export const CertificateDetail = () => {
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
+                    borderRadius: "0px"
                   }}
+                  isInvalid={!!validationErrors.cut}
                   onChange={handleOnChange}
                 >
                   <option value=""></option>
-                  <option value="FAIR">FAIR</option>
-                  <option value="GOOD">GOOD</option>
-                  <option value="V.GOOD">V.GOOD</option>
-                  <option value="EX.">EX.</option>
-                </select>
+                  <option value="Fair">FAIR</option>
+                  <option value="Good">GOOD</option>
+                  <option value="Very Good">V.GOOD</option>
+                  <option value="Excellent">EX.</option>
+                </Form.Control>
+                <Form.Control.Feedback type="invalid">{validationErrors.cut}</Form.Control.Feedback>
               </Col>
             </Row>
           </div>
@@ -363,7 +542,8 @@ export const CertificateDetail = () => {
                 <label htmlFor="polish">Polish</label>
               </Col>
               <Col md={5}>
-                <select
+                <Form.Control
+                  as="select"
                   id="polish"
                   name="polish"
                   value={resultEdit.polish || ""}
@@ -371,15 +551,18 @@ export const CertificateDetail = () => {
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
+                    borderRadius: "0px"
                   }}
+                  isInvalid={!!validationErrors.polish}
                   onChange={handleOnChange}
                 >
                   <option value=""></option>
-                  <option value="FAIR">FAIR</option>
-                  <option value="GOOD">GOOD</option>
-                  <option value="V.GOOD">V.GOOD</option>
-                  <option value="EX.">EX.</option>
-                </select>
+                  <option value="Fair">FAIR</option>
+                  <option value="Good">GOOD</option>
+                  <option value="Very Good">V.GOOD</option>
+                  <option value="Excellent">EX.</option>
+                </Form.Control>
+                <Form.Control.Feedback type="invalid">{validationErrors.polish}</Form.Control.Feedback>
               </Col>
             </Row>
 
@@ -388,7 +571,8 @@ export const CertificateDetail = () => {
                 <label htmlFor="symmetry">Symmetry</label>
               </Col>
               <Col md={5}>
-                <select
+                <Form.Control
+                  as="select"
                   id="symmetry"
                   name="symmetry"
                   value={resultEdit.symmetry || ""}
@@ -396,15 +580,18 @@ export const CertificateDetail = () => {
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
+                    borderRadius: "0px"
                   }}
                   onChange={handleOnChange}
+                  isInvalid={!!validationErrors.symmetry}
                 >
                   <option value=""></option>
-                  <option value="FAIR">FAIR</option>
-                  <option value="GOOD">GOOD</option>
-                  <option value="V.GOOD">V.GOOD</option>
-                  <option value="EX.">EX.</option>
-                </select>
+                  <option value="Fair">FAIR</option>
+                  <option value="Good">GOOD</option>
+                  <option value="Very Good">V.GOOD</option>
+                  <option value="Excellent">EX.</option>
+                </Form.Control>
+                <Form.Control.Feedback type="invalid">{validationErrors.symmetry}</Form.Control.Feedback>
               </Col>
             </Row>
             <Row className="mb-2 align-items-end justify-content-between">
@@ -412,7 +599,8 @@ export const CertificateDetail = () => {
                 <label htmlFor="fluorescence">Fluorescence</label>
               </Col>
               <Col md={5}>
-                <select
+                <Form.Control
+                  as="select"
                   id="fluorescence"
                   name="fluorescence"
                   value={resultEdit.fluorescence || ""}
@@ -420,16 +608,19 @@ export const CertificateDetail = () => {
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
+                    borderRadius: "0px"
                   }}
+                  isInvalid={!!validationErrors.fluorescence}
                   onChange={handleOnChange}
                 >
                   <option value=""></option>
-                  <option value="VSTG">VSTG</option>
-                  <option value="STG">STG</option>
-                  <option value="MED">MED</option>
-                  <option value="FNT">FNT</option>
-                  <option value="NON">NON</option>
-                </select>
+                  <option value="Very Strong">VSTG</option>
+                  <option value="Strong">STG</option>
+                  <option value="Medium">MED</option>
+                  <option value="Faint">FNT</option>
+                  <option value="None">NON</option>
+                </Form.Control>
+                <Form.Control.Feedback type="invalid">{validationErrors.fluorescence}</Form.Control.Feedback>
               </Col>
             </Row>
             <Row className="mb-2 align-items-end justify-content-between">
@@ -437,7 +628,7 @@ export const CertificateDetail = () => {
                 <label htmlFor="proportions">Proportion</label>
               </Col>
               <Col md={5}>
-                <input
+                <Form.Control
                   type="text"
                   id="proportions"
                   name="proportions"
@@ -446,9 +637,12 @@ export const CertificateDetail = () => {
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
+                    borderRadius: "0px"
                   }}
                   onChange={handleOnChange}
+                  isInvalid={!!validationErrors.proportions}
                 />
+                <Form.Control.Feedback type="invalid">{validationErrors.proportions}</Form.Control.Feedback>
               </Col>
             </Row>
             <Row className="mb-2 align-items-end justify-content-between">
@@ -456,20 +650,49 @@ export const CertificateDetail = () => {
                 <label htmlFor="price">Estimate Price</label>
               </Col>
               <Col md={5}>
-                <input
+                <Form.Control
                   type="number"
                   id="price"
                   name="price"
+                  min={0}
                   value={resultEdit.price || ""}
                   style={{
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
+                    borderRadius: "0px"
                   }}
                   onChange={handleOnChange}
+                  isInvalid={!!validationErrors.price}
                 />
+                <Form.Control.Feedback type="invalid">{validationErrors.price}</Form.Control.Feedback>
               </Col>
             </Row>
+            <Row className="mb-2 align-items-end justify-content-between">
+              <Col md={4}>
+                <label htmlFor="market-price">Market Price</label>
+              </Col>
+              <Col md={5} >
+                <div
+                  style={{
+                    border: "none",
+                    borderBottom: "solid",
+                    width: "100%",
+                    padding:"5px",
+                     color:"red"
+                  }}>
+                  {priceMarket.basePrice ? `$${Math.round(priceMarket.basePrice)}` : 0}
+                </div>
+              </Col>
+            </Row>
+            <div className="d-flex justify-content-end">
+              <Button
+                onClick={viewMarketPrice}
+              >
+                View Price
+              </Button>
+            </div>
+
           </div>
         </div>
 
@@ -482,17 +705,17 @@ export const CertificateDetail = () => {
               Product Image
             </h4>
             <div className="my-3 d-flex justify-content-center">
-             
-                <img
-                  src={image || resultEdit.img}
-                  alt="product-img"
-                  height="300"
-                  className="border border-dark w-75"
-                />
-           
+
+              <img
+                src={image || resultEdit.img}
+                alt="product-img"
+                height="300"
+                className="border border-dark w-75"
+              />
+
             </div>
             <div className="d-flex justify-content-center">
-              <input type="file" name="" id="" onChange={handleOnchangeImage} />
+              <input type="file" name="" id="" onChange={handleOnchangeImage} accept=".jpg, .jpeg, .png" />
             </div>
           </div>
         </div>

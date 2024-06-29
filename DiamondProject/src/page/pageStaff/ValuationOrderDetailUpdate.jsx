@@ -69,6 +69,7 @@ export const ValuationOrderDetailUpdate = () => {
 
   const handleFormChange = (field, value) => {
     setFormEdit((currentState) => ({ ...currentState, [field]: value }));
+    
   };
 
   //on change image
@@ -150,7 +151,6 @@ export const ValuationOrderDetailUpdate = () => {
                 value={formEdit.status}
                 onChange={(e) => handleFormChange("status", e.target.value)}
               >
-                <option value="Requested">Requested</option>
                 <option value="Assigned">Assigned</option>
                 <option value="Finished">Finished</option>
               </Form.Select>
@@ -208,7 +208,7 @@ export const ValuationOrderDetailUpdate = () => {
           </Row>
           <Row className="justify-content-center">
             <Col md={{ span: 4, offset: 2 }} className="text-center ">
-              <Button onClick={handleSaveChanges} className="w-100">
+              <Button onClick={handleSaveChanges} className="w-100" >
                 Save Changes
               </Button>
             </Col>

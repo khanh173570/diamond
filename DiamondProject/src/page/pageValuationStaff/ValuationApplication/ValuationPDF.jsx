@@ -85,15 +85,15 @@ export const ValuationPDF = ({ result }) => {
                 <Text style={styles.value}>{result[0].diamondOrigin}</Text>
               </Text>
               <Text style={styles.text}>
-                <Text style={styles.label}>Measurements:              </Text>
+                <Text style={styles.label}>Measurements:               </Text>
                 <Text style={styles.value}>{result[0].measurements}</Text>
               </Text>
               <Text style={styles.text}>
-                <Text style={styles.label}>Shape Cut:                 </Text>
+                <Text style={styles.label}>Shape Cut:                   </Text>
                 <Text style={styles.value}>{result[0].shapeCut}</Text>
               </Text>
               <Text style={styles.text}>
-                <Text style={styles.label}>Description:               </Text>
+                <Text style={styles.label}>Description:                 </Text>
                 <Text style={styles.value}>{result[0].description}</Text>
               </Text>
             </View>
@@ -119,11 +119,11 @@ export const ValuationPDF = ({ result }) => {
             <View style={styles.section}>
               <Text style={styles.header}>Additional Grading Information</Text>
               <Text style={styles.text}>
-                <Text style={styles.label}>Polish:</Text>
+                <Text style={styles.label}>Polish:                        </Text>
                 <Text style={styles.value}>{result[0].polish}</Text>
               </Text>
               <Text style={styles.text}>
-                <Text style={styles.label}>Symmetry:</Text>
+                <Text style={styles.label}>Symmetry:                   </Text>
                 <Text style={styles.value}>{result[0].symmetry}</Text>
               </Text>
               <Text style={styles.text}>
@@ -131,7 +131,7 @@ export const ValuationPDF = ({ result }) => {
                 <Text style={styles.value}>{result[0].fluorescence}</Text>
               </Text>
               <Text style={styles.text}>
-                <Text style={styles.label}>Proportion:                 </Text>
+                <Text style={styles.label}>Proportion:                   </Text>
                 <Text style={styles.value}>{result[0].proportions}</Text>
               </Text>
               <Text style={styles.text}>
@@ -142,7 +142,7 @@ export const ValuationPDF = ({ result }) => {
           </View>
           <View style={styles.wrapRight}>
             <View style={styles.section}>
-              <Text style={styles.header}>Product Image</Text>
+              <Text style={styles.header}>Sample Image</Text>
               {result[0].img && (
                 <Image style={styles.image} src={result[0].img} />
               )}

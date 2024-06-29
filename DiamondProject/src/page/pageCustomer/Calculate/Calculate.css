@@ -1,12 +1,17 @@
-.button-group{
-    
+.calculate-input{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.button-group Button{
+    font-size: 13px;
+    font-weight: 700;
 }
 
 .button-group Button.selected {
     background-color:#67FFE4;
     color: #333;
     border: 1px solid #333;
-    font-weight: bold;
+   
 }
 
 .button-group Button {
@@ -35,4 +40,17 @@
 .quality-diamond{
     font-size: 12px;
     margin-bottom: 10px;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+  }
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    background: #67FFE4;
+
 }

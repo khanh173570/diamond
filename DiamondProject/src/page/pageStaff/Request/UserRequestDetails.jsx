@@ -14,10 +14,12 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
   const [isEditingDate, setIsEditingDate] = useState(false);
   const [errorMeetingDate, setErrorMeetingDate] = useState("");
 
+  // console.log de test
   console.log(dayjs().format());
   console.log(dayjs(appointmentDate).format());
   console.log(formattedDateTime(appointmentDate));
-  console.log(dayjs(appointmentDate).format("h:MM A") < dayjs().format("h:MM A"))
+  console.log(dayjs(appointmentDate).format() < dayjs().format())
+
   const API = "http://localhost:8080/evaluation-request/update";
 
   const handleAddDate = async (value) => {
@@ -25,7 +27,7 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
       return;
     }
     // Compare selected date with current date
-    if (dayjs(value).format("h:mm A") < dayjs().format("h:mm A")) {
+    if (dayjs(value).format() < dayjs().format()) {
       setErrorMeetingDate("Invalid time");
       return;
     }

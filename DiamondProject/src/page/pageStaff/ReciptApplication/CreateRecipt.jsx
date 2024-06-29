@@ -6,6 +6,7 @@ import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import { useLocation } from "react-router-dom";
 import useAuth from "../../../utils/hook/useAuth";
+import { Image } from "react-bootstrap";
 export const CreateReceipt = () => {
   const [selection, setSelection] = useState([]);
   const [custName, setCustName] = useState("");
@@ -18,7 +19,7 @@ export const CreateReceipt = () => {
   const location = useLocation();
   const { userRequestDetail } = location.state;
   const componentRef = useRef();
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,7 +67,7 @@ export const CreateReceipt = () => {
   };
 
   const handleRowChange = async (index, field, value) => {
-    const numericValue = value.replace(/^0+(?=\d)|[^.\d]/g, '');
+    const numericValue = value.replace(/^0+(?=\d)|[^.\d]/g, "");
 
     const updatedRows = rows.map((row, rowIndex) =>
       rowIndex === index ? { ...row, [field]: numericValue } : row
@@ -83,7 +84,10 @@ export const CreateReceipt = () => {
     }
 
     if (field === "size" && updatedRows[index].serviceId && numericValue) {
-      const unitPrice = await fetchUnitPrice(updatedRows[index].serviceId, numericValue);
+      const unitPrice = await fetchUnitPrice(
+        updatedRows[index].serviceId,
+        numericValue
+      );
       updatedRows[index].unitPrice = unitPrice || 0;
       updateDatesAndPrices(index, updatedRows);
     }
@@ -98,7 +102,10 @@ export const CreateReceipt = () => {
     if (serviceId) {
       updateDatesAndPrices(index, updatedRows);
       if (updatedRows[index].size) {
-        const unitPrice = await fetchUnitPrice(serviceId, updatedRows[index].size);
+        const unitPrice = await fetchUnitPrice(
+          serviceId,
+          updatedRows[index].size
+        );
         updatedRows[index].unitPrice = unitPrice || 0;
         setRows([...updatedRows]);
       }
@@ -187,7 +194,7 @@ export const CreateReceipt = () => {
     }
 
     const dataToSend = {
-      userId:user.userId,
+      userId: user.userId,
       customerName: userRequestDetail.guestName,
       requestId: userRequestDetail.requestId,
       phone: userRequestDetail.phoneNumber,
@@ -240,16 +247,41 @@ export const CreateReceipt = () => {
         <div>
           <h2 className="d-flex justify-content-center">Review</h2>
           <div ref={componentRef} className="print-container">
-            <div className="d-flex justify-content-center">
-              <div className="flex-column" style={{ width: "50%" }}>
-                <p>Customer Name: {custName}</p>
-                <p>Phone: {phone}</p>
-                <p>Quantity: {quantity}</p>
-                <p>Order Date: {orderDate}</p>
+            <div className="">
+              <div className="d-flex justify-content-center w-100" >
+                <Image
+                  src="/src/assets/assetsCustomer/logo.png"
+                  fluid
+                  style={{
+                    borderRadius: "4px",
+                    marginTop: "10px",
+                    width: "100px",
+                    height:"100px",
+                   
+                  }}
+                />
+                <h3 className="text-center" style={{ marginTop: "50px" }}>
+                  {" "}
+                  DIAMOND VALUATION STORE
+                </h3>
+              </div>
+
+              <div className="d-flex justify-content-center">
+                <div className="">
+                  <p>Customer Name: {custName}</p>
+                  <p>Phone: {phone}</p>
+                  <p>Quantity: {quantity}</p>
+                  <p>Order Date: {orderDate}</p>
+                </div>
               </div>
             </div>
-            <div className="print-content">
-              <Table striped bordered className="fs-5 print-table" style={{width:"50%", marginLeft:"250px"}}>
+            <div className="print-content ">
+              <Table
+                striped
+                bordered
+                className="fs-5 print-table"
+                style={{ width: "50%", marginLeft: "150px" }}
+              >
                 <thead className="text-center">
                   <tr>
                     <th>Type Service</th>
@@ -290,6 +322,17 @@ export const CreateReceipt = () => {
                   </tr>
                 </tbody>
               </Table>
+              <div className="d-flex justify-content-center">
+              <div className="d-flex justify-content-between w-50">
+                <div>
+                  Customer
+                </div>
+                <div>
+                  Valuation Staff
+                </div>
+              </div>
+              </div>
+             
             </div>
           </div>
           <div className="d-flex justify-content-end" style={{ width: "90%" }}>
@@ -363,28 +406,45 @@ export const CreateReceipt = () => {
                       <select
                         className="form-control"
                         value={row.serviceId}
-                        onChange={(e) => handleServiceChange(index, e.target.value)}
+                        onChange={(e) =>
+                          handleServiceChange(index, e.target.value)
+                        }
                       >
                         <option value="">Select Service</option>
                         {selection.map((service) => (
-                          <option key={service.serviceId} value={service.serviceId}>
+                          <option
+                            key={service.serviceId}
+                            value={service.serviceId}
+                          >
                             {service.serviceType}
                           </option>
                         ))}
                       </select>
                     </td>
                     <td>
-                      <input type="text" className="form-control" value={row.receivedDate} readOnly />
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={row.receivedDate}
+                        readOnly
+                      />
                     </td>
                     <td>
-                      <input type="text" className="form-control" value={row.expiredReceivedDate} readOnly />
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={row.expiredReceivedDate}
+                        readOnly
+                      />
                     </td>
                     <td>
                       <input
                         type="text"
                         className="form-control"
                         value={row.size}
-                        onChange={(e) => handleRowChange(index, "size", e.target.value)}
+                        onChange={(e) =>
+                          handleRowChange(index, "size", e.target.value)
+                        }
                       />
                       {/* Hiển thị thông báo lỗi size */}
                       {index === 0 && sizeError && (
@@ -392,7 +452,12 @@ export const CreateReceipt = () => {
                       )}
                     </td>
                     <td>
-                      <input type="text" className="form-control" value={row.unitPrice} readOnly />
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={row.unitPrice}
+                        readOnly
+                      />
                     </td>
                   </tr>
                 ))}
@@ -401,7 +466,12 @@ export const CreateReceipt = () => {
                     <strong>Total Price</strong>
                   </td>
                   <td>
-                    <input type="text" className="form-control" value={totalPrice} readOnly />
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={totalPrice}
+                      readOnly
+                    />
                   </td>
                 </tr>
               </tbody>
@@ -411,7 +481,10 @@ export const CreateReceipt = () => {
             <Button className="btn btn-success me-4" type="submit">
               Accept
             </Button>
-            <Button className="btn btn-primary" onClick={() => setReviewMode(true)}>
+            <Button
+              className="btn btn-primary"
+              onClick={() => setReviewMode(true)}
+            >
               Review
             </Button>
           </div>

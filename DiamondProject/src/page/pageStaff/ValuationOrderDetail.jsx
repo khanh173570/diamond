@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Container, Table, Form, Button, Spinner } from "react-bootstrap";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Container, Table, Button, Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import formattedDateTime from "../../utils/formattedDate/formattedDateTime";
 import useAuth from "../../utils/hook/useAuth";
 import { Status } from "../../component/Status";
 import { Pagination } from "../../component/Pagination/Pagination";
+import getColorTime from "../../utils/hook/getTimeColor";
+
+// ROLE: VALUATION STAFF
 
 export const ValuationOrderDetail = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const {user} = useAuth()
+  const { user } = useAuth();
   const navigate = useNavigate();
-
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,12 +28,15 @@ export const ValuationOrderDetail = () => {
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(`http://localhost:8080/order_detail_request/getOrderDetailByEvaluationStaffId/${user.userId}`);
         const data = await response.json();
-        setOrderDetails(data);
+        const sortedData = data.sort((a, b) => Date.parse(b.orderId.orderDate) - Date.parse(a.orderId.orderDate));
+        setOrderDetails(sortedData);
+        console.log(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -39,17 +44,16 @@ export const ValuationOrderDetail = () => {
       }
     };
     fetchData();
-  }, []);
-
+  }, [user.userId]);
 
   const handleCreateForm = (product) => {
-
-    navigate('/valuation-staff/valuation', { state: { product } });
+    navigate(`/valuation-staff/valuation/${product.orderDetailId}`);
   };
 
   if (isLoading) {
     return <div className="text-center my-4"><Spinner animation="border" /></div>;
   }
+
   return (
     <Container>
       <ToastContainer />
@@ -66,7 +70,6 @@ export const ValuationOrderDetail = () => {
             <th>Size</th>
             <th>Diamond</th>
             <th>Status</th>
-           
           </tr>
         </thead>
         <tbody>
@@ -94,13 +97,17 @@ export const ValuationOrderDetail = () => {
                 </div>
               </td>
               <td>{product.serviceId.serviceType}</td>
-              <td>{formattedDateTime(product.receivedDate)}</td>
+              <td style={{ backgroundColor: getColorTime(product.orderId.orderDate, product.receivedDate) }}>{formattedDateTime(product.receivedDate)}</td>
               <td>{product.size}</td>
               <td>
-                <div className="text-center">{product.isDiamond ? "Yes" : "No"}</div>
+                <div className="text-center">{product.isDiamond ? "Diamond" : "Not a diamond"}</div>   
+                  {/* <div style={{ alignItems: "center" }}>
+                    {(product.isDiamond === null || product.isDiamond === "") ? "Unknown" : (product.isDiamond ? "Diamond" : "Not a diamond")}
+                  </div> */}
+                
               </td>
               <td>
-                <div><Status status={product.status}/></div>
+                <div><Status status={product.status} /></div>
               </td>
               <td>
                 <Button onClick={() => handleCreateForm(product)} disabled={!product.isDiamond}>Create Certificate</Button>
@@ -121,11 +128,10 @@ export const ValuationOrderDetail = () => {
         </tbody>
       </Table>
       <Pagination
-            postsPerPage={postsPerPage}
-            totalPosts={orderDetails.length}
-            paginate={paginate}
-          />
-      
+        postsPerPage={postsPerPage}
+        totalPosts={orderDetails.length}
+        paginate={paginate}
+      />
     </Container>
   );
 };

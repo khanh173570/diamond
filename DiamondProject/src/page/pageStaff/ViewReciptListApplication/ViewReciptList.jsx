@@ -57,8 +57,9 @@ export const ViewReciptList = () => {
         const response = await fetch(`${API_BASE_URL}/order_request/getOrders`);
         let data = await response.json();
         data = await checkAndUpdateOrderStatus(data);
-        setSelection(data.reverse());
-        setFilteredSelection(data);
+        const sortedData = data.sort((a, b) => Date.parse(b.orderDate) - Date.parse(a.orderDate));
+        setSelection(sortedData);
+        setFilteredSelection(sortedData);
         setLoading(true);
       } catch (error) {
         console.error('Error fetching data:', error);
