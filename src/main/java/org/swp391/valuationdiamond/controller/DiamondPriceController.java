@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.swp391.valuationdiamond.entity.DiamondPrice;
-import org.swp391.valuationdiamond.repository.DiamondPriceRepository;
+
 import org.swp391.valuationdiamond.service.DiamondPriceServiceImp;
 import org.swp391.valuationdiamond.service.DiamondPriceServiceImp.PriceDetails;
 
@@ -17,8 +17,7 @@ public class DiamondPriceController {
 
     @Autowired
     private DiamondPriceServiceImp diamondPriceServiceImp;
-    @Autowired
-    private DiamondPriceRepository diamondPriceRepository;
+
 
     @GetMapping("/calculateFinalPrice")
     public PriceDetails calculateFinalPrice(@RequestParam BigDecimal caratWeight, @RequestParam String shape,
@@ -50,29 +49,29 @@ public class DiamondPriceController {
         return ResponseEntity.ok(diamonds);
     }
 
-    @GetMapping("/findSimilarDiamonds")
-    public List<DiamondPrice> findSimilarDiamonds(@RequestParam BigDecimal caratWeight, @RequestParam String shape,
-                                                  @RequestParam String cut, @RequestParam String fluorescence,
-                                                  @RequestParam String symmetry, @RequestParam String polish,
-                                                  @RequestParam String color, @RequestParam String clarity,
-                                                  @RequestParam boolean isLabGrown, @RequestParam BigDecimal priceTolerance) {
-        // Calculate the base final price using the provided details
-        PriceDetails priceDetails = diamondPriceServiceImp.calculateFinalPrice(caratWeight, shape, cut, fluorescence, symmetry, polish, color, clarity, isLabGrown);
-        BigDecimal priceMin = priceDetails.getBaseFinalPrice().subtract(priceTolerance);
-        BigDecimal priceMax = priceDetails.getBaseFinalPrice().add(priceTolerance);
-
-        // Search for similar diamonds using the full criteria
-        List<DiamondPrice> similarDiamonds = diamondPriceServiceImp.findSimilarDiamonds(caratWeight, shape, cut, fluorescence, symmetry, polish, color, clarity, isLabGrown, priceMin, priceMax);
-
-        // If no similar diamonds are found, search by carat and price range with a wider tolerance
-        if (similarDiamonds.isEmpty()) {
-            BigDecimal caratTolerance = new BigDecimal("0.1"); // Example tolerance for carat weight
-            BigDecimal caratMin = caratWeight.subtract(caratTolerance);
-            BigDecimal caratMax = caratWeight.add(caratTolerance);
-
-            similarDiamonds = diamondPriceServiceImp.findDiamondsByCaratWeightOrPriceRange(caratMin, caratMax, priceMin, priceMax);
-        }
-
-        return similarDiamonds;
-    }
+//    @GetMapping("/findSimilarDiamonds")
+//    public List<DiamondPrice> findSimilarDiamonds(@RequestParam BigDecimal caratWeight, @RequestParam String shape,
+//                                                  @RequestParam String cut, @RequestParam String fluorescence,
+//                                                  @RequestParam String symmetry, @RequestParam String polish,
+//                                                  @RequestParam String color, @RequestParam String clarity,
+//                                                  @RequestParam boolean isLabGrown, @RequestParam BigDecimal priceTolerance) {
+//        // Calculate the base final price using the provided details
+//        PriceDetails priceDetails = diamondPriceServiceImp.calculateFinalPrice(caratWeight, shape, cut, fluorescence, symmetry, polish, color, clarity, isLabGrown);
+//        BigDecimal priceMin = priceDetails.getBaseFinalPrice().subtract(priceTolerance);
+//        BigDecimal priceMax = priceDetails.getBaseFinalPrice().add(priceTolerance);
+//
+//        // Search for similar diamonds using the full criteria
+//        List<DiamondPrice> similarDiamonds = diamondPriceServiceImp.findSimilarDiamonds(caratWeight, shape, cut, fluorescence, symmetry, polish, color, clarity, isLabGrown, priceMin, priceMax);
+//
+//        // If no similar diamonds are found, search by carat and price range with a wider tolerance
+//        if (similarDiamonds.isEmpty()) {
+//            BigDecimal caratTolerance = new BigDecimal("0.1"); // Example tolerance for carat weight
+//            BigDecimal caratMin = caratWeight.subtract(caratTolerance);
+//            BigDecimal caratMax = caratWeight.add(caratTolerance);
+//
+//            similarDiamonds = diamondPriceServiceImp.findDiamondsByCaratWeightOrPriceRange(caratMin, caratMax, priceMin, priceMax);
+//        }
+//
+//        return similarDiamonds;
+//    }
 }
