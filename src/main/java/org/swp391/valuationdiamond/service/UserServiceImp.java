@@ -123,7 +123,31 @@ public class UserServiceImp {
     public List<User> getCustomers(){
         return userRepository.getUsersByRole(Role.customer);
     }
+    public long countUsers() {
+        return userRepository.count();
+    }
+    public static class UserCountResponse {
+        private long totalUser;
 
+        public UserCountResponse(long totalUser) {
+            this.totalUser = totalUser;
+        }
+
+        public long getTotalUser() {
+            return totalUser;
+        }
+
+        public void setTotalUser(long totalUser) {
+            this.totalUser = totalUser;
+        }
+
+        @Override
+        public String toString() {
+            return "UserCountResponse{" +
+                    "Total User=" + totalUser +
+                    '}';
+        }
+    }
 
     //    đăng ký tài khoản với google
 //public User signupOrLoginWithGoogle(OAuth2AuthenticationToken token){
