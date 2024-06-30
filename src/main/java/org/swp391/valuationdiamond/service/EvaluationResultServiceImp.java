@@ -128,8 +128,8 @@ public class EvaluationResultServiceImp {
         if (evaluationResultDTO.getImg() != null) {
             result.setImg(evaluationResultDTO.getImg());
         }
-        if (evaluationResultDTO.getCreateDate() != null) {
-            result.setCreateDate(evaluationResultDTO.getCreateDate());
+        if (evaluationResultDTO.getDate() != null) {
+            result.setDate(evaluationResultDTO.getDate());
         }
 
 
