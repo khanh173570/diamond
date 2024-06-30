@@ -267,9 +267,9 @@ public class DiamondPriceServiceImp {
         return diamondPriceRepository.findByDiamondOriginLikeAndShapeLikeAndCaratWeightBetweenAndColorLikeAndClarityLikeAndCutLikeAndFluorescenceLikeAndPolishLikeAndSymmetryLikeAndPriceBetween(
                 "%", shape, caratWeightMin, caratWeightMax, color, clarity, cut, fluorescence, polish, symmetry, priceMin, priceMax);
     }
-    public List<DiamondPrice> findDiamondsByCaratWeightOrPriceRange(BigDecimal caratWeightMax,BigDecimal caratWeightMin, BigDecimal priceMin, BigDecimal priceMax) {
-        // Implementation to find diamonds by carat weight and price range
-        return diamondPriceRepository.findDiamondsByCaratWeightOrPriceRange(caratWeightMax,caratWeightMin, priceMin, priceMax);
-    }
+//    public List<DiamondPrice> findDiamondsByCaratWeightOrPriceRange(BigDecimal caratWeightMax,BigDecimal caratWeightMin, BigDecimal priceMin, BigDecimal priceMax) {
+//        // Implementation to find diamonds by carat weight and price range
+//        return diamondPriceRepository.findDiamondsByCaratWeightOrPriceRange(caratWeightMax,caratWeightMin, priceMin, priceMax);
+//    }
     }
 
