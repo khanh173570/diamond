@@ -84,7 +84,7 @@ export const ValuationList = () => {
             <thead style={{ backgroundColor: '#E2FBF5' }}>
               <tr>
                 <th>Valuation ID</th>
-                <th>Product ID</th>
+                <th>Sample ID</th>
                 <th>Customer Name</th>
                 <th>Date</th>
                 <th>Valuation Staff</th>

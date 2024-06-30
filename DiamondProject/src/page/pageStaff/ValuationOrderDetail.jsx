@@ -8,6 +8,7 @@ import useAuth from "../../utils/hook/useAuth";
 import { Status } from "../../component/Status";
 import { Pagination } from "../../component/Pagination/Pagination";
 import getColorTime from "../../utils/hook/getTimeColor";
+import { API_BASE_URL } from "../../utils/constants/url";
 
 // ROLE: VALUATION STAFF
 
@@ -32,7 +33,7 @@ export const ValuationOrderDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/order_detail_request/getOrderDetailByEvaluationStaffId/${user.userId}`);
+        const response = await fetch(`${API_BASE_URL}/order_detail_request/getOrderDetailByEvaluationStaffId/${user.userId}`);
         const data = await response.json();
         const sortedData = data.sort((a, b) => Date.parse(b.orderId.orderDate) - Date.parse(a.orderId.orderDate));
         setOrderDetails(sortedData);
@@ -47,6 +48,11 @@ export const ValuationOrderDetail = () => {
   }, [user.userId]);
 
   const handleCreateForm = (product) => {
+    // check update isDiamond and image
+    if(product.img === null){
+      toast.error('Your sample must include image')
+      return;
+    }
     navigate(`/valuation-staff/valuation/${product.orderDetailId}`);
   };
 
@@ -63,7 +69,7 @@ export const ValuationOrderDetail = () => {
       <Table>
         <thead>
           <tr className="text-center">
-            <th>Product Id</th>
+            <th>Sample Id</th>
             <th>Image</th>
             <th>Service</th>
             <th>Dealine</th>

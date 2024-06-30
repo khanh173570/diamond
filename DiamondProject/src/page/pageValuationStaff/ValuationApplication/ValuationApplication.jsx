@@ -8,6 +8,9 @@ import { confirmAlert } from "react-confirm-alert";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import checkExistId from "../../../utils/checkExistId";
+import { API_BASE_URL } from "../../../utils/constants/url";
+import dayjs from "dayjs";
+
 
 // ROLE: VALUATION_STAFF
 export const ValuationApplication = () => {
@@ -17,11 +20,12 @@ export const ValuationApplication = () => {
   const [orderDetail, setOrderDetail] = useState({})
   const [isLoading, setIsLoading] = useState(true)
 
+  console.log(dayjs())
   //GET VALUATION BY VALUATION ORDER DETAILS
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/order_detail_request/getOrderDe/${orderDetailId}`);
+        const response = await fetch(`${API_BASE_URL}/order_detail_request/getOrderDe/${orderDetailId}`);
         const data = await response.json();
         setOrderDetail(data);
         console.log(data);
@@ -33,8 +37,6 @@ export const ValuationApplication = () => {
     };
     fetchData();
   }, []);
-  
-
   
   const { register: result, handleSubmit, formState: { errors }} = useForm({
     defaultValues: {
@@ -96,7 +98,7 @@ export const ValuationApplication = () => {
       const fetchData = async () => {
         try {
           const response = await fetch(
-            `http://localhost:8080/api/diamond/calculateFinalPrice?${queryParams}`
+            `${API_BASE_URL}/api/diamond/calculateFinalPrice?${queryParams}`
           );
           const data = await response.json();
           setPriceMarket(data);
@@ -142,11 +144,12 @@ export const ValuationApplication = () => {
       ...data,
       caratWeight: parseFloat(data.caratWeight),
       price: parseFloat(data.price),
-      img:orderDetail.img
+      img:orderDetail.img,
+      // createdDate: dayjs().format()
     };
     try {
       const response = await fetch(
-        "http://localhost:8080/evaluation_results/create",
+        `${API_BASE_URL}/evaluation_results/create`,
         {
           method: "POST",
           body: JSON.stringify(formattedResult),
@@ -601,7 +604,7 @@ export const ValuationApplication = () => {
                     padding:"5px",
                     color:"red"
                   }}>
-                  {priceMarket.basePrice ? `$${Math.round(priceMarket.basePrice)}` : 0}
+                  {priceMarket.baseFinalPrice ? `$${Math.round(priceMarket.baseFinalPrice)}` : 0}
                 </div>
                 </Col>
               </Row>

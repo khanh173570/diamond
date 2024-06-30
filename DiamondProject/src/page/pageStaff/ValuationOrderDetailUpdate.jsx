@@ -3,9 +3,10 @@ import { Container, Row, Col, Form, Button, Spinner } from "react-bootstrap";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { API_BASE_URL } from "../../utils/constants/url";
 
-const API = "http://localhost:8080/order_detail_request/getOrderDe";
-const APIUpdate = "http://localhost:8080/order_detail_request/updateAllOD";
+const API = `${API_BASE_URL}/order_detail_request/getOrderDe`;
+const APIUpdate = `${API_BASE_URL}/order_detail_request/updateAllOD`;
 
 export const ValuationOrderDetailUpdate = () => {
   const { orderDetailId } = useParams();
@@ -136,11 +137,11 @@ export const ValuationOrderDetailUpdate = () => {
         <div>
           <Row className="mb-4 justify-content-center">
             <Col md={2} className="text-end">
-              Product Id:
+              Sample Id:
             </Col>
             <Col md={4}>{product.orderDetailId}</Col>
           </Row>
-          <Row className="mb-4 justify-content-center">
+          {/* <Row className="mb-4 justify-content-center">
             <Col md={2} className="text-end">
               <Form.Label>Status</Form.Label>
             </Col>
@@ -155,7 +156,7 @@ export const ValuationOrderDetailUpdate = () => {
                 <option value="Finished">Finished</option>
               </Form.Select>
             </Col>
-          </Row>
+          </Row> */}
           <Row className="mb-4 justify-content-center">
             <Col md={2} className="text-end">
               <Form.Label>Is it Diamond?</Form.Label>

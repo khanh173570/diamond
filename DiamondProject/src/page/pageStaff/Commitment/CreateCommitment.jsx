@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { confirmAlert } from "react-confirm-alert";
 import useAuth from "../../../utils/hook/useAuth";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import formattedDate from "../../../utils/formattedDate/formattedDate";
+import { API_BASE_URL } from "../../../utils/constants/url";
 
 import dayjs from "dayjs";
 import validator from "validator";
@@ -52,7 +52,7 @@ const CreateCommitment = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/committed_Paper/create", {
+      const response = await fetch(`${API_BASE_URL}/committed_Paper/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

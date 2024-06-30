@@ -4,6 +4,7 @@ import { Pagination } from "../../../component/Pagination/Pagination";
 import formattedDate from "../../../utils/formattedDate/formattedDate";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../utils/hook/useAuth";
+import { API_BASE_URL } from "../../../utils/constants/url";
 
 export const MyCertificateList = () => {
   //get certificate list
@@ -35,7 +36,7 @@ export const MyCertificateList = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/evaluation_results/getEvaluationResultsByUserId/${user.userId}`
+          `${API_BASE_URL}/evaluation_results/getEvaluationResultsByUserId/${user.userId}`
         );
         const data = await response.json();
         // const sortedData = data.sort((a, b) => Date.parse(b.requestDate) - Date.parse(a.requestDate));

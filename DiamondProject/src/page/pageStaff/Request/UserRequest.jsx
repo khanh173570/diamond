@@ -11,6 +11,7 @@ import { Pagination } from "../../../component/Pagination/Pagination";
 import { Status } from "../../../component/Status";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { API_BASE_URL } from "../../../utils/constants/url";
 
 export const UserRequest = () => {
   const [userRequest, setUserRequest] = useState([]);
@@ -33,7 +34,7 @@ export const UserRequest = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          "http://localhost:8080/evaluation-request/gett_all"
+          `${API_BASE_URL}/evaluation-request/gett_all`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -57,7 +58,7 @@ export const UserRequest = () => {
   const handleOnChangeStatus = async (requestId) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/evaluation-request/update/${requestId}`,
+        `${API_BASE_URL}/evaluation-request/update/${requestId}`,
         {
           method: "PUT",
           headers: {

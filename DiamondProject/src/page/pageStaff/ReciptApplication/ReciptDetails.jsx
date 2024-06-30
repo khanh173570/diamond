@@ -50,7 +50,7 @@ export const ReceiptDetails = () => {
         "status",
         status
       );
-
+      
       setOrderDetails((prevDetails) =>
         prevDetails.map((detail) => {
           if (detail.orderId.orderId === orderId) {

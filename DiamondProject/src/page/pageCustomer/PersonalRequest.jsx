@@ -6,13 +6,14 @@ import useAuth from '../../utils/hook/useAuth';
 import { Pagination } from '../../component/Pagination/Pagination';
 import { Status } from '../../component/Status';
 import formattedDateTime from '../../utils/formattedDate/formattedDateTime';
+import { API_BASE_URL } from '../../utils/constants/url';
 
 export const PersonalRequest = () => {
     const [myRequest, setMyRequest] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { user } = useAuth();
-    const API = 'http://localhost:8080/evaluation-request/get_by_user';
+    const API = `${API_BASE_URL}/evaluation-request/get_by_user`;
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);

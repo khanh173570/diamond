@@ -11,8 +11,8 @@ import { Pagination } from '../../../component/Pagination/Pagination';
 import { Status } from '../../../component/Status';
 import { Spinner } from 'react-bootstrap';
 import updateById from '../../../utils/updateAPI/updateById';
+import { API_BASE_URL } from '../../../utils/constants/url';
 
-const API_BASE_URL = 'http://localhost:8080';
 
 export const ViewReciptList = () => {
   const [selection, setSelection] = useState([]);

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import formattedDateTime from "../../../utils/formattedDate/formattedDateTime";
+import { API_BASE_URL } from "../../../utils/constants/url";
 import dayjs from "dayjs";
 
 export const UserRequestDetails1 = ({ userRequestDetail }) => {
@@ -20,7 +21,7 @@ export const UserRequestDetails1 = ({ userRequestDetail }) => {
   console.log(formattedDateTime(appointmentDate));
   console.log(dayjs(appointmentDate).format() < dayjs().format())
 
-  const API = "http://localhost:8080/evaluation-request/update";
+  const API = `${API_BASE_URL}/evaluation-request/update`;
 
   const handleAddDate = async (value) => {
     if (!value) {
