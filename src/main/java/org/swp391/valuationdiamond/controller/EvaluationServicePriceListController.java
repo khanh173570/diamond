@@ -16,6 +16,13 @@ public class EvaluationServicePriceListController {
     @Autowired
     EvaluationServicePriceListServiceImp evaluationServicePriceListServiceImp;
 
+    //============================================ CREATE ====================================================
+    @PostMapping("/create")
+    public EvaluationServicePriceList createServicePriceList(@RequestBody EvaluationServicePriceListDTO evaluationServicePriceListDTO) {
+        return evaluationServicePriceListServiceImp.createServicePriceList(evaluationServicePriceListDTO);
+    }
+
+    //============================================ GET ====================================================
     @GetMapping("/getServicePrice/{serviceId}")
     public List<EvaluationServicePriceList> getEvaluationPriceListByServiceID(@PathVariable String serviceId) {
         return evaluationServicePriceListServiceImp.getPriceListByServiceId(serviceId);
@@ -30,6 +37,8 @@ public class EvaluationServicePriceListController {
 //    public double calculatePrice(@RequestParam String serviceId, @RequestParam float sampleSize) {
 //        return evaluationServicePriceListServiceImp.calculateServicePrice(serviceId, sampleSize);
 //    }
+
+    //======================================Calculate SampleSize===========================================
     @GetMapping("/calculate")
     public ResponseEntity<?> calculatePrice(
             @RequestParam String serviceId,

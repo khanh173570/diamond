@@ -21,40 +21,47 @@ public class EvaluationResultServiceImp {
     private UserRepository userRepository;
     @Autowired
     private OrderDetailRepository orderDetailRepository;
-    public EvaluationResult createEvaluationResult(EvaluationResultDTO EvaluationResultDTO){
-        EvaluationResult evaluationResult = new EvaluationResult();
 
+    //============================================ CREATE =====================================
+    public EvaluationResult createEvaluationResult(EvaluationResultDTO EvaluationResultDTO){
         long count = evaluationResultRepository.count();
         String formattedCount = String.valueOf(count + 1);
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
-        String ResultId = "ERS" + formattedCount + date;
+        String ResultId = "ERS"+ date + formattedCount ;
 
-        evaluationResult.setEvaluationResultId(ResultId);
-        evaluationResult.setDiamondOrigin(EvaluationResultDTO.getDiamondOrigin());
-        evaluationResult.setMeasurements(EvaluationResultDTO.getMeasurements());
-        evaluationResult.setProportions(EvaluationResultDTO.getProportions());
-        evaluationResult.setShapeCut(EvaluationResultDTO.getShapeCut());
-        evaluationResult.setCaratWeight(EvaluationResultDTO.getCaratWeight());
-        evaluationResult.setColor(EvaluationResultDTO.getColor());
-        evaluationResult.setClarity(EvaluationResultDTO.getClarity());
-        evaluationResult.setCut(EvaluationResultDTO.getCut());
-        evaluationResult.setSymmetry(EvaluationResultDTO.getSymmetry());
-        evaluationResult.setPolish(EvaluationResultDTO.getPolish());
-        evaluationResult.setFluorescence(EvaluationResultDTO.getFluorescence());
-        evaluationResult.setDescription(EvaluationResultDTO.getDescription());
-        evaluationResult.setPrice(EvaluationResultDTO.getPrice());
-        evaluationResult.setImg(EvaluationResultDTO.getImg());
+
+        EvaluationResult evaluationResult = EvaluationResult.builder()
+                .evaluationResultId(ResultId)
+                .diamondOrigin(EvaluationResultDTO.getDiamondOrigin())
+                .measurements(EvaluationResultDTO.getMeasurements())
+                .proportions(EvaluationResultDTO.getProportions())
+                .shapeCut(EvaluationResultDTO.getShapeCut())
+                .caratWeight(EvaluationResultDTO.getCaratWeight())
+                .color(EvaluationResultDTO.getColor())
+                .clarity(EvaluationResultDTO.getClarity())
+                .cut(EvaluationResultDTO.getCut())
+                .symmetry(EvaluationResultDTO.getSymmetry())
+                .polish(EvaluationResultDTO.getPolish())
+                .fluorescence(EvaluationResultDTO.getFluorescence())
+                .description(EvaluationResultDTO.getDescription())
+                .price(EvaluationResultDTO.getPrice())
+                .img(EvaluationResultDTO.getImg())
+                .createDate(EvaluationResultDTO.getCreateDate())
+                .build();
+
         User userId = userRepository.findById(EvaluationResultDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
         evaluationResult.setUserId(userId);
+
         OrderDetail orderDetail = orderDetailRepository.findById(EvaluationResultDTO.getOrderDetailId()).orElseThrow(() -> new RuntimeException("Order detail not found"));
         evaluationResult.setOrderDetailId(orderDetail);
+
 
 
         return evaluationResultRepository.save(evaluationResult);
 
     }
 
-
+    //============================================ GET =====================================
     public EvaluationResult getEvaluationResult(String id){
         return evaluationResultRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
@@ -65,6 +72,7 @@ public class EvaluationResultServiceImp {
 
         return evaluationResultRepository.findByOrderDetailId(orderDetail);
     }
+
     public List<EvaluationResult> getResultByUserId(String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -120,7 +128,9 @@ public class EvaluationResultServiceImp {
         if (evaluationResultDTO.getImg() != null) {
             result.setImg(evaluationResultDTO.getImg());
         }
-
+        if (evaluationResultDTO.getCreateDate() != null) {
+            result.setCreateDate(evaluationResultDTO.getCreateDate());
+        }
 
         return evaluationResultRepository.save(result);
     }

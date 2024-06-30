@@ -14,15 +14,26 @@ public class EvaluationServiceController {
     @Autowired
     private EvaluationServiceServiceImp evaluationServiceServiceImp;
 
+    //=========================================== CREATE =======================================
     @PostMapping("/create")
     EvaluationService createService(@RequestBody EvaluationServiceDTO evaluationServiceDTO) {
         return evaluationServiceServiceImp.createService(evaluationServiceDTO);
     }
 
+    //=========================================== UPDATE =======================================
+
     @PutMapping("/update/{serviceId}")
     EvaluationService updateService(@PathVariable("serviceId") String serviceId, @RequestBody EvaluationServiceDTO evaluationServiceDTO) {
         return evaluationServiceServiceImp.updateService(serviceId, evaluationServiceDTO);
     }
+
+    //=========================================== DELETE =======================================
+    @DeleteMapping("/delete/{serviceId}")
+    boolean deleteServiceById(@PathVariable("serviceId") String serviceId) {
+        return evaluationServiceServiceImp.deleteServiceById(serviceId);
+    }
+
+    //=========================================== GET =======================================
 
     @GetMapping("/getServiceById/{serviceId}")
     EvaluationService getServiceById(@PathVariable("serviceId") String serviceId) {

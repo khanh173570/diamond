@@ -129,7 +129,18 @@ public class UserController {
         }
 
     }
+// Number only
+        @GetMapping("/countUsers")
+    public long countUsers() {
+        return userServiceImp.countUsers();
+    }
 
+//Total User: count
+    @GetMapping("/totalUserCount")
+    public UserServiceImp.UserCountResponse getTotalUserCount() {
+        long totalUserCount = userServiceImp.countUsers();
+        return new UserServiceImp.UserCountResponse(totalUserCount);
+    }
 
 }
 

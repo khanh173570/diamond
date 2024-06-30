@@ -257,6 +257,7 @@ public class DiamondPriceServiceImp {
         return diamondPriceRepository.findByDiamondOriginAndShapeAndCaratWeightBetweenAndColorAndClarityAndCutAndFluorescenceAndPolishAndSymmetryAndPriceBetween(
                 diamondOrigin, shape, caratWeightMin, caratWeightMax, color, clarity, cut, fluorescence, polish, symmetry, priceMin, priceMax);
     }
+<<<<<<< HEAD
 //    public List<DiamondPrice> findSimilarDiamonds(BigDecimal caratWeight, String shape, String cut,
 //                                                  String fluorescence, String symmetry, String polish,
 //                                                  String color, String clarity, boolean isLabGrown, BigDecimal priceMin, BigDecimal priceMax) {
@@ -267,6 +268,18 @@ public class DiamondPriceServiceImp {
 //        return diamondPriceRepository.findByDiamondOriginLikeAndShapeLikeAndCaratWeightBetweenAndColorLikeAndClarityLikeAndCutLikeAndFluorescenceLikeAndPolishLikeAndSymmetryLikeAndPriceBetween(
 //                "%", shape, caratWeightMin, caratWeightMax, color, clarity, cut, fluorescence, polish, symmetry, priceMin, priceMax);
 //    }
+=======
+    public List<DiamondPrice> findSimilarDiamonds(BigDecimal caratWeight, String shape, String cut,
+                                                  String fluorescence, String symmetry, String polish,
+                                                  String color, String clarity, boolean isLabGrown, BigDecimal priceMin, BigDecimal priceMax) {
+
+        BigDecimal caratWeightMin = caratWeight.subtract(new BigDecimal("0.1"));
+        BigDecimal caratWeightMax = caratWeight.add(new BigDecimal("0.1"));
+
+        return diamondPriceRepository.findByDiamondOriginLikeAndShapeLikeAndCaratWeightBetweenAndColorLikeAndClarityLikeAndCutLikeAndFluorescenceLikeAndPolishLikeAndSymmetryLikeAndPriceBetween(
+                "%", shape, caratWeightMin, caratWeightMax, color, clarity, cut, fluorescence, polish, symmetry, priceMin, priceMax);
+    }
+>>>>>>> a48e85ef4f09564b68b3a0b6dad68297a87c0ba0
 //    public List<DiamondPrice> findDiamondsByCaratWeightOrPriceRange(BigDecimal caratWeightMax,BigDecimal caratWeightMin, BigDecimal priceMin, BigDecimal priceMax) {
 //        // Implementation to find diamonds by carat weight and price range
 //        return diamondPriceRepository.findDiamondsByCaratWeightOrPriceRange(caratWeightMax,caratWeightMin, priceMin, priceMax);
