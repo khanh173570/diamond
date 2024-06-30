@@ -53,7 +53,6 @@ export const ValuationApplication = () => {
       price: "",
       orderDetailId: orderDetail.orderDetailId,
       userId: orderDetail.evaluationStaffId,
-      img: orderDetail.img,
     }
   });
 
@@ -143,6 +142,7 @@ export const ValuationApplication = () => {
       ...data,
       caratWeight: parseFloat(data.caratWeight),
       price: parseFloat(data.price),
+      img:orderDetail.img
     };
     try {
       const response = await fetch(
@@ -360,6 +360,7 @@ export const ValuationApplication = () => {
                   <input
                     type="number"
                     min={0}
+                    step="0.01"
                     id="caratWeight"
                     {...result("caratWeight", { required: "Carat Weight is required" })}
                     style={{

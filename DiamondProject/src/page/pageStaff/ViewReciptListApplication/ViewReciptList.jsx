@@ -65,6 +65,8 @@ export const ViewReciptList = () => {
       } catch (error) {
         console.error('Error fetching data:', error);
         setLoading(false);
+      }finally{
+        setLoading(false)
       }
     };
     fetchData();
@@ -81,7 +83,7 @@ export const ViewReciptList = () => {
     navigate(`/staff/view-receipt/${item.orderId}`, { state: { item } });
   };
 
-  if (!loading) {
+  if (loading) {
     return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
   }
 

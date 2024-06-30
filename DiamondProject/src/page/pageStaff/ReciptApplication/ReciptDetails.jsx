@@ -68,6 +68,10 @@ export const ReceiptDetails = () => {
   };
 
   const showConfirmDialog = (e, status) => {
+    if(orderDetails[0]?.orderId?.status === 'In-Progress'){
+      toast.error('Your order have not completed')
+      return ;
+    }
     e.preventDefault();
     confirmAlert({
       title: `Confirm to ${status}`,
@@ -178,20 +182,25 @@ export const ReceiptDetails = () => {
           <Button
             style={{ margin: "0px 13px" }}
             onClick={(e) => showConfirmDialog(e, "Finished")}
+             disabled={orderDetails[0]?.orderId?.status === 'Finished'}
           >
-            {!isFinishedOrder ? "Finished" : "Finish Order"}
+            {/* {!isFinishedOrder ? "Finished" : "Finish Order"} */}
+            Finish Order
           </Button>
           <Button
             style={{ margin: "0px 13px" }}
             onClick={(e) => showConfirmDialog(e, "Sealed")}
+            disabled={orderDetails[0]?.orderId?.status === 'Finished'}
           >
-            {!isFinishedOrder ? "Sealed" : "Seal Order"}
+            {/* {!isFinishedOrder ? "Sealed" : "Seal Order"} */}
+            Seal Order
           </Button>
           <Button
             style={{ margin: "0px 13px" }}
             onClick={() => {
               navigate("/staff/commitment", { state: { orderDetails } });
             }}
+
           >
             Create Commitment
           </Button>

@@ -17,8 +17,9 @@ function Calculate() {
     fluorescence: "Very Strong",
   });
 
+  
   const navigate = useNavigate();
-  console.log(diamondCalculate)
+  // console.log(diamondCalculate)
 
   const selectedOption = (type, item) => {
     setDiamondCalculate((currentItem) => ({
@@ -28,7 +29,13 @@ function Calculate() {
   };
 
   const handleOnCalculate = () => {
-    const queryParams = new URLSearchParams(diamondCalculate).toString();
+    // convert caratWeight String to number
+    const diamondCalculateFinal = {
+      ...diamondCalculate,
+      caratWeight: Number.parseFloat(diamondCalculate.caratWeight)
+    }
+    console.log(diamondCalculateFinal)
+    const queryParams = new URLSearchParams(diamondCalculateFinal).toString();
     navigate(`/calculate?${queryParams}`);
   };
 

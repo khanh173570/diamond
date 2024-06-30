@@ -3,6 +3,7 @@ import "./Calculate.css";
 import { Row, Col, Spinner } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import formattedDateTime from "../../../utils/formattedDate/formattedDateTime";
+import './Calculate.css'
 
 export const CalculateOutput = () => {
   const [loading, setLoading] = useState(false);
@@ -49,19 +50,20 @@ export const CalculateOutput = () => {
   }
   return (
     <div>
-      <div className="border border-dark rounded pt-4 mb-3">
+      <div className="pt-4 mb-3 calculate-output ">
         <div>
           <div className="d-flex justify-content-center mb-1">
-            <div className="fw-bold fs-4 text-muted">DIAMOND PRICE RANGE</div>
+            <div className="fw-bold fs-4 text-muted mb-3">DIAMOND PRICE</div>
           </div>
           <div className="d-flex justify-content-center">
             <div className="quality-diamond">
               {/* {`${result.diamondOrigin} - ${result.shape} - ${result.carat} - ${result.clarity} - ${result.color} - ${result.cut}`} */}
+              Natural - Round - 1.75 - Good - J -Excellent
             </div>
           </div>
           <div className="d-flex justify-content-center">
             <div
-              className="fw-bold fs-1 p-2 border border-dark"
+              className="fw-bold fs-1 p-2 border border-dark mb-3"
               style={{ borderRadius: "15px" }}
             >
               { result.basePrice? `$${Math.round(result.basePrice)}` : 0}
@@ -72,7 +74,7 @@ export const CalculateOutput = () => {
           <Col md={6} className="text-center p-4">
             <div>Time</div>
             {/* <div className="fw-bold">{`${result.last30DaysChange}%`}</div> */}
-            <div className="fw-bold">{`${formattedDateTime(result.currentDate)}`}</div>
+            <div className="fw-bold ">{`${formattedDateTime(result.currentDate)}`}</div>
 
           </Col>
           <Col md={6} className="text-center p-4">
@@ -81,7 +83,7 @@ export const CalculateOutput = () => {
           </Col>
         </Row>
       </div>
-      {/* <div className="border border-dark rounded">
+      {/* <div className="calculate-list">
         <div className="fs-5 ms-3">Recommend Store</div>
         {result.stores.map((store, index) => (
           <div className="border border-dark rounded m-3" key={index}>

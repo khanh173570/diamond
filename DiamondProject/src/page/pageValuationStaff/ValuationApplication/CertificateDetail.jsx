@@ -1,37 +1,30 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import { Form, Button, Col, Container, Row } from "react-bootstrap";
+import { Form, Button, Col, Container, Row, Spinner } from "react-bootstrap";
+import { API_BASE_URL } from "../../../utils/constants/url";
 
 export const CertificateDetail = () => {
-  const location = useLocation();
-  const { result } = location.state;
+  // const location = useLocation();
+  // const { result } = location.state;
+
   const navigate = useNavigate();
+  // image
   const [image, setImage] = useState(null);
   const [imgUpload, setImgUpload] = useState(null);
-  const [priceMarket, setPriceMarket] = useState({})
-  // result default
-  const [resultEdit, setResultEdit] = useState({
-    diamondOrigin: result.diamondOrigin,
-    measurements: result.measurements,
-    proportions: result.proportions,
-    shapeCut: result.shapeCut,
-    caratWeight: result.caratWeight,
-    color: result.color,
-    clarity: result.clarity,
-    cut: result.cut,
-    symmetry: result.symmetry,
-    polish: result.polish,
-    fluorescence: result.fluorescence,
-    description: result.description,
-    price: result.price,
-    img: result.img,
-  });
 
-  console.log(resultEdit);
+  const { evaluationResultId } = useParams()
+  // 
+  const [priceMarket, setPriceMarket] = useState({})
+  const [loading, setLoading] = useState(true);
+  // default get from api
+  const [resultDefault, setResultDefault] = useState({})
+  // console.log(resultEdit);
+  console.log('result default out side:', resultDefault)
+
   // validation
   const [validationErrors, setValidationErrors] = useState({
     diamondOrigin: "",
@@ -47,109 +40,113 @@ export const CertificateDetail = () => {
     polish: "",
     fluorescence: "",
     price: "",
-    img: ""
+  });
+  const [marketPrice, setMarketPrice] = useState({
+    isLabGrown: false,
+    shape: "",
+    color: "",
+    clarity: "",
+    caratWeight: "",
+    cut: "",
+    symmetry: "",
+    polish: "",
+    fluorescence: "",
   });
 
-  // market price 
-  const [marketPrice, setMarketPrice] = useState({
-    isLabGrown: resultEdit.diamondOrigin === 'Lab Grown' ? true : false,
-    shape: result.shapeCut,
-    color: result.color,
-    clarity: result.clarity,
-    caratWeight: result.caratWeight,
-    cut: result.cut,
-    symmetry: result.symmetry,
-    polish: result.polish,
-    fluorescence: result.fluorescence,
-  })
-
-  // view market price
-  const viewMarketPrice = () => {
-    const queryParams = new URLSearchParams(marketPrice).toString();
+  // get evaluation result by evaluation result id
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8080/api/diamond/calculateFinalPrice?${queryParams}`
-        );
+        const response = await fetch(`${API_BASE_URL}/evaluation_results/getEvaluationResults/${evaluationResultId}`);
         const data = await response.json();
-        setPriceMarket(data);
-        console.log(data)
+        setResultDefault(data)
+        setMarketPrice({
+          isLabGrown: data.diamondOrigin === 'Lab Grown',
+          shape: data.shapeCut,
+          color: data.color,
+          clarity: data.clarity,
+          caratWeight: data.caratWeight,
+          cut: data.cut,
+          symmetry: data.symmetry,
+          polish: data.polish,
+          fluorescence: data.fluorescence,
+        });
+        console.log('default result in useEffect:', data)
       } catch (error) {
-        setError(error);
+        console.error('Error fetching data:', error);
+        setLoading(false)
       } finally {
-        
+        setLoading(false)
       }
     };
     fetchData();
+  }, [evaluationResultId]);
 
+  if (loading) {
+    return <div className="text-center my-4" style={{ minHeight: '500px' }}><Spinner animation="border" /></div>;
   }
 
   console.log(marketPrice)
 
   const validateForm = () => {
     const errors = {};
-    if (!resultEdit.diamondOrigin) {
+    if (!resultDefault.diamondOrigin) {
       errors.diamondOrigin = "Diamond origin is required";
     }
-    if (!resultEdit.measurements) {
+    if (!resultDefault.measurements) {
       errors.measurements = "Measurements are required";
     }
 
-    if (!resultEdit.shapeCut) {
+    if (!resultDefault.shapeCut) {
       errors.shapeCut = "Shape cut is required";
     }
-    if (!resultEdit.description) {
+    if (!resultDefault.description) {
       errors.description = "Description is required";
     }
-    if (resultEdit.description.length > 100 || resultEdit.description.length < 5) {
+    if (resultDefault.description.length > 100 || resultDefault.description.length < 5) {
       errors.description = "Description must include 5 and 100 character";
     }
-
-
-    if (!resultEdit.caratWeight) {
+    if (!resultDefault.caratWeight) {
       errors.caratWeight = "Carat weight is required";
     }
-    if (Number.parseFloat(resultEdit.caratWeight) <= 0) {
+    if (Number.parseFloat(resultDefault.caratWeight) <= 0) {
       errors.caratWeight = "Carat weight must have positive";
     }
-    if (!resultEdit.color) {
+    if (!resultDefault.color) {
       errors.color = "Color grade is required";
     }
 
-    if (!resultEdit.clarity) {
+    if (!resultDefault.clarity) {
       errors.clarity = "Clarity grade is required";
     }
-    if (!resultEdit.cut) {
+    if (!resultDefault.cut) {
       errors.cut = "Cut grade is required";
     }
 
-    if (!resultEdit.symmetry) {
+    if (!resultDefault.symmetry) {
       errors.symmetry = "Symmetry  is required";
     }
-    if (!resultEdit.polish) {
+    if (!resultDefault.polish) {
       errors.polish = " Polish is required";
     }
 
-    if (!resultEdit.proportions) {
+    if (!resultDefault.proportions) {
       errors.proportions = "Proportions is required";
     }
-    if (!resultEdit.img) {
-      errors.img = "Image is required";
-    }
-
-    if (!resultEdit.fluorescence) {
+    if (!resultDefault.fluorescence) {
       errors.fluorescence = "Fluorescence is required";
     }
-    if (!resultEdit.price) {
+    if (!resultDefault.price) {
       errors.price = "Price is required";
     }
-    if (Number.parseFloat(resultEdit.price) <= 500) {
+    if (Number.parseFloat(resultDefault.price) <= 500) {
       errors.price = "Price must have greater than 500 dollars ";
     }
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
+  console.log(validateForm)
   const showConfirmUpdate = (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -172,8 +169,7 @@ export const CertificateDetail = () => {
   };
   // update result
   const updateResult = async () => {
-
-    let imageUrl = resultEdit.img;
+    let imageUrl = resultDefault.img;
     if (imgUpload) {
       imageUrl = await saveImage();
       if (!imageUrl) {
@@ -181,15 +177,25 @@ export const CertificateDetail = () => {
       }
     }
     const formattedResult = {
-      ...resultEdit,
-      caratWeight: parseFloat(resultEdit.caratWeight),
-      price: parseFloat(resultEdit.price),
+      diamondOrigin: resultDefault.diamondOrigin,
+      measurements: resultDefault.measurements,
+      proportions: resultDefault.proportions,
+      shapeCut: resultDefault.shapeCut,
+      color: resultDefault.color,
+      clarity: resultDefault.clarity,
+      cut: resultDefault.cut,
+      symmetry: resultDefault.symmetry,
+      polish: resultDefault.polish,
+      fluorescence: resultDefault.fluorescence,
+      description: resultDefault.description,
+      caratWeight: parseFloat(resultDefault.caratWeight),
+      price: parseFloat(resultDefault.price),
       img: imageUrl
     };
 
     try {
       const response = await fetch(
-        `http://localhost:8080/evaluation_results/updateEvaluationResult/${result.evaluationResultId}`,
+        `${API_BASE_URL}/evaluation_results/updateEvaluationResult/${resultDefault.evaluationResultId}`,
         {
           method: "PUT",
           body: JSON.stringify(formattedResult),
@@ -211,7 +217,7 @@ export const CertificateDetail = () => {
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    setResultEdit((currentState) => ({ ...currentState, [name]: value }));
+    setResultDefault((currentState) => ({ ...currentState, [name]: value }));
     setValidationErrors((currentState) => ({ ...currentState, [name]: "" }));
 
     if (name === "diamondOrigin") {
@@ -224,9 +230,7 @@ export const CertificateDetail = () => {
         ...currentState,
         shape: value
       }));
-    }
-
-    else {
+    } else {
       setMarketPrice((currentState) => ({ ...currentState, [name]: value }));
     }
   };
@@ -265,6 +269,28 @@ export const CertificateDetail = () => {
     }
   };
 
+  // view market price
+  const viewMarketPrice = () => {
+    const queryParams = new URLSearchParams(marketPrice).toString();
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/api/diamond/calculateFinalPrice?${queryParams}`
+        );
+        const data = await response.json();
+        setPriceMarket(data);
+
+        console.log(data)
+      } catch (error) {
+        setError(error);
+      } finally {
+
+      }
+    };
+    fetchData();
+
+  }
+
   return (
     <Container>
       <div className="mb-4">
@@ -284,7 +310,7 @@ export const CertificateDetail = () => {
           <Form.Label className="mb-2">Certificate ID:</Form.Label>
         </Col>
         <Col md={6} className="text-center w-100 fw-bold">
-          <p>{result.evaluationResultId}</p>
+          <p>{resultDefault.evaluationResultId}</p>
         </Col>
       </Row>
 
@@ -306,7 +332,7 @@ export const CertificateDetail = () => {
                   as="select"
                   id="diamondOrigin"
                   name="diamondOrigin"
-                  value={resultEdit.diamondOrigin}
+                  value={resultDefault.diamondOrigin}
                   style={{
                     border: "none",
                     borderBottom: "solid",
@@ -316,7 +342,7 @@ export const CertificateDetail = () => {
                   isInvalid={!!validationErrors.diamondOrigin}
                   onChange={handleOnChange}
                 >
-                  <option value=""></option>
+                 
                   <option value="Natural">Natural</option>
                   <option value="Lab Grown">Lab Grown</option>
                 </Form.Control>
@@ -341,7 +367,7 @@ export const CertificateDetail = () => {
                     borderRadius: "0px"
                   }}
                   isInvalid={!!validationErrors.measurements}
-                  value={resultEdit.measurements || ""}
+                  value={resultDefault.measurements || ""}
                   onChange={handleOnChange}
                 />
                 <Form.Control.Feedback type="invalid">
@@ -358,7 +384,7 @@ export const CertificateDetail = () => {
                   as="select"
                   id="shapeCut"
                   name="shapeCut"
-                  value={resultEdit.shapeCut || ""}
+                  value={resultDefault.shapeCut || ""}
                   style={{
                     border: "none",
                     borderBottom: "solid",
@@ -368,7 +394,7 @@ export const CertificateDetail = () => {
                   onChange={handleOnChange}
                   isInvalid={!!validationErrors.shapeCut}
                 >
-                  <option value=""></option>
+                 
                   <option value="Round">Round</option>
                   <option value="Cushion">Cushion</option>
                   <option value="Emerald">Emerald</option>
@@ -390,7 +416,7 @@ export const CertificateDetail = () => {
                   type="text"
                   id="description"
                   name="description"
-                  value={resultEdit.description}
+                  value={resultDefault.description}
                   style={{
                     border: "none",
                     borderBottom: "solid",
@@ -429,7 +455,7 @@ export const CertificateDetail = () => {
                     width: "100%",
                     borderRadius: "0px"
                   }}
-                  value={resultEdit.caratWeight || ""}
+                  value={resultDefault.caratWeight || ""}
                   onChange={handleOnChange}
                   isInvalid={!!validationErrors.caratWeight}
                 />
@@ -445,7 +471,7 @@ export const CertificateDetail = () => {
                   as="select"
                   id="color"
                   name="color"
-                  value={resultEdit.color || ""}
+                  value={resultDefault.color || ""}
                   style={{
                     border: "none",
                     borderBottom: "solid",
@@ -455,7 +481,6 @@ export const CertificateDetail = () => {
                   onChange={handleOnChange}
                   isInvalid={!!validationErrors.color}
                 >
-                  <option value=""></option>
                   <option value="D">D</option>
                   <option value="E">E</option>
                   <option value="G">G</option>
@@ -477,7 +502,7 @@ export const CertificateDetail = () => {
                   as="select"
                   id="clarity"
                   name="clarity"
-                  value={resultEdit.clarity || ""}
+                  value={resultDefault.clarity || ""}
                   style={{
                     border: "none",
                     borderBottom: "solid",
@@ -487,7 +512,7 @@ export const CertificateDetail = () => {
                   isInvalid={!!validationErrors.clarity}
                   onChange={handleOnChange}
                 >
-                  <option value=""></option>
+                  
                   <option value="SI2">SI2</option>
                   <option value="SI1">SI1</option>
                   <option value="VS2">VS2</option>
@@ -509,7 +534,7 @@ export const CertificateDetail = () => {
                   as="select"
                   id="cut"
                   name="cut"
-                  value={resultEdit.cut || ""}
+                  value={resultDefault.cut || ""}
                   style={{
                     border: "none",
                     borderBottom: "solid",
@@ -519,7 +544,7 @@ export const CertificateDetail = () => {
                   isInvalid={!!validationErrors.cut}
                   onChange={handleOnChange}
                 >
-                  <option value=""></option>
+                 
                   <option value="Fair">FAIR</option>
                   <option value="Good">GOOD</option>
                   <option value="Very Good">V.GOOD</option>
@@ -546,7 +571,7 @@ export const CertificateDetail = () => {
                   as="select"
                   id="polish"
                   name="polish"
-                  value={resultEdit.polish || ""}
+                  value={resultDefault.polish || ""}
                   style={{
                     border: "none",
                     borderBottom: "solid",
@@ -556,7 +581,7 @@ export const CertificateDetail = () => {
                   isInvalid={!!validationErrors.polish}
                   onChange={handleOnChange}
                 >
-                  <option value=""></option>
+                
                   <option value="Fair">FAIR</option>
                   <option value="Good">GOOD</option>
                   <option value="Very Good">V.GOOD</option>
@@ -575,7 +600,7 @@ export const CertificateDetail = () => {
                   as="select"
                   id="symmetry"
                   name="symmetry"
-                  value={resultEdit.symmetry || ""}
+                  value={resultDefault.symmetry || ""}
                   style={{
                     border: "none",
                     borderBottom: "solid",
@@ -585,7 +610,7 @@ export const CertificateDetail = () => {
                   onChange={handleOnChange}
                   isInvalid={!!validationErrors.symmetry}
                 >
-                  <option value=""></option>
+                 
                   <option value="Fair">FAIR</option>
                   <option value="Good">GOOD</option>
                   <option value="Very Good">V.GOOD</option>
@@ -603,7 +628,7 @@ export const CertificateDetail = () => {
                   as="select"
                   id="fluorescence"
                   name="fluorescence"
-                  value={resultEdit.fluorescence || ""}
+                  value={resultDefault.fluorescence || ""}
                   style={{
                     border: "none",
                     borderBottom: "solid",
@@ -613,7 +638,7 @@ export const CertificateDetail = () => {
                   isInvalid={!!validationErrors.fluorescence}
                   onChange={handleOnChange}
                 >
-                  <option value=""></option>
+                 
                   <option value="Very Strong">VSTG</option>
                   <option value="Strong">STG</option>
                   <option value="Medium">MED</option>
@@ -632,7 +657,7 @@ export const CertificateDetail = () => {
                   type="text"
                   id="proportions"
                   name="proportions"
-                  value={resultEdit.proportions}
+                  value={resultDefault.proportions}
                   style={{
                     border: "none",
                     borderBottom: "solid",
@@ -655,7 +680,7 @@ export const CertificateDetail = () => {
                   id="price"
                   name="price"
                   min={0}
-                  value={resultEdit.price || ""}
+                  value={resultDefault.price || ""}
                   style={{
                     border: "none",
                     borderBottom: "solid",
@@ -678,8 +703,8 @@ export const CertificateDetail = () => {
                     border: "none",
                     borderBottom: "solid",
                     width: "100%",
-                    padding:"5px",
-                     color:"red"
+                    padding: "5px",
+                    color: "red"
                   }}>
                   {priceMarket.basePrice ? `$${Math.round(priceMarket.basePrice)}` : 0}
                 </div>
@@ -707,7 +732,7 @@ export const CertificateDetail = () => {
             <div className="my-3 d-flex justify-content-center">
 
               <img
-                src={image || resultEdit.img}
+                src={image || resultDefault.img}
                 alt="product-img"
                 height="300"
                 className="border border-dark w-75"
