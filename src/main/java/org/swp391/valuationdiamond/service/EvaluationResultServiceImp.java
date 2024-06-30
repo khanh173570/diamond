@@ -46,7 +46,7 @@ public class EvaluationResultServiceImp {
                 .description(EvaluationResultDTO.getDescription())
                 .price(EvaluationResultDTO.getPrice())
                 .img(EvaluationResultDTO.getImg())
-                .createDate(EvaluationResultDTO.getCreateDate())
+//                .createDate(EvaluationResultDTO.getCreateDate())
                 .build();
 
         User userId = userRepository.findById(EvaluationResultDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
@@ -67,10 +67,9 @@ public class EvaluationResultServiceImp {
                 .orElseThrow(() -> new RuntimeException("Not Found"));
     }
 
-    public List<EvaluationResult> getResultByOrderDetailId(String orderDetailId) {
+    public EvaluationResult getResultByOrderDetailId(String orderDetailId) {
         OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId).orElseThrow(() -> new RuntimeException("Order Detail not found"));
-
-        return evaluationResultRepository.findByOrderDetailId(orderDetail);
+        return evaluationResultRepository.findFirstByOrderDetailId(orderDetail);
     }
 
     public List<EvaluationResult> getResultByUserId(String userId) {
@@ -128,9 +127,9 @@ public class EvaluationResultServiceImp {
         if (evaluationResultDTO.getImg() != null) {
             result.setImg(evaluationResultDTO.getImg());
         }
-        if (evaluationResultDTO.getCreateDate() != null) {
-            result.setCreateDate(evaluationResultDTO.getCreateDate());
-        }
+//        if (evaluationResultDTO.getCreateDate() != null) {
+//            result.setCreateDate(evaluationResultDTO.getCreateDate());
+//        }
 
         return evaluationResultRepository.save(result);
     }
